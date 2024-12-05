@@ -1,0 +1,96 @@
+
+App\Entity\Vehicle:
+  vehicle (template):
+    model: "Model <current()>"
+    brand: "Brand <current()>"
+    year: 1965
+    price: 25000.00
+    fuelType: "essence"
+    mileage: 45000
+    availability: true
+  
+App\Entity\Car:
+  vehicle_car_{1..10} (extends vehicle):
+    nbSeats: <numberBetween(1, 4)>
+    nbDoors: <numberBetween(1, 4)>
+    trunkSize: <numberBetween(100, 500)>
+    transmission: "Manuelle"
+    categories:
+      - '@category_*'  
+    favorites:
+      - '@favorite_*'  
+    vehicleOptions:
+      - '@vehicleOption_*'  
+    reservations:
+      - '@reservation_*' 
+    reviews:
+      - '@review_*' 
+    vehicleImages:
+      - '@vehicle_image_*' 
+    
+App\Entity\Van:
+ vehicle_van_{1..5} (extends vehicle):
+    cargoVolume: 12000
+    categories:
+      - '@category_*'  
+    favorites:
+      - '@favorite_*'  
+    vehicleOptions:
+      - '@vehicleOption_*'  
+    reservations:
+      - '@reservation_*' 
+    reviews:
+      - '@review_*' 
+    vehicleImages:
+      - '@vehicle_image_*' 
+
+App\Entity\Motorcycle (extends vehicle):
+  vehicle_motorcycle_{1..5}:
+    engineCapacity: 883
+    type: "Cruiser"
+    categories:
+      - '@category_*'  
+    favorites:
+      - '@favorite_*'  
+    vehicleOptions:
+      - '@vehicleOption_*'  
+    reservations:
+      - '@reservation_*' 
+    reviews:
+      - '@review_*' 
+    vehicleImages:
+      - '@vehicle_image_*' 
+
+
+App\Entity\VehicleImage:
+  vehicle_image_{1..5}:
+    url: 'https://picsum.photos/400/550?random=<numberBetween(1, 100)>'
+
+App\Entity\Favorite:
+  favorite_1:
+    vehicles:
+      - "@vehicle_car_*"
+      - "@vehicle_van_*"
+    client: "@user_with_favorites_*"
+
+  favorite_2:
+    vehicles:
+      - "@vehicle_car_*"
+      - "@vehicle_motorcycle_*"
+    client: "@user_with_favorites_*"
+
+  favorite_3:
+    vehicles:
+      - "@vehicle_car_*"
+      - "@vehicle_motorcycle_*"
+    client: "@user_with_favorites_*"
+
+  favorite_4:
+    vehicles: 
+      - "@vehicle_car_*"
+    client: "@user_with_favorites_*"
+
+  favorite_5:
+    vehicles: 
+      - "@vehicle_van_*"
+    client: "@user_with_favorites_*"

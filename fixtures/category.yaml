@@ -1,0 +1,15 @@
+App\Entity\Category:
+  category_sport:
+    name: "Sport"
+
+  category_classic:
+    name: "Classique"
+
+  category_coupe:
+    name: "Coupé"
+
+  category_convertible:
+    name: "Cabriolet"
+
+  category_vintage:
+    name: "Vintage"
