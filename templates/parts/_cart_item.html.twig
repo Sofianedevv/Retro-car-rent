@@ -1,0 +1,17 @@
+<tr class="pb-4 border-b border-gray-line">
+    <td class="px-1 py-4">
+        <div class="flex items-center flex-col sm:flex-row text-center sm:text-left">
+            <img class="h-16 w-16 md:h-24 md:w-24 sm:mr-8 mb-4 sm:mb-0" src="{{ product_image }}" alt="Product image">
+            <p class="text-sm md:text-base md:font-semibold">{{ product_name }}</p>
+        </div>
+    </td>
+    <td class="px-1 py-4 text-center">{{ product_price }}</td>
+    <td class="px-1 py-4 text-center">
+        <div class="flex items-center justify-center">
+            <button class="cart-decrement border border-primary bg-primary text-white hover:bg-transparent hover:text-primary rounded-full w-10 h-10 flex items-center justify-center">-</button>
+            <p class="quantity text-center w-8">{{ product_quantity }}</p>
+            <button class="cart-increment border border-primary bg-primary text-white hover:bg-transparent hover:text-primary rounded-full w-10 h-10 flex items-center justify-center">+</button>
+        </div>
+    </td>
+    <td class="px-1 py-4 text-right">{{ product_total }}</td>
+</tr>

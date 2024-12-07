@@ -1,17 +1,35 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+<!doctype html>
+<html lang="fr">
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="icon" href="{{ asset('template-html/assets/images/favicon.png') }}" />
+    <title>{% block title %}Home page{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('template-html/assets/css/styles.css') }}">
+    <link rel="stylesheet" href="{{ asset('template-html/node_modules/swiper/swiper-bundle.css') }}">
+    <link rel="stylesheet" href="{{ asset('template-html/assets/css/custom.css') }}">
+</head>
+
+<body>
+<!-- Header -->
+{% include 'parts/_header.html.twig' %}
+<!-- End of Header -->
+
+{% block body %}{% endblock %}
+
+<!-- Footer -->
+{% include 'parts/_footer.html.twig' %}
+<!-- End of Footer -->
+
+<script src="{{ asset('template-html/node_modules/swiper/swiper-bundle.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+<script src="{{ asset('template-html/assets/js/script.js') }}"></script>
+</body>
+
 </html>
