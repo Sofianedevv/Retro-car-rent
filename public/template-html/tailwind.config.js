@@ -20,7 +20,7 @@ module.exports = {
       current: 'currentColor',
       white: '#fdfcf3', // Blanc cassé pour un effet vintage
       black: '#3b302f', // Noir doux pour les contrastes
-      primary: '#d97706', // Orange rétro
+      primary: '#d2b300', // Orange rétro
       secondary: '#6b705c', // Vert olive doux
       accent: '#cb997e', // Beige rosé pour des touches subtiles
       gray: {
