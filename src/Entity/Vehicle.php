@@ -78,6 +78,9 @@ class Vehicle
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'vehicles')]
     private Collection $categories;
 
+    #[ORM\Column(length: 255)]
+    private ?string $defaultImage = null;
+
     public function __construct()
     {
         $this->favorites = new ArrayCollection();
@@ -338,6 +341,18 @@ class Vehicle
     public function removeCategory(Category $category): static
     {
         $this->categories->removeElement($category);
+
+        return $this;
+    }
+
+    public function getDefaultImage(): ?string
+    {
+        return $this->defaultImage;
+    }
+
+    public function setDefaultImage(string $defaultImage): static
+    {
+        $this->defaultImage = $defaultImage;
 
         return $this;
     }
