@@ -43,7 +43,7 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('phone', TextType::class, [
+            ->add('phoneNumber', TextType::class, [
                 'label' => 'Phone',
                 'required' => false, // Optional field
                 'constraints' => [
