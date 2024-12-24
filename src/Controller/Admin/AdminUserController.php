@@ -11,11 +11,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use DateTimeImmutable;
 
-#[Route('/admin')]
 class AdminUserController extends AbstractController
 {
-    #[Route('/users', name: 'admin_users')]
+    #[Route('/admin/user', name: 'admin_users')]
     public function index(UserRepository $userRepository): Response
     {
         return $this->render('admin/users.html.twig', [
@@ -23,18 +23,28 @@ class AdminUserController extends AbstractController
         ]);
     }
 
-    #[Route('/user/new', name: 'admin_user_new')]
-    public function new(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
+    #[Route('/admin/user/new', name: 'admin_user_new')]
+    public function new(
+        Request $request, 
+        EntityManagerInterface $entityManager,
+        UserPasswordHasherInterface $passwordHasher
+    ): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Encode le mot de passe
-            $hashedPassword = $passwordHasher->hashPassword($user, $form->get('password')->getData());
+            // Hash du mot de passe
+            $hashedPassword = $passwordHasher->hashPassword(
+                $user,
+                $form->get('password')->getData()
+            );
             $user->setPassword($hashedPassword);
             
+            // Date de création avec DateTimeImmutable au lieu de DateTime
+            $user->setCreatedAt(new DateTimeImmutable());
+
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -47,37 +57,51 @@ class AdminUserController extends AbstractController
         ]);
     }
 
-    #[Route('/user/{id}/edit', name: 'admin_user_edit')]
-    public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    #[Route('/admin/user/{id}/edit', name: 'admin_user_edit')]
+    public function edit(
+        Request $request, 
+        User $user, 
+        EntityManagerInterface $entityManager,
+        UserPasswordHasherInterface $passwordHasher
+    ): Response
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Hash du nouveau mot de passe si fourni
+            if ($password = $form->get('password')->getData()) {
+                $hashedPassword = $passwordHasher->hashPassword($user, $password);
+                $user->setPassword($hashedPassword);
+            }
+
+            // Utiliser DateTimeImmutable pour la mise à jour aussi
+            $user->setUpdatedAt(new DateTimeImmutable());
             $entityManager->flush();
-            
+
             $this->addFlash('success', 'Utilisateur modifié avec succès.');
             return $this->redirectToRoute('admin_users');
         }
 
         return $this->render('admin/users/edit.html.twig', [
-            'user' => $user,
             'form' => $form->createView(),
+            'user' => $user
         ]);
     }
 
-    #[Route('/user/{id}/delete', name: 'admin_user_delete')]
-    public function delete(User $user, EntityManagerInterface $entityManager): Response
+    #[Route('/admin/user/{id}/delete', name: 'admin_user_delete')]
+    public function delete(
+        Request $request, 
+        User $user, 
+        EntityManagerInterface $entityManager
+    ): Response
     {
-        if ($user === $this->getUser()) {
-            $this->addFlash('error', 'Vous ne pouvez pas supprimer votre propre compte.');
-            return $this->redirectToRoute('admin_users');
+        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($user);
+            $entityManager->flush();
+            $this->addFlash('success', 'Utilisateur supprimé avec succès.');
         }
 
-        $entityManager->remove($user);
-        $entityManager->flush();
-
-        $this->addFlash('success', 'Utilisateur supprimé avec succès.');
         return $this->redirectToRoute('admin_users');
     }
 } 
