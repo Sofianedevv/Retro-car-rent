@@ -3,17 +3,23 @@
 {% block admin_content %}
     <div class="space-y-6">
         {# Header #}
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-center bg-white p-4 rounded-lg shadow mb-6">
             <h1 class="text-3xl font-semibold text-gray-800">Gestion des véhicules</h1>
             <div class="space-x-4">
-                <a href="{{ path('admin_vehicle_car_new') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                    <i class="fas fa-car mr-2"></i> Nouvelle voiture
+                <a href="{{ path('admin_vehicle_car_new') }}" 
+                   class="inline-flex items-center px-6 py-3 bg-gray-100 text-gray-900 text-base font-medium rounded-lg hover:bg-gray-200 transition-colors shadow-md">
+                    <i class="fas fa-car mr-2 text-lg text-blue-600"></i> 
+                    <span class="font-semibold">Nouvelle voiture</span>
                 </a>
-                <a href="{{ path('admin_vehicle_van_new') }}" class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
-                    <i class="fas fa-truck mr-2"></i> Nouveau van
+                <a href="{{ path('admin_vehicle_van_new') }}" 
+                   class="inline-flex items-center px-6 py-3 bg-gray-100 text-gray-900 text-base font-medium rounded-lg hover:bg-gray-200 transition-colors shadow-md">
+                    <i class="fas fa-truck mr-2 text-lg text-green-600"></i>
+                    <span class="font-semibold">Nouveau van</span>
                 </a>
-                <a href="{{ path('admin_vehicle_motorcycle_new') }}" class="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
-                    <i class="fas fa-motorcycle mr-2"></i> Nouvelle moto
+                <a href="{{ path('admin_vehicle_motorcycle_new') }}" 
+                   class="inline-flex items-center px-6 py-3 bg-gray-100 text-gray-900 text-base font-medium rounded-lg hover:bg-gray-200 transition-colors shadow-md">
+                    <i class="fas fa-motorcycle mr-2 text-lg text-purple-600"></i>
+                    <span class="font-semibold">Nouvelle moto</span>
                 </a>
             </div>
         </div>
@@ -26,8 +32,8 @@
             </div>
             <p class="text-gray-600">Liste des voitures classiques et de collection disponibles à la location</p>
             <div class="bg-white rounded-lg shadow overflow-hidden">
-                <div class="bg-green-600 px-6 py-4">
-                    <h2 class="text-xl font-semibold text-white">Vans</h2>
+                <div class="bg-blue-600 px-6 py-4">
+                    <h2 class="text-xl font-semibold text-white">Voitures</h2>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
@@ -37,36 +43,36 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Marque</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Modèle</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prix/jour</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Volume</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Année</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            {% for van in vans %}
+                            {% for car in cars %}
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <img src="{{ van.defaultImage }}" alt="{{ van.brand }} {{ van.model }}" 
+                                        <img src="{{ car.defaultImage }}" alt="{{ car.brand }} {{ car.model }}" 
                                              class="h-10 w-10 rounded-full object-cover">
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ van.brand }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ van.model }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ van.price }}€</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ van.cargoVolume }} m³</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ car.brand }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ car.model }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ car.price }}€</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ car.year }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                            {{ van.availability ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                            {{ van.availability ? 'Disponible' : 'Indisponible' }}
+                                            {{ car.availability ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                            {{ car.availability ? 'Disponible' : 'Indisponible' }}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                        <a href="{{ path('admin_vehicle_van_edit', {id: van.id}) }}" 
+                                        <a href="{{ path('admin_vehicle_car_edit', {id: car.id}) }}" 
                                            class="text-indigo-600 hover:text-indigo-900">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <a href="{{ path('admin_vehicle_delete', {id: van.id}) }}" 
+                                        <a href="{{ path('admin_vehicle_delete', {id: car.id}) }}" 
                                            class="text-red-600 hover:text-red-900"
-                                           onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce van ?')">
+                                           onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette voiture ?')">
                                             <i class="fas fa-trash"></i>
                                         </a>
                                     </td>
@@ -74,7 +80,7 @@
                             {% else %}
                                 <tr>
                                     <td colspan="7" class="px-6 py-4 text-center text-gray-500">
-                                        Aucun van enregistré
+                                        Aucune voiture enregistrée
                                     </td>
                                 </tr>
                             {% endfor %}

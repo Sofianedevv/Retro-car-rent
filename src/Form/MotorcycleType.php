@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Car;
+use App\Entity\Motorcycle;
 use App\Entity\Category;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -14,7 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CarType extends AbstractType
+class MotorcycleType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -22,21 +22,21 @@ class CarType extends AbstractType
             ->add('brand', TextType::class, [
                 'label' => 'Marque',
                 'attr' => [
-                    'placeholder' => 'Ex: Citroën, Peugeot, Renault...',
+                    'placeholder' => 'Ex: Harley-Davidson, Triumph...',
                     'class' => 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500'
                 ]
             ])
             ->add('model', TextType::class, [
                 'label' => 'Modèle',
                 'attr' => [
-                    'placeholder' => 'Ex: DS, 2CV, 4L...',
+                    'placeholder' => 'Ex: Bonneville, Sportster...',
                     'class' => 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500'
                 ]
             ])
             ->add('year', NumberType::class, [
                 'label' => 'Année',
                 'attr' => [
-                    'placeholder' => 'Ex: 1960',
+                    'placeholder' => 'Ex: 1965',
                     'min' => 1900,
                     'max' => date('Y'),
                     'class' => 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500'
@@ -45,7 +45,7 @@ class CarType extends AbstractType
             ->add('mileage', NumberType::class, [
                 'label' => 'Kilométrage',
                 'attr' => [
-                    'placeholder' => 'Ex: 80000',
+                    'placeholder' => 'Ex: 45000',
                     'class' => 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500'
                 ]
             ])
@@ -53,50 +53,24 @@ class CarType extends AbstractType
                 'label' => 'Prix par jour',
                 'currency' => 'EUR',
                 'attr' => [
-                    'placeholder' => 'Ex: 150',
+                    'placeholder' => 'Ex: 180',
                     'class' => 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500'
                 ]
             ])
-            ->add('nbSeats', NumberType::class, [
-                'label' => 'Nombre de places',
+            ->add('engineCapacity', NumberType::class, [
+                'label' => 'Cylindrée (cc)',
                 'attr' => [
-                    'min' => 1,
-                    'max' => 9,
+                    'placeholder' => 'Ex: 1200',
                     'class' => 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500'
                 ]
             ])
-            ->add('nbDoors', NumberType::class, [
-                'label' => 'Nombre de portes',
-                'attr' => [
-                    'min' => 2,
-                    'max' => 5,
-                    'class' => 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500'
-                ]
-            ])
-            ->add('trunkSize', NumberType::class, [
-                'label' => 'Volume du coffre (L)',
-                'attr' => [
-                    'placeholder' => 'Ex: 400',
-                    'class' => 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500'
-                ]
-            ])
-            ->add('fuelType', ChoiceType::class, [
-                'label' => 'Type de carburant',
+            ->add('type', ChoiceType::class, [
+                'label' => 'Type',
                 'choices' => [
-                    'Essence' => 'essence',
-                    'Diesel' => 'diesel',
-                    'Électrique' => 'electrique',
-                    'Hybride' => 'hybride'
-                ],
-                'attr' => [
-                    'class' => 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500'
-                ]
-            ])
-            ->add('transmission', ChoiceType::class, [
-                'label' => 'Transmission',
-                'choices' => [
-                    'Manuelle' => 'manuelle',
-                    'Automatique' => 'automatique'
+                    'Custom' => 'custom',
+                    'Café Racer' => 'cafe_racer',
+                    'Classique' => 'classic',
+                    'Roadster' => 'roadster'
                 ],
                 'attr' => [
                     'class' => 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500'
@@ -134,7 +108,7 @@ class CarType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Car::class,
+            'data_class' => Motorcycle::class,
         ]);
     }
 } 

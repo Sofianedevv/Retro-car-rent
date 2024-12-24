@@ -2,11 +2,11 @@
 
 {% block page_title %}
     {% if vehicle_type == 'car' %}
-        Nouvelle voiture
+        Modifier la voiture
     {% elseif vehicle_type == 'van' %}
-        Nouveau van
+        Modifier le van
     {% else %}
-        Nouvelle moto
+        Modifier la moto
     {% endif %}
 {% endblock %}
 
@@ -17,11 +17,11 @@
                 <div class="flex justify-between items-center">
                     <h1 class="text-xl font-semibold text-gray-800">
                         {% if vehicle_type == 'car' %}
-                            <i class="fas fa-car mr-2"></i> Nouvelle voiture
+                            <i class="fas fa-car mr-2"></i> Modifier {{ vehicle.brand }} {{ vehicle.model }}
                         {% elseif vehicle_type == 'van' %}
-                            <i class="fas fa-truck mr-2"></i> Nouveau van
+                            <i class="fas fa-truck mr-2"></i> Modifier {{ vehicle.brand }} {{ vehicle.model }}
                         {% else %}
-                            <i class="fas fa-motorcycle mr-2"></i> Nouvelle moto
+                            <i class="fas fa-motorcycle mr-2"></i> Modifier {{ vehicle.brand }} {{ vehicle.model }}
                         {% endif %}
                     </h1>
                     <a href="{{ path('admin_vehicles') }}" class="inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700">
@@ -87,7 +87,7 @@
                         <button type="submit"
                                 class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-900 bg-green-600 hover:bg-green-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                             <i class="fas fa-save mr-2"></i>
-                            Enregistrer
+                            Enregistrer les modifications
                         </button>
                     </div>
                 {{ form_end(form) }}
