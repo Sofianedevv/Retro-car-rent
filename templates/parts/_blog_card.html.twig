@@ -1,0 +1,8 @@
+<div class="flex flex-col p-6 bg-white rounded-xl shadow-lg">
+    <img class="object-cover object-center w-80 h-60 mb-8 rounded-xl" src="{{ image_url is not empty ? asset(image_url) : asset('template-html/assets/images/404.jpg') }}" alt="blog">
+    <h1 class="mb-4 text-2xl font-semibold leading-none tracking-tighter text-black lg:text-3xl">{{ title | default('Default Title') }}</h1>
+    <p class="flex-grow text-base font-medium leading-relaxed text-gray-txt">{{ desc | default('Default Description')}}</p>
+    <div class="mt-8">
+        <a href="#" class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full w-full">{{ button_text | default('Default action') }}</a>
+    </div>
+</div>

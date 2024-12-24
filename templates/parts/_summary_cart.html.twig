@@ -1,0 +1,20 @@
+<div class="bg-white rounded-lg shadow-md p-6">
+    <h2 class="text-lg font-semibold mb-4">Summary</h2>
+    <div class="flex justify-between mb-4">
+        <p>Subtotal</p>
+        <p>{{ subtotal }}</p>
+    </div>
+    <div class="flex justify-between mb-4">
+        <p>Taxes</p>
+        <p>{{ taxes }}</p>
+    </div>
+    <div class="flex justify-between mb-4 pb-4 border-b border-gray-line">
+        <p>Shipping</p>
+        <p>{{ shipping }}</p>
+    </div>
+    <div class="flex justify-between mb-2">
+        <p class="font-semibold">Total</p>
+        <p class="font-semibold">{{ total }}</p>
+    </div>
+    <button class="bg-primary text-white border border-primary hover:bg-transparent hover:text-primary py-2 px-4 rounded-full w-full">Proceed to Payment</button>
+</div>
