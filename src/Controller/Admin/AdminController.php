@@ -4,30 +4,35 @@ namespace App\Controller\Admin;
 
 use App\Entity\Car;
 use App\Entity\Van;
-use App\Entity\Motorcycle;
 use App\Entity\User;
 use App\Form\CarType;
 use App\Form\VanType;
+use App\Entity\Motorcycle;
 use App\Form\MotorcycleType;
-use App\Repository\VehicleRepository;
 use App\Repository\UserRepository;
+use App\Repository\VehicleRepository;
+use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\ReservationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/admin', name: 'admin_')]
 #[IsGranted('ROLE_ADMIN')]
 class AdminController extends AbstractController
 {
     #[Route('/', name: 'dashboard')]
-    public function index(VehicleRepository $vehicleRepository, UserRepository $userRepository): Response
+    public function index(VehicleRepository $vehicleRepository, UserRepository $userRepository, CategoryRepository $categoryRepository, ReservationRepository $reservationRepository): Response
     {
         return $this->render('admin/dashboard.html.twig', [
-            'total_vehicles' => $vehicleRepository->count([]),
-            'total_users' => $userRepository->count([]),
+            'vehicles_count' => $vehicleRepository->count([]),
+            'users_count' => $userRepository->count([]),
+            'categories_count' => $categoryRepository->count([]),
+            'bookings_count' => $reservationRepository->count([]),
+            
         ]);
     }
 

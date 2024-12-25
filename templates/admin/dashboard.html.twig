@@ -3,116 +3,95 @@
 {% block page_title %}Tableau de bord{% endblock %}
 
 {% block admin_content %}
-    <div class="space-y-6">
-        {# Stats Cards #}
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {# Vehicles Stats #}
-            <div class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
-                <div class="flex items-center">
-                    <div class="p-3 rounded-full bg-blue-100 text-blue-600">
-                        <i class="fas fa-car text-2xl"></i>
-                    </div>
-                    <div class="ml-4">
-                        <h3 class="text-gray-500 text-sm">Véhicules</h3>
-                        <p class="text-2xl font-semibold text-gray-800">{{ total_vehicles ?? 0 }}</p>
-                    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {# Statistiques des véhicules #}
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                    <i class="fas fa-car text-2xl"></i>
                 </div>
-            </div>
-
-            {# Users Stats #}
-            <div class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
-                <div class="flex items-center">
-                    <div class="p-3 rounded-full bg-green-100 text-green-600">
-                        <i class="fas fa-users text-2xl"></i>
-                    </div>
-                    <div class="ml-4">
-                        <h3 class="text-gray-500 text-sm">Utilisateurs</h3>
-                        <p class="text-2xl font-semibold text-gray-800">{{ total_users ?? 0 }}</p>
-                    </div>
-                </div>
-            </div>
-
-            {# Reservations Stats #}
-            <div class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
-                <div class="flex items-center">
-                    <div class="p-3 rounded-full bg-purple-100 text-purple-600">
-                        <i class="fas fa-calendar-check text-2xl"></i>
-                    </div>
-                    <div class="ml-4">
-                        <h3 class="text-gray-500 text-sm">Réservations</h3>
-                        <p class="text-2xl font-semibold text-gray-800">{{ total_reservations ?? 0 }}</p>
-                    </div>
+                <div class="ml-4">
+                    <p class="text-gray-500">Véhicules</p>
+                    <p class="text-2xl font-semibold">{{ vehicles_count }}</p>
                 </div>
             </div>
         </div>
 
-        {# Recent Activity Section #}
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {# Recent Reservations #}
-            <div class="bg-white rounded-lg shadow">
-                <div class="px-6 py-4 border-b border-gray-200">
-                    <h2 class="text-lg font-semibold text-gray-800">Dernières réservations</h2>
+        {# Statistiques des utilisateurs #}
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-green-100 text-green-600">
+                    <i class="fas fa-users text-2xl"></i>
                 </div>
-                <div class="p-6">
-                    {% if recent_reservations is defined and recent_reservations|length > 0 %}
-                        <div class="space-y-4">
-                            {% for reservation in recent_reservations %}
-                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                                    <div>
-                                        <p class="font-medium text-gray-800">
-                                            {{ reservation.vehicle.brand }} {{ reservation.vehicle.model }}
-                                        </p>
-                                        <p class="text-sm text-gray-500">
-                                            {{ reservation.client.email }}
-                                        </p>
-                                    </div>
-                                    <div class="text-right">
-                                        <p class="text-sm font-medium text-gray-600">
-                                            {{ reservation.startDate|date('d/m/Y') }}
-                                        </p>
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                                            {% if reservation.status == 'confirmed' %}
-                                                bg-green-100 text-green-800
-                                            {% elseif reservation.status == 'pending' %}
-                                                bg-yellow-100 text-yellow-800
-                                            {% else %}
-                                                bg-red-100 text-red-800
-                                            {% endif %}">
-                                            {{ reservation.status }}
-                                        </span>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <p class="text-gray-500 text-center py-4">Aucune réservation récente</p>
-                    {% endif %}
+                <div class="ml-4">
+                    <p class="text-gray-500">Utilisateurs</p>
+                    <p class="text-2xl font-semibold">{{ users_count }}</p>
                 </div>
             </div>
+        </div>
 
-            {# Recent Users #}
-            <div class="bg-white rounded-lg shadow">
-                <div class="px-6 py-4 border-b border-gray-200">
-                    <h2 class="text-lg font-semibold text-gray-800">Nouveaux utilisateurs</h2>
+        {# Statistiques des réservations #}
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-purple-100 text-purple-600">
+                    <i class="fas fa-calendar-check text-2xl"></i>
                 </div>
-                <div class="p-6">
-                    {% if recent_users is defined and recent_users|length > 0 %}
-                        <div class="space-y-4">
-                            {% for user in recent_users %}
-                                <div class="flex items-center p-4 bg-gray-50 rounded-lg">
-                                    <div class="p-2 bg-gray-200 rounded-full">
-                                        <i class="fas fa-user text-gray-600"></i>
-                                    </div>
-                                    <div class="ml-4">
-                                        <p class="font-medium text-gray-800">{{ user.email }}</p>
-                                        <p class="text-sm text-gray-500">Inscrit le {{ user.createdAt|date('d/m/Y') }}</p>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <p class="text-gray-500 text-center py-4">Aucun nouvel utilisateur</p>
-                    {% endif %}
+                <div class="ml-4">
+                    <p class="text-gray-500">Réservations</p>
+                    <p class="text-2xl font-semibold">{{ bookings_count }}</p>
+                </div>
+            </div>
+        </div>
+
+        {# Statistiques des catégories #}
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
+                    <i class="fas fa-tags text-2xl"></i>
+                </div>
+                <div class="ml-4">
+                    <p class="text-gray-500">Catégories</p>
+                    <p class="text-2xl font-semibold">{{ categories_count }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Actions rapides #}
+    <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+        {# Gestion des véhicules #}
+        <div class="bg-white rounded-lg shadow">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-medium text-gray-900">Gestion des véhicules</h3>
+            </div>
+            <div class="p-6">
+                <div class="space-y-4">
+                    <a href="{{ path('admin_vehicle_car_new') }}" class="block px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100">
+                        <i class="fas fa-car mr-2"></i> Ajouter une voiture
+                    </a>
+                    <a href="{{ path('admin_vehicle_van_new') }}" class="block px-4 py-2 bg-green-50 text-green-700 rounded-lg hover:bg-green-100">
+                        <i class="fas fa-truck mr-2"></i> Ajouter un van
+                    </a>
+                    <a href="{{ path('admin_vehicle_motorcycle_new') }}" class="block px-4 py-2 bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-100">
+                        <i class="fas fa-motorcycle mr-2"></i> Ajouter une moto
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {# Gestion des catégories #}
+        <div class="bg-white rounded-lg shadow">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-medium text-gray-900">Gestion des catégories</h3>
+            </div>
+            <div class="p-6">
+                <div class="space-y-4">
+                    <a href="{{ path('admin_categories') }}" class="block px-4 py-2 bg-yellow-50 text-yellow-700 rounded-lg hover:bg-yellow-100">
+                        <i class="fas fa-list mr-2"></i> Liste des catégories
+                    </a>
+                    <a href="{{ path('admin_category_new') }}" class="block px-4 py-2 bg-yellow-50 text-yellow-700 rounded-lg hover:bg-yellow-100">
+                        <i class="fas fa-plus mr-2"></i> Ajouter une catégorie
+                    </a>
                 </div>
             </div>
         </div>

@@ -34,6 +34,14 @@
                             <span>Utilisateurs</span>
                         </a>
                     </li>
+                       <li>
+                        <a href="{{ path('admin_categories') }}" 
+                           class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors
+                           {{ app.request.get('_route') == 'admin_users' ? 'bg-gray-700 text-white' : '' }}">
+                            <i class="fa-solid fa-list w-6"></i>
+                            <span> Categories</span>
+                        </a>
+                    </li>
                     <li>
                         <a href="{{ path('app_home') }}" target="_blank"
                            class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors">
