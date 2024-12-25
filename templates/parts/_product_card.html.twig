@@ -1,12 +1,54 @@
 <div class="w-full sm:w-1/2 lg:w-1/4 px-4 mb-8">
     <div class="bg-white p-3 rounded-lg shadow-lg">
-        <img src=  "{{ asset('template-html/assets/images/products/1.jpg') }}" alt="Product 1" class="w-full object-cover mb-4 rounded-lg">
-        <a href="#" class="text-lg font-semibold mb-2">Summer black dress</a>
-        <p class="my-2">Women</p>
-        <div class="flex items-center mb-4">
-            <span class="text-lg font-bold text-primary">$19.99</span>
-            <span class="text-sm line-through ml-2">$24.99</span>
+        <img src="{{ vehicles[i].defaultImage }}" alt="Vehicle 1" class="w-full h-48 object-cover mb-4 rounded-lg">
+        <a href="#" class="text-lg font-semibold mb-2 block">{{ vehicles[i].brand }} {{ vehicles[i].model }}</a>
+        <div class="flex items-center justify-between mb-2">
+            <!-- Icon 1: Added padding around icon and text -->
+            {% if vehicles[i].engineCapacity is defined %}
+            <div class="flex items-center justify-center h-8 rounded-xl relative mr-4 bg-primary">
+                <div class="absolute inset-0 bg-opacity-50 rounded-xl"></div>
+                <div class="relative z-10 flex items-center justify-center text-white p-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-6 w-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                    </svg>
+                    <span class="ml-2 text-xl font-medium">{{ vehicles[i].engineCapacity }}</span>
+                </div>
+            </div>
+            {% endif %}
+            {% if vehicles[i].cargoVolume is defined %}
+            <div class="flex items-center justify-center h-8 rounded-xl relative mr-4 bg-primary">
+                <div class="absolute inset-0 bg-opacity-50 rounded-xl"></div>
+                <div class="relative z-10 flex items-center justify-center text-white p-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-6 w-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                    </svg>
+                    <span class="ml-2 text-xl font-medium">{{ vehicles[i].cargoVolume }}</span>
+                </div>
+            </div>
+            {% endif %}
+            {% if vehicles[i].nbSeats is defined%}
+            <div class="flex items-center justify-center w-16 h-8 rounded-xl relative mr-4 bg-primary">
+                <div class="absolute inset-0 bg-opacity-50 rounded-xl"></div>
+                <div class="relative z-10 flex items-center justify-center text-white p-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-6 w-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                    </svg>
+                    <span class="ml-2 text-xl font-medium">{{ vehicles[i].nbSeats }}</span>
+                </div>
+            </div>
+            {% endif %}
+            <!-- Icon 2: Added padding around icon and text -->
+            <div class="flex items-center h-6 justify-center rounded-xl relative mr-4 bg-primary p-4">
+                <div class="absolute inset-0 bg-primary bg-opacity-50 rounded-xl"></div>
+                <div class="relative z-10 flex items-center justify-center text-white p-1">
+                    <img src="{{ asset("template-html/assets/images/icons/car-speed.png") }}" alt="Car Speed" class="h-6 w-6">
+                    <span class="text-white text-xl font-medium">{{ vehicles[i].mileage }} Km</span>
+                </div>
+            </div>
         </div>
-        <button class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full w-full">Add to Cart</button>
+        <div class="flex items-center justify-end text-3xl font-bold py-6">
+            <span class="text-green-500">{{ vehicles[i].price|number_format(0, '', '') }}€ <span class="text-xl font-medium">/ jour</span></span>
+        </div>
+        <button class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full w-full">Réserver maintenant</button>
     </div>
 </div>

@@ -1,0 +1,98 @@
+{# templates/home/home.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Recommandations de Véhicules{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="text-center my-4">Recommandations de Véhicules</h1>
+
+        {# Section pour les voitures #}
+        <div class="vehicle-section">
+            <h2>Voitures</h2>
+            <div class="vehicle-list">
+                {% for car in cars %}
+                    <div class="vehicle-card">
+                        <p><strong>Modèle :</strong> {{ car.model }}</p>
+                        <p><strong>Année :</strong> {{ car.year }}</p>
+                    </div>
+                {% else %}
+                    <p>Aucune voiture recommandée.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        {# Section pour les vans #}
+        <div class="vehicle-section mt-4">
+            <h2>Vans</h2>
+            <div class="vehicle-list">
+                {% for van in vans %}
+                    <div class="vehicle-card">
+                        <p><strong>Modèle :</strong> {{ van.model }}</p>
+                        <p><strong>Année :</strong> {{ van.year }}</p>
+                    </div>
+                {% else %}
+                    <p>Aucun van recommandé.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        {# Section pour les motos #}
+        <div class="vehicle-section mt-4">
+            <h2>Motos</h2>
+            <div class="vehicle-list">
+                {% for motorcycle in motorcycles %}
+                    <div class="vehicle-card">
+                        <p><strong>Modèle :</strong> {{ motorcycle.model }}</p>
+                        <p><strong>Année :</strong> {{ motorcycle.year }}</p>
+                    </div>
+                {% else %}
+                    <p>Aucune moto recommandée.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+{# Ajout simple de style avec CSS (vous pouvez le personnaliser) #}
+<style>
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1rem;
+    }
+
+    .vehicle-section {
+        border: 1px solid #ddd;
+        padding: 1rem;
+        border-radius: 8px;
+    }
+
+    .vehicle-list {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .vehicle-card {
+        background-color: #f9f9f9;
+        padding: 0.75rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 30%;
+        box-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    }
+
+    @media (max-width: 768px) {
+        .vehicle-card {
+            width: 45%;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .vehicle-card {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}

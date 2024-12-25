@@ -231,17 +231,52 @@
         </div>
     </section>
     <!-- Popular product section -->
-    <section id="popular-products">
+    <section id="popular-products" class="bg-gray py-16 px-4">
         <div class="container mx-auto px-4">
-            <h2 class="text-2xl font-bold mb-8">Popular products</h2>
-            <div class="flex flex-wrap -mx-4">
-                <!-- Product 1 -->
-                {% for i in 1..4 %}
-                    {% include 'parts/_product_card.html.twig' %}
-                {% endfor %}
+            <div class="flex mb-4">
+                <h3 class="text-4xl font-bold mb-2 mr-12">Nos Recommandations Rétro & Vintage</h3>
             </div>
+
+            <!-- Le paragraphe avec une marge réduite -->
+            <div class="mb-8 max-w-xl">
+                <p class="text-lg">
+                    Plongez dans l’univers des véhicules rétro et vintage soigneusement sélectionnés pour leur charme intemporel. Nos recommandations vous guident vers des modèles uniques qui sauront sublimer vos moments inoubliables.
+                </p>
+            </div>
+
+            <!-- Section Générique pour Cars, Vans, Motorcycles -->
+            {% set vehicle_types = {
+                'cars': cars,
+                'vans': vans,
+                'motorcycles': motorcycles
+            } %}
+
+            {% set translations = {
+                'cars': 'Voitures',
+                'vans': 'Vans',
+                'motorcycles': 'Motos'
+            } %}
+
+            {% for type, vehicles in vehicle_types %}
+                <div class="mb-8">
+                    <h4 class="text-2xl font-bold mb-4 flex items-center">
+                        # TOP {{ limit }} des {{ translations[type] }}
+                    </h4>
+                    <div class="flex flex-wrap -mx-4">
+                        {% for i in 0..(vehicles|length - 1) %}
+                            {% if i < limit %}
+                                {% include 'parts/_product_card.html.twig' with { 'vehicle': vehicles[i] } %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
         </div>
     </section>
+
+
+
+
 
     <!-- Banner section -->
 {#    <section id="banner" class="relative my-16">#}

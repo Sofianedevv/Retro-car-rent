@@ -2,6 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Car;
+use App\Entity\Motorcycle;
+use App\Entity\Van;
+use App\Repository\CarRepository;
+use App\Repository\MotorcycleRepository;
+use App\Repository\VanRepository;
+use App\Repository\VehicleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -9,17 +16,19 @@ use Symfony\Component\Routing\Attribute\Route;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app')]
-    public function home(): Response
+    public function home(VehicleRepository $vehicleRepository, CarRepository $carRepository, MotorcycleRepository $motorcycleRepository, VanRepository $vanRepository): Response
     {
+        $limit = 4;
+        $cars = $carRepository->findTopReviewedCars($limit);
+        $vans = $vanRepository->findTopReviewedCars($limit);
+        $motorcycles = $motorcycleRepository->findTopReviewedCars($limit);
+
+
         return $this->render('home/home.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
-    }
-    #[Route('/home', name: 'app_home')]
-    public function index(): Response
-    {
-        return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
+            'limit' => $limit,
+            'cars' => $cars,
+            'vans' => $vans,
+            'motorcycles' => $motorcycles,
         ]);
     }
     #[Route('/login', name: 'app_login')]
