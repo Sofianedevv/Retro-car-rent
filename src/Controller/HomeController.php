@@ -18,7 +18,7 @@ class HomeController extends AbstractController
     #[Route('/', name: 'app')]
     public function home(VehicleRepository $vehicleRepository, CarRepository $carRepository, MotorcycleRepository $motorcycleRepository, VanRepository $vanRepository): Response
     {
-        $limit = 4;
+        $limit = 3;
         $cars = $carRepository->findTopReviewedCars($limit);
         $vans = $vanRepository->findTopReviewedCars($limit);
         $motorcycles = $motorcycleRepository->findTopReviewedCars($limit);
@@ -29,6 +29,13 @@ class HomeController extends AbstractController
             'cars' => $cars,
             'vans' => $vans,
             'motorcycles' => $motorcycles,
+        ]);
+    }
+    #[Route('/about', name: 'app_about')]
+    public function about(): Response
+    {
+        return $this->render('home/about.html.twig', [
+            'controller_name' => 'HomeController',
         ]);
     }
     #[Route('/login', name: 'app_login')]

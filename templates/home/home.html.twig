@@ -18,11 +18,11 @@
                         Plongez dans un univers où l’élégance rencontre la nostalgie. Que vous soyez à la recherche d'une voiture classique, d'une moto rétro ou d'un van au charme d'antan, nous avons le véhicule idéal pour chaque occasion : mariage, séance photo ou simplement pour vivre une expérience inoubliable sur la route.
                     </p>
                     <div class="flex space-x-4">
-                        <a href="#"
+                        <a href="{{ path('app_collections') }}"
                            class="bg-primary hover:bg-transparent text-white hover:text-primary border border-transparent hover:border-primary font-semibold px-6 py-3 rounded-full">
                             Réserver
                         </a>
-                        <a href="#"
+                        <a href="{{ path('app_about') }}"
                            class="bg-primary hover:bg-transparent text-white hover:text-primary border border-transparent hover:border-primary font-semibold px-6 py-3 rounded-full">
                             En savoir plus
                         </a>
@@ -31,11 +31,6 @@
             </div>
         </div>
     </section>
-
-
-
-
-
 
     <!-- Blog section -->
     <section class="py-12">
@@ -87,11 +82,11 @@
                         Nos services vous offrent une expérience inégalée avec des voitures classiques soigneusement sélectionnées. Profitez de la nostalgie et du style pour toutes vos occasions spéciales.
                     </p>
                     <div class="flex space-x-4">
-                        <a href="#"
+                        <a href="{{ path('app_about') }}"
                            class="bg-primary hover:bg-transparent text-white hover:text-primary border border-transparent hover:border-primary font-semibold px-6 py-3 rounded-full underline">
                             En savoir plus
                         </a>
-                        <a href="#"
+                        <a href="{{ path('app_collections') }}"
                            class="bg-primary hover:bg-transparent text-white hover:text-primary border border-transparent hover:border-primary font-semibold px-6 py-3 rounded-full">
                             Réserver
                         </a>
@@ -130,7 +125,7 @@
                         <div class="relative z-10"> <!-- Contient le texte au-dessus de l'opacité -->
                             <h3 class="text-2xl font-bold text-primary mb-4">Voitures Vintage</h3>
                             <p class="text-lg text-white mb-6">Louez des voitures vintage classiques pour vos événements spéciaux. Des modèles iconiques qui allient luxe et nostalgie, parfaits pour les mariages, photoshoots ou balades.</p>
-                            <a href="#"
+                            <a href="{{ path('app_car') }}"
                                class="bg-primary hover:bg-transparent text-white hover:text-primary border border-transparent hover:border-primary font-semibold px-6 py-3 rounded-full block text-center">
                                 Explorer les voitures
                             </a>
@@ -146,7 +141,7 @@
                         <div class="relative z-10"> <!-- Contient le texte au-dessus de l'opacité -->
                             <h3 class="text-2xl font-bold  text-primary mb-4">Motos Vintage</h3>
                             <p class="text-lg text-white mb-6">Pour les passionnés de motos classiques, nous proposons une sélection de modèles rétro qui vous offrent une expérience de conduite inégalée. Parfait pour les amateurs de sensations fortes.</p>
-                            <a href="#"
+                            <a href="{{ path('app_motorcycle') }}"
                                class="bg-primary hover:bg-transparent text-white hover:text-primary border border-transparent hover:border-primary font-semibold px-6 py-3 rounded-full block text-center">
                                 Explorer les motos
                             </a>
@@ -162,7 +157,7 @@
                         <div class="relative z-10"> <!-- Contient le texte au-dessus de l'opacité -->
                             <h3 class="text-2xl font-bold text-primary mb-4">Vans Vintage</h3>
                             <p class="text-lg text-white mb-6">Louez des vans rétro pour une aventure sur la route. Idéaux pour des escapades, des voyages entre amis ou des événements, ces vans offrent confort et style vintage.</p>
-                            <a href="#"
+                            <a href="{{ path('app_van') }}"
                                class="bg-primary hover:bg-transparent text-white hover:text-primary border border-transparent hover:border-primary font-semibold px-6 py-3 rounded-full block text-center">
                                 Explorer les vans
                             </a>
@@ -231,48 +226,54 @@
         </div>
     </section>
     <!-- Popular product section -->
-    <section id="popular-products" class="bg-gray py-16 px-4">
+    <section id="popular-products" class="bg-gray-100 py-16 px-4">
         <div class="container mx-auto px-4">
-            <div class="flex mb-4">
-                <h3 class="text-4xl font-bold mb-2 mr-12">Nos Recommandations Rétro & Vintage</h3>
-            </div>
-
-            <!-- Le paragraphe avec une marge réduite -->
-            <div class="mb-8 max-w-xl">
-                <p class="text-lg">
+            <!-- Titre principal -->
+            <div class="text-center mb-8">
+                <h3 class="text-4xl font-bold mb-4">Nos Recommandations Rétro & Vintage</h3>
+                <p class="text-lg max-w-2xl mx-auto">
                     Plongez dans l’univers des véhicules rétro et vintage soigneusement sélectionnés pour leur charme intemporel. Nos recommandations vous guident vers des modèles uniques qui sauront sublimer vos moments inoubliables.
                 </p>
             </div>
 
-            <!-- Section Générique pour Cars, Vans, Motorcycles -->
-            {% set vehicle_types = {
-                'cars': cars,
-                'vans': vans,
-                'motorcycles': motorcycles
-            } %}
-
-            {% set translations = {
-                'cars': 'Voitures',
-                'vans': 'Vans',
-                'motorcycles': 'Motos'
-            } %}
-
-            {% for type, vehicles in vehicle_types %}
-                <div class="mb-8">
-                    <h4 class="text-2xl font-bold mb-4 flex items-center">
-                        # TOP {{ limit }} des {{ translations[type] }}
-                    </h4>
-                    <div class="flex flex-wrap -mx-4">
-                        {% for i in 0..(vehicles|length - 1) %}
-                            {% if i < limit %}
-                                {% include 'parts/_product_card.html.twig' with { 'vehicle': vehicles[i] } %}
-                            {% endif %}
-                        {% endfor %}
-                    </div>
+            <!-- Section des voitures -->
+            <div class="mb-12">
+                <h4 class="text-2xl font-bold mb-6"># TOP {{ limit }} des Voitures Vintage</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+                    <!-- Car -->
+                    {% for car in cars %}
+                        {% include 'parts/_car_card_shop.html.twig' %}
+                    {% endfor %}
                 </div>
-            {% endfor %}
+            </div>
+
+            <!-- Section des motos -->
+            <div class="mb-12">
+                <h4 class="text-2xl font-bold mb-6"># TOP {{ limit }} des Motos Vintage</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+                    <!-- Motos -->
+                    {% for motorcylce in motorcycles %}
+                        {% include 'parts/_motorcycle_card_shop.html.twig' %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Section des vans -->
+            <div class="mb-12">
+                <h4 class="text-2xl font-bold mb-6"># TOP {{ limit }} des Vans Vintage</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+                    <!-- Van -->
+                    {% for van in vans %}
+                        {% include 'parts/_van_card_shop.html.twig' %}
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </section>
+
+
+
+
 
 
 
