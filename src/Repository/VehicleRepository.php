@@ -40,4 +40,52 @@ class VehicleRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+//Find 5 vehicles
+public function findCars(): array
+    {
+        return $this->createQueryBuilder('v')
+            ->where('v INSTANCE OF App\Entity\Car')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
+    }
+    public function findMotorcycles(): array
+    {
+        return $this->createQueryBuilder('v')
+            ->where('v INSTANCE OF App\Entity\Motorcycle')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
+    }
+    public function findVan(): array
+    {
+        return $this->createQueryBuilder('v')
+            ->where('v INSTANCE OF App\Entity\Van')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
+    }
+    // Find all vehicles
+    public function findAllCars(): array
+    {
+        return $this->createQueryBuilder('v')
+            ->where('v INSTANCE OF App\Entity\Car')
+            ->getQuery()
+            ->getResult();
+    }
+    public function findAllMotorcycles(): array
+    {
+        return $this->createQueryBuilder('v')
+            ->where('v INSTANCE OF App\Entity\Motorcycle')
+            ->getQuery()
+            ->getResult();
+    }
+    public function findAllVan(): array
+    {
+        return $this->createQueryBuilder('v')
+            ->where('v INSTANCE OF App\Entity\Van')
+            ->getQuery()
+            ->getResult();
+    }
 }
