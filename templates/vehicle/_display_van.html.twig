@@ -138,9 +138,8 @@
             <div class="w-full md:w-3/4 p-4">
                 <!-- Products grid -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <!-- All Car -->
                 {% for van in vans %}
-                    {% include 'parts/_van_card_shop.html.twig' %}
+                    {% include 'parts/card/favorite/_van_card.html.twig' %}
                 {% endfor %}
                 </div>
                 <!-- Pagination -->
