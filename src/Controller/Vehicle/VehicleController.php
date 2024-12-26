@@ -95,5 +95,13 @@ class VehicleController extends AbstractController
             'isFavorite' => $isFavorite,
         ]);
     }
-    
+
+    #[Route('/details/{vehicleId}', name: 'app_vehicle_show_details')]
+    public function showDetails(): Response
+    {
+        return $this->render('vehicle/collections.html.twig', [
+
+        ]);
+       
+    }
 }

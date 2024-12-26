@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{% block title %}Nos Motos{% endblock %}
+{% block body %}
+
+<header class="text-center py-10">
+    <h1 class="text-4xl font-bold text-gray-800 drop-shadow-md">
+        ⭐ Vos Favoris ⭐
+    </h1>
+
+</header>
+<main class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    {% if favorites is empty %}
+        <div class="text-center text-gray-600 text-lg col-span-full">
+            <p>Vous n'avez aucun favoris🛠️</p>
+        </div>
+    {% else %}
+
+        {% for favorite in favorites %}
+            {% for vehicle in favorite.vehicles %}
+                <div class="p-3 w-full md:w-6/12 lg:w-4/12">
+                {% include 'parts/card/favorite/_vehicle_card_favorite.html.twig' with {'vehicle': vehicle} %}
+                        </div>
+            {% endfor %}
+        {% endfor %}
+
+    {% endif %}
+</main>
+
+{% endblock %}

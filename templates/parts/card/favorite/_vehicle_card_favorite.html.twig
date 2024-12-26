@@ -1,0 +1,27 @@
+
+	<div class="bg-white border shadow-md text-gray-500">
+		<a href="#">
+			<img src="{{ vehicle.defaultImage }}" class="hover:opacity-90 w-full" alt="{{ vehicle.model }}" width="600" height="450"/>
+		</a>
+		<div class="p-6">
+			<h4 class="font-bold mb-2 text-gray-900 text-xl">
+				<a href="{{ path('app_vehicle_show_details', { vehicleId: vehicle.id })}}" class="hover:text-gray-500">{{ vehicle.model }}</a>
+			</h4>
+			<hr class="border-gray-200 my-4">
+			<div class="flex items-center justify-between">
+				<div
+					class="inline-flex items-center py-1 space-x-1">
+				</div>
+				<p class="font-bold text-gray-900">{{ vehicle.price }}</p>
+			</div>
+
+			<div class="mt-4 ">
+				<form action="{{ path('app_favorite_delete', { vehicleId: vehicle.id }) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir retirer ce véhicule de vos favoris ?');">
+					<button type="submit" class="bg-red-500 hover:bg-red-600  py-2 px-4 rounded-lg w-full transition duration-200 ease-in-out">
+						Retirer des favoris
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
