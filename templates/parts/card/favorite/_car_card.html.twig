@@ -1,3 +1,5 @@
+
+
 <div class="bg-white shadow-xl rounded-lg overflow-hidden transform transition-all duration-300 hover:scale-105 relative">
 
 
@@ -24,7 +26,9 @@
 
 	<div class="p-6 bg-gradient-to-b from-white via-gray-50 to-gray-100">
 		<div class="mb-4">
+		<a href="{{ path('app_vehicle_show_details', {vehicleId: car.id}) }}">
 			<h3 class="text-lg font-bold text-gray-800 mb-1">{{ car.model }}</h3>
+			</a>
 			<p class="text-sm text-gray-500 mb-3 italic">{{ car.brand }}</p>
 		</div>
 
@@ -40,8 +44,5 @@
 			<div class="text-red-600 font-bold text-xl">{{car.price}}</div>
 		</div>
 
-		<button class="bg-primary hover:bg-red-600 text-white py-3 px-6 rounded-full w-full transition-all duration-300">
-			Réserver maintenant
-		</button>
 	</div>
 </div>

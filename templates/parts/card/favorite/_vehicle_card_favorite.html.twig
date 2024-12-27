@@ -15,13 +15,7 @@
 				<p class="font-bold text-gray-900">{{ vehicle.price }}</p>
 			</div>
 
-			<div class="mt-4 ">
-				<form action="{{ path('app_favorite_delete', { vehicleId: vehicle.id }) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir retirer ce véhicule de vos favoris ?');">
-					<button type="submit" class="bg-red-500 hover:bg-red-600  py-2 px-4 rounded-lg w-full transition duration-200 ease-in-out">
-						Retirer des favoris
-					</button>
-				</form>
-			</div>
+		{% include ('parts/button/_remove_favorite.html.twig') %}
 		</div>
 	</div>
 

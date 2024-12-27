@@ -2,16 +2,22 @@
 
 
 	<div class="relative">
-		{% if app.user %}
+	{% if app.user %}
 			<div class="absolute top-2 right-2 flex items-center space-x-2 bg-white bg-opacity-70 px-2 py-1 rounded-full">
 				{% if isFavorite[motorcylce.id] %}
-					<i class="fa-solid fa-heart text-red-500"></i>
+				<a href="{{ path('app_favorite_delete', {'vehicleId': motorcylce.id}) }}">
+					<i class="fa-solid fa-heart" style="color: #ff3d3d;"></i>
+					<span class="text-xs text-gray-800">Enregistrer</span>
+				</a>
 				{% else %}
+				<a href="{{ path('app_favorite_add', {'vehicleId': motorcylce.id}) }}">
 					<i class="far fa-heart text-gray-700"></i>
+					<span class="text-xs text-gray-800">Enregistrer</span>
+				</a>
 				{% endif %}
-				<span class="text-xs text-gray-800">Enregistrer</span>
 			</div>
 		{% endif %}
+
 
 
 		<img src="{{ motorcylce.defaultImage }}" alt="{{ motorcylce.model }}" class="w-full h-48 object-cover transition-all duration-300 group-hover:opacity-80">
@@ -19,7 +25,10 @@
 
 	<div class="p-6 bg-gradient-to-b from-white via-gray-50 to-gray-100">
 		<div class="mb-4">
-			<h3 class="text-lg font-bold text-gray-800 mb-1">{{ motorcylce.model }}</h3>
+			<a href="{{ path('app_vehicle_show_details', {vehicleId: motorcylce.id}) }}">
+
+				<h3 class="text-lg font-bold text-gray-800 mb-1">{{ motorcylce.model }}</h3>
+			</a>
 			<p class="text-sm text-gray-500 mb-3 italic">{{ motorcylce.brand }}</p>
 		</div>
 
@@ -27,13 +36,12 @@
 
 			<div class="flex items-center text-gray-600 text-sm">
 				<i class="fas fa-cogs mr-2"></i>
-				{{motorcylce.engineCapacity}} CC
+				{{motorcylce.engineCapacity}}
+				CC
 			</div>
 			<div class="text-red-600 font-bold text-xl">{{motorcylce.price}}</div>
 		</div>
 
-		<button class="bg-primary hover:bg-red-600 text-white py-3 px-6 rounded-full w-full transition-all duration-300">
-			Réserver maintenant
-		</button>
+
 	</div>
 </div>
