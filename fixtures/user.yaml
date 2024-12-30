@@ -1,8 +1,8 @@
 App\Entity\User:
 
   user_template (template):
-    email (unique): '<email()>'
-    password: '<password()>'
+    email: '<email()>'
+    plainPassword: 'bonjour'
     firstName: '<firstName()>'
     lastName: '<lastName()>'
     phoneNumber: '00-00-00-00-00'

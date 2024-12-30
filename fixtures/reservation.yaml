@@ -48,13 +48,25 @@ App\Entity\Payment:
 
   payment_1 (extends payment_template):
     payment_status: !php/const 'App\Enum\PaymentStatusEnum::PAID'
-    reservation: '@reservation_*' 
+    reservation: '@reservation_1' 
 
   payment_2 (extends payment_template):
 
     payment_status: !php/const 'App\Enum\PaymentStatusEnum::PENDING'
-    reservation: '@reservation_*'
+    reservation: '@reservation_2'
 
   payment_3 (extends payment_template):
     payment_status: !php/const 'App\Enum\PaymentStatusEnum::FAILED'
-    reservation: '@reservation_*'
+    reservation: '@reservation_3'
+
+  payment_4 (extends payment_template):
+    payment_status: !php/const 'App\Enum\PaymentStatusEnum::PAID'
+    reservation: '@reservation_4' 
+
+  payment_5 (extends payment_template):
+    payment_status: !php/const 'App\Enum\PaymentStatusEnum::PENDING'
+    reservation: '@reservation_5'
+
+  payment_6 (extends payment_template):
+    payment_status: !php/const 'App\Enum\PaymentStatusEnum::FAILED'
+    reservation: '@reservation_6'
