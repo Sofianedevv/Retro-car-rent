@@ -298,6 +298,16 @@ public function findCars(): array
                ->setParameter('availability', true);
         }
 
+        if (!empty($filters['nbSeats'])) {
+            $qb->andWhere('van.nbSeats = :nbSeats')
+               ->setParameter('nbSeats', $filters['nbSeats']);
+        }
+
+        if (!empty($filters['nbDoors'])) {
+            $qb->andWhere('van.nbDoors = :nbDoors')
+               ->setParameter('nbDoors', $filters['nbDoors']);
+        }
+
         return $qb->getQuery()->getResult();
     }
 

@@ -104,16 +104,22 @@ class VehicleController extends AbstractController
             'availability' => $request->query->get('availability'),
             'minMileage' => $request->query->get('minMileage'),
             'maxMileage' => $request->query->get('maxMileage'),
+            'nbSeats' => $request->query->get('nbSeats'),
+            'nbDoors' => $request->query->get('nbDoors'),
         ];
 
         $vans = $vehicleRepository->findVansByFilters($filters);
         $brands = $vehicleRepository->findAllVanBrands();
         $years = range(2010, 1900, -1);
+        $nbSeatsOptions = [2, 3, 5, 6, 7, 8, 9];
+        $nbDoorsOptions = [2, 3, 4, 5];
 
         return $this->render('vehicle/_display_van.html.twig', [
             'vans' => $vans,
             'brands' => $brands,
             'years' => $years,
+            'nbSeatsOptions' => $nbSeatsOptions,
+            'nbDoorsOptions' => $nbDoorsOptions,
             'filters' => $filters
         ]);
     }

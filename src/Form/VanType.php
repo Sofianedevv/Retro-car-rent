@@ -63,6 +63,24 @@ class VanType extends AbstractType
                     'class' => 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500'
                 ]
             ])
+            ->add('nbSeats', NumberType::class, [
+                'label' => 'Nombre de places',
+                'attr' => [
+                    'placeholder' => 'Ex: 5',
+                    'min' => 2,
+                    'max' => 9,
+                    'class' => 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500'
+                ]
+            ])
+            ->add('nbDoors', NumberType::class, [
+                'label' => 'Nombre de portes',
+                'attr' => [
+                    'placeholder' => 'Ex: 4',
+                    'min' => 2,
+                    'max' => 5,
+                    'class' => 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500'
+                ]
+            ])
             ->add('availability', CheckboxType::class, [
                 'label' => 'Disponible',
                 'required' => false,
