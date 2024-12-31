@@ -26,6 +26,7 @@ class VehicleController extends AbstractController
     #[Route('/nos-voitures', name: 'app_car')]
     public function show_cars(Request $request, VehicleRepository $vehicleRepository): Response
     {
+        $search = $request->query->get('search');
         $filters = [
             'brand' => $request->query->get('brand'),
             'minPrice' => $request->query->get('minPrice'),
@@ -41,7 +42,12 @@ class VehicleController extends AbstractController
             'maxMileage' => $request->query->get('maxMileage'),
         ];
 
-        $cars = $vehicleRepository->findCarsByFilters($filters);
+        if ($search) {
+            $cars = $vehicleRepository->findCarsBySearch($search);
+        } else {
+            $cars = $vehicleRepository->findCarsByFilters($filters);
+        }
+
         $brands = $vehicleRepository->findAllCarBrands();
         $transmissions = ['Automatique', 'Manuelle'];
         $fuelTypes = ['Essence', 'Diesel', 'Électrique', 'Hybride'];
@@ -57,12 +63,14 @@ class VehicleController extends AbstractController
             'nbSeatsOptions' => $nbSeatsOptions,
             'nbDoorsOptions' => $nbDoorsOptions,
             'years' => $years,
-            'filters' => $filters
+            'filters' => $filters,
+            'search' => $search
         ]);
     }
     #[Route('/nos-motos', name: 'app_motorcycle')]
     public function show_motorcycle(Request $request, VehicleRepository $vehicleRepository): Response
     {
+        $search = $request->query->get('search');
         $filters = [
             'brand' => $request->query->get('brand'),
             'minPrice' => $request->query->get('minPrice'),
@@ -77,7 +85,12 @@ class VehicleController extends AbstractController
             'maxMileage' => $request->query->get('maxMileage'),
         ];
 
-        $motorcycles = $vehicleRepository->findMotorcyclesByFilters($filters);
+        if ($search) {
+            $motorcycles = $vehicleRepository->findMotorcyclesBySearch($search);
+        } else {
+            $motorcycles = $vehicleRepository->findMotorcyclesByFilters($filters);
+        }
+
         $brands = $vehicleRepository->findAllMotorcycleBrands();
         $types = ['Sport', 'Cruiser', 'Trail', 'Roadster'];
         $years = range(2010, 1900, -1);
@@ -87,12 +100,14 @@ class VehicleController extends AbstractController
             'brands' => $brands,
             'types' => $types,
             'years' => $years,
-            'filters' => $filters
+            'filters' => $filters,
+            'search' => $search
         ]);
     }
     #[Route('/nos-van', name: 'app_van')]
     public function show_vans(Request $request, VehicleRepository $vehicleRepository): Response
     {
+        $search = $request->query->get('search');
         $filters = [
             'brand' => $request->query->get('brand'),
             'minPrice' => $request->query->get('minPrice'),
@@ -107,8 +122,13 @@ class VehicleController extends AbstractController
             'nbSeats' => $request->query->get('nbSeats'),
             'nbDoors' => $request->query->get('nbDoors'),
         ];
+        
+        if ($search) {
+            $vans = $vehicleRepository->findVansBySearch($search);
+        } else {
+            $vans = $vehicleRepository->findVansByFilters($filters);
+        }
 
-        $vans = $vehicleRepository->findVansByFilters($filters);
         $brands = $vehicleRepository->findAllVanBrands();
         $years = range(2010, 1900, -1);
         $nbSeatsOptions = [2, 3, 5, 6, 7, 8, 9];
@@ -120,7 +140,8 @@ class VehicleController extends AbstractController
             'years' => $years,
             'nbSeatsOptions' => $nbSeatsOptions,
             'nbDoorsOptions' => $nbDoorsOptions,
-            'filters' => $filters
+            'filters' => $filters,
+            'search' => $search
         ]);
     }
 }

@@ -320,4 +320,40 @@ public function findCars(): array
             ->getQuery()
             ->getSingleColumnResult();
     }
+
+    public function findVansBySearch(string $search): array
+    {
+        return $this->createQueryBuilder('v')
+            ->select('van')
+            ->from('App\Entity\Van', 'van')
+            ->where('van.brand LIKE :search')
+            ->orWhere('van.model LIKE :search')
+            ->setParameter('search', '%'.$search.'%')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findCarsBySearch(string $search): array
+    {
+        return $this->createQueryBuilder('v')
+            ->select('c')
+            ->from('App\Entity\Car', 'c')
+            ->where('c.brand LIKE :search')
+            ->orWhere('c.model LIKE :search')
+            ->setParameter('search', '%'.$search.'%')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findMotorcyclesBySearch(string $search): array
+    {
+        return $this->createQueryBuilder('v')
+            ->select('m')
+            ->from('App\Entity\Motorcycle', 'm')
+            ->where('m.brand LIKE :search')
+            ->orWhere('m.model LIKE :search')
+            ->setParameter('search', '%'.$search.'%')
+            ->getQuery()
+            ->getResult();
+    }
 }
