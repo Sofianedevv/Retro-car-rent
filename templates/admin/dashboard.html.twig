@@ -1,0 +1,99 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block page_title %}Tableau de bord{% endblock %}
+
+{% block admin_content %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {# Statistiques des véhicules #}
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                    <i class="fas fa-car text-2xl"></i>
+                </div>
+                <div class="ml-4">
+                    <p class="text-gray-500">Véhicules</p>
+                    <p class="text-2xl font-semibold">{{ vehicles_count }}</p>
+                </div>
+            </div>
+        </div>
+
+        {# Statistiques des utilisateurs #}
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-green-100 text-green-600">
+                    <i class="fas fa-users text-2xl"></i>
+                </div>
+                <div class="ml-4">
+                    <p class="text-gray-500">Utilisateurs</p>
+                    <p class="text-2xl font-semibold">{{ users_count }}</p>
+                </div>
+            </div>
+        </div>
+
+        {# Statistiques des réservations #}
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-purple-100 text-purple-600">
+                    <i class="fas fa-calendar-check text-2xl"></i>
+                </div>
+                <div class="ml-4">
+                    <p class="text-gray-500">Réservations</p>
+                    <p class="text-2xl font-semibold">{{ bookings_count }}</p>
+                </div>
+            </div>
+        </div>
+
+        {# Statistiques des catégories #}
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
+                    <i class="fas fa-tags text-2xl"></i>
+                </div>
+                <div class="ml-4">
+                    <p class="text-gray-500">Catégories</p>
+                    <p class="text-2xl font-semibold">{{ categories_count }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Actions rapides #}
+    <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+        {# Gestion des véhicules #}
+        <div class="bg-white rounded-lg shadow">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-medium text-gray-900">Gestion des véhicules</h3>
+            </div>
+            <div class="p-6">
+                <div class="space-y-4">
+                    <a href="{{ path('admin_vehicle_car_new') }}" class="block px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100">
+                        <i class="fas fa-car mr-2"></i> Ajouter une voiture
+                    </a>
+                    <a href="{{ path('admin_vehicle_van_new') }}" class="block px-4 py-2 bg-green-50 text-green-700 rounded-lg hover:bg-green-100">
+                        <i class="fas fa-truck mr-2"></i> Ajouter un van
+                    </a>
+                    <a href="{{ path('admin_vehicle_motorcycle_new') }}" class="block px-4 py-2 bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-100">
+                        <i class="fas fa-motorcycle mr-2"></i> Ajouter une moto
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {# Gestion des catégories #}
+        <div class="bg-white rounded-lg shadow">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-medium text-gray-900">Gestion des catégories</h3>
+            </div>
+            <div class="p-6">
+                <div class="space-y-4">
+                    <a href="{{ path('admin_categories') }}" class="block px-4 py-2 bg-yellow-50 text-yellow-700 rounded-lg hover:bg-yellow-100">
+                        <i class="fas fa-list mr-2"></i> Liste des catégories
+                    </a>
+                    <a href="{{ path('admin_category_new') }}" class="block px-4 py-2 bg-yellow-50 text-yellow-700 rounded-lg hover:bg-yellow-100">
+                        <i class="fas fa-plus mr-2"></i> Ajouter une catégorie
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %} 

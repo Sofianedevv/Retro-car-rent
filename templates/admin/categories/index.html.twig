@@ -1,0 +1,147 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block page_title %}Gestion des catégories{% endblock %}
+
+{% block admin_content %}
+    <div class="max-w-7xl mx-auto">
+        {# En-tête avec statistiques #}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
+                        <i class="fas fa-tags text-2xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-gray-500">Total des catégories</p>
+                        <p class="text-2xl font-semibold">{{ categoriesData|length }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                        <i class="fas fa-car text-2xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-gray-500">Véhicules catégorisés</p>
+                        <p class="text-2xl font-semibold">
+                            {% set totalVehicles = 0 %}
+                            {% for data in categoriesData %}
+                                {% set totalVehicles = totalVehicles + data.category.vehicles|length %}
+                            {% endfor %}
+                            {{ totalVehicles }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-green-100 text-green-600">
+                        <i class="fas fa-chart-pie text-2xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-gray-500">Moyenne véhicules/catégorie</p>
+                        <p class="text-2xl font-semibold">
+                            {% if categoriesData|length > 0 %}
+                                {{ (totalVehicles / categoriesData|length)|round(1) }}
+                            {% else %}
+                                0
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Liste des catégories #}
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-xl font-semibold text-gray-800">
+                        <i class="fas fa-tags mr-2"></i> Liste des catégories
+                    </h1>
+                    <a href="{{ path('admin_category_new') }}" 
+                       class="inline-flex items-center px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700">
+                        <i class="fas fa-plus mr-2"></i> Nouvelle catégorie
+                    </a>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Véhicules</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Détails des véhicules</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for data in categoriesData %}
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    #{{ data.category.id }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="text-sm font-medium text-gray-900">{{ data.category.name }}</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                        {{ data.category.vehicles|length }} véhicule(s)
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="text-sm text-gray-900">
+                                        {% if data.vehicleTypes.cars > 0 %}
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mr-2">
+                                                <i class="fas fa-car mr-1"></i> {{ data.vehicleTypes.cars }}
+                                            </span>
+                                        {% endif %}
+                                        {% if data.vehicleTypes.vans > 0 %}
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 mr-2">
+                                                <i class="fas fa-truck mr-1"></i> {{ data.vehicleTypes.vans }}
+                                            </span>
+                                        {% endif %}
+                                        {% if data.vehicleTypes.motorcycles > 0 %}
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                                <i class="fas fa-motorcycle mr-1"></i> {{ data.vehicleTypes.motorcycles }}
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-3">
+                                    <a href="{{ path('admin_category_edit', {id: data.category.id}) }}" 
+                                       class="text-indigo-600 hover:text-indigo-900"
+                                       title="Modifier">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form method="post" action="{{ path('admin_category_delete', {id: data.category.id}) }}" 
+                                          class="inline-block" 
+                                          onsubmit="return confirm('Attention : La suppression de cette catégorie la retirera de tous les véhicules associés. Êtes-vous sûr de vouloir continuer ?');">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ data.category.id) }}">
+                                        <button type="submit" class="text-red-600 hover:text-red-900" title="Supprimer">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="5" class="px-6 py-4 text-center text-gray-500">
+                                    Aucune catégorie enregistrée
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        <a href="{{ path('admin_category_new') }}" class="block px-4 py-2 bg-yellow-50 text-yellow-700 rounded-lg hover:bg-yellow-100">
+                        <i class="fas fa-plus mr-2"></i> Ajouter une catégorie
+                    </a>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %} 
