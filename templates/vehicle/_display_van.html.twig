@@ -3,6 +3,53 @@
 {% block body %}
 <section id="shop">
     <div class="container mx-auto">
+        <!-- Bouton retour -->
+        <div class="mb-6">
+            <a href="{{ path('app_collections') }}" 
+               class="inline-flex items-center bg-black text-white py-2 px-4 rounded-full hover:bg-gray-800 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Retour aux véhicules
+            </a>
+        </div>
+
+        <!-- Barre de recherche -->
+        <div class="mb-6">
+            <form method="get" action="{{ path('app_van') }}" class="flex items-center space-x-4">
+                <div class="flex-1 relative">
+                    <input type="text" 
+                           name="search" 
+                           value="{{ search|default('') }}"
+                           placeholder="Rechercher un van par marque ou modèle..." 
+                           class="w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary">
+                    {% if search %}
+                        <a href="{{ path('app_van') }}" 
+                           class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-times"></i>
+                        </a>
+                    {% endif %}
+                </div>
+                <button type="submit" 
+                        class="bg-primary hover:bg-primary-dark text-white px-6 py-2 rounded-full focus:outline-none flex items-center">
+                    <i class="fas fa-search mr-2"></i>
+                    Rechercher
+                </button>
+            </form>
+        </div>
+
+        {% if search %}
+            <div class="mb-6">
+                <p class="text-gray-600">
+                    {% if vans|length > 0 %}
+                        {{ vans|length }} résultat(s) trouvé(s) pour "{{ search }}"
+                    {% else %}
+                        Aucun résultat trouvé pour "{{ search }}"
+                    {% endif %}
+                </p>
+            </div>
+        {% endif %}
+
         <!-- Top Filter -->
         <div class="flex flex-col md:flex-row justify-between items-center py-4">
             <div class="flex items-center space-x-4">
@@ -43,103 +90,144 @@
         <div class="flex flex-col md:flex-row">
             <!-- Filters -->
             <div id="filters" class="w-full md:w-1/4 p-4 hidden md:block">
-                <!-- Category Filter -->
-                <div class="mb-6 pb-8 border-b border-gray-line">
-                    <h3 class="text-lg font-semibold mb-6">Category</h3>
-                    <div class="space-y-2">
+                <form method="get" action="{{ path('app_van') }}" class="space-y-6">
+                    <!-- Marque Filter -->
+                    <div class="mb-6 pb-8 border-b border-gray-line">
+                        <h3 class="text-lg font-semibold mb-6">Marque</h3>
+                        <div class="space-y-2">
+                            {% for brand in brands %}
+                                <label class="flex items-center">
+                                    <input type="radio" name="brand" value="{{ brand }}" 
+                                           {% if filters.brand == brand %}checked{% endif %}
+                                           class="form-radio">
+                                    <span class="ml-2">{{ brand }}</span>
+                                </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Prix Filter -->
+                    <div class="mb-6 pb-8 border-b border-gray-line">
+                        <h3 class="text-lg font-semibold mb-6">Prix</h3>
+                        <div class="flex flex-col space-y-2">
+                            <input type="number" name="minPrice" placeholder="Prix min" 
+                                   value="{{ filters.minPrice }}"
+                                   class="border rounded p-2">
+                            <input type="number" name="maxPrice" placeholder="Prix max" 
+                                   value="{{ filters.maxPrice }}"
+                                   class="border rounded p-2">
+                        </div>
+                    </div>
+
+                    <!-- Volume de chargement Filter -->
+                    <div class="mb-6 pb-8 border-b border-gray-line">
+                        <h3 class="text-lg font-semibold mb-6">Volume de chargement (m³)</h3>
+                        <div class="flex flex-col space-y-2">
+                            <input type="number" name="minCargoVolume" placeholder="Volume min" 
+                                   value="{{ filters.minCargoVolume }}"
+                                   class="border rounded p-2">
+                            <input type="number" name="maxCargoVolume" placeholder="Volume max" 
+                                   value="{{ filters.maxCargoVolume }}"
+                                   class="border rounded p-2">
+                        </div>
+                    </div>
+
+                    <!-- Nombre de places Filter -->
+                    <div class="mb-6 pb-8 border-b border-gray-line">
+                        <h3 class="text-lg font-semibold mb-6">Nombre de places</h3>
+                        <div class="space-y-2">
+                            {% for seats in nbSeatsOptions %}
+                                <label class="flex items-center">
+                                    <input type="radio" name="nbSeats" value="{{ seats }}"
+                                           {% if filters.nbSeats is not empty and filters.nbSeats == seats %}checked{% endif %}
+                                           class="form-radio">
+                                    <span class="ml-2">{{ seats }} places</span>
+                                </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Nombre de portes Filter -->
+                    <div class="mb-6 pb-8 border-b border-gray-line">
+                        <h3 class="text-lg font-semibold mb-6">Nombre de portes</h3>
+                        <div class="space-y-2">
+                            {% for doors in nbDoorsOptions %}
+                                <label class="flex items-center">
+                                    <input type="radio" name="nbDoors" value="{{ doors }}"
+                                           {% if filters.nbDoors is not empty and filters.nbDoors == doors %}checked{% endif %}
+                                           class="form-radio">
+                                    <span class="ml-2">{{ doors }} portes</span>
+                                </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Année Filter -->
+                    <div class="mb-6 pb-8 border-b border-gray-line">
+                        <h3 class="text-lg font-semibold mb-6">Année</h3>
+                        <div class="flex flex-col space-y-2">
+                            <select name="minYear" class="border rounded p-2">
+                                <option value="">Année min</option>
+                                {% for year in years %}
+                                    <option value="{{ year }}" {% if filters.minYear is not empty and filters.minYear == year %}selected{% endif %}>
+                                        {{ year }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <select name="maxYear" class="border rounded p-2">
+                                <option value="">Année max</option>
+                                {% for year in years %}
+                                    <option value="{{ year }}" {% if filters.maxYear is not empty and filters.maxYear == year %}selected{% endif %}>
+                                        {{ year }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Kilométrage Filter -->
+                    <div class="mb-6 pb-8 border-b border-gray-line">
+                        <h3 class="text-lg font-semibold mb-6">Kilométrage</h3>
+                        <div class="flex flex-col space-y-2">
+                            <input type="number" name="minMileage" placeholder="Kilométrage min" 
+                                   value="{{ filters.minMileage }}"
+                                   class="border rounded p-2">
+                            <input type="number" name="maxMileage" placeholder="Kilométrage max" 
+                                   value="{{ filters.maxMileage }}"
+                                   class="border rounded p-2">
+                        </div>
+                    </div>
+
+                    <!-- Disponibilité Filter -->
+                    <div class="mb-6 pb-8 border-b border-gray-line">
+                        <h3 class="text-lg font-semibold mb-6">Disponibilité</h3>
                         <label class="flex items-center">
-                            <input type="checkbox" class="form-checkbox custom-checkbox">
-                            <span class="ml-2">T-Shirts</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" class="form-checkbox custom-checkbox">
-                            <span class="ml-2">Hoodies</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" class="form-checkbox custom-checkbox">
-                            <span class="ml-2">Accessories</span>
+                            <input type="checkbox" name="availability" value="1"
+                                   {% if filters.availability %}checked{% endif %}
+                                   class="form-checkbox custom-checkbox">
+                            <span class="ml-2">Disponible uniquement</span>
                         </label>
                     </div>
-                </div>
-                <!-- Size Filter -->
-                <div class="mb-6 pb-8 border-b border-gray-line">
-                    <h3 class="text-lg font-semibold mb-6">Size</h3>
-                    <div class="space-y-2">
-                        <label class="flex items-center">
-                            <input type="checkbox" class="form-checkbox custom-checkbox">
-                            <span class="ml-2">S (30)</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" class="form-checkbox custom-checkbox">
-                            <span class="ml-2">M (44)</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" class="form-checkbox custom-checkbox">
-                            <span class="ml-2">L (22)</span>
-                        </label>
+
+                    <div class="flex space-x-4">
+                        <a href="{{ path('app_van') }}" 
+                           class="w-1/2 bg-black text-white py-2 px-4 rounded-full hover:bg-gray-800 focus:outline-none text-center">
+                            Réinitialiser
+                        </a>
+                        <button type="submit" 
+                                class="w-1/2 bg-primary text-white py-2 px-4 rounded-full hover:bg-primary-dark focus:outline-none">
+                            Appliquer
+                        </button>
                     </div>
-                </div>
-                <!-- Color Filter -->
-                <div class="mb-6 pb-8 border-b border-gray-line">
-                    <h3 class="text-lg font-semibold mb-6">Color</h3>
-                    <div class="space-y-2">
-                        <label class="flex items-center custom-color-checkbox" data-color="#ff0000">
-                            <input type="checkbox" class="form-checkbox custom-checkbox">
-                            <span class="ml-2">Red</span>
-                        </label>
-                        <label class="flex items-center custom-color-checkbox" data-color="#0000ff">
-                            <input type="checkbox" class="form-checkbox custom-checkbox">
-                            <span class="ml-2">Blue</span>
-                        </label>
-                        <label class="flex items-center custom-color-checkbox" data-color="#00ff00">
-                            <input type="checkbox" class="form-checkbox custom-checkbox">
-                            <span class="ml-2">Green</span>
-                        </label>
-                    </div>
-                </div>
-                <!-- Brand Filter -->
-                <div class="mb-6 pb-8 border-b border-gray-line">
-                    <h3 class="text-lg font-semibold mb-6">Brand</h3>
-                    <div class="space-y-2">
-                        <label class="flex items-center">
-                            <input type="checkbox" class="form-checkbox custom-checkbox">
-                            <span class="ml-2">Nike</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" class="form-checkbox custom-checkbox">
-                            <span class="ml-2">Adidas</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" class="form-checkbox custom-checkbox">
-                            <span class="ml-2">Puma</span>
-                        </label>
-                    </div>
-                </div>
-                <!-- Rating Filter -->
-                <div class="mb-6">
-                    <h3 class="text-lg font-semibold mb-6">Rating</h3>
-                    <div class="space-y-2">
-                        <label class="flex items-center">
-                            <input type="checkbox" class="form-checkbox custom-checkbox">
-                            <span class="ml-2">★★★★★</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" class="form-checkbox custom-checkbox">
-                            <span class="ml-2">★★★★☆</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" class="form-checkbox custom-checkbox">
-                            <span class="ml-2">★★★☆☆</span>
-                        </label>
-                    </div>
-                </div>
+                </form>
             </div>
             <!-- Products List -->
             <div class="w-full md:w-3/4 p-4">
                 <!-- Products grid -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- All Car -->
                 {% for van in vans %}
-                    {% include 'parts/card/favorite/_van_card.html.twig' %}
+                    {% include 'parts/_van_card_shop.html.twig' %}
                 {% endfor %}
                 </div>
                 <!-- Pagination -->
