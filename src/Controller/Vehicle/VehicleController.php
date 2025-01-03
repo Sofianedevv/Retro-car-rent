@@ -5,6 +5,9 @@ namespace App\Controller\Vehicle;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\Request;
+
+
 use App\Entity\Car;
 use App\Entity\Van;
 use App\Entity\Motorcycle;
@@ -34,16 +37,41 @@ class VehicleController extends AbstractController
         ]);
     }
     #[Route('/nos-voitures', name: 'app_car')]
-    public function show_cars(VehicleRepository $vehicleRepository, FavoriteRepository $favoriteRepository): Response
+    public function show_cars(Request $request, VehicleRepository $vehicleRepository, FavoriteRepository $favoriteRepository): Response
     {
-        $cars = $vehicleRepository->findAllCars();
-        
+        $search = $request->query->get('search');
+        $filters = [
+            'brand' => $request->query->get('brand'),
+            'minPrice' => $request->query->get('minPrice'),
+            'maxPrice' => $request->query->get('maxPrice'),
+            'minYear' => $request->query->get('minYear'),
+            'maxYear' => $request->query->get('maxYear'),
+            'transmission' => $request->query->get('transmission'),
+            'fuelType' => $request->query->get('fuelType'),
+            'availability' => $request->query->get('availability'),
+            'nbSeats' => $request->query->get('nbSeats'),
+            'nbDoors' => $request->query->get('nbDoors'),
+            'minMileage' => $request->query->get('minMileage'),
+            'maxMileage' => $request->query->get('maxMileage'),
+        ];
+    
+        if ($search) {
+            $cars = $vehicleRepository->findCarsBySearch($search);
+        } else {
+            $cars = $vehicleRepository->findCarsByFilters($filters);
+        }
+
+        $brands = $vehicleRepository->findAllCarBrands();
+        $transmissions = ['Automatique', 'Manuelle'];
+        $fuelTypes = ['Essence', 'Diesel', 'Électrique', 'Hybride'];
+        $nbSeatsOptions = [2, 4, 5, 7, 8, 9];
+        $nbDoorsOptions = [2, 3, 4, 5];
+        $years = range(2010, 1900, -1);
+    
         $isFavorite = [];
-        
         $user = $this->getUser();
         if ($user) {
             $favorite = $favoriteRepository->findOneBy(['client' => $user]);
-            
             if ($favorite) {
                 $favoriteVehicles = $favorite->getVehicles();
                 foreach ($cars as $car) {
@@ -51,18 +79,52 @@ class VehicleController extends AbstractController
                 }
             }
         }
-            return $this->render('vehicle/_display_car.html.twig', [
+    
+
+    
+        return $this->render('vehicle/_display_car.html.twig', [
             'cars' => $cars,
-            'isFavorite' => $isFavorite
+            'isFavorite' => $isFavorite, 
+            'brands' => $brands,
+            'transmissions' => $transmissions,
+            'fuelTypes' => $fuelTypes,
+            'nbSeatsOptions' => $nbSeatsOptions,
+            'nbDoorsOptions' => $nbDoorsOptions,
+            'years' => $years,
+            'filters' => $filters,
+            'search' => $search
         ]);
     }
-    #[Route('/nos-motos', name: 'app_motorcycle')]
-    public function show_motorcycle(VehicleRepository $vehicleRepository, FavoriteRepository $favoriteRepository): Response
-    {
-        $motorcycles = $vehicleRepository->findAllMotorcycles();
     
+    #[Route('/nos-motos', name: 'app_motorcycle')]
+    public function show_motorcycle(Request $request, VehicleRepository $vehicleRepository, FavoriteRepository $favoriteRepository): Response
+    {
+        $search = $request->query->get('search');
+        $filters = [
+            'brand' => $request->query->get('brand'),
+            'minPrice' => $request->query->get('minPrice'),
+            'maxPrice' => $request->query->get('maxPrice'),
+            'minYear' => $request->query->get('minYear'),
+            'maxYear' => $request->query->get('maxYear'),
+            'type' => $request->query->get('type'),
+            'availability' => $request->query->get('availability'),
+            'minEngineCapacity' => $request->query->get('minEngineCapacity'),
+            'maxEngineCapacity' => $request->query->get('maxEngineCapacity'),
+            'minMileage' => $request->query->get('minMileage'),
+            'maxMileage' => $request->query->get('maxMileage'),
+        ];
+
+        if ($search) {
+            $motorcycles = $vehicleRepository->findMotorcyclesBySearch($search);
+        } else {
+            $motorcycles = $vehicleRepository->findMotorcyclesByFilters($filters);
+        }
+
+        $brands = $vehicleRepository->findAllMotorcycleBrands();
+        $types = ['Sport', 'Cruiser', 'Trail', 'Roadster'];
+        $years = range(2010, 1900, -1);
+
         $isFavorite = [];
-        
         $user = $this->getUser();
         if ($user) {
             $favorite = $favoriteRepository->findOneBy(['client' => $user]);
@@ -73,24 +135,53 @@ class VehicleController extends AbstractController
                 }
             }
         }
-    
+        
+
         return $this->render('vehicle/_display_motorcycle.html.twig', [
             'motorcycles' => $motorcycles,
-            'isFavorite' => $isFavorite
+            'isFavorite' => $isFavorite,
+            'brands' => $brands,
+            'types' => $types,
+            'years' => $years,
+            'filters' => $filters,
+            'search' => $search
         ]);
     }
-    
+
     #[Route('/nos-van', name: 'app_van')]
-    public function show_vans(VehicleRepository $vehicleRepository, FavoriteRepository $favoriteRepository): Response
+    public function show_vans(Request $request, VehicleRepository $vehicleRepository, FavoriteRepository $favoriteRepository): Response
     {
-        $vans = $vehicleRepository->findAllVan();
-    
+        $search = $request->query->get('search');
+        $filters = [
+            'brand' => $request->query->get('brand'),
+            'minPrice' => $request->query->get('minPrice'),
+            'maxPrice' => $request->query->get('maxPrice'),
+            'minYear' => $request->query->get('minYear'),
+            'maxYear' => $request->query->get('maxYear'),
+            'minCargoVolume' => $request->query->get('minCargoVolume'),
+            'maxCargoVolume' => $request->query->get('maxCargoVolume'),
+            'availability' => $request->query->get('availability'),
+            'minMileage' => $request->query->get('minMileage'),
+            'maxMileage' => $request->query->get('maxMileage'),
+            'nbSeats' => $request->query->get('nbSeats'),
+            'nbDoors' => $request->query->get('nbDoors'),
+        ];
+
+        if ($search) {
+            $vans = $vehicleRepository->findVansBySearch($search);
+        } else {
+            $vans = $vehicleRepository->findVansByFilters($filters);
+        }
+
+        $brands = $vehicleRepository->findAllVanBrands();
+        $years = range(2010, 1900, -1);
+        $nbSeatsOptions = [2, 3, 5, 6, 7, 8, 9];
+        $nbDoorsOptions = [2, 3, 4, 5];
+
         $isFavorite = [];
-        
         $user = $this->getUser();
         if ($user) {
             $favorite = $favoriteRepository->findOneBy(['client' => $user]);
-
             if ($favorite) {
                 $favoriteVehicles = $favorite->getVehicles();
                 foreach ($vans as $van) {
@@ -98,10 +189,16 @@ class VehicleController extends AbstractController
                 }
             }
         }
-    
+
         return $this->render('vehicle/_display_van.html.twig', [
             'vans' => $vans,
             'isFavorite' => $isFavorite,
+            'brands' => $brands,
+            'years' => $years,
+            'nbSeatsOptions' => $nbSeatsOptions,
+            'nbDoorsOptions' => $nbDoorsOptions,
+            'filters' => $filters,
+            'search' => $search
         ]);
     }
 
@@ -129,15 +226,15 @@ class VehicleController extends AbstractController
        
     }
     private function getVehicleType(Vehicle $vehicle): string
-{
-    if ($vehicle instanceof Car) {
-        return 'Car';
-    } elseif ($vehicle instanceof Van) {
-        return 'Van';
-    } elseif ($vehicle instanceof Motorcycle) {
-        return 'Motorcycle';
-    }
+    {
+        if ($vehicle instanceof Car) {
+            return 'Car';
+        } elseif ($vehicle instanceof Van) {
+            return 'Van';
+        } elseif ($vehicle instanceof Motorcycle) {
+            return 'Motorcycle';
+        }
 
-    return 'Type de véhicule inconnu';
-}
+        return 'Type de véhicule inconnu';
+    }
 }

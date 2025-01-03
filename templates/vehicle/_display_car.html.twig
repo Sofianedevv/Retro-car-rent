@@ -246,8 +246,8 @@
                 <!-- Products grid -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <!-- All Car -->
-                {% for car in cars %}
-                    {% include 'parts/_car_card_shop.html.twig' %}
+            {% for car in cars %}
+			{% include ('parts/card/favorite/_car_card.html.twig') %}
                 {% endfor %}
                 </div>
                 <!-- Pagination -->
