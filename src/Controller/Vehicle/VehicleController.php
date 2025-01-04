@@ -14,11 +14,13 @@ use App\Entity\Motorcycle;
 use App\Entity\Vehicle;
 use App\Entity\Favorite;
 use App\Entity\Category;
+use App\Entity\Review;
 
 use App\Repository\VehicleRepository;
 use App\Repository\FavoriteRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\VehicleOptionRepository;
+use App\Repository\ReviewRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 
@@ -215,17 +217,25 @@ class VehicleController extends AbstractController
     }
 
     #[Route('/details/{vehicleId}', name: 'app_vehicle_show_details')]
-    public function showDetails(int $vehicleId, VehicleRepository $vehicleRepository,CategoryRepository $categoryRepository, VehicleOptionRepository $vehicleOptionRepository, FavoriteRepository $favoriteRepository): Response
+    public function showDetails(
+        int $vehicleId, 
+        VehicleRepository $vehicleRepository,
+        CategoryRepository $categoryRepository, 
+        VehicleOptionRepository $vehicleOptionRepository, 
+        ReviewRepository $reviewRepository,
+        FavoriteRepository $favoriteRepository
+    ): Response
     {
         $user = $this->getUser();
-
         $vehicle = $vehicleRepository->find($vehicleId);
         $categories = $categoryRepository->findCategoriesByVehicle($vehicle);
         $options = $vehicleOptionRepository->findOptionsByVehicle($vehicle);
+        $reviews = $reviewRepository->findBy(['vehicle' => $vehicle], ['createdAt' => 'DESC']);
+        $averageRating = $reviewRepository->getAverageRating($vehicle);
         $type = $this->getVehicleType($vehicle);
 
         if(!$vehicle) {
-            $this->addFlash('error', 'Ce véhicule n`\'existe pas.');
+            $this->addFlash('error', 'Ce véhicule n\'existe pas.');
             return $this->redirectToRoute('app_collections');
         }
         
@@ -233,9 +243,10 @@ class VehicleController extends AbstractController
             'vehicle' => $vehicle,
             'type' => $type,
             'categories'=> $categories,
-            'options' => $options
+            'options' => $options,
+            'reviews' => $reviews,
+            'averageRating' => $averageRating
         ]);
-       
     }
     private function getVehicleType(Vehicle $vehicle): string
     {

@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier votre avis{% endblock %}
+
+{% block body %}
+<div class="max-w-2xl mx-auto p-6">
+    <h1 class="text-3xl font-semibold text-indigo-800 mb-6">Modifier votre avis</h1>
+
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <form action="{{ path('app_review_edit', {'id': review.id}) }}" method="POST" class="space-y-4">
+            <div>
+                <label class="block text-gray-700 mb-2">Note</label>
+                <div class="flex space-x-2">
+                    {% for i in 1..5 %}
+                        <input type="radio" name="rating" value="{{ i }}" id="star{{ i }}" 
+                               class="hidden" {% if review.rating == i %}checked{% endif %}>
+                        <label for="star{{ i }}" class="cursor-pointer">
+                            <i class="{% if i <= review.rating %}fas{% else %}far{% endif %} fa-star text-yellow-400 hover:text-yellow-500"></i>
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+            <div>
+                <label class="block text-gray-700 mb-2">Commentaire</label>
+                <textarea name="comment" rows="4" 
+                          class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500" 
+                          required>{{ review.comment }}</textarea>
+            </div>
+            <div class="flex space-x-4">
+                <a href="{{ path('app_vehicle_show_details', {'vehicleId': review.vehicle.id}) }}" 
+                   class="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition duration-300">
+                    Annuler
+                </a>
+                <button type="submit" 
+                        class="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition duration-300">
+                    Enregistrer les modifications
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% block javascripts %}
+<script>
+    const starLabels = document.querySelectorAll('label[for^="star"]');
+    starLabels.forEach((label, index) => {
+        label.addEventListener('mouseover', () => {
+            for (let i = 0; i <= index; i++) {
+                starLabels[i].querySelector('i').classList.remove('far');
+                starLabels[i].querySelector('i').classList.add('fas');
+            }
+        });
+
+        label.addEventListener('mouseout', () => {
+            starLabels.forEach(label => {
+                if (!label.previousElementSibling.checked) {
+                    label.querySelector('i').classList.remove('fas');
+                    label.querySelector('i').classList.add('far');
+                }
+            });
+        });
+
+        label.addEventListener('click', () => {
+            label.previousElementSibling.checked = true;
+            starLabels.forEach((l, i) => {
+                if (i <= index) {
+                    l.querySelector('i').classList.remove('far');
+                    l.querySelector('i').classList.add('fas');
+                } else {
+                    l.querySelector('i').classList.remove('fas');
+                    l.querySelector('i').classList.add('far');
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
+{% endblock %} 
