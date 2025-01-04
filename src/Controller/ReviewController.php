@@ -123,4 +123,78 @@ class ReviewController extends AbstractController
         $this->addFlash('success', 'Votre avis a été supprimé avec succès');
         return $this->redirectToRoute('app_vehicle_show_details', ['vehicleId' => $vehicleId]);
     }
+
+    #[Route('/reply/{id}', name: 'app_review_reply', methods: ['POST'])]
+    public function reply(
+        Review $parentReview,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $user = $this->getUser();
+        if (!$user) {
+            throw $this->createAccessDeniedException('Vous devez être connecté pour répondre');
+        }
+
+        $comment = $request->request->get('comment');
+        if (!$comment) {
+            $this->addFlash('error', 'Le commentaire ne peut pas être vide');
+            return $this->redirectToRoute('app_vehicle_show_details', [
+                'vehicleId' => $parentReview->getVehicle()->getId()
+            ]);
+        }
+
+        $reply = new Review();
+        $reply->setComment($comment);
+        $reply->setRating($parentReview->getRating());
+        $reply->setVehicle($parentReview->getVehicle());
+        $reply->setPublisher($user);
+        $reply->setCreatedAt(new \DateTimeImmutable());
+        $reply->setParent($parentReview);
+
+        $entityManager->persist($reply);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Votre réponse a été publiée');
+        return $this->redirectToRoute('app_vehicle_show_details', [
+            'vehicleId' => $parentReview->getVehicle()->getId()
+        ]);
+    }
+
+    #[Route('/edit-reply/{id}', name: 'app_review_edit_reply', methods: ['GET', 'POST'])]
+    public function editReply(
+        Review $review,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response {
+        if ($this->getUser() !== $review->getPublisher()) {
+            throw $this->createAccessDeniedException('Vous ne pouvez pas modifier cette réponse');
+        }
+
+        if (!$review->getParent()) {
+            throw $this->createNotFoundException('Cette réponse n\'existe pas');
+        }
+
+        if ($request->isMethod('POST')) {
+            $comment = $request->request->get('comment');
+
+            if (!$comment) {
+                $this->addFlash('error', 'Le commentaire ne peut pas être vide');
+                return $this->redirectToRoute('app_vehicle_show_details', [
+                    'vehicleId' => $review->getVehicle()->getId()
+                ]);
+            }
+
+            $review->setComment($comment);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Votre réponse a été modifiée avec succès');
+            return $this->redirectToRoute('app_vehicle_show_details', [
+                'vehicleId' => $review->getVehicle()->getId()
+            ]);
+        }
+
+        return $this->render('review/edit_reply.html.twig', [
+            'review' => $review
+        ]);
+    }
 } 

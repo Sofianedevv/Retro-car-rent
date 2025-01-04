@@ -161,6 +161,7 @@
 
     <div class="space-y-6">
         {% for review in reviews %}
+            {% if not review.parent %}
             <div class="bg-white p-6 rounded-lg shadow-md">
                 <div class="flex justify-between items-start mb-4">
                     <div>
@@ -173,7 +174,7 @@
                                 {% endif %}
                             {% endfor %}
                         </div>
-                        <p class="text-gray-600">Par {{ review.publisher.email }} le {{ review.createdAt|date('d/m/Y') }}</p>
+                        <p class="text-gray-600">Par {{ review.publisher.firstName }} {{ review.publisher.lastName }} le {{ review.createdAt|date('d/m/Y') }}</p>
                     </div>
                     {% if app.user and app.user == review.publisher %}
                         <div class="flex space-x-2">
@@ -189,7 +190,55 @@
                     {% endif %}
                 </div>
                 <p class="text-gray-700">{{ review.comment }}</p>
+
+                <!-- Réponses -->
+                <div class="mt-4 ml-8 space-y-4">
+                    {% for reply in review.replies %}
+                        <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-gray-300">
+                            <div class="flex justify-between items-start mb-2">
+                                <p class="text-gray-600">Réponse de {{ review.publisher.firstName }} {{ review.publisher.lastName }} le {{ reply.createdAt|date('d/m/Y') }}</p>
+                                {% if app.user and app.user == reply.publisher %}
+                                    <div class="flex space-x-2">
+                                        <a href="{{ path('app_review_edit_reply', {'id': reply.id}) }}" 
+                                           class="text-blue-600 hover:text-blue-800">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="{{ path('app_review_delete', {'id': reply.id}) }}"
+                                           onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette réponse ?')"
+                                           class="text-red-600 hover:text-red-800">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <p class="text-gray-700">{{ reply.comment }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Formulaire de réponse -->
+                {% if app.user %}
+                    <button onclick="toggleReplyForm('reply-form-{{ review.id }}')"
+                            class="mt-4 text-black hover:text-gray-800 text-sm font-medium">
+                        Répondre
+                    </button>
+                    <form id="reply-form-{{ review.id }}"
+                          action="{{ path('app_review_reply', {'id': review.id}) }}"
+                          method="POST"
+                          class="mt-4 ml-8 hidden">
+                        <textarea name="comment"
+                                 rows="3"
+                                 class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500"
+                                 required
+                                 placeholder="Votre réponse..."></textarea>
+                        <button type="submit"
+                                class="mt-2 bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition duration-300">
+                            Publier la réponse
+                        </button>
+                    </form>
+                {% endif %}
             </div>
+            {% endif %}
         {% else %}
             <p class="text-gray-600 text-center">Aucun avis pour le moment.</p>
         {% endfor %}
@@ -281,6 +330,11 @@
                 });
             });
         });
+
+        function toggleReplyForm(formId) {
+            const form = document.getElementById(formId);
+            form.classList.toggle('hidden');
+        }
     </script>
 {% endblock %}
 
