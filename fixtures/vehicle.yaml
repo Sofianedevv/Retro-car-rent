@@ -32,6 +32,8 @@ App\Entity\Car:
 App\Entity\Van:
  vehicle_van_{1..5} (extends vehicle):
     cargoVolume: 12000
+    nbSeats: 3
+    nbDoors: 3
     defaultImage: 'https://picsum.photos/400/550?random=<numberBetween(1, 100)>'
     categories:
       - '@category_*'  

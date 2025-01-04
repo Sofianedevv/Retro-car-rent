@@ -22,20 +22,20 @@ class HomeController extends AbstractController
             'controller_name' => 'HomeController',
         ]);
     }
-    #[Route('/login', name: 'app_login')]
-    public function login(): Response
-    {
-        return $this->render('Auth/login.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
-    }
-    #[Route('/register', name: 'app_register')]
-    public function register(): Response
-    {
-        return $this->render('Auth/register.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
-    }
+    // #[Route('/login', name: 'app_login')]
+    // public function login(): Response
+    // {
+    //     return $this->render('Auth/login.html.twig', [
+    //         'controller_name' => 'HomeController',
+    //     ]);
+    // }
+    // #[Route('/register', name: 'app_register')]
+    // public function register(): Response
+    // {
+    //     return $this->render('Auth/register.html.twig', [
+    //         'controller_name' => 'HomeController',
+    //     ]);
+    // }
     #[Route('/shop', name: 'app_shop')]
         public function shop(): Response
     {

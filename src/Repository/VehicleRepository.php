@@ -160,12 +160,15 @@ public function findCars(): array
 
     public function findAllCarBrands(): array
     {
-        return $this->createQueryBuilder('v')
-            ->select('DISTINCT c.brand')
+        $results = $this->createQueryBuilder('v')
+            ->select('c.brand')
             ->from('App\Entity\Car', 'c')
+            ->distinct()
             ->orderBy('c.brand', 'ASC')
             ->getQuery()
-            ->getSingleColumnResult();
+            ->getScalarResult();
+
+        return array_column($results, 'brand');
     }
 
     public function findMotorcyclesByFilters(array $filters): array
@@ -234,12 +237,15 @@ public function findCars(): array
 
     public function findAllMotorcycleBrands(): array
     {
-        return $this->createQueryBuilder('v')
-            ->select('DISTINCT m.brand')
+        $results = $this->createQueryBuilder('v')
+            ->select('m.brand')
             ->from('App\Entity\Motorcycle', 'm')
+            ->distinct()
             ->orderBy('m.brand', 'ASC')
             ->getQuery()
-            ->getSingleColumnResult();
+            ->getScalarResult();
+
+        return array_column($results, 'brand');
     }
 
     public function findVansByFilters(array $filters): array
@@ -313,12 +319,15 @@ public function findCars(): array
 
     public function findAllVanBrands(): array
     {
-        return $this->createQueryBuilder('v')
-            ->select('DISTINCT van.brand')
+        $results = $this->createQueryBuilder('v')
+            ->select('van.brand')
             ->from('App\Entity\Van', 'van')
+            ->distinct()
             ->orderBy('van.brand', 'ASC')
             ->getQuery()
-            ->getSingleColumnResult();
+            ->getScalarResult();
+
+        return array_column($results, 'brand');
     }
 
     public function findVansBySearch(string $search): array
