@@ -6,6 +6,8 @@ use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -37,6 +39,23 @@ class ProfileType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'class' => 'w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary'
+                ]
+            ])
+            ->add('plainPassword', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'mapped' => false,
+                'required' => false,
+                'first_options' => [
+                    'label' => 'Nouveau mot de passe',
+                    'attr' => [
+                        'class' => 'w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary'
+                    ]
+                ],
+                'second_options' => [
+                    'label' => 'Confirmer le mot de passe',
+                    'attr' => [
+                        'class' => 'w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary'
+                    ]
                 ]
             ])
         ;

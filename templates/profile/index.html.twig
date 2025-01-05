@@ -27,6 +27,14 @@
                 </div>
             </div>
 
+            <div class="mt-6 border-t pt-6">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Changer le mot de passe</h3>
+                <div class="space-y-4">
+                    {{ form_row(form.plainPassword.first) }}
+                    {{ form_row(form.plainPassword.second) }}
+                </div>
+            </div>
+
             <div class="mt-6 flex justify-end">
                 <button type="submit" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary-dark transition duration-300">
                     Enregistrer les modifications
