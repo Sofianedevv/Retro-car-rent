@@ -1,147 +1,148 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ vehicle.brand }} - {{ vehicle.model }}{% endblock %}
-
-{% block body %}
-<div class="max-w-7xl mx-auto p-6">
-
-    <div class="text-center mb-12">
-        <h1 class="text-5xl font-extrabold text-amber-600">{{ vehicle.brand }} - {{ vehicle.model }}</h1>
-    </div>
-
-    <div class="flex flex-col lg:flex-row bg-gradient-to-r from-teal-100 via-pink-100 to-yellow-100 shadow-xl rounded-lg overflow-hidden">
-        <div class="lg:w-1/2 p-4">
-            <img src="{{ vehicle.defaultImage }}" alt="{{ vehicle.model }}" class="w-full h-96 object-cover rounded-lg shadow-lg border-4 border-pink-300 transition-transform transform hover:scale-105">
-        </div>
-
-        <div class="lg:w-1/2 p-6 bg-gradient-to-r from-teal-200 via-pink-200 to-yellow-200">
-            <div class="text-center mb-6">
-                <h2 class="text-3xl font-semibold text-indigo-700">Détails du véhicule</h2>
-                <p class="text-lg text-indigo-600 italic"> {% if vehicle.availability %}Disponible{% else %}Non disponible{% endif %}</p>
-            </div>
-
-            <ul class="space-y-4 text-indigo-600 text-lg">
-                {% if type == 'Car' %}
-                    <li><strong class="text-pink-600">Nombre de sièges:</strong> {{ vehicle.nbSeats }}</li>
-                    <li><strong class="text-pink-600">Nombre de portes:</strong> {{ vehicle.nbDoors }}</li>
-                    <li><strong class="text-pink-600">Taille du coffre:</strong> {{ vehicle.trunkSize }} L</li>
-                    <li><strong class="text-pink-600">Transmission:</strong> {{ vehicle.transmission }}</li>
-                {% elseif type == 'Van' %}
-                    <li><strong class="text-pink-600">Volume de chargement:</strong> {{ vehicle.cargoVolume }} m³</li>
-                {% elseif type == 'Motorcycle' %}
-                    <li><strong class="text-pink-600">Cylindrée:</strong> {{ vehicle.engineCapacity }} cc</li>
-                {% endif %}
-
-                <li><strong class="text-pink-600">Année:</strong> {{ vehicle.year }}</li>
-                <li><strong class="text-pink-600">Kilométrage:</strong> {{ vehicle.mileage }} km</li>
-                <li><strong class="text-pink-600">Type carburant:</strong> {{ vehicle.fuelType }}</li>
-                <li><strong class="text-pink-600">Catégories:</strong>
-                    {% for category in categories %}
-                        <span class="bg-teal-200 text-teal-700 py-1 px-3 rounded-full text-sm">{{ category.name }}</span>
-                    {% else %}
-                        Aucune catégorie disponible.
-                    {% endfor %}
-                </li>
-            </ul>
-
-            <div class="mt-8 flex justify-center">
-                <a href="" class="inline-block bg-gray-500 py-3 px-8 rounded-lg border-2 ">
-                    Contactez-nous 
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <div class="mt-12 space-y-8">
-        <div>
-            <h3 class="text-3xl font-semibold text-indigo-800">Options</h3>
-            <form id="vehicle-options-form">
-            <ul class="space-y-4 text-indigo-700">
-                {% set optionPrice = 20 %}
-                {% set totalOptionsPrice = 0 %}
-                {% for option in options %}
-                <li class="flex items-center">
-                    <button type="button" class="mr-2 option-minus" data-option-id="{{ option.id }}" data-price="{{ optionPrice }}">-</button>
-                    <span id="option_{{ option.id }}_count" class="mx-2">0</span>
-                    <button type="button" class="ml-2 option-plus" data-option-id="{{ option.id }}" data-price="{{ optionPrice }}">+</button>
-                    <label for="option_{{ option.id }}" class="font-semibold text-teal-600">{{ option.name }}</label>
-                    {% if option.description %}
-                        <span class="ml-2 text-sm text-gray-500 italic">({{ option.description }})</span>
-                    {% endif %}
-                    <span class="ml-4 text-sm text-gray-500">Prix par option: {{ optionPrice }} €</span>
-                </li>
-                    {% else %}
-                        <li>Aucune option disponible.</li>
-                    {% endfor %}
-            </ul>
-
-
-            <div class="mt-4 text-xl text-indigo-600">
-                <strong>Total prix options :</strong> <span id="options-price">0</span> €
-            </div>
-            <div class="mt-2 text-xl text-indigo-600">
-                <strong>Prix total</strong> <span id="total-price">{{ vehicle.price }}</span> €
-            </div>
-
-            <button type="button" class="mt-4 inline-block bg-teal-500 py-2 px-6 rounded-lg border-2 border-teal-500 hover:bg-teal-600 hover:text-yellow-100 transition duration-300" data-modal-toggle="reservation-modal">
-                Réserver maintenant
-            </button>
-        </form>
-    </div>
-</div>
-{% block javascripts %}
-    <script>
-        let basePrice = {{ vehicle.price }};
-        let totalPrice = basePrice;
-
-        let totalOptionsPrice = 0;
-        
-
-        const optionPlusButtons = document.querySelectorAll('.option-plus');
-        const optionMinusButtons = document.querySelectorAll('.option-minus');
-        const optionsPriceDisplay = document.getElementById('options-price');
-        const totalPriceDisplay = document.getElementById('total-price');
-        
-        function updateTotalPrice() {
-            totalPrice = basePrice + totalOptionsPrice;
-            totalPriceDisplay.textContent = totalPrice.toFixed(2);
-            optionsPriceDisplay.textContent = totalOptionsPrice.toFixed(2);
-        }
-
-        optionPlusButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const optionId = button.getAttribute('data-option-id');
-                const optionPrice = parseFloat(button.getAttribute('data-price'));
-                const countElement = document.getElementById(`option_${optionId}_count`);
-                let count = parseInt(countElement.textContent);
-
-                if (count < 3) {
-                    count++;
-                    countElement.textContent = count;
-
-                    totalOptionsPrice += optionPrice;
-                    updateTotalPrice();
-                }
-            });
-        });
-
-        optionMinusButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const optionId = button.getAttribute('data-option-id');
-                const optionPrice = parseFloat(button.getAttribute('data-price'));
-                const countElement = document.getElementById(`option_${optionId}_count`);
-                let count = parseInt(countElement.textContent);
-
-                if (count > 0) {
-                    count--;
-                    countElement.textContent = count;
-
-                    totalOptionsPrice -= optionPrice;
-                    updateTotalPrice();
-                }
-            });
-        });
-    </script>
+{% block title %}
+    {{ vehicle.brand }} - {{ vehicle.model }}
 {% endblock %}
 
+{% block body %}
+    <div class="max-w-4xl mx-auto p-4">
+
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-extrabold text-gray-800">{{ vehicle.brand }} - {{ vehicle.model }}</h1>
+        </div>
+
+        <div class="flex flex-col lg:flex-row bg-gradient-to-r from-gray-100 via-gray-200 to-gray-300 shadow-xl rounded-lg overflow-hidden">
+            <div class="lg:w-1/2 p-4">
+                <img src="{{ vehicle.defaultImage }}" alt="{{ vehicle.model }}" class="w-full h-80 object-cover rounded-lg shadow-lg border-4 border-gray-300 transition-transform transform hover:scale-105">
+            </div>
+
+            <div class="lg:w-1/2 p-6 bg-gray-100">
+                <div class="text-center mb-6">
+                    <h2 class="text-3xl font-semibold text-gray-700">Détails du véhicule</h2>
+                </div>
+
+                <ul class="space-y-4 text-gray-600 text-lg">
+                    {% if type == 'Car' %}
+                        <li>
+                            <strong class="text-blue-600">Nombre de sièges:</strong> {{ vehicle.nbSeats }}
+                        </li>
+                        <li>
+                            <strong class="text-blue-600">Nombre de portes:</strong> {{ vehicle.nbDoors }}
+                        </li>
+                        <li>
+                            <strong class="text-blue-600">Taille du coffre:</strong> {{ vehicle.trunkSize }} L
+                        </li>
+                        <li>
+                            <strong class="text-blue-600">Transmission:</strong> {{ vehicle.transmission }}
+                        </li>
+                    {% elseif type == 'Van' %}
+                        <li>
+                            <strong class="text-blue-600">Volume de chargement:</strong> {{ vehicle.cargoVolume }} m³
+                        </li>
+                    {% elseif type == 'Motorcycle' %}
+                        <li>
+                            <strong class="text-blue-600">Cylindrée:</strong> {{ vehicle.engineCapacity }} cc
+                        </li>
+                    {% endif %}
+
+                    <li>
+                        <strong class="text-blue-600">Année:</strong> {{ vehicle.year }}
+                    </li>
+                    <li>
+                        <strong class="text-blue-600">Kilométrage:</strong> {{ vehicle.mileage }} km
+                    </li>
+                    <li>
+                        <strong class="text-yellow-800">Type carburant:</strong> {{ vehicle.fuelType }}
+                    </li>
+                    <li>
+                        <strong class="text-blue-600">Catégories:</strong>
+                        {% for category in categories %}
+                            <span class="bg-blue-200 text-blue-700 py-1 px-3 rounded-full text-sm">{{ category.name }}</span>
+                        {% else %}
+                            Aucune catégorie disponible.
+                        {% endfor %}
+                    </li>
+                </ul>
+
+                <div class="mt-8 flex justify-center">
+                    <a href="#" class="inline-block bg-blue-500 text-white py-3 px-8 rounded-lg border-2 hover:bg-blue-600 transition duration-300" data-modal-toggle="reservation-modal">
+                        Réserver maintenant
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div id="reservation-modal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-90 flex items-center justify-center z-50 transition-opacity duration-300">
+            <div id="vehicle-data" data-vehicle-id="{{ vehicle.id }}" style="display: none;"></div>
+            <div class="p-6 rounded-lg shadow-2xl w-11/12 md:w-1/2 transform transition-all duration-500 ease-in-out scale-95 hover:scale-100">
+                <button type="button" class="absolute top-4 right-4 text-gray-600 hover:text-red-500 text-2xl font-bold focus:outline-none" data-modal-toggle="close-reservation-modal">
+                    &times;
+                </button>
+
+                <div class="text-center mb-6">
+                    <h3 class="text-3xl font-bold text-gray-800 mb-4">Sélectionnez vos dates et options</h3>
+                    <p class="text-lg text-gray-600 mb-4">Veuillez choisir les dates de début et de fin, ainsi que les options.</p>
+                </div>
+
+                <form>
+                    <div class="mb-4">
+                        <label for="start-date" class="block text-lg text-gray-700 font-medium">Date de début</label>
+                        <input type="date" id="start-date" name="start_date" class="w-full p-3 mt-2 rounded-lg border-2 border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-600 transition duration-300" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="end-date" class="block text-lg text-gray-700 font-medium">Date de fin</label>
+                        <input type="date" id="end-date" name="end_date" class="w-full p-3 mt-2 rounded-lg border-2 border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-600 transition duration-300" required>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <h4 class="text-2xl text-gray-700 mb-4">Options sélectionnées</h4>
+                        <ul class="space-y-4 text-gray-700">
+                        {% set optionPrice = 20 %}
+                        {% set totalOptionsPrice = 0 %}
+                        {% for option in options %}
+                            <li class="flex items-center">
+                                <button type="button" class="mr-2 option-minus" data-option-id="{{ option.id }}" data-price="{{ optionPrice }}">-</button>
+                                <span id="option_{{ option.id }}_count" class="mx-2">0</span>
+                                <button type="button" class="ml-2 option-plus" data-option-id="{{ option.id }}" data-price="{{ optionPrice }}">+</button>
+                                <label for="option_{{ option.id }}" class="font-semibold text-blue-600">{{ option.name }}</label>
+                                {% if option.description %}
+                                    <span class="ml-2 text-sm text-gray-500 italic">({{ option.description }})</span>
+                                {% endif %}
+                                <span class="ml-4 text-sm text-gray-500">Prix par option: {{ optionPrice }} €</span>
+                            </li>
+                        {% else %}
+                            <li>Aucune option disponible.</li>
+                        {% endfor %}
+                    </ul>
+
+                    <div class="mt-4 text-xl text-gray-600">
+                        <strong>Total prix options :</strong>
+                        <span id="options-price">0</span> €
+                    </div>
+                    <div class="mt-2 text-xl text-gray-600">
+                        <strong>Prix total</strong>
+                        <span id="total-price" data-vehicle-price="{{ vehicle.price }}">{{ vehicle.price }}</span> €
+                    </div>
+                    </div>
+
+                    <div class="flex justify-between items-center mt-6">
+                        <button type="button" class="bg-red-500 text-white py-2 px-6 rounded-lg hover:bg-red-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50" data-modal-toggle="reservation-modal">
+                            Annuler
+                        </button>
+                        <button type="submit" class="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50">
+                            Confirmer
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    {% block javascripts %}
+    <script src="{{ asset('js/modal_reservation.js') }}"></script>
+    <script src="{{ asset('js/disabled_range_date.js') }}"></script>
+    <script src="{{ asset('js/option_vehicle.js') }}"></script>
+    {% endblock %}
 {% endblock %}
