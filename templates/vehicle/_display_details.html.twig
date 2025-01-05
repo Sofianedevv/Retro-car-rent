@@ -252,7 +252,7 @@
                     {% for reply in review.replies %}
                         <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-gray-300">
                             <div class="flex justify-between items-start mb-2">
-                                <p class="text-gray-600">Réponse de {{ review.publisher.firstName }} {{ review.publisher.lastName }} le {{ reply.createdAt|date('d/m/Y') }}</p>
+                                <p class="text-gray-600">Réponse de {{ reply.publisher.firstName }} {{ reply.publisher.lastName }} le {{ reply.createdAt|date('d/m/Y') }}</p>
                                 {% if app.user and app.user == reply.publisher %}
                                     <div class="flex space-x-2">
                                         <a href="{{ path('app_review_edit_reply', {'id': reply.id}) }}" 

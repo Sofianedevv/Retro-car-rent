@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Notification;
 
 #[Route('/review')]
 class ReviewController extends AbstractController
@@ -152,6 +153,21 @@ class ReviewController extends AbstractController
         $reply->setParent($parentReview);
 
         $entityManager->persist($reply);
+        
+        // Créer une notification pour l'auteur du commentaire parent
+        $notification = new Notification();
+        $notification->setMessage(sprintf(
+            '%s %s a répondu à votre commentaire sur %s %s',
+            $user->getFirstName(),
+            $user->getLastName(),
+            $parentReview->getVehicle()->getBrand(),
+            $parentReview->getVehicle()->getModel()
+        ));
+        $notification->setCreatedAt(new \DateTimeImmutable());
+        $notification->setReadStatus(false);
+        $notification->setClient($parentReview->getPublisher());
+        
+        $entityManager->persist($notification);
         $entityManager->flush();
 
         $this->addFlash('success', 'Votre réponse a été publiée');
