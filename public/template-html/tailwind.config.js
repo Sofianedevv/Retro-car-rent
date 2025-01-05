@@ -20,7 +20,7 @@ module.exports = {
       current: 'currentColor',
       white: '#fdfcf3', // Blanc cassé pour un effet vintage
       black: '#3b302f', // Noir doux pour les contrastes
-      primary: '#d2b300', // Orange rétro
+      primary: '#8B4513', // Orange rétro
       secondary: '#6b705c', // Vert olive doux
       accent: '#cb997e', // Beige rosé pour des touches subtiles
       gray: {
@@ -31,7 +31,11 @@ module.exports = {
           line: '#d6ccc2', // Beige clair pour les séparateurs
       },
   },
-    extend: {},
+    extend: {
+      colors: {
+        primary: '#8B4513',
+      },
+    },
   },
   plugins: [],
 }

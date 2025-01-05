@@ -1,30 +1,30 @@
-<header class="sticky top-0 z-50" style="background-color: #805e33">
+<header class="sticky top-0 z-50 bg-[#F5F5F0] shadow-md">
     <div class="container mx-auto flex justify-between items-center py-4">
-        <a href="{{ path('app_home') }}" class="flex items-center">
+        <a href="{{ path('app') }}" class="flex items-center">
             <div>
-                <img src="{{ asset('template-html/assets/images/template-white-logo.png') }}" alt="Logo" class="h-14 w-auto mr-4">
+                <img src="{{ asset('template-html/assets/images/rcr-logo2.png') }}" alt="Logo" class="h-14 w-auto mr-4">
             </div>
         </a>
         <div class="flex lg:hidden">
-            <button id="hamburger" class="text-white focus:outline-none">
+            <button id="hamburger" class="text-black focus:outline-none">
                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
                 </svg>
             </button>
         </div>
         <nav class="hidden lg:flex md:flex-grow justify-center">
-            <ul class="flex justify-center space-x-4 text-white">
-                <li><a href="{{ path('app_home') }}" class="hover:text-secondary font-bold block py-2">Accueil</a></li>
-                <li><a href="{{ path('app_collections') }}" class="hover:text-secondary font-bold block py-2">Nos Véhicules</a></li>
+            <ul class="flex justify-center space-x-4 text-black">
+                <li><a href="{{ path('app') }}" class="hover:text-gray-600 font-playfair font-bold block py-2">Accueil</a></li>
+                <li><a href="{{ path('app_collections') }}" class="hover:text-gray-600 font-playfair font-bold block py-2">Nos Véhicules</a></li>
                 
                 {% if app.user %}
                     {% if is_granted('ROLE_ADMIN') %}
-                        <li><a href="{{ path('admin_dashboard') }}" class="hover:text-primary font-bold block py-2">Dashboard Admin</a></li>
+                        <li><a href="{{ path('admin_dashboard') }}" class="hover:text-gray-600 font-playfair font-bold block py-2">Dashboard Admin</a></li>
                     {% endif %}
                     
-                    <li><a href="{{ path('app_favorite_show') }}" class="hover:text-primary font-bold block py-2">Vos favoris</a></li>
+                    <li><a href="{{ path('app_favorite_show') }}" class="hover:text-gray-600 font-playfair font-bold block py-2">Vos favoris</a></li>
                     <li class="relative">
-                        <a href="{{ path('app_notifications') }}" class="hover:text-primary font-bold block py-2">
+                        <a href="{{ path('app_notifications') }}" class="hover:text-gray-600 font-playfair font-bold block py-2">
                             Notifications
                             {% if unread_notifications_count > 0 %}
                                 <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center notification-badge">
@@ -38,38 +38,38 @@
         </nav>
         <div class="hidden lg:flex items-center space-x-4 relative">
             {% if app.user %}
-                <a href="{{ path('app_profile') }}" class="bg-primary border border-primary hover:bg-transparent text-white hover:text-primary font-semibold px-4 py-2 rounded-full">
+                <a href="{{ path('app_profile') }}" class="bg-[#F5F5F0] border border-black hover:bg-gray-200 text-black font-playfair font-semibold px-4 py-2 rounded-full">
                     <i class="fas fa-user mr-2"></i>{{ app.user.firstName }}
                 </a>
-                <a href="{{ path('app_logout') }}" class="bg-primary border border-primary hover:bg-transparent text-white hover:text-primary font-semibold px-4 py-2 rounded-full">
+                <a href="{{ path('app_logout') }}" class="bg-[#F5F5F0] border border-black hover:bg-gray-200 text-black font-playfair font-semibold px-4 py-2 rounded-full">
                     <i class="fas fa-sign-out-alt mr-2"></i>Déconnexion
                 </a>
             {% else %}
-                <a href="{{ path('app_register') }}" class="bg-primary border border-primary hover:bg-transparent text-white hover:text-primary font-semibold px-4 py-2 rounded-full inline-block">Inscription</a>
-                <a href="{{ path('app_login') }}" class="bg-primary border border-primary hover:bg-transparent text-white hover:text-primary font-semibold px-4 py-2 rounded-full inline-block">Connexion</a>
+                <a href="{{ path('app_register') }}" class="bg-[#F5F5F0] border border-black hover:bg-gray-200 text-black font-playfair font-semibold px-4 py-2 rounded-full inline-block">Inscription</a>
+                <a href="{{ path('app_login') }}" class="bg-[#F5F5F0] border border-black hover:bg-gray-200 text-black font-playfair font-semibold px-4 py-2 rounded-full inline-block">Connexion</a>
             {% endif %}
         </div>
     </div>
 </header>
 
 <!-- Menu mobile -->
-<nav id="mobile-menu-placeholder" class="mobile-menu hidden lg:hidden">
+<nav id="mobile-menu-placeholder" class="mobile-menu hidden lg:hidden bg-[#F5F5F0] border-t border-gray-200">
     <ul class="w-full text-center space-y-4 py-4">
-        <li><a href="{{ path('app_home') }}" class="block py-2 text-gray-800 hover:text-primary">Accueil</a></li>
-        <li><a href="{{ path('app_collections') }}" class="block py-2 text-gray-800 hover:text-primary">Nos Véhicules</a></li>
+        <li><a href="{{ path('app') }}" class="block py-2 text-black hover:text-gray-600 font-playfair">Accueil</a></li>
+        <li><a href="{{ path('app_collections') }}" class="block py-2 text-black hover:text-gray-600 font-playfair">Nos Véhicules</a></li>
         
         {% if app.user %}
             {% if is_granted('ROLE_ADMIN') %}
-                <li><a href="{{ path('admin_dashboard') }}" class="block py-2 text-gray-800 hover:text-primary">Dashboard Admin</a></li>
+                <li><a href="{{ path('admin_dashboard') }}" class="block py-2 text-black hover:text-gray-600 font-playfair">Dashboard Admin</a></li>
             {% endif %}
             
-            <li><a href="{{ path('app_favorite_show') }}" class="block py-2 text-gray-800 hover:text-primary">Vos favoris</a></li>
-            <li><a href="{{ path('app_notifications') }}" class="block py-2 text-gray-800 hover:text-primary">Notifications</a></li>
-            <li><a href="{{ path('app_profile') }}" class="block py-2 text-gray-800 hover:text-primary">Profil</a></li>
-            <li><a href="{{ path('app_logout') }}" class="block py-2 text-gray-800 hover:text-primary">Déconnexion</a></li>
+            <li><a href="{{ path('app_favorite_show') }}" class="block py-2 text-black hover:text-gray-600 font-playfair">Vos favoris</a></li>
+            <li><a href="{{ path('app_notifications') }}" class="block py-2 text-black hover:text-gray-600 font-playfair">Notifications</a></li>
+            <li><a href="{{ path('app_profile') }}" class="block py-2 text-black hover:text-gray-600 font-playfair">Profil</a></li>
+            <li><a href="{{ path('app_logout') }}" class="block py-2 text-black hover:text-gray-600 font-playfair">Déconnexion</a></li>
         {% else %}
-            <li><a href="{{ path('app_register') }}" class="block py-2 text-gray-800 hover:text-primary">Inscription</a></li>
-            <li><a href="{{ path('app_login') }}" class="block py-2 text-gray-800 hover:text-primary">Connexion</a></li>
+            <li><a href="{{ path('app_register') }}" class="block py-2 text-black hover:text-gray-600 font-playfair">Inscription</a></li>
+            <li><a href="{{ path('app_login') }}" class="block py-2 text-black hover:text-gray-600 font-playfair">Connexion</a></li>
         {% endif %}
     </ul>
 </nav>

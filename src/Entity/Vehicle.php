@@ -63,7 +63,7 @@ class Vehicle
     /**
      * @var Collection<int, Review>
      */
-    #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'vehicle')]
+    #[ORM\OneToMany(mappedBy: 'vehicle', targetEntity: Review::class, orphanRemoval: true)]
     private Collection $reviews;
 
     /**
@@ -356,5 +356,20 @@ class Vehicle
         $this->defaultImage = $defaultImage;
 
         return $this;
+    }
+
+    public function getAverageRating(): float
+    {
+        $reviews = $this->getReviews();
+        if ($reviews->isEmpty()) {
+            return 0;
+        }
+
+        $total = 0;
+        foreach ($reviews as $review) {
+            $total += $review->getRating();
+        }
+
+        return round($total / $reviews->count(), 1);
     }
 }

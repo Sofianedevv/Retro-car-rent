@@ -40,4 +40,15 @@ class MotorcycleRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function findBestRated(int $limit = 4): array
+    {
+        return $this->createQueryBuilder('m')
+            ->leftJoin('m.reviews', 'r')
+            ->groupBy('m.id')
+            ->orderBy('AVG(r.rating)', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
 }

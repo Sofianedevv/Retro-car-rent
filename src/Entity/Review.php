@@ -17,7 +17,7 @@ class Review
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $rating = null;
+    private float $rating;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $comment = null;
@@ -49,12 +49,12 @@ class Review
         return $this->id;
     }
 
-    public function getRating(): ?int
+    public function getRating(): ?float
     {
         return $this->rating;
     }
 
-    public function setRating(int $rating): static
+    public function setRating(float $rating): static
     {
         $this->rating = $rating;
 

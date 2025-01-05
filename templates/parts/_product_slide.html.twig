@@ -1,10 +1,50 @@
+{# Slide Voiture Rétro #}
 <div class="swiper-slide">
-    <img src="{{ asset('template-html/assets/images/main-slider/5.jpg') }}" alt="Product 1">
+    <div class="relative w-screen overflow-hidden h-[600px]">
+        <img src="{{ asset('template-html/assets/images/slider/voiture-retro.png') }}" 
+             alt="Voiture Rétro" 
+             class="w-full h-[600px] object-cover object-center">
+    </div>
     <div class="swiper-slide-content">
-        <h2 class="text-3xl md:text-7xl font-bold text-white mb-2 md:mb-4">Women</h2>
-        <p class="mb-4 text-white md:text-2xl">Experience the best in sportswear with <br>our latest collection.</p>
-        <a href="/"
-           class="bg-primary hover:bg-transparent text-white hover:text-white border border-transparent hover:border-white font-semibold px-4 py-2 rounded-full inline-block">Shop
-            now</a>
+        <h2 class="text-3xl md:text-7xl font-bold text-white mb-2 md:mb-4 font-playfair">Voitures Classiques</h2>
+        <p class="mb-4 text-white md:text-2xl font-playfair">Découvrez notre collection de voitures<br>d'exception des années 50 à 70.</p>
+        <a href="{{ path('app_collections') }}"
+           class="bg-[#F5F5F0] hover:bg-transparent text-black hover:text-white border border-[#F5F5F0] hover:border-white font-playfair font-semibold px-6 py-3 rounded-full inline-block transition duration-300">
+            Découvrir
+        </a>
+    </div>
+</div>
+
+{# Slide Van Rétro #}
+<div class="swiper-slide">
+    <div class="relative w-screen overflow-hidden h-[600px]">
+        <img src="{{ asset('template-html/assets/images/slider/van-retro.jpg') }}" 
+             alt="Van Vintage" 
+             class="w-full h-[600px] object-cover object-center">
+    </div>
+    <div class="swiper-slide-content">
+        <h2 class="text-3xl md:text-7xl font-bold text-white mb-2 md:mb-4 font-playfair">Vans Vintage</h2>
+        <p class="mb-4 text-white md:text-2xl font-playfair">Partez à l'aventure dans nos vans<br>mythiques des années 60 et 70.</p>
+        <a href="{{ path('app_collections') }}"
+           class="bg-[#F5F5F0] hover:bg-transparent text-black hover:text-white border border-[#F5F5F0] hover:border-white font-playfair font-semibold px-6 py-3 rounded-full inline-block transition duration-300">
+            Explorer
+        </a>
+    </div>
+</div>
+
+{# Slide Moto Rétro #}
+<div class="swiper-slide">
+    <div class="relative w-screen overflow-hidden h-[600px]">
+        <img src="{{ asset('template-html/assets/images/slider/moto-retro.jpg') }}" 
+             alt="Moto Classique" 
+             class="w-full h-[600px] object-cover object-center">
+    </div>
+    <div class="swiper-slide-content">
+        <h2 class="text-3xl md:text-7xl font-bold text-white mb-2 md:mb-4 font-playfair">Motos Classiques</h2>
+        <p class="mb-4 text-white md:text-2xl font-playfair">Vivez l'expérience unique de nos<br>motos légendaires.</p>
+        <a href="{{ path('app_collections') }}"
+           class="bg-[#F5F5F0] hover:bg-transparent text-black hover:text-white border border-[#F5F5F0] hover:border-white font-playfair font-semibold px-6 py-3 rounded-full inline-block transition duration-300">
+            Découvrir
+        </a>
     </div>
 </div>

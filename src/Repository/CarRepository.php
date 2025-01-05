@@ -40,4 +40,15 @@ class CarRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function findBestRated(int $limit = 4): array
+    {
+        return $this->createQueryBuilder('c')
+            ->leftJoin('c.reviews', 'r')
+            ->groupBy('c.id')
+            ->orderBy('AVG(r.rating)', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
 }

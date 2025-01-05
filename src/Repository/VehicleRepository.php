@@ -365,4 +365,15 @@ public function findCars(): array
             ->getQuery()
             ->getResult();
     }
+
+    public function findBestRated(int $limit = 5): array
+    {
+        return $this->createQueryBuilder('v')
+            ->leftJoin('v.reviews', 'r')
+            ->groupBy('v.id')
+            ->orderBy('AVG(r.rating)', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
 }
