@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Car;
 use App\Entity\Van;
 use App\Entity\Motorcycle;
+use App\Entity\VehicleImage;
 use App\Form\CarType;
 use App\Form\VanType;
 use App\Form\MotorcycleType;
@@ -16,6 +17,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 #[Route('/admin')]
 class AdminVehicleController extends AbstractController
@@ -34,13 +38,38 @@ class AdminVehicleController extends AbstractController
     }
 
     #[Route('/vehicle/car/new', name: 'admin_vehicle_car_new')]
-    public function newCar(Request $request, EntityManagerInterface $entityManager): Response
-    {
+    public function newCar(
+        Request $request, 
+        EntityManagerInterface $entityManager,
+        SluggerInterface $slugger
+    ): Response {
         $car = new Car();
         $form = $this->createForm(CarType::class, $car);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile[] $imageFiles */
+            $imageFiles = $form->get('imageFiles')->getData();
+
+            foreach ($imageFiles as $imageFile) {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+
+                try {
+                    $imageFile->move(
+                        $this->getParameter('vehicle_images_directory'),
+                        $newFilename
+                    );
+
+                    $vehicleImage = new VehicleImage();
+                    $vehicleImage->setUrl($newFilename);
+                    $car->addVehicleImage($vehicleImage);
+                } catch (FileException $e) {
+                    $this->addFlash('error', 'Une erreur est survenue lors du téléchargement de l\'image');
+                }
+            }
+
             $entityManager->persist($car);
             $entityManager->flush();
 
