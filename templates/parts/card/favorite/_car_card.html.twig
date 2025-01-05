@@ -1,21 +1,26 @@
-
-
 <div class="bg-white shadow-xl rounded-lg overflow-hidden transform transition-all duration-300 hover:scale-105 relative">
 
 
 	<div class="relative">
 		{% if app.user %}
 			<div class="absolute top-2 right-2 flex items-center space-x-2 bg-white bg-opacity-70 px-2 py-1 rounded-full">
-				{% if isFavorite[car.id] %}
-				<a href="{{ path('app_favorite_delete', {'vehicleId': car.id}) }}">
-					<i class="fa-solid fa-heart" style="color: #ff3d3d;"></i>
-					<span class="text-xs text-gray-800">Enregistrer</span>
-				</a>
+				{% if isFavorite is defined and car.id is defined and isFavorite[car.id] is defined %}
+					{% if isFavorite[car.id] %}
+						<a href="{{ path('app_favorite_delete', {'vehicleId': car.id}) }}">
+							<i class="fa-solid fa-heart" style="color: #ff3d3d;"></i>
+							<span class="text-xs text-gray-800">Enregistrer</span>
+						</a>
+					{% else %}
+						<a href="{{ path('app_favorite_add', {'vehicleId': car.id}) }}">
+							<i class="far fa-heart text-gray-700"></i>
+							<span class="text-xs text-gray-800">Enregistrer</span>
+						</a>
+					{% endif %}
 				{% else %}
-				<a href="{{ path('app_favorite_add', {'vehicleId': car.id}) }}">
-					<i class="far fa-heart text-gray-700"></i>
-					<span class="text-xs text-gray-800">Enregistrer</span>
-				</a>
+					<a href="{{ path('app_favorite_add', {'vehicleId': car.id}) }}">
+						<i class="far fa-heart text-gray-700"></i>
+						<span class="text-xs text-gray-800">Enregistrer</span>
+					</a>
 				{% endif %}
 			</div>
 		{% endif %}
@@ -26,8 +31,8 @@
 
 	<div class="p-6 bg-gradient-to-b from-white via-gray-50 to-gray-100">
 		<div class="mb-4">
-		<a href="{{ path('app_vehicle_show_details', {vehicleId: car.id}) }}">
-			<h3 class="text-lg font-bold text-gray-800 mb-1">{{ car.model }}</h3>
+			<a href="{{ path('app_vehicle_show_details', {vehicleId: car.id}) }}">
+				<h3 class="text-lg font-bold text-gray-800 mb-1">{{ car.model }}</h3>
 			</a>
 			<p class="text-sm text-gray-500 mb-3 italic">{{ car.brand }}</p>
 		</div>
