@@ -14,14 +14,21 @@
         </div>
         <nav class="hidden lg:flex md:flex-grow justify-center">
             <ul class="flex justify-center space-x-4 text-white">
-                        <li><a href="index.html" class="hover:text-secondary font-bold block py-2">Home</a></li>
-
-        <li><a href="{{path ('app_collections')}}" class="hover:text-secondary font-bold block py-2">Nos Véhicules</a></li>
-        {% if app.user %}
-        <li><a href="{{path ('app_favorite_show')}}" class="hover:text-primary font-bold block py-2">Vos favoris</a></li>
-        {% endif %}
-
-    </ul>
+                <li><a href="index.html" class="hover:text-secondary font-bold block py-2">Home</a></li>
+                <li><a href="{{path ('app_collections')}}" class="hover:text-secondary font-bold block py-2">Nos Véhicules</a></li>
+                {% if app.user %}
+                    <li><a href="{{path ('app_favorite_show')}}" class="hover:text-primary font-bold block py-2">Vos favoris</a></li>
+                    <li class="relative">
+                        <a href="{{path ('app_notifications')}}" class="hover:text-primary font-bold block py-2">
+                            Notifications
+                            {% if unread_notifications_count > 0 %}
+                                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                                    {{ unread_notifications_count }}
+                                </span>
+                            {% endif %}
+                        </a>
+                    </li>
+                {% endif %}
             </ul>
         </nav>
         <div class="hidden lg:flex items-center space-x-4 relative">

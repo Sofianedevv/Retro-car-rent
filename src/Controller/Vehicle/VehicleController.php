@@ -15,6 +15,7 @@ use App\Entity\Vehicle;
 use App\Entity\Favorite;
 use App\Entity\Category;
 use App\Entity\Review;
+use App\Entity\Notification;
 
 use App\Repository\VehicleRepository;
 use App\Repository\FavoriteRepository;
@@ -260,4 +261,6 @@ class VehicleController extends AbstractController
 
         return 'Type de véhicule inconnu';
     }
+
+   
 }
