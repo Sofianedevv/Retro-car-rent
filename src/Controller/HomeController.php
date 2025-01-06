@@ -2,9 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Car;
-use App\Entity\Motorcycle;
-use App\Entity\Van;
 use App\Repository\CarRepository;
 use App\Repository\MotorcycleRepository;
 use App\Repository\VanRepository;
@@ -20,8 +17,8 @@ class HomeController extends AbstractController
     {
         $limit = 3;
         $cars = $carRepository->findTopReviewedCars($limit);
-        $vans = $vanRepository->findTopReviewedCars($limit);
-        $motorcycles = $motorcycleRepository->findTopReviewedCars($limit);
+        $vans = $vanRepository->findTopReviewedVans($limit);
+        $motorcycles = $motorcycleRepository->findTopReviewedMotocycles($limit);
 
 
         return $this->render('home/home.html.twig', [
@@ -35,20 +32,6 @@ class HomeController extends AbstractController
     public function about(): Response
     {
         return $this->render('home/about.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
-    }
-    #[Route('/login', name: 'app_login')]
-    public function login(): Response
-    {
-        return $this->render('Auth/login.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
-    }
-    #[Route('/register', name: 'app_register')]
-    public function register(): Response
-    {
-        return $this->render('Auth/register.html.twig', [
             'controller_name' => 'HomeController',
         ]);
     }

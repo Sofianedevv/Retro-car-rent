@@ -40,4 +40,17 @@ class MotorcycleRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function findTopReviewedMotocycles(int $limit)
+    {
+        return $this->createQueryBuilder('m')
+            ->addSelect('COUNT(r.id) AS HIDDEN reviewCount') // Compte les reviews
+            ->leftJoin('m.reviews', 'r') // Jointure avec les reviews
+            ->groupBy('m.id') // Groupe par moto
+            ->orderBy('reviewCount', 'DESC') // Tri par nombre de reviews
+            ->setMaxResults($limit) // Limite des résultats
+            ->getQuery()
+            ->getResult();
+    }
+
+
 }

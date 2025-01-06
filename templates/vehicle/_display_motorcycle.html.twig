@@ -139,9 +139,9 @@
                 <!-- Products grid -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <!-- All Car -->
-                {% for motorcylce in motorcycles %}
-                    {% include 'parts/_motorcycle_card_shop.html.twig' %}
-                {% endfor %}
+                    {% for motorcycle in motorcycles %}
+                        {% include 'parts/_motorcycle_card_shop.html.twig' with { 'motorcycle': motorcycle } %}
+                    {% endfor %}
                 </div>
                 <!-- Pagination -->
                 <div class="flex justify-center mt-8">

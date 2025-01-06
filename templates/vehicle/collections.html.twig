@@ -1,19 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Shop
+{% block title %}Nos véhicules - Retro Car Rent
 {% endblock %}
 
 {% block body %}
 	<section id="shop">
-		<div
-			class="container mx-auto">
+		<div class="container mx-auto">
 
 			<!-- Products List Car -->
 			<div class="w-full md:w-3/4 p-4">
-				<span class="font-semibold text-gray-700 text-xl">Nos voitures</span>
+				<span class="font-semibold text-gray-700 text-3xl">Nos voitures</span> <!-- Augmenter la taille du titre -->
+				<p class="text-gray-600 mt-2 mb-4">Découvrez notre sélection de voitures premium, idéales pour vos déplacements quotidiens ou pour vos aventures en famille.</p>
 				<!-- Products grid -->
-				<div
-					class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
 					<!-- Car -->
 					{% for car in cars %}
 						{% include 'parts/_car_card_shop.html.twig' %}
@@ -21,23 +20,23 @@
 				</div>
 				<!-- Button Show more -->
 				<div class="flex justify-center mt-8">
-                <a href="{{ path('app_car') }}">
-					<button class="bg-primary text-white py-2 px-6 rounded-full hover:bg-transparent hover:text-primary hover:border-primary border-2 focus:outline-none w-auto">
-						Voir toutes les voitures
-					</button>
-                </a>
+					<a href="{{ path('app_car') }}">
+						<button class="bg-primary text-white py-2 px-6 rounded-full hover:bg-transparent hover:text-primary hover:border-primary border-2 focus:outline-none w-auto">
+							Voir toutes les voitures
+						</button>
+					</a>
 				</div>
 			</div>
 
-			<!-- Products List Motorcylce -->
+			<!-- Products List Motorcycle -->
 			<div class="w-full md:w-3/4 p-4 mt-8 md:mt-0">
-				<span class="font-semibold text-gray-700 text-xl">Nos motos</span>
+				<span class="font-semibold text-gray-700 text-3xl">Nos motos</span> <!-- Augmenter la taille du titre -->
+				<p class="text-gray-600 mt-2 mb-4">Explorez nos motos performantes, adaptées à ceux qui recherchent la vitesse et la liberté sur la route.</p>
 				<!-- Products grid -->
-				<div
-					class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
 					<!-- Motos -->
-					{% for motorcylce in motorcycles %}
-						{% include 'parts/_motorcycle_card_shop.html.twig' %}
+					{% for motorcycle in motorcycles %}
+						{% include 'parts/_motorcycle_card_shop.html.twig' with { 'motorcycle': motorcycle } %}
 					{% endfor %}
 				</div>
 				<!-- Button Show more -->
@@ -52,17 +51,16 @@
 
 			<!-- Products List Van -->
 			<div class="w-full md:w-3/4 p-4 mt-8 md:mt-0">
-				<span class="font-semibold text-gray-700 text-xl">Nos vans</span>
+				<span class="font-semibold text-gray-700 text-3xl">Nos vans</span> <!-- Augmenter la taille du titre -->
+				<p class="text-gray-600 mt-2 mb-4">Nos vans spacieux et confortables sont parfaits pour vos voyages en famille ou pour vos besoins professionnels.</p>
 				<!-- Products grid -->
-				<div
-					class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
 					<!-- Van -->
 					{% for van in vans %}
 						{% include 'parts/_van_card_shop.html.twig' %}
 					{% endfor %}
 				</div>
 				<!-- Button Show more -->
-
 				<div class="flex justify-center mt-8">
 					<a href="{{ path('app_van') }}">
 						<button class="bg-primary text-white py-2 px-6 rounded-full hover:bg-transparent hover:text-primary hover:border-primary border-2 focus:outline-none w-auto">
@@ -72,25 +70,6 @@
 				</div>
 			</div>
 
-		</div>
-	</section>
-
-	<!-- Shop category description -->
-	<section id="shop-category-description" class="py-8">
-		<div class="container mx-auto">
-			<div class="bg-white p-6 rounded-lg shadow-lg">
-				<h2 class="text-2xl font-bold mb-4">Shirts Category</h2>
-				<p class="mb-4">
-					Discover our wide range of shirts, perfect for any occasion. Whether you're looking for something casual
-					                or formal, we have the perfect shirt for you. Our collection includes a variety of styles, colors, and
-					                sizes to suit everyone's taste.
-				</p>
-				<p>
-					Browse through our selection and find your new favorite shirt today. All our shirts are made from
-					                high-quality materials and are designed to provide both comfort and style. Shop now and elevate your
-					                wardrobe with our premium shirts.
-				</p>
-			</div>
 		</div>
 	</section>
 

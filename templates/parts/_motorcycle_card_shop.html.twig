@@ -1,11 +1,19 @@
-<div class="bg-white p-4 rounded-lg shadow">
-    <img src= {{motorcylce.defaultImage}} alt={{motorcylce.model}}
-         class="w-full object-cover mb-4 rounded-lg">
-    <a href="#" class="text-lg font-semibold mb-2">{{motorcylce.model}}</a>
-    <p class=" my-2">{{motorcylce.brand}}</p>
-    <div class="flex items-center mb-4">
-        <span class="text-lg font-bold text-primary">{{motorcylce.price}}</span>
+<div class="bg-white p-4 rounded-lg shadow-md transition-transform transform hover:scale-105">
+    <img src="{{ motorcycle.defaultImage }}" alt="{{ motorcycle.model }}"
+         class="w-full h-40 object-cover mb-4 rounded-lg">
+    <div class="flex justify-between items-center mb-2">
+        <h2 class="text-lg font-semibold text-gray-800">{{ motorcycle.model }}</h2>
+        <span class="text-primary text-lg">
+            <i class="fas fa-motorcycle"></i> {{ motorcycle.brand }}
+        </span>
     </div>
-    <button
-            class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full w-full">Voir</button>
+    <p class="text-gray-600 text-sm mb-4">
+        <span class="text-lg font-bold text-primary">{{ motorcycle.price }}</span>
+        <span class="text-lg font-bold text-primary">€</span>
+    </p>
+    <button class="bg-primary border border-transparent hover:bg-transparent hover:border-primary
+               text-white hover:text-primary font-semibold py-2 px-6 rounded-full w-3/4 mx-auto flex items-center justify-center space-x-2">
+        <i class="fas fa-eye"></i>
+        <span>Voir</span>
+    </button>
 </div>

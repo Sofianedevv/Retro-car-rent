@@ -40,7 +40,7 @@ class VanRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
-    public function findTopReviewedCars(int $limit): array
+    public function findTopReviewedVans(int $limit): array
     {
         return $this->createQueryBuilder('c')
             ->addSelect('COUNT(r.id) AS HIDDEN reviewCount') // Compte les reviews
