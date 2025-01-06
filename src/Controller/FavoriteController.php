@@ -31,7 +31,7 @@ class FavoriteController extends AbstractController
     
         if (!$vehicle) {
             $this->addFlash('error', 'Le véhicule n\'existe pas.');
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app');
         }
     
         $favorite = $favoriteRepository->findOneBy(['client' => $user]);
@@ -73,7 +73,7 @@ class FavoriteController extends AbstractController
         $entityManager->flush();
         
         $this->addFlash('success', $message);
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('app');
     }
     
 

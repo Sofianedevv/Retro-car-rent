@@ -20,7 +20,7 @@ class SecurityController extends AbstractController
         // Si l'utilisateur est déjà connecté, on le redirige vers la page d'accueil
         if ($this->getUser()) {
             $this->addFlash('info', 'Vous êtes déjà connecté');
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app');
         }
 
         // get the login error if there is one
@@ -46,7 +46,7 @@ class SecurityController extends AbstractController
         // Si l'utilisateur est déjà connecté, on le redirige vers la page d'accueil
         if ($this->getUser()) {
             $this->addFlash('info', 'Vous êtes déjà connecté');
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app');
         }
 
         $user = new User();
