@@ -50,7 +50,7 @@ class ReservationNormalizer implements NormalizerInterface, DenormalizerInterfac
         return $data;
     }
 
-    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = [], int $userId = null): mixed
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
         if ($type !== Reservation::class) {
             return new JsonResponse(
@@ -63,8 +63,9 @@ class ReservationNormalizer implements NormalizerInterface, DenormalizerInterfac
             return new JsonResponse(
                 ['message' => 'Champs requis manquants'],
                 Response::HTTP_BAD_REQUEST
-            );        }
-    
+            );  
+        }
+        $userId = $context['userId'];
         $client = $this->userRepository->find($userId);
         $vehicle = $this->vehicleRepository->find($data['vehicleId']);
     
@@ -91,7 +92,7 @@ class ReservationNormalizer implements NormalizerInterface, DenormalizerInterfac
             ->setStatus(StatusReservationEnum::CONFIRMED)
             ->setCreatedAt(new DateTimeImmutable());
 
-    
+
         return $reservation;
     }
 

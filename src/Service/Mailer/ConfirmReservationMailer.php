@@ -5,7 +5,8 @@ namespace App\Service\Mailer;
 use App\Entity\Reservation;
 use App\Entity\User;
 use App\Entity\Vehicle;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
@@ -23,10 +24,13 @@ class ConfirmReservationMailer {
         $this->twig = $twig;
     }
 
-    public function sendConfirmationEmail(User $client, Vehicle $vehicle, Reservation $reservation): void {
+    public function sendConfirmationEmail(Reservation $reservation): JsonResponse {
 
-        $startDate = $reservation->getStartDate()->format('dd/mm/YYYY');
-        $endDate = $reservation->getEndDate()->format('dd/mm/YYYY');
+        $startDate = $reservation->getStartDate()->format('d/m/Y');
+        $endDate = $reservation->getEndDate()->format('d/m/Y');
+        $totalPrice = $reservation->getTotalPrice();
+        $client = $reservation->getClient();
+        $vehicle = $reservation->getVehicle();
 
         $email = (new Email())
             ->from('noreply@retrocar.com')
@@ -37,9 +41,24 @@ class ConfirmReservationMailer {
                 'vehicle' => $vehicle,
                 'startDate' => $startDate,
                 'endDate' => $endDate,
+                'totalPrice' => $totalPrice
             ]));
-        
-        $this->mailer->send($email);
+
+        try {
+            $this->mailer->send($email);
+            return new JsonResponse([
+                'message' => 'Email envoyé avec succès'
+            ], Response::HTTP_OK);
+
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'message' => 'Une erreur est survenue lors de l\'envoi de l\'email',
+                'error' => $e->getMessage()
+            ], Response::HTTP_BAD_REQUEST);
+
+        }
+     
+     
 
 
     }

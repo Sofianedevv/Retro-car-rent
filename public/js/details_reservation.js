@@ -47,7 +47,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 if (data.message) {
                     alert("Réservation réussie !");
-                    window.location.href = "/nos-vehicules";
                 } else {
                     alert("Erreur lors de la réservation : " + (data.error || "Une erreur inconnue s'est produite."));
                 }

@@ -4,8 +4,6 @@ namespace App\Controller\Reservation;
 
 use App\Entity\Reservation;
 use App\Repository\ReservationRepository;
-use App\Repository\VehicleRepository;
-use App\repository\OptionRepository;
 use App\Service\Mailer\ConfirmReservationMailer;
 use App\Serializer\Normalizer\ReservationNormalizer;
 use App\Service\Vehicle\VehicleService;
@@ -37,16 +35,21 @@ class ReservationController extends AbstractController
         $userId = $this->getUser()->getId();
         dump($data);
         try {
-            $reservation = $this->normalizer->denormalize($data, Reservation::class, 'json', [], $userId);          
+            $context = ['userId' => $userId];
+            $reservation = $this->normalizer->denormalize($data, Reservation::class, 'json', $context);          
             dump($reservation);
+            dump($reservation->getClient(), $reservation->getVehicle(), $reservation);
 
-            $confirmReservationMailer->sendConfirmationEmail($reservation->getClient(), $reservation->getVehicle(), $reservation);
+            $confirmReservationMailer->sendConfirmationEmail($reservation);
 
             $entityManager->persist($reservation);
             $entityManager->flush();
+            
             return new JsonResponse([
                 'message' => 'Votre réservation a été enregistrée avec succès',
+
             ], Response::HTTP_CREATED);
+            
         }
         catch (\Exception $e) {
             return new JsonResponse([
