@@ -4,6 +4,7 @@ namespace App\Controller\Vehicle;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -19,11 +20,20 @@ use App\Repository\VehicleRepository;
 use App\Repository\FavoriteRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\VehicleOptionRepository;
+use App\Service\Vehicle\VehicleService;
+use App\Form\ReservationType;
 use Doctrine\ORM\EntityManagerInterface;
 
 
 class VehicleController extends AbstractController
 {
+    private VehicleService $vehicleService;
+
+    public function __construct(VehicleService $vehicleService)
+    {
+        $this->vehicleService = $vehicleService;
+    }
+
     #[Route('/nos-vehicules', name: 'app_collections')]
     public function vehicules(VehicleRepository $vehicleRepository): Response
     {
@@ -202,39 +212,56 @@ class VehicleController extends AbstractController
         ]);
     }
 
-    #[Route('/details/{vehicleId}', name: 'app_vehicle_show_details')]
-    public function showDetails(int $vehicleId, VehicleRepository $vehicleRepository,CategoryRepository $categoryRepository, VehicleOptionRepository $vehicleOptionRepository, FavoriteRepository $favoriteRepository): Response
+    #[Route('/details/{vehicleId}', name: 'app_vehicle_show_details', methods: ['GET', 'POST'])]
+    public function showDetails(int $vehicleId, VehicleRepository $vehicleRepository,CategoryRepository $categoryRepository, VehicleOptionRepository $vehicleOptionRepository, Request $request): Response
     {
         $user = $this->getUser();
 
         $vehicle = $vehicleRepository->find($vehicleId);
         $categories = $categoryRepository->findCategoriesByVehicle($vehicle);
         $options = $vehicleOptionRepository->findOptionsByVehicle($vehicle);
-        $type = $this->getVehicleType($vehicle);
+        $type = $this->vehicleService->getVehicleType($vehicle);
 
         if(!$vehicle) {
             $this->addFlash('error', 'Ce véhicule n`\'existe pas.');
             return $this->redirectToRoute('app_collections');
+        }
+
+        $form = $this->createForm(ReservationType::class, null, [
+            'vehicle' => $vehicle,
+        ]);
+        $form->handleRequest($request);
+        dump($form);
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $reservationData = $form->getData();
+
+            $rangeDate = $reservationData['rangeDate'];
+            $totalPrice = $reservationData['totalPrice'];
+            // dd($totalPrice);
+            if(is_string($rangeDate) ) {
+                    $dates = explode(' au ', $rangeDate);
+
+                        $startDate = new \DateTime(trim($dates[0]));
+                        $endDate = new \DateTime(trim($dates[1]));
+                
+            }
+            return $this->redirectToRoute('app_reservation_summary', [
+                'vehicleId' => $vehicle->getId(),
+                'startDate' => $startDate->format('Y-m-d'),
+                'endDate' => $endDate->format('Y-m-d'),
+                'totalPrice' => $totalPrice,
+            ]);
         }
         
         return $this->render('vehicle/_display_details.html.twig', [
             'vehicle' => $vehicle,
             'type' => $type,
             'categories'=> $categories,
-            'options' => $options
+            'options' => $options,
+            'form' => $form->createView()
         ]);
        
     }
-    private function getVehicleType(Vehicle $vehicle): string
-    {
-        if ($vehicle instanceof Car) {
-            return 'Car';
-        } elseif ($vehicle instanceof Van) {
-            return 'Van';
-        } elseif ($vehicle instanceof Motorcycle) {
-            return 'Motorcycle';
-        }
 
-        return 'Type de véhicule inconnu';
-    }
 }

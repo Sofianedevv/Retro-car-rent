@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+ <div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md mt-12">
+        <h1 class="text-3xl font-semibold text-center text-blue-600">Confirmation de Réservation</h1>
+
+        <p class="mt-4">Bonjour <strong>{{ client.firstName }}</strong>,</p>
+
+        <p class="mt-2">Nous vous confirmons la réservation de votre véhicule du <strong>{{ startDate|date('d/m/Y') }}</strong> au <strong>{{ endDate|date('d/m/Y') }}</strong>.</p>
+
+        <p class="mt-4">Merci de votre confiance.</p>
+
+        <p class="mt-8 text-center">
+            <a href="#" class="bg-blue-500 text-white py-2 px-6 rounded-full">Visitez notre site</a>
+        </p>
+
+        <footer class="mt-8 text-center text-sm text-gray-600">
+            <p>Cordialement,</p>
+            <p>L'équipe Retro Car</p>
+        </footer>
+    </div>
+{% endblock %}
