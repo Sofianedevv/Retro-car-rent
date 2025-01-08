@@ -1,0 +1,24 @@
+{% extends 'base_email.html.twig' %}
+
+{% block content %}
+
+
+<div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md mt-12">
+    <h1 class="text-3xl font-semibold text-center text-blue-600">Confirmation de Réservation</h1>
+
+    <p class="mt-4">Bonjour,</p>
+
+    <p class="mt-2">Pour annuler votre réservation, veuillez cliquer sur le lien suivant : </p>
+    <a href= "{{url}}" class="mt-2 text-red-600">Annuler ma réservation</a>
+
+
+    <p class="mt-4">Merci de votre confiance et à bientôt chez Retro Car !</p>
+
+
+    <footer class="mt-8 text-center text-sm text-gray-600">
+        <p>Cordialement,</p>
+        <p>L'équipe Retro Car</p>
+    </footer>
+</div>
+
+{% endblock %}

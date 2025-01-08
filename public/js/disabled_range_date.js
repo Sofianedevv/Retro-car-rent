@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const vehicleId = vehicleElement ? vehicleElement.getAttribute('data-vehicle-id') : null;
     const dateRangeInput = document.getElementById('reservation_rangeDate');
 
-    fetch(`/api/reservations/${vehicleId}`)
+    fetch(`/reservations/${vehicleId}`)
         .then(response => response.json())
         .then(data => {
             const disabledDates = data.map(reservation => {
