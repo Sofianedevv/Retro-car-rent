@@ -116,7 +116,7 @@ class ReservationController extends AbstractController
         return new JsonResponse($data, Response::HTTP_OK);
     }
 
-    #[Route('/reservations/{clientId}', name: 'api_reservations_client', methods: ['GET'])]
+    #[Route('/vos-reservations/{clientId}', name: 'api_reservations_client', methods: ['GET'])]
     public function getReservations(int $clientId, ReservationRepository $reservationRepository): JsonResponse
     {
         $reservations = $reservationRepository->findBy(['client' => $clientId]);
