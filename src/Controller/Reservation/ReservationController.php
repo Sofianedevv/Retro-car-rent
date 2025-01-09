@@ -7,6 +7,7 @@ use App\Repository\ReservationRepository;
 use App\Service\Mailer\ConfirmReservationMailer;
 use App\Service\Mailer\CancelReservationMailer;
 use App\Serializer\Normalizer\ReservationNormalizer;
+use App\Serializer\Denormalizer\ReservationDenormalizer;
 use App\Service\Vehicle\VehicleService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Enum\StatusReservationEnum;
@@ -21,12 +22,14 @@ use DateTimeImmutable;
 class ReservationController extends AbstractController
 {
     private ReservationNormalizer $normalizer;
+    private ReservationDenormalizer $denormalizer;
     private VehicleService $vehicleService;
 
-    public function __construct(ReservationNormalizer $normalizer, VehicleService $vehicleService)
+    public function __construct(ReservationNormalizer $normalizer, VehicleService $vehicleService, ReservationDenormalizer $denormalizer)
     {
         $this->normalizer = $normalizer;    
         $this->vehicleService = $vehicleService;
+        $this->denormalizer = $denormalizer;
     }
 
     #[Route('/reservation', name: 'app_reservation', methods: ['GET','POST'])]
@@ -34,12 +37,9 @@ class ReservationController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
         $userId = $this->getUser()->getId();
-        dump($data);
         try {
             $context = ['userId' => $userId];
-            $reservation = $this->normalizer->denormalize($data, Reservation::class, 'json', $context);          
-            dump($reservation);
-            dump($reservation->getClient(), $reservation->getVehicle(), $reservation);
+            $reservation = $this->denormalizer->denormalize($data, Reservation::class, 'json', $context);          
 
             $confirmReservationMailer->sendConfirmationEmail($reservation);
 
