@@ -1,35 +1,25 @@
-<footer class="bg-black text-white">
-    <div class="container flex flex-col md:flex-row justify-between items-center py-6">
-        <!-- Informations légales -->
+<footer class="bg-gray-900 text-white font-playfair">
+    <div class="container mx-auto flex flex-col md:flex-row justify-between items-center py-6">
+        <!-- Informations principales -->
         <div class="text-center md:text-left mb-4 md:mb-0">
-            <p class="text-lg font-retro text-accent">Retro Car Rent</p>
-            <p class="text-sm">© 2025 Tous droits réservés.</p>
+            <a href="#" aria-label="Retour à l'accueil" class="inline-flex items-center space-x-2">
+                <img src="{{ asset('template-html/assets/images/rcr-logo2.png') }}" alt="Logo" class="h-10 w-auto">
+                <span class="text-lg font-bold text-white font-playfair">Retro Car Rent</span>
+            </a>
+            <p class="text-sm text-gray-400 mt-2 font-playfair">© 2025 Tous droits réservés.</p>
         </div>
 
-        <!-- Liens de navigation -->
-        <nav class="space-x-4 text-sm mt-4 md:mt-0">
-            <a href="/terms" class="hover:underline">Conditions d'utilisation</a>
-            <a href="/privacy" class="hover:underline">Politique de confidentialité</a>
+        <!-- Liens basiques -->
+        <nav class="space-x-4 text-sm mt-4 md:mt-0 font-playfair">
+            <a href="#" class="hover:underline text-gray-400 font-playfair">Accueil</a>
+            <a href="#" class="hover:underline text-gray-400 font-playfair">À propos</a>
         </nav>
-
-        <!-- Réseaux sociaux -->
-        <div class="mt-4 md:mt-0 flex justify-center md:justify-start space-x-4">
-            <a href="#" class="text-xl hover:text-accent transition duration-200">
-                <i class="fab fa-facebook"></i> <!-- Facebook Icon -->
-            </a>
-            <a href="#" class="text-xl hover:text-accent transition duration-200">
-                <i class="fab fa-instagram"></i> <!-- Instagram Icon -->
-            </a>
-            <a href="#" class="text-xl hover:text-accent transition duration-200">
-                <i class="fab fa-twitter"></i> <!-- Twitter Icon -->
-            </a>
-        </div>
     </div>
 
     <!-- Séparation visuelle -->
-    <div class="border-t border-gray-700 mt-4">
+    <div class="border-t border-gray-700 mt-4 font-playfair">
         <div class="container py-4 text-center text-sm text-gray-400">
-            <p>Designed with ❤️ by Retro Car Rent Team</p>
+            <p class="font-playfair">Designed with ❤️ by Retro Car Rent Team</p>
         </div>
     </div>
 </footer>
