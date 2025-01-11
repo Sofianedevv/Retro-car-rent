@@ -6,3 +6,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* styles.css */
+.text-cream {
+    @apply text-[#e0d8b0];  /* Utiliser les classes Tailwind directement */
+}
+
+.text-black {
+    @apply text-[#3b302f];
+}
+
+.text-white {
+    @apply text-[#fdfcf3];
+}

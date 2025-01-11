@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% block title %}Accueil{% endblock %}
 
 {% block body %}
     <!-- Slider -->
@@ -11,7 +12,7 @@
             <!-- Contenu -->
             <div class="relative flex items-center justify-start h-full text-white py-20" style="padding-left: 5rem;">
                 <div class="w-1/2">
-                    <h2 class="text-5xl font-bold mb-6">
+                    <h2 class="text-5xl font-bold mb-6 bg-primary font-playfair">
                         Découvrez notre collection intemporelle de véhicules vintage
                     </h2>
                     <p class="text-lg mb-8">
@@ -31,11 +32,6 @@
             </div>
         </div>
     </section>
-
-
-
-
-
 
     <!-- Blog section -->
     <section class="py-12">
@@ -70,16 +66,15 @@
                     button_text: 'Découvrir >'
                 } %}
             </div>
-
-
         </div>
     </section>
+
     <section id="services" class="py-16 bg-gray-100">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between gap-16">
                 <!-- Left side: Text content -->
                 <div class="w-full lg:w-1/2">
-                    <h2 class="text-4xl font-bold mb-4">
+                    <h2 class="text-4xl font-bold mb-4 text-black bg-secondary">
                         Découvrez les avantages de nos services
                     </h2>
                     <p class="text-lg mb-6">
@@ -87,11 +82,11 @@
                     </p>
                     <div class="flex space-x-4">
                         <a href="#"
-                           class="bg-[#F5F5F0] text-black hover:bg-black hover:text-[#F5F5F0] border-2 border-black font-playfair font-semibold px-8 py-3 rounded-none transition-all duration-300 hover:shadow-lg">
+                           class="bg-[#F5F5F0] text-black hover:bg-black hover:text-[#F5F5F0] border-2 border-black font-playfair font-semibold px-8 py-3 rounded-lg transition-all duration-300 hover:shadow-lg">
                             En savoir plus
                         </a>
                         <a href="#"
-                           class="bg-black text-[#F5F5F0] hover:bg-[#F5F5F0] hover:text-black border-2 border-black font-playfair font-semibold px-8 py-3 rounded-none transition-all duration-300 hover:shadow-lg">
+                           class="bg-black text-[#F5F5F0] hover:bg-[#F5F5F0] hover:text-black border-2 border-black font-playfair font-semibold px-8 py-3 rounded-lg transition-all duration-300 hover:shadow-lg">
                             Réserver
                         </a>
                     </div>
@@ -172,63 +167,6 @@
         </div>
     </section>
 
-
-    <!-- Brand section -->
-    <section id="brands" class="bg-white py-16 px-4">
-        <div class="container mx-auto max-w-screen-xl px-4 testimonials">
-            <div class="text-center mb-12 lg:mb-20">
-                <h2 class="text-5xl font-bold mb-4">Découvrez <span class="text-[#8B4513]">Nos Véhicules Rétro</span></h2>
-                <p class="my-7">Explorez notre sélection exclusive de voitures, motos et vans vintage, soigneusement choisis pour offrir une expérience inoubliable.</p>
-            </div>
-            <div class="swiper brands-swiper-slider">
-                <div class="swiper-wrapper">
-                    <!-- Brand Logo 1 -->
-                    <div class="swiper-slide flex-none bg-gray-200 flex items-center justify-center rounded-md">
-                        <img src="{{ asset('template-html/assets/images/brands/dodge-ram-logo-svgrepo-com.svg') }}" alt="Client Logo"
-                             style="max-width: 150px; max-height: 80px; object-fit: contain;">
-                    </div>
-
-                    <!-- Brand Logo 2 -->
-                    <div class="swiper-slide flex-none bg-gray-200 flex items-center justify-center rounded-md">
-                        <img src="{{ asset('template-html/assets/images/brands/chevrolet-svgrepo-com.svg') }}" alt="Client Logo"
-                             style="max-width: 150px; max-height: 80px; object-fit: contain;">
-                    </div>
-
-                    <!-- Brand Logo 3 -->
-                    <div class="swiper-slide flex-none bg-gray-200 flex items-center justify-center rounded-md">
-                        <img src="{{ asset('template-html/assets/images/brands/ford-svgrepo-com.svg') }}" alt="Client Logo"
-                             style="max-width: 150px; max-height: 80px; object-fit: contain;">
-                    </div>
-
-                    <!-- Brand Logo 4 -->
-                    <div class="swiper-slide flex-none bg-gray-200 flex items-center justify-center rounded-md">
-                        <img src="{{ asset('template-html/assets/images/brands/harley-davidson-logo-svgrepo-com.svg') }}" alt="Client Logo"
-                             style="max-width: 150px; max-height: 80px; object-fit: contain;">
-                    </div>
-
-                    <!-- Brand Logo 5 -->
-                    <div class="swiper-slide flex-none bg-gray-200 flex items-center justify-center rounded-md">
-                        <img src="{{ asset('template-html/assets/images/brands/porsche-svgrepo-com.svg') }}" alt="Client Logo"
-                             style="max-width: 150px; max-height: 80px; object-fit: contain;">
-                    </div>
-
-                    <!-- Brand Logo 6 -->
-                    <div class="swiper-slide flex-none bg-gray-200 flex items-center justify-center rounded-md">
-                        <img src="{{ asset('template-html/assets/images/brands/volkswagen-svgrepo-com.svg') }}" alt="Client Logo"
-                             style="max-width: 150px; max-height: 80px; object-fit: contain;">
-                    </div>
-
-                    <!-- Brand Logo 7 -->
-                    <div class="swiper-slide flex-none bg-gray-200 flex items-center justify-center rounded-md">
-                        <img src="{{ asset('template-html/assets/images/brands/jaguar-svgrepo-com.svg') }}" alt="Client Logo"
-                             style="max-width: 150px; max-height: 80px; object-fit: contain;"></div>
-                </div>
-                <!-- Navigation Buttons -->
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>
-            </div>
-        </div>
-    </section>
     <!-- Popular product section -->
     <section id="popular-products" class="py-16 bg-white">
         <div class="container mx-auto px-4">
@@ -264,50 +202,26 @@
         </div>
     </section>
 
-    <!-- Banner section -->
-{#    <section id="banner" class="relative my-16">#}
-{#        <div class="container mx-auto px-4 py-20 rounded-lg relative bg-cover bg-center"#}
-{#             style="background-image: url('{{ asset('template-html/assets/images/banner1.jpg') }}');">#}
-{#            <div class="absolute inset-0 bg-black opacity-40 rounded-lg"></div>#}
-{#            <div class="relative flex flex-col items-center justify-center h-full text-center text-white py-20">#}
-{#                <h2 class="text-4xl font-bold mb-4">Welcome to Our Shop</h2>#}
-{#                <div class="flex space-x-4">#}
-{#                    <a href="#"#}
-{#                       class="bg-primary hover:bg-transparent text-white hover:text-primary border border-transparent hover:border-primary font-semibold px-4 py-2 rounded-full inline-block">Shop#}
-{#                        Now</a>#}
-{#                    <a href="#"#}
-{#                       class="bg-primary hover:bg-transparent text-white hover:text-primary border border-transparent hover:border-primary font-semibold px-4 py-2 rounded-full inline-block">New#}
-{#                        Arrivals</a>#}
-{#                    <a href="#"#}
-{#                       class="bg-primary hover:bg-transparent text-white hover:text-primary border border-transparent hover:border-primary font-semibold px-4 py-2 rounded-full inline-block">Sale</a>#}
+{#    <!-- Subscribe section -->#}
+{#    <section id="subscribe" class="py-6 lg:py-24 bg-white border-t border-gray-line">#}
+{#        <div class="container mx-auto">#}
+{#            <div class="flex flex-col items-center rounded-lg p-4 sm:p-0 ">#}
+{#                <div class="mb-8">#}
+{#                    <h2 class="text-center text-xl font-bold sm:text-2xl lg:text-left lg:text-3xl">Abonnez-vous à notre newsletter#}
+{#                        et restez informé des dernières nouveautés et <span class="text-[#8B4513]">offres exclusives</span> sur nos véhicules vintage.</h2>#}
+{#                </div>#}
+{#                <div class="flex flex-col items-center w-96 ">#}
+{#                    <form class="flex w-full gap-2">#}
+{#                        <input placeholder="Entrez votre adresse email"#}
+{#                               class="w-full flex-1 rounded-full px-3 py-2 border border-gray-300 text-gray-700 placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary"/>#}
+{#                        <button class="bg-black text-[#F5F5F0] hover:bg-[#F5F5F0] hover:text-black border-2 border-black font-playfair font-semibold px-8 py-3 rounded-none transition-all duration-300 hover:shadow-lg">#}
+{#                            S'abonner#}
+{#                        </button>#}
+{#                    </form>#}
 {#                </div>#}
 {#            </div>#}
 {#        </div>#}
 {#    </section>#}
-
-
-    <!-- Subscribe section -->
-    <section id="subscribe" class="py-6 lg:py-24 bg-white border-t border-gray-line">
-        <div class="container mx-auto">
-            <div class="flex flex-col items-center rounded-lg p-4 sm:p-0 ">
-                <div class="mb-8">
-                    <h2 class="text-center text-xl font-bold sm:text-2xl lg:text-left lg:text-3xl">Abonnez-vous à notre newsletter
-                        et restez informé des dernières nouveautés et <span class="text-[#8B4513]">offres exclusives</span> sur nos véhicules vintage.</h2>
-                </div>
-                <div class="flex flex-col items-center w-96 ">
-                    <form class="flex w-full gap-2">
-                        <input placeholder="Entrez votre adresse email"
-                               class="w-full flex-1 rounded-full px-3 py-2 border border-gray-300 text-gray-700 placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary"/>
-                        <button class="bg-black text-[#F5F5F0] hover:bg-[#F5F5F0] hover:text-black border-2 border-black font-playfair font-semibold px-8 py-3 rounded-none transition-all duration-300 hover:shadow-lg">
-                            S'abonner
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
 {% endblock %}
 
 
