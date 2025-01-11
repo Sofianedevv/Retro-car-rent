@@ -19,7 +19,10 @@
         <li><a href="{{path ('app_collections')}}" class="hover:text-secondary font-bold block py-2">Nos Véhicules</a></li>
         {% if app.user %}
         <li><a href="{{path ('app_favorite_show')}}" class="hover:text-primary font-bold block py-2">Vos favoris</a></li>
+<li><a href="{{ path('app_mes_reservation', {'clientId': app.user.id}) }}" class="hover:text-primary font-bold block py-2">Vos Réservations</a></li>
+<li><a href="{{ path('app_invoice', {'clientId': app.user.id}) }}" class="hover:text-primary font-bold block py-2">Vos factures</a></li>
         {% endif %}
+        
 
     </ul>
             </ul>

@@ -55,6 +55,9 @@ class Reservation
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    #[ORM\OneToOne(mappedBy: 'reservation', cascade: ['persist', 'remove'])]
+    private ?Invoice $invoice = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -157,6 +160,22 @@ class Reservation
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getInvoice(): ?Invoice
+    {
+        return $this->invoice;
+    }
+
+    public function setInvoice(Invoice $invoice): static
+    {
+        if ($invoice->getReservation() !== $this) {
+            $invoice->setReservation($this);
+        }
+
+        $this->invoice = $invoice;
 
         return $this;
     }
