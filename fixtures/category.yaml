@@ -1,3 +1,4 @@
+# @group category
 App\Entity\Category:
   category_sport:
     name: "Sport"

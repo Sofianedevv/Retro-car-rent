@@ -10,8 +10,11 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\All;
+use Symfony\Component\Validator\Constraints\Image;
 
 class VanType extends AbstractType
 {
@@ -106,6 +109,30 @@ class VanType extends AbstractType
                 ],
                 'label_attr' => [
                     'class' => 'text-sm font-medium text-gray-700'
+                ]
+            ])
+            ->add('imageFiles', FileType::class, [
+                'label' => 'Photos du véhicule',
+                'multiple' => true,
+                'mapped' => false,
+                'required' => false,
+                'attr' => [
+                    'accept' => 'image/*',
+                    'class' => 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500'
+                ],
+                'constraints' => [
+                    new All([
+                        'constraints' => [
+                            new Image([
+                                'maxSize' => '5M',
+                                'mimeTypes' => [
+                                    'image/jpeg',
+                                    'image/png',
+                                ],
+                                'mimeTypesMessage' => 'Veuillez télécharger une image valide (JPG ou PNG)',
+                            ])
+                        ]
+                    ])
                 ]
             ]);
     }

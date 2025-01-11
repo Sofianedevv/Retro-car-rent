@@ -15,13 +15,14 @@ use App\Entity\Motorcycle;
 use App\Entity\Vehicle;
 use App\Entity\Favorite;
 use App\Entity\Category;
+use App\Entity\Review;
+use App\Entity\Notification;
 
 use App\Repository\VehicleRepository;
 use App\Repository\FavoriteRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\VehicleOptionRepository;
-use App\Service\Vehicle\VehicleService;
-use App\Form\ReservationType;
+use App\Repository\ReviewRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 
@@ -78,7 +79,11 @@ class VehicleController extends AbstractController
         $nbDoorsOptions = [2, 3, 4, 5];
         $years = range(2010, 1900, -1);
     
-        $isFavorite = [];
+        $isFavorite = array_fill_keys(
+            array_map(function($car) { return $car->getId(); }, $cars),
+            false
+        );
+
         $user = $this->getUser();
         if ($user) {
             $favorite = $favoriteRepository->findOneBy(['client' => $user]);
@@ -134,7 +139,11 @@ class VehicleController extends AbstractController
         $types = ['Sport', 'Cruiser', 'Trail', 'Roadster'];
         $years = range(2010, 1900, -1);
 
-        $isFavorite = [];
+        $isFavorite = array_fill_keys(
+            array_map(function($motorcycle) { return $motorcycle->getId(); }, $motorcycles),
+            false
+        );
+
         $user = $this->getUser();
         if ($user) {
             $favorite = $favoriteRepository->findOneBy(['client' => $user]);
@@ -188,7 +197,11 @@ class VehicleController extends AbstractController
         $nbSeatsOptions = [2, 3, 5, 6, 7, 8, 9];
         $nbDoorsOptions = [2, 3, 4, 5];
 
-        $isFavorite = [];
+        $isFavorite = array_fill_keys(
+            array_map(function($van) { return $van->getId(); }, $vans),
+            false
+        );
+
         $user = $this->getUser();
         if ($user) {
             $favorite = $favoriteRepository->findOneBy(['client' => $user]);
@@ -212,18 +225,26 @@ class VehicleController extends AbstractController
         ]);
     }
 
-    #[Route('/details/{vehicleId}', name: 'app_vehicle_show_details', methods: ['GET', 'POST'])]
-    public function showDetails(int $vehicleId, VehicleRepository $vehicleRepository,CategoryRepository $categoryRepository, VehicleOptionRepository $vehicleOptionRepository, Request $request): Response
+    #[Route('/details/{vehicleId}', name: 'app_vehicle_show_details')]
+    public function showDetails(
+        int $vehicleId, 
+        VehicleRepository $vehicleRepository,
+        CategoryRepository $categoryRepository, 
+        VehicleOptionRepository $vehicleOptionRepository, 
+        ReviewRepository $reviewRepository,
+        FavoriteRepository $favoriteRepository
+    ): Response
     {
         $user = $this->getUser();
-
         $vehicle = $vehicleRepository->find($vehicleId);
         $categories = $categoryRepository->findCategoriesByVehicle($vehicle);
         $options = $vehicleOptionRepository->findOptionsByVehicle($vehicle);
-        $type = $this->vehicleService->getVehicleType($vehicle);
+        $reviews = $reviewRepository->findBy(['vehicle' => $vehicle], ['createdAt' => 'DESC']);
+        $averageRating = $reviewRepository->getAverageRating($vehicle);
+        $type = $this->getVehicleType($vehicle);
 
         if(!$vehicle) {
-            $this->addFlash('error', 'Ce véhicule n`\'existe pas.');
+            $this->addFlash('error', 'Ce véhicule n\'existe pas.');
             return $this->redirectToRoute('app_collections');
         }
 
@@ -259,9 +280,13 @@ class VehicleController extends AbstractController
             'type' => $type,
             'categories'=> $categories,
             'options' => $options,
-            'form' => $form->createView()
+            'reviews' => $reviews,
+            'averageRating' => $averageRating
         ]);
-       
     }
 
+        return 'Type de véhicule inconnu';
+    }
+
+   
 }
