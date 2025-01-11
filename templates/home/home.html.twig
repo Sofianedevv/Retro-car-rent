@@ -2,7 +2,8 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-    <section id="banner" class="relative mb-12 bg-[#e0d8b0] py-12">
+<!-- Hero Banner -->
+    <section id="banner" class="relative mb-6 bg-primary py-12">
         <div class="relative flex flex-col justify-center items-start text-black h-full px-6 lg:px-20">
             <h2 class="text-4xl lg:text-5xl font-bold mb-6 font-playfair">
                 Découvrez notre collection intemporelle de véhicules vintage
@@ -26,17 +27,18 @@
             </div>
         </div>
     </section>
-    <!-- Blog section -->
-    <section class="py-12">
+
+ <!-- Featured Section -->
+    <section class="py-6">
         <!-- Grand titre -->
-        <div class="mb-12 lg:mb-20 mx-6 lg:mx-12">
-            <h3 class="text-5xl font-bold text-center" style="margin: 40px">
-                Découvrez comment <span class="text-[#8B4513]">Louer</span> votre voiture <span class="text-[#8B4513]">Rétro</span> en quelques étapes simples.
+        <div class="mb-3 lg:mb-20 mx-6 lg:mx-12">
+            <h3 class="text-5xl font-bold text-center">
+                Découvrez comment <span class="text-[#b3a97d]">Louer</span> votre voiture <span class="text-[#b3a97d]">Rétro</span> en quelques étapes simples.
             </h3>
         </div>
 
         <!-- Cartes -->
-        <div class="relative items-center w-full px-5 py-12 mx-auto md:px-12 lg:px-24 max-w-7xl">
+        <div class="relative items-center w-full px-3 py-3 mx-auto md:px-12 lg:px-24 max-w-7xl">
             <div class="grid w-full grid-cols-1 gap-6 mx-auto lg:grid-cols-3">
                 {% include 'parts/_blog_card.html.twig' with {
                     image_url : asset('template-html/assets/images/b5.jpg'),
@@ -61,13 +63,13 @@
             </div>
         </div>
     </section>
-
+    <!-- Services section -->
     <section id="services" class="py-16 bg-gray-100">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between gap-16">
                 <!-- Left side: Text content -->
                 <div class="w-full lg:w-1/2">
-                    <h2 class="text-4xl font-bold mb-4 text-black bg-secondary">
+                    <h2 class="text-4xl font-bold mb-4">
                         Découvrez les avantages de nos services
                     </h2>
                     <p class="text-lg mb-6">
@@ -75,11 +77,11 @@
                     </p>
                     <div class="flex space-x-4">
                         <a href="#"
-                           class="bg-[#F5F5F0] text-black hover:bg-black hover:text-[#F5F5F0] border-2 border-black font-playfair font-semibold px-8 py-3 rounded-lg transition-all duration-300 hover:shadow-lg">
+                           class="bg-primary hover:bg-transparent text-white hover:text-primary border border-transparent hover:border-primary font-semibold px-6 py-3 rounded-full underline">
                             En savoir plus
                         </a>
                         <a href="#"
-                           class="bg-black text-[#F5F5F0] hover:bg-[#F5F5F0] hover:text-black border-2 border-black font-playfair font-semibold px-8 py-3 rounded-lg transition-all duration-300 hover:shadow-lg">
+                           class="bg-primary hover:bg-transparent text-white hover:text-primary border border-transparent hover:border-primary font-semibold px-6 py-3 rounded-full">
                             Réserver
                         </a>
                     </div>
@@ -92,7 +94,7 @@
             </div>
         </div>
     </section>
-{#categroy section#}
+    {#categroy section#}
     <section id="category-section" class="py-12 bg-gray-100">
         <div class="container mx-auto px-4">
             <!-- Grand titre aligné à gauche avec un margin-left réduit -->
