@@ -2,37 +2,30 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-    <!-- Slider -->
-    <section id="banner" class="relative mb-12 mt-1">
-        <!-- Conteneur principal avec une image de fond -->
-        <div class="relative bg-cover bg-center"
-             style="background-image: url('{{ asset('template-html/assets/images/ban2.jpg') }}'); height: 100vh; width: 100vw;">
-            <!-- Couche semi-transparente modifiée pour ne pas masquer l'image -->
-            <div class="absolute inset-0 bg-black" style="opacity: 0.8;"></div>
-            <!-- Contenu -->
-            <div class="relative flex items-center justify-start h-full text-white py-20" style="padding-left: 5rem;">
-                <div class="w-1/2">
-                    <h2 class="text-5xl font-bold mb-6 bg-primary font-playfair">
-                        Découvrez notre collection intemporelle de véhicules vintage
-                    </h2>
-                    <p class="text-lg mb-8">
-                        Plongez dans un univers où l’élégance rencontre la nostalgie. Que vous soyez à la recherche d'une voiture classique, d'une moto rétro ou d'un van au charme d'antan, nous avons le véhicule idéal pour chaque occasion : mariage, séance photo ou simplement pour vivre une expérience inoubliable sur la route.
-                    </p>
-                    <div class="flex space-x-4">
-                        <a href="#"
-                           class="bg-[#F5F5F0] text-black hover:bg-black hover:text-[#F5F5F0] border-2 border-black font-playfair font-semibold px-8 py-3 rounded-none transition-all duration-300 hover:shadow-lg">
-                            Réserver
-                        </a>
-                        <a href="#"
-                           class="bg-black text-[#F5F5F0] hover:bg-[#F5F5F0] hover:text-black border-2 border-black font-playfair font-semibold px-8 py-3 rounded-none transition-all duration-300 hover:shadow-lg">
-                            En savoir plus
-                        </a>
-                    </div>
-                </div>
+    <section id="banner" class="relative mb-12 bg-[#e0d8b0] py-12">
+        <div class="relative flex flex-col justify-center items-start text-black h-full px-6 lg:px-20">
+            <h2 class="text-4xl lg:text-5xl font-bold mb-6 font-playfair">
+                Découvrez notre collection intemporelle de véhicules vintage
+            </h2>
+            <p class="text-md lg:text-lg mb-8 leading-relaxed">
+                Plongez dans un univers où l’élégance rencontre la nostalgie. Chaque voiture raconte une histoire,
+                alliant design rétro et qualité exceptionnelle. Vivez une expérience unique avec notre sélection
+                de véhicules soigneusement restaurés et prêts à sublimer vos moments spéciaux.
+            </p>
+            <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6">
+                <!-- Bouton Réserver -->
+                <a href="#"
+                   class="bg-gray-900 text-white hover:text-black hover:bg-white border-2 border-black rounded-lg px-8 py-3 transition-all duration-300 font-bold">
+                    Réserver
+                </a>
+                <!-- Bouton En savoir plus -->
+                <a href="#"
+                   class="bg-gray-900 text-white hover:text-black hover:bg-white border-2 border-black rounded-lg px-8 py-3  transition-all duration-300 font-bold">
+                    En savoir plus
+                </a>
             </div>
         </div>
     </section>
-
     <!-- Blog section -->
     <section class="py-12">
         <!-- Grand titre -->
