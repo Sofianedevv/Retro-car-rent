@@ -72,6 +72,16 @@
                         {{ form_row(form.availability) }}
                     </div>
 
+                    <div class="mt-4">
+                        {{ form_row(form.imageFiles, {
+                            'attr': {
+                                'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500',
+                                'accept': 'image/*',
+                                'multiple': true
+                            }
+                        }) }}
+                    </div>
+
                     <div class="mt-6">
                         <h2 class="text-lg font-medium text-gray-900 mb-4">Catégories</h2>
                         {{ form_widget(form.categories) }}

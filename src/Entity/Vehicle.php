@@ -63,13 +63,13 @@ class Vehicle
     /**
      * @var Collection<int, Review>
      */
-    #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'vehicle')]
+    #[ORM\OneToMany(mappedBy: 'vehicle', targetEntity: Review::class, orphanRemoval: true)]
     private Collection $reviews;
 
     /**
      * @var Collection<int, VehicleImage>
      */
-    #[ORM\OneToMany(targetEntity: VehicleImage::class, mappedBy: 'vehicle')]
+    #[ORM\OneToMany(mappedBy: 'vehicle', targetEntity: VehicleImage::class, cascade: ['persist', 'remove'])]
     private Collection $vehicleImages;
 
     /**
@@ -80,6 +80,8 @@ class Vehicle
 
     #[ORM\Column(length: 255)]
     private ?string $defaultImage = null;
+
+    private $imageFiles;
 
     public function __construct()
     {
@@ -299,20 +301,19 @@ class Vehicle
         return $this->vehicleImages;
     }
 
-    public function addVehicleImage(VehicleImage $vehicleImage): static
+    public function addVehicleImage(VehicleImage $vehicleImage): self
     {
         if (!$this->vehicleImages->contains($vehicleImage)) {
-            $this->vehicleImages->add($vehicleImage);
+            $this->vehicleImages[] = $vehicleImage;
             $vehicleImage->setVehicle($this);
         }
 
         return $this;
     }
 
-    public function removeVehicleImage(VehicleImage $vehicleImage): static
+    public function removeVehicleImage(VehicleImage $vehicleImage): self
     {
         if ($this->vehicleImages->removeElement($vehicleImage)) {
-            // set the owning side to null (unless already changed)
             if ($vehicleImage->getVehicle() === $this) {
                 $vehicleImage->setVehicle(null);
             }
@@ -355,5 +356,20 @@ class Vehicle
         $this->defaultImage = $defaultImage;
 
         return $this;
+    }
+
+    public function getAverageRating(): float
+    {
+        $reviews = $this->getReviews();
+        if ($reviews->isEmpty()) {
+            return 0;
+        }
+
+        $total = 0;
+        foreach ($reviews as $review) {
+            $total += $review->getRating();
+        }
+
+        return round($total / $reviews->count(), 1);
     }
 }

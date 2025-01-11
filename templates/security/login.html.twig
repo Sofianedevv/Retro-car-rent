@@ -1,67 +1,69 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Connexion - Retro Car Rent{% endblock %}
+{% block title %}Connexion{% endblock %}
 
 {% block body %}
-    <!-- Login Section -->
-    <section id="register-login-page" class="bg-gradient-to-r from-[#d4af37] via-[#e5c4a1] to-[#5a6e5c] min-h-screen flex items-center justify-center">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row gap-4 justify-center">
-                <div class="md:w-1/2 bg-white rounded-lg shadow-md p-6 md:p-10">
-                    <h2 class="text-3xl font-semibold text-center text-primary mb-6">Se Connecter</h2>
-
-                    <!-- Display error messages -->
-                    {% if error %}
-                        <div class="alert alert-danger bg-red-200 text-red-700 p-4 rounded-lg mb-4" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                    {% endif %}
-
-                    <!-- Display logged in user -->
-                    {% if app.user %}
-                        <div class="mb-3">
-                            Vous êtes connecté en tant que {{ app.user.userIdentifier }}. <a href="{{ path('app_logout') }}" class="text-primary hover:underline">Déconnexion</a>
-                        </div>
-                    {% endif %}
-
-                    <form method="post">
-                        <!-- Email input -->
-                        <div class="mb-4">
-                            <label for="inputEmail" class="block text-orange-600 font-semibold">Email</label>
-                            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="w-full px-3 py-2 border focus:border-transparent rounded-full focus:outline-none focus:ring-2 focus:ring-primary" autocomplete="email" required autofocus placeholder="Entrez votre adresse email">
-                        </div>
-
-                        <!-- Password input -->
-                        <div class="mb-4">
-                            <label for="inputPassword" class="block text-orange-600 font-semibold">Mot de passe</label>
-                            <input type="password" name="password" id="inputPassword" class="w-full px-3 py-2 border focus:border-transparent rounded-full focus:outline-none focus:ring-2 focus:ring-primary" autocomplete="current-password" required placeholder="Entrez votre mot de passe">
-                        </div>
-
-                        <!-- CSRF Token -->
-                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-                        <!-- Remember me checkbox -->
-                        <div class="mb-4 flex items-center">
-                            <input type="checkbox" name="_remember_me" id="remember-me" class="mr-2">
-                            <label for="remember-me" class="text-orange-600 font-semibold">Se souvenir de moi</label>
-                        </div>
-
-                        <!-- Forgot Password Link -->
-                        <div class="mb-4">
-                            <a href="#" class="text-primary hover:underline">Mot de passe oublié ?</a>
-                        </div>
-
-                        <!-- Submit button -->
-                        <button type="submit" class="bg-primary text-white border border-primary hover:bg-transparent hover:text-primary py-2 px-3 rounded-full w-full text-xl"><strong>Se connecter</strong></button>
-                    </form>
-
-                    <!-- Register link for new users -->
-                    <div class="mt-4 text-center">
-                        <p class="text-primary">
-                            Vous n'avez pas encore de compte ? <a href="{{ path('app_register') }}" class="underline hover:text-secondary">Inscrivez-vous ici</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
+<div class="min-h-screen flex items-center justify-center bg-[#F5F5F0] py-12">
+    <div class="max-w-md w-full bg-white p-8 rounded-lg shadow-2xl border-2 border-[#8B4513]">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-playfair font-bold text-[#8B4513]">Connexion</h1>
+            <div class="mt-2 h-1 w-16 bg-[#8B4513] mx-auto"></div>
+            <p class="text-gray-600 mt-4">Accédez à votre compte pour gérer vos réservations</p>
         </div>
-    </section>
-    <!-- End Login Section -->
+
+        {% if error %}
+            <div class="mb-4 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 font-playfair">
+                {{ error.messageKey|trans(error.messageData, 'security') }}
+            </div>
+        {% endif %}
+
+        {% for message in app.flashes('info') %}
+            <div class="mb-4 p-4 bg-blue-50 border-l-4 border-blue-500 text-blue-700 font-playfair">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <form method="post" class="space-y-6">
+            <div>
+                <label for="inputEmail" class="block text-sm font-medium text-[#8B4513]">Email</label>
+                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" 
+                       class="mt-1 block w-full px-4 py-3 bg-[#F5F5F0] border-2 border-[#8B4513]/20 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B4513] focus:border-[#8B4513] transition-colors duration-300" 
+                       autocomplete="email" required autofocus>
+            </div>
+
+            <div>
+                <label for="inputPassword" class="block text-sm font-medium text-[#8B4513]">Mot de passe</label>
+                <input type="password" name="password" id="inputPassword" 
+                       class="mt-1 block w-full px-4 py-3 bg-[#F5F5F0] border-2 border-[#8B4513]/20 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B4513] focus:border-[#8B4513] transition-colors duration-300" 
+                       autocomplete="current-password" required>
+            </div>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <div class="flex items-center">
+                <input type="checkbox" name="_remember_me" id="remember_me" 
+                       class="h-4 w-4 text-[#8B4513] focus:ring-[#8B4513] border-[#8B4513]/20 rounded transition-colors duration-300">
+                <label for="remember_me" class="ml-2 block text-sm text-[#8B4513]">
+                    Se souvenir de moi
+                </label>
+            </div>
+
+            <div>
+                <button type="submit" 
+                        class="w-full flex justify-center py-3 px-4 border-2 border-[#8B4513] rounded-md shadow-md text-[#F5F5F0] bg-[#8B4513] hover:bg-[#734010] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#8B4513] transition-all duration-300 font-playfair text-lg">
+                    Se connecter
+                </button>
+            </div>
+        </form>
+
+        <div class="mt-6 text-center">
+            <p class="text-sm text-[#8B4513]">
+                Pas encore de compte ? 
+                <a href="{{ path('app_register') }}" class="font-medium text-[#8B4513] hover:text-[#734010] underline transition-colors duration-300">
+                    S'inscrire
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
 {% endblock %}

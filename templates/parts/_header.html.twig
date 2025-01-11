@@ -1,57 +1,75 @@
-<header class="bg-black text-white py-4">
-    <div class="max-w-7xl mx-auto flex justify-between items-center px-4">
-        <!-- Logo -->
-        <div class="flex items-center space-x-4">
-            <a href="{{ path('app') }}" class="flex items-center space-x-4">
-                <h1 class="text-3xl font-bold text-primary">Retro Car Rent</h1> <!-- Titre avec couleur rétro -->
-            </a>
-        </div>
-
-        <!-- Menu Desktop -->
-        <nav>
-            <ul class="hidden lg:flex lg:flex-row space-x-8 lg:space-x-8 items-center">
-                <li class="flex items-center"><a href="/cars" class="hover:text-accent hover:text-primary"><i class="fas fa-car"></i> Voitures</a></li>
-                <li class="flex items-center"><a href="/motorcycles" class="hover:text-accent hover:text-primary"><i class="fas fa-motorcycle"></i> Motos</a></li>
-                <li class="flex items-center"><a href="/vans" class="hover:text-accent hover:text-primary"><i class="fas fa-bus"></i> Vans</a></li>
-                <li class="flex items-center"><a href="/categories" class="hover:text-accent hover:text-primary"><i class="fas fa-th"></i> Catégories</a></li>
-                <li class="flex items-center"><a href="/reservations" class="hover:text-accent hover:text-primary"><i class="fas fa-calendar-check"></i> Réservations</a></li>
-                <li class="flex items-center"><a href="/reviews" class="hover:text-accent hover:text-primary"><i class="fas fa-star"></i> Avis</a></li>
-                <li class="flex items-center"><a href="/favorites" class="hover:text-accent hover:text-primary"><i class="fas fa-heart"></i> Favoris</a></li>
-                <li class="flex items-center"><a href="/login" class="hover:text-accent hover:text-primary"><i class="fas fa-sign-in-alt"></i> Connexion</a></li>
-                <li class="flex items-center"><a href="/logout" class="hover:text-accent hover:text-primary"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
-            </ul>
-        </nav>
-
-        <!-- Hamburger Icon for Mobile -->
-        <div class="lg:hidden flex items-center">
-            <button id="hamburger-icon" class="text-white focus:outline-none">
-                <i class="fas fa-bars"></i>
+<header class="sticky top-0 z-50 bg-[#F5F5F0] shadow-md">
+    <div class="container mx-auto flex justify-between items-center py-4">
+        <a href="{{ path('app') }}" class="flex items-center">
+            <div>
+                <img src="{{ asset('template-html/assets/images/rcr-logo2.png') }}" alt="Logo" class="h-14 w-auto mr-4">
+            </div>
+        </a>
+        <div class="flex lg:hidden">
+            <button id="hamburger" class="text-black focus:outline-none">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
             </button>
         </div>
-    </div>
-
-    <!-- Mobile Menu -->
-    <div id="mobile-menu" class="lg:hidden absolute top-16 left-0 w-full bg-black text-white shadow-md hidden">
-        <ul class="flex flex-col space-y-4 p-4">
-            <li class="flex items-center"><a href="/cars" class="hover:text-accent"><i class="fas fa-car mr-2"></i> Voitures</a></li>
-            <li class="flex items-center"><a href="/motorcycles" class="hover:text-accent"><i class="fas fa-motorcycle mr-2"></i> Motos</a></li>
-            <li class="flex items-center"><a href="/vans" class="hover:text-accent"><i class="fas fa-bus mr-2"></i> Vans</a></li>
-            <li class="flex items-center"><a href="/categories" class="hover:text-accent"><i class="fas fa-th mr-2"></i> Catégories</a></li>
-            <li class="flex items-center"><a href="/reservations" class="hover:text-accent"><i class="fas fa-calendar-check mr-2"></i> Réservations</a></li>
-            <li class="flex items-center"><a href="/reviews" class="hover:text-accent"><i class="fas fa-star mr-2"></i> Avis</a></li>
-            <li class="flex items-center"><a href="/favorites" class="hover:text-accent"><i class="fas fa-heart mr-2"></i> Favoris</a></li>
-            <li class="flex items-center"><a href="/login" class="hover:text-accent"><i class="fas fa-sign-in-alt mr-2"></i> Connexion</a></li>
-            <li class="flex items-center"><a href="/logout" class="hover:text-accent"><i class="fas fa-sign-out-alt mr-2"></i> Déconnexion</a></li>
-        </ul>
+        <nav class="hidden lg:flex md:flex-grow justify-center">
+            <ul class="flex justify-center space-x-4 text-black">
+                <li><a href="{{ path('app') }}" class="hover:text-gray-600 font-playfair font-bold block py-2">Accueil</a></li>
+                <li><a href="{{ path('app_collections') }}" class="hover:text-gray-600 font-playfair font-bold block py-2">Nos Véhicules</a></li>
+                
+                {% if app.user %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li><a href="{{ path('admin_dashboard') }}" class="hover:text-gray-600 font-playfair font-bold block py-2">Dashboard Admin</a></li>
+                    {% endif %}
+                    
+                    <li><a href="{{ path('app_favorite_show') }}" class="hover:text-gray-600 font-playfair font-bold block py-2">Vos favoris</a></li>
+                    <li class="relative">
+                        <a href="{{ path('app_notifications') }}" class="hover:text-gray-600 font-playfair font-bold block py-2">
+                            Notifications
+                            {% if unread_notifications_count > 0 %}
+                                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center notification-badge">
+                                    {{ unread_notifications_count }}
+                                </span>
+                            {% endif %}
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+        <div class="hidden lg:flex items-center space-x-4 relative">
+            {% if app.user %}
+                <a href="{{ path('app_profile') }}" class="bg-[#F5F5F0] border border-black hover:bg-gray-200 text-black font-playfair font-semibold px-4 py-2 rounded-full">
+                    <i class="fas fa-user mr-2"></i>{{ app.user.firstName }}
+                </a>
+                <a href="{{ path('app_logout') }}" class="bg-[#F5F5F0] border border-black hover:bg-gray-200 text-black font-playfair font-semibold px-4 py-2 rounded-full">
+                    <i class="fas fa-sign-out-alt mr-2"></i>Déconnexion
+                </a>
+            {% else %}
+                <a href="{{ path('app_register') }}" class="bg-[#F5F5F0] border border-black hover:bg-gray-200 text-black font-playfair font-semibold px-4 py-2 rounded-full inline-block">Inscription</a>
+                <a href="{{ path('app_login') }}" class="bg-[#F5F5F0] border border-black hover:bg-gray-200 text-black font-playfair font-semibold px-4 py-2 rounded-full inline-block">Connexion</a>
+            {% endif %}
+        </div>
     </div>
 </header>
 
-<script>
-    // Toggle mobile menu
-    const hamburgerIcon = document.getElementById('hamburger-icon');
-    const mobileMenu = document.getElementById('mobile-menu');
-
-    hamburgerIcon.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-    });
-</script>
+<!-- Menu mobile -->
+<nav id="mobile-menu-placeholder" class="mobile-menu hidden lg:hidden bg-[#F5F5F0] border-t border-gray-200">
+    <ul class="w-full text-center space-y-4 py-4">
+        <li><a href="{{ path('app') }}" class="block py-2 text-black hover:text-gray-600 font-playfair">Accueil</a></li>
+        <li><a href="{{ path('app_collections') }}" class="block py-2 text-black hover:text-gray-600 font-playfair">Nos Véhicules</a></li>
+        
+        {% if app.user %}
+            {% if is_granted('ROLE_ADMIN') %}
+                <li><a href="{{ path('admin_dashboard') }}" class="block py-2 text-black hover:text-gray-600 font-playfair">Dashboard Admin</a></li>
+            {% endif %}
+            
+            <li><a href="{{ path('app_favorite_show') }}" class="block py-2 text-black hover:text-gray-600 font-playfair">Vos favoris</a></li>
+            <li><a href="{{ path('app_notifications') }}" class="block py-2 text-black hover:text-gray-600 font-playfair">Notifications</a></li>
+            <li><a href="{{ path('app_profile') }}" class="block py-2 text-black hover:text-gray-600 font-playfair">Profil</a></li>
+            <li><a href="{{ path('app_logout') }}" class="block py-2 text-black hover:text-gray-600 font-playfair">Déconnexion</a></li>
+        {% else %}
+            <li><a href="{{ path('app_register') }}" class="block py-2 text-black hover:text-gray-600 font-playfair">Inscription</a></li>
+            <li><a href="{{ path('app_login') }}" class="block py-2 text-black hover:text-gray-600 font-playfair">Connexion</a></li>
+        {% endif %}
+    </ul>
+</nav>

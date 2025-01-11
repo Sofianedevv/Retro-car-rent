@@ -88,4 +88,292 @@ public function findCars(): array
             ->getQuery()
             ->getResult();
     }
+
+    public function findCarsByFilters(array $filters): array
+    {
+        $qb = $this->createQueryBuilder('v')
+            ->select('c')
+            ->from('App\Entity\Car', 'c');
+
+        if (!empty($filters['brand'])) {
+            $qb->andWhere('c.brand = :brand')
+               ->setParameter('brand', $filters['brand']);
+        }
+
+        if (!empty($filters['minPrice'])) {
+            $qb->andWhere('c.price >= :minPrice')
+               ->setParameter('minPrice', $filters['minPrice']);
+        }
+
+        if (!empty($filters['maxPrice'])) {
+            $qb->andWhere('c.price <= :maxPrice')
+               ->setParameter('maxPrice', $filters['maxPrice']);
+        }
+
+        if (!empty($filters['transmission'])) {
+            $qb->andWhere('c.transmission = :transmission')
+               ->setParameter('transmission', $filters['transmission']);
+        }
+
+        if (!empty($filters['fuelType'])) {
+            $qb->andWhere('c.fuelType = :fuelType')
+               ->setParameter('fuelType', $filters['fuelType']);
+        }
+
+        if (!empty($filters['availability'])) {
+            $qb->andWhere('c.availability = :availability')
+               ->setParameter('availability', true);
+        }
+
+        if (!empty($filters['nbSeats'])) {
+            $qb->andWhere('c.nbSeats = :nbSeats')
+               ->setParameter('nbSeats', $filters['nbSeats']);
+        }
+
+        if (!empty($filters['nbDoors'])) {
+            $qb->andWhere('c.nbDoors = :nbDoors')
+               ->setParameter('nbDoors', $filters['nbDoors']);
+        }
+
+        if (!empty($filters['minYear'])) {
+            $qb->andWhere('c.year >= :minYear')
+               ->setParameter('minYear', $filters['minYear']);
+        }
+
+        if (!empty($filters['maxYear'])) {
+            $qb->andWhere('c.year <= :maxYear')
+               ->setParameter('maxYear', $filters['maxYear']);
+        }
+
+        if (!empty($filters['minMileage'])) {
+            $qb->andWhere('c.mileage >= :minMileage')
+               ->setParameter('minMileage', $filters['minMileage']);
+        }
+
+        if (!empty($filters['maxMileage'])) {
+            $qb->andWhere('c.mileage <= :maxMileage')
+               ->setParameter('maxMileage', $filters['maxMileage']);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findAllCarBrands(): array
+    {
+        $results = $this->createQueryBuilder('v')
+            ->select('c.brand')
+            ->from('App\Entity\Car', 'c')
+            ->distinct()
+            ->orderBy('c.brand', 'ASC')
+            ->getQuery()
+            ->getScalarResult();
+
+        return array_column($results, 'brand');
+    }
+
+    public function findMotorcyclesByFilters(array $filters): array
+    {
+        $qb = $this->createQueryBuilder('v')
+            ->select('m')
+            ->from('App\Entity\Motorcycle', 'm');
+
+        if (!empty($filters['brand'])) {
+            $qb->andWhere('m.brand = :brand')
+               ->setParameter('brand', $filters['brand']);
+        }
+
+        if (!empty($filters['minPrice'])) {
+            $qb->andWhere('m.price >= :minPrice')
+               ->setParameter('minPrice', $filters['minPrice']);
+        }
+
+        if (!empty($filters['maxPrice'])) {
+            $qb->andWhere('m.price <= :maxPrice')
+               ->setParameter('maxPrice', $filters['maxPrice']);
+        }
+
+        if (!empty($filters['type'])) {
+            $qb->andWhere('m.type = :type')
+               ->setParameter('type', $filters['type']);
+        }
+
+        if (!empty($filters['minEngineCapacity'])) {
+            $qb->andWhere('m.engineCapacity >= :minEngineCapacity')
+               ->setParameter('minEngineCapacity', $filters['minEngineCapacity']);
+        }
+
+        if (!empty($filters['maxEngineCapacity'])) {
+            $qb->andWhere('m.engineCapacity <= :maxEngineCapacity')
+               ->setParameter('maxEngineCapacity', $filters['maxEngineCapacity']);
+        }
+
+        if (!empty($filters['minYear'])) {
+            $qb->andWhere('m.year >= :minYear')
+               ->setParameter('minYear', $filters['minYear']);
+        }
+
+        if (!empty($filters['maxYear'])) {
+            $qb->andWhere('m.year <= :maxYear')
+               ->setParameter('maxYear', $filters['maxYear']);
+        }
+
+        if (!empty($filters['minMileage'])) {
+            $qb->andWhere('m.mileage >= :minMileage')
+               ->setParameter('minMileage', $filters['minMileage']);
+        }
+
+        if (!empty($filters['maxMileage'])) {
+            $qb->andWhere('m.mileage <= :maxMileage')
+               ->setParameter('maxMileage', $filters['maxMileage']);
+        }
+
+        if (!empty($filters['availability'])) {
+            $qb->andWhere('m.availability = :availability')
+               ->setParameter('availability', true);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findAllMotorcycleBrands(): array
+    {
+        $results = $this->createQueryBuilder('v')
+            ->select('m.brand')
+            ->from('App\Entity\Motorcycle', 'm')
+            ->distinct()
+            ->orderBy('m.brand', 'ASC')
+            ->getQuery()
+            ->getScalarResult();
+
+        return array_column($results, 'brand');
+    }
+
+    public function findVansByFilters(array $filters): array
+    {
+        $qb = $this->createQueryBuilder('v')
+            ->select('van')
+            ->from('App\Entity\Van', 'van');
+
+        if (!empty($filters['brand'])) {
+            $qb->andWhere('van.brand = :brand')
+               ->setParameter('brand', $filters['brand']);
+        }
+
+        if (!empty($filters['minPrice'])) {
+            $qb->andWhere('van.price >= :minPrice')
+               ->setParameter('minPrice', $filters['minPrice']);
+        }
+
+        if (!empty($filters['maxPrice'])) {
+            $qb->andWhere('van.price <= :maxPrice')
+               ->setParameter('maxPrice', $filters['maxPrice']);
+        }
+
+        if (!empty($filters['minCargoVolume'])) {
+            $qb->andWhere('van.cargoVolume >= :minCargoVolume')
+               ->setParameter('minCargoVolume', $filters['minCargoVolume']);
+        }
+
+        if (!empty($filters['maxCargoVolume'])) {
+            $qb->andWhere('van.cargoVolume <= :maxCargoVolume')
+               ->setParameter('maxCargoVolume', $filters['maxCargoVolume']);
+        }
+
+        if (!empty($filters['minYear'])) {
+            $qb->andWhere('van.year >= :minYear')
+               ->setParameter('minYear', $filters['minYear']);
+        }
+
+        if (!empty($filters['maxYear'])) {
+            $qb->andWhere('van.year <= :maxYear')
+               ->setParameter('maxYear', $filters['maxYear']);
+        }
+
+        if (!empty($filters['minMileage'])) {
+            $qb->andWhere('van.mileage >= :minMileage')
+               ->setParameter('minMileage', $filters['minMileage']);
+        }
+
+        if (!empty($filters['maxMileage'])) {
+            $qb->andWhere('van.mileage <= :maxMileage')
+               ->setParameter('maxMileage', $filters['maxMileage']);
+        }
+
+        if (!empty($filters['availability'])) {
+            $qb->andWhere('van.availability = :availability')
+               ->setParameter('availability', true);
+        }
+
+        if (!empty($filters['nbSeats'])) {
+            $qb->andWhere('van.nbSeats = :nbSeats')
+               ->setParameter('nbSeats', $filters['nbSeats']);
+        }
+
+        if (!empty($filters['nbDoors'])) {
+            $qb->andWhere('van.nbDoors = :nbDoors')
+               ->setParameter('nbDoors', $filters['nbDoors']);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findAllVanBrands(): array
+    {
+        $results = $this->createQueryBuilder('v')
+            ->select('van.brand')
+            ->from('App\Entity\Van', 'van')
+            ->distinct()
+            ->orderBy('van.brand', 'ASC')
+            ->getQuery()
+            ->getScalarResult();
+
+        return array_column($results, 'brand');
+    }
+
+    public function findVansBySearch(string $search): array
+    {
+        return $this->createQueryBuilder('v')
+            ->select('van')
+            ->from('App\Entity\Van', 'van')
+            ->where('van.brand LIKE :search')
+            ->orWhere('van.model LIKE :search')
+            ->setParameter('search', '%'.$search.'%')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findCarsBySearch(string $search): array
+    {
+        return $this->createQueryBuilder('v')
+            ->select('c')
+            ->from('App\Entity\Car', 'c')
+            ->where('c.brand LIKE :search')
+            ->orWhere('c.model LIKE :search')
+            ->setParameter('search', '%'.$search.'%')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findMotorcyclesBySearch(string $search): array
+    {
+        return $this->createQueryBuilder('v')
+            ->select('m')
+            ->from('App\Entity\Motorcycle', 'm')
+            ->where('m.brand LIKE :search')
+            ->orWhere('m.model LIKE :search')
+            ->setParameter('search', '%'.$search.'%')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findBestRated(int $limit = 5): array
+    {
+        return $this->createQueryBuilder('v')
+            ->leftJoin('v.reviews', 'r')
+            ->groupBy('v.id')
+            ->orderBy('AVG(r.rating)', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -1,76 +1,76 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nos véhicules - Retro Car Rent
-{% endblock %}
+{% block title %}Nos Collections{% endblock %}
 
 {% block body %}
-	<section id="shop">
+	<section id="collections" class="py-16" style="background-color: #F5F5F0;">
 		<div class="container mx-auto">
+			<h1 class="text-4xl font-playfair font-bold text-center text-[#8B4513] mb-12">Notre Collection de Véhicules d'Exception</h1>
 
 			<!-- Products List Car -->
-			<div class="w-full md:w-3/4 p-4">
-				<span class="font-semibold text-gray-700 text-3xl">Nos voitures</span> <!-- Augmenter la taille du titre -->
-				<p class="text-gray-600 mt-2 mb-4">Découvrez notre sélection de voitures premium, idéales pour vos déplacements quotidiens ou pour vos aventures en famille.</p>
+			<div class="w-full p-8 mb-16">
+				<h2 class="font-playfair font-bold text-3xl text-[#8B4513] mb-8">Nos Voitures Classiques</h2>
 				<!-- Products grid -->
-				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-					<!-- Car -->
+				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4">
 					{% for car in cars %}
 						{% include 'parts/_car_card_shop.html.twig' %}
 					{% endfor %}
 				</div>
 				<!-- Button Show more -->
-				<div class="flex justify-center mt-8">
-					<a href="{{ path('app_car') }}">
-						<button class="bg-primary text-white py-2 px-6 rounded-full hover:bg-transparent hover:text-primary hover:border-primary border-2 focus:outline-none w-auto">
-							Voir toutes les voitures
-						</button>
+				<div class="flex justify-center mt-12">
+					<a href="{{ path('app_car') }}"
+						class="bg-[#8B4513] text-[#F5F5F0] hover:bg-[#F5F5F0] hover:text-[#8B4513] border-2 border-[#8B4513] font-playfair font-semibold px-8 py-3 rounded-none transition-all duration-300 hover:shadow-lg">
+						Voir toutes les voitures
 					</a>
 				</div>
 			</div>
 
 			<!-- Products List Motorcycle -->
-			<div class="w-full md:w-3/4 p-4 mt-8 md:mt-0">
-				<span class="font-semibold text-gray-700 text-3xl">Nos motos</span> <!-- Augmenter la taille du titre -->
-				<p class="text-gray-600 mt-2 mb-4">Explorez nos motos performantes, adaptées à ceux qui recherchent la vitesse et la liberté sur la route.</p>
-				<!-- Products grid -->
-				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-					<!-- Motos -->
-					{% for motorcycle in motorcycles %}
-						{% include 'parts/_motorcycle_card_shop.html.twig' with { 'motorcycle': motorcycle } %}
+			<div class="w-full p-8 mb-16 bg-white">
+				<h2 class="font-playfair font-bold text-3xl text-[#8B4513] mb-8">Nos Motos Vintage</h2>
+				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4">
+					{% for motorcylce in motorcycles %}
+						{% include 'parts/_motorcycle_card_shop.html.twig' %}
 					{% endfor %}
 				</div>
-				<!-- Button Show more -->
-				<div class="flex justify-center mt-8">
-					<a href="{{ path('app_motorcycle') }}">
-						<button class="bg-primary text-white py-2 px-6 rounded-full hover:bg-transparent hover:text-primary hover:border-primary border-2 focus:outline-none w-auto">
-							Voir toutes les motos
-						</button>
+				<div class="flex justify-center mt-12">
+					<a href="{{ path('app_motorcycle') }}"
+						class="bg-[#8B4513] text-[#F5F5F0] hover:bg-[#F5F5F0] hover:text-[#8B4513] border-2 border-[#8B4513] font-playfair font-semibold px-8 py-3 rounded-none transition-all duration-300 hover:shadow-lg">
+						Voir toutes les motos
 					</a>
 				</div>
 			</div>
 
 			<!-- Products List Van -->
-			<div class="w-full md:w-3/4 p-4 mt-8 md:mt-0">
-				<span class="font-semibold text-gray-700 text-3xl">Nos vans</span> <!-- Augmenter la taille du titre -->
-				<p class="text-gray-600 mt-2 mb-4">Nos vans spacieux et confortables sont parfaits pour vos voyages en famille ou pour vos besoins professionnels.</p>
-				<!-- Products grid -->
-				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-					<!-- Van -->
+			<div class="w-full p-8">
+				<h2 class="font-playfair font-bold text-3xl text-[#8B4513] mb-8">Nos Vans Rétro</h2>
+				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4">
 					{% for van in vans %}
 						{% include 'parts/_van_card_shop.html.twig' %}
 					{% endfor %}
 				</div>
-				<!-- Button Show more -->
-				<div class="flex justify-center mt-8">
-					<a href="{{ path('app_van') }}">
-						<button class="bg-primary text-white py-2 px-6 rounded-full hover:bg-transparent hover:text-primary hover:border-primary border-2 focus:outline-none w-auto">
-							Voir tous les vans
-						</button>
+				<div class="flex justify-center mt-12">
+					<a href="{{ path('app_van') }}"
+						class="bg-[#8B4513] text-[#F5F5F0] hover:bg-[#F5F5F0] hover:text-[#8B4513] border-2 border-[#8B4513] font-playfair font-semibold px-8 py-3 rounded-none transition-all duration-300 hover:shadow-lg">
+						Voir tous les vans
 					</a>
 				</div>
 			</div>
-
 		</div>
 	</section>
 
+	<!-- Shop category description -->
+	<section id="collection-description" class="py-16 bg-white">
+		<div class="container mx-auto px-4">
+			<div class="max-w-3xl mx-auto text-center">
+				<h2 class="text-3xl font-playfair font-bold mb-6 text-[#8B4513]">L'Excellence du Vintage</h2>
+				<p class="mb-6 text-gray-700 font-playfair">
+					Découvrez notre collection soigneusement sélectionnée de véhicules d'exception. Chaque modèle raconte une histoire unique et incarne l'élégance d'une époque révolue.
+				</p>
+				<p class="text-gray-700 font-playfair">
+					Que vous recherchiez une voiture classique pour un mariage, une moto vintage pour une balade nostalgique, ou un van rétro pour une aventure inoubliable, notre collection saura répondre à vos attentes les plus exigeantes.
+				</p>
+			</div>
+		</div>
+	</section>
 {% endblock %}

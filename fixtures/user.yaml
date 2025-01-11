@@ -2,7 +2,7 @@ App\Entity\User:
 
   user_template (template):
     email: '<email()>'
-    password: '<password()>'
+    plainPassword: 'bonjour'
     firstName: '<firstName()>'
     lastName: '<lastName()>'
     phoneNumber: '00-00-00-00-00'
