@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Notification;
 
 #[Route('/admin', name: 'admin_')]
 #[IsGranted('ROLE_ADMIN')]
@@ -48,7 +49,7 @@ class AdminController extends AbstractController
 
     // CRUD pour les voitures
     #[Route('/vehicle/car/new', name: 'vehicle_car_new')]
-    public function newCar(Request $request, EntityManagerInterface $entityManager): Response
+    public function newCar(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
         $car = new Car();
         $form = $this->createForm(CarType::class, $car);
@@ -56,8 +57,27 @@ class AdminController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($car);
-            $entityManager->flush();
+            
+            // Notifier tous les utilisateurs non-admin du nouveau véhicule
+            $users = $userRepository->findAll();
+            foreach ($users as $user) {
+                if (!in_array('ROLE_ADMIN', $user->getRoles())) {  // Ne pas notifier les admins
+                    $notification = new Notification();
+                    $notification->setMessage(sprintf(
+                        'Une nouvelle voiture est disponible : %s %s',
+                        $car->getBrand(),
+                        $car->getModel()
+                    ));
+                    $notification->setCreatedAt(new \DateTimeImmutable());
+                    $notification->setReadStatus(false);
+                    $notification->setType(Notification::TYPE_NEW_VEHICLE);
+                    $notification->setClient($user);
+                    
+                    $entityManager->persist($notification);
+                }
+            }
 
+            $entityManager->flush();
             $this->addFlash('success', 'La voiture a été ajoutée avec succès.');
             return $this->redirectToRoute('admin_vehicles');
         }
@@ -90,7 +110,7 @@ class AdminController extends AbstractController
 
     // CRUD pour les vans
     #[Route('/vehicle/van/new', name: 'vehicle_van_new')]
-    public function newVan(Request $request, EntityManagerInterface $entityManager): Response
+    public function newVan(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
         $van = new Van();
         $form = $this->createForm(VanType::class, $van);
@@ -98,8 +118,27 @@ class AdminController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($van);
-            $entityManager->flush();
+            
+            // Notifier tous les utilisateurs non-admin du nouveau véhicule
+            $users = $userRepository->findAll();
+            foreach ($users as $user) {
+                if (!in_array('ROLE_ADMIN', $user->getRoles())) {
+                    $notification = new Notification();
+                    $notification->setMessage(sprintf(
+                        'Un nouveau van est disponible : %s %s',
+                        $van->getBrand(),
+                        $van->getModel()
+                    ));
+                    $notification->setCreatedAt(new \DateTimeImmutable());
+                    $notification->setReadStatus(false);
+                    $notification->setType(Notification::TYPE_NEW_VEHICLE);
+                    $notification->setClient($user);
+                    
+                    $entityManager->persist($notification);
+                }
+            }
 
+            $entityManager->flush();
             $this->addFlash('success', 'Le van a été ajouté avec succès.');
             return $this->redirectToRoute('admin_vehicles');
         }
@@ -132,7 +171,7 @@ class AdminController extends AbstractController
 
     // CRUD pour les motos
     #[Route('/vehicle/motorcycle/new', name: 'vehicle_motorcycle_new')]
-    public function newMotorcycle(Request $request, EntityManagerInterface $entityManager): Response
+    public function newMotorcycle(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
         $motorcycle = new Motorcycle();
         $form = $this->createForm(MotorcycleType::class, $motorcycle);
@@ -140,8 +179,27 @@ class AdminController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($motorcycle);
-            $entityManager->flush();
+            
+            // Notifier tous les utilisateurs non-admin du nouveau véhicule
+            $users = $userRepository->findAll();
+            foreach ($users as $user) {
+                if (!in_array('ROLE_ADMIN', $user->getRoles())) {
+                    $notification = new Notification();
+                    $notification->setMessage(sprintf(
+                        'Une nouvelle moto est disponible : %s %s',
+                        $motorcycle->getBrand(),
+                        $motorcycle->getModel()
+                    ));
+                    $notification->setCreatedAt(new \DateTimeImmutable());
+                    $notification->setReadStatus(false);
+                    $notification->setType(Notification::TYPE_NEW_VEHICLE);
+                    $notification->setClient($user);
+                    
+                    $entityManager->persist($notification);
+                }
+            }
 
+            $entityManager->flush();
             $this->addFlash('success', 'La moto a été ajoutée avec succès.');
             return $this->redirectToRoute('admin_vehicles');
         }

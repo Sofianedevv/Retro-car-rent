@@ -75,8 +75,6 @@ class AdminUserController extends AbstractController
                 $user->setPassword($hashedPassword);
             }
 
-            // Utiliser DateTimeImmutable pour la mise à jour aussi
-            $user->setUpdatedAt(new DateTimeImmutable());
             $entityManager->flush();
 
             $this->addFlash('success', 'Utilisateur modifié avec succès.');

@@ -1,0 +1,64 @@
+<div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-[#8B4513]/10">
+	<a href="{{ path('app_vehicle_show_details', { vehicleId: vehicle.id })}}" class="block relative group">
+		<div class="h-48 bg-gray-200">
+			<img 
+				src="{{ vehicle.defaultImage }}" 
+				class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+				alt="{{ vehicle.model }}"
+			/>
+			<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+		</div>
+	</a>
+
+	<div class="p-3">
+		<div class="flex justify-between items-start mb-2">
+			<div>
+				<h4 class="font-playfair text-base font-bold text-[#8B4513] group-hover:text-[#734010]">
+					{{ vehicle.model }}
+				</h4>
+				<p class="text-xs text-gray-600">{{ vehicle.brand }}</p>
+			</div>
+			<p class="font-playfair font-bold text-[#8B4513] text-base">
+				{{ vehicle.price }}€<span class="text-sm font-normal text-gray-600">/jour</span>
+			</p>
+		</div>
+
+		<div class="grid grid-cols-2 gap-1 text-xs text-gray-600 mb-2">
+			<div class="flex items-center space-x-1">
+				<i class="fas fa-calendar-alt text-[#8B4513] w-4"></i>
+				<span>{{ vehicle.year }}</span>
+			</div>
+			<div class="flex items-center space-x-1">
+				<i class="fas fa-road text-[#8B4513] w-4"></i>
+				<span>{{ vehicle.mileage }} km</span>
+			</div>
+			{% if vehicle.nbSeats is defined %}
+				<div class="flex items-center space-x-1">
+					<i class="fas fa-chair text-[#8B4513] w-4"></i>
+					<span>{{ vehicle.nbSeats }} sièges</span>
+				</div>
+				<div class="flex items-center space-x-1">
+					<i class="fas fa-gas-pump text-[#8B4513] w-4"></i>
+					<span>{{ vehicle.fuelType }}</span>
+				</div>
+			{% endif %}
+		</div>
+
+		<div class="flex items-center justify-between pt-2 border-t border-[#8B4513]/10">
+			<a href="{{ path('app_vehicle_show_details', { vehicleId: vehicle.id })}}" 
+			   class="text-xs text-[#8B4513] hover:text-[#734010] transition-colors duration-300 flex items-center space-x-1">
+				<span>Détails</span>
+				<i class="fas fa-chevron-right text-xs"></i>
+			</a>
+			
+			<form action="{{ path('app_favorite_delete', {'vehicleId': vehicle.id}) }}" method="post" class="inline">
+				<button type="submit" 
+						class="text-xs flex items-center space-x-1 text-red-500 hover:text-red-600 transition-colors duration-300">
+					<i class="fas fa-heart-broken"></i>
+					<span>Retirer</span>
+				</button>
+			</form>
+		</div>
+	</div>
+</div>
+

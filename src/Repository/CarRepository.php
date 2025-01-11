@@ -41,23 +41,14 @@ class CarRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-
-    /**
-     * Récupère les X voitures les plus reviewées
-     *
-     * @param int $limit Nombre de voitures à récupérer
-     * @return Car[] Retourne un tableau des voitures
-     */
-    public function findTopReviewedCars(int $limit): array
+    public function findBestRated(int $limit = 4): array
     {
         return $this->createQueryBuilder('c')
-            ->addSelect('COUNT(r.id) AS HIDDEN reviewCount') // Compte les reviews
-            ->leftJoin('c.reviews', 'r') // Jointure avec les reviews
-            ->groupBy('c.id') // Groupe par voiture
-            ->orderBy('reviewCount', 'DESC') // Tri par nombre de reviews
-            ->setMaxResults($limit) // Limite des résultats
+            ->leftJoin('c.reviews', 'r')
+            ->groupBy('c.id')
+            ->orderBy('AVG(r.rating)', 'DESC')
+            ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
     }
-
 }
