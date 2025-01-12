@@ -32,13 +32,14 @@
                     {% endif %}
                     <li><a href="{{ path('app_favorite_show') }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair" aria-label="Liste des favoris">
                             <i class="fas fa-heart mr-2"></i>Favoris
-                        </a></li>
+                        </a>
+                    </li>
                     <li class="relative">
                         <a href="{{ path('app_notifications') }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair" aria-label="Notifications">
                             <i class="fas fa-bell mr-2"></i>Notifications
                             {% if unread_notifications_count > 0 %}
-                                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center notification-badge">
-                                    {{ unread_notifications_count }}
+                                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-sm font-bold rounded-full h-4 w-4 flex items-center justify-center notification-badge text-center leading-none">
+{#                                     {{ unread_notifications_count }}#}
                                 </span>
                             {% endif %}
                         </a>
