@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use DateTimeImmutable;
 
-
 class ReservationController extends AbstractController
 {
     private ReservationNormalizer $normalizer;
@@ -95,6 +94,7 @@ class ReservationController extends AbstractController
     #[Route('/reservations/{vehicleId}', name: 'api_reservations', methods: ['GET'])]
     public function getDatesReservations(int $vehicleId, ReservationRepository $reservationRepository): JsonResponse
     {
+        
         $reservations = $reservationRepository->findBy(['vehicle' => $vehicleId]);
     
         $data = array_map(function ($reservation) {
@@ -108,8 +108,8 @@ class ReservationController extends AbstractController
             }
     
             return [
-                'startDate' => $startDate->format('Y-m-d'),
-                'endDate' => $endDate->format('Y-m-d'),
+                'startDate' => $startDate->format('Y-m-d H:i:s'),
+                'endDate' => $endDate->format('Y-m-d H:i:s'),
             ];
         }, $reservations);
     

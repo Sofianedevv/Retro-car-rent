@@ -4,7 +4,7 @@ App\Entity\Vehicle:
     model: "Model <current()>"
     brand: "Brand <current()>"
     year: 1965
-    price: 25000.00
+    price: 50
     fuelType: "essence"
     mileage: 45000
     availability: true

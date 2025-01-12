@@ -23,6 +23,9 @@ use App\Repository\FavoriteRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\VehicleOptionRepository;
 use App\Repository\ReviewRepository;
+
+use App\Service\Vehicle\VehicleService;
+use App\Form\ReservationType;
 use Doctrine\ORM\EntityManagerInterface;
 
 
@@ -232,7 +235,9 @@ class VehicleController extends AbstractController
         CategoryRepository $categoryRepository, 
         VehicleOptionRepository $vehicleOptionRepository, 
         ReviewRepository $reviewRepository,
-        FavoriteRepository $favoriteRepository
+        VehicleService $vehicleService,
+        FavoriteRepository $favoriteRepository,
+        Request $request
     ): Response
     {
         $user = $this->getUser();
@@ -241,7 +246,7 @@ class VehicleController extends AbstractController
         $options = $vehicleOptionRepository->findOptionsByVehicle($vehicle);
         $reviews = $reviewRepository->findBy(['vehicle' => $vehicle], ['createdAt' => 'DESC']);
         $averageRating = $reviewRepository->getAverageRating($vehicle);
-        $type = $this->getVehicleType($vehicle);
+        $type = $vehicleService->getVehicleType($vehicle);
 
         if(!$vehicle) {
             $this->addFlash('error', 'Ce véhicule n\'existe pas.');
@@ -256,7 +261,7 @@ class VehicleController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             
             $reservationData = $form->getData();
-
+            $vehicleId = $reservationData['vehicle'];
             $rangeDate = $reservationData['rangeDate'];
             $totalPrice = $reservationData['totalPrice'];
             // dd($totalPrice);
@@ -281,12 +286,13 @@ class VehicleController extends AbstractController
             'categories'=> $categories,
             'options' => $options,
             'reviews' => $reviews,
-            'averageRating' => $averageRating
+            'averageRating' => $averageRating,
+            'form' => $form->createView(),
         ]);
     }
 
-        return 'Type de véhicule inconnu';
-    }
+        // return 'Type de véhicule inconnu';
+    
 
    
 }

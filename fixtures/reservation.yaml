@@ -3,11 +3,10 @@ App\Entity\Reservation:
     startDate: '<dateTimeBetween("-1 week", "+1 week")>'
     endDate: '<dateTimeBetween("-1 week", "+1 week")>'
     createdAt: '<dateTimeBetween("-1 week", "+1 week")>'
-    totalPrice: 10000.00
+    totalPrice: '<randomFloat(2, 50, 2500)>'
 
   reservation_1 (extends reservation_template):
     status: !php/const 'App\Enum\StatusReservationEnum::CONFIRMED'
-    total_price: 60400.00
     vehicle: '@vehicle_car_*'  
     client: '@user_with_reservation_*'  
 

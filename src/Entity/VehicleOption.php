@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\VehicleOptionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: VehicleOptionRepository::class)]
@@ -26,6 +27,9 @@ class VehicleOption
      */
     #[ORM\ManyToMany(targetEntity: Vehicle::class, mappedBy: 'vehicleOptions')]
     private Collection $vehicles;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
+    private ?string $price = null;
 
     public function __construct()
     {
@@ -84,6 +88,18 @@ class VehicleOption
         if ($this->vehicles->removeElement($vehicle)) {
             $vehicle->removeVehicleOption($this);
         }
+
+        return $this;
+    }
+
+    public function getPrice(): ?string
+    {
+        return $this->price;
+    }
+
+    public function setPrice(string $price): static
+    {
+        $this->price = $price;
 
         return $this;
     }
