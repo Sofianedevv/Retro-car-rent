@@ -31,10 +31,10 @@
  <!-- Featured Section -->
     <section class="py-6">
         <!-- Grand titre -->
-        <div class="mb-3 lg:mb-20 mx-6 lg:mx-12">
-            <h3 class="text-5xl font-bold text-center">
-                Découvrez comment <span class="text-[#b3a97d]">Louer</span> votre voiture <span class="text-[#b3a97d]">Rétro</span> en quelques étapes simples.
-            </h3>
+        <div class="mb-3 lg:mb-12 mx-6 lg:mx-12">
+            <h2 class="text-4xl font-bold text-center font-playfair">
+                Découvrez comment <span class="text-[#b3a97d]">Louer</span> votre voiture <span class="text-[#b3a97d]">Rétro</span> en quelques étapes simples
+            </h2>
         </div>
 
         <!-- Cartes -->
@@ -65,12 +65,12 @@
     </section>
 
 <!-- Services section -->
-    <section id="services" class="py-16 bg-gray-900">
+    <section id="services" class="py-12 bg-gray-900 mb-12">
         <div class="container mx-auto px-4">
             <div class="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-16">
                 <!-- Left side: Text content -->
                 <div class="w-full lg:w-1/2">
-                    <h2 class="text-3xl lg:text-4xl font-bold mb-4 text-gray-100">
+                    <h2 class="text-3xl lg:text-4xl font-bold mb-4 text-gray-100 font-playfair">
                         Découvrez les avantages de nos services
                     </h2>
                     <p class="text-lg mb-6 text-gray-200">
@@ -90,72 +90,71 @@
 
                 <!-- Right side: Image -->
                 <div class="w-full lg:w-1/2">
-                    <img src="{{ asset('template-html/assets/images/b1.jpg') }}" alt="Vintage Car" class="w-full h-auto rounded-lg shadow-lg">
+
+                    <img src="{{ asset('template-html/assets/images/b1.jpg') }}" alt="Vintage Car"
+                         class="w-full h-auto rounded-lg shadow-lg transition-transform duration-300 hover:scale-105">
                 </div>
             </div>
         </div>
     </section>
 
-    {#categroy section#}
-    <section id="category-section" class="py-12 bg-gray-100">
+<!-- Category section -->
+    <section id="category-section" class="py-12 bg-gray-100 mb-12">
         <div class="container mx-auto px-4">
             <!-- Grand titre aligné à gauche avec un margin-left réduit -->
             <div class="flex mb-4">
-                <h3 class="text-4xl font-bold mb-2 mr-12">Explorez Nos Catégories</h3>
+                <h3 class="text-4xl font-bold mb-2 mr-12 font-playfair text-gray-900">Explorez Nos <span class="text-[#b3a97d]">Catégories</span></h3>
             </div>
 
             <!-- Le paragraphe avec une marge réduite -->
-            <div class="mb-8 max-w-xl">
-                <p class="text-lg">
+            <div class="mb-8">
+                <p class="text-lg text-gray-800">
                     Découvrez une large gamme de véhicules vintage, chacun sélectionné pour sa beauté et son histoire. Choisissez la catégorie qui vous convient pour rendre vos occasions spéciales encore plus mémorables.
                 </p>
             </div>
 
-            <!-- Les 3 catégories sur la même ligne (Cards) -->
-            <div class="flex justify-between gap-8">
+            <!-- Les 3 catégories avec une disposition en grille -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
                 <!-- Voitures Category -->
-                <div class="w-1/3 relative">
-                    <div class="bg-cover bg-center p-6 rounded-lg shadow-lg" style="background-image: url('{{ asset('template-html/assets/images/b6.jpg') }}');">
-                        <!-- La div d'opacité est maintenant séparée du texte -->
-                        <div class="absolute inset-0 bg-black rounded-lg" style="opacity: 70%"></div> <!-- Opacité sur l'image -->
-                        <div class="relative z-10"> <!-- Contient le texte au-dessus de l'opacité -->
-                            <h3 class="text-2xl font-bold text-[#8B4513] mb-4">Voitures Vintage</h3>
-                            <p class="text-lg text-white mb-6">Louez des voitures vintage classiques pour vos événements spéciaux. Des modèles iconiques qui allient luxe et nostalgie, parfaits pour les mariages, photoshoots ou balades.</p>
-                            <a href="#"
-                               class="bg-[#F5F5F0] text-black hover:bg-black hover:text-[#F5F5F0] border-2 border-black font-playfair font-semibold px-8 py-3 rounded-none transition-all duration-300 hover:shadow-lg block text-center">
-                                Explorer les voitures
+                <div class="relative shadow-lg">
+                    <div class="bg-cover bg-center p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-2xl" style="background-image: url('{{ asset('template-html/assets/images/b6.jpg') }}');">
+                        <div class="absolute inset-0 bg-black rounded-lg" style="opacity: 70%"></div>
+                        <div class="relative z-10">
+                            <h3 class="text-2xl font-bold text-white mb-4"><i class="fas fa-car mr-2"></i>Voitures Vintage</h3>
+                            <p class="text-lg text-gray-200 mb-6">Louez des voitures vintage classiques pour vos événements spéciaux. Des modèles iconiques qui allient luxe et nostalgie, parfaits pour les mariages, photoshoots ou balades.</p>
+                            <a href="{{ path('app_car') }}"
+                               class="bg-primary text-gray-900 hover:bg-gray-700 hover:text-white font-playfair font-semibold px-8 py-3 rounded-lg transition-all duration-300 hover:shadow-lg block text-center">
+                                Explorer les voitures <i class="fas fa-arrow-right ml-2"></i>
                             </a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Motos Category -->
-                <div class="w-1/3 relative">
-                    <div class="bg-cover bg-center p-6 rounded-lg shadow-lg" style="background-image: url('{{ asset('template-html/assets/images/moto1.jpg') }}');">
-                        <!-- La div d'opacité est maintenant séparée du texte -->
-                        <div class="absolute inset-0 bg-black rounded-lg" style="opacity: 70%"></div> <!-- Opacité sur l'image -->
-                        <div class="relative z-10"> <!-- Contient le texte au-dessus de l'opacité -->
-                            <h3 class="text-2xl font-bold  text-[#8B4513] mb-4">Motos Vintage</h3>
+                <div class="relative shadow-lg">
+                    <div class="bg-cover bg-center p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-2xl" style="background-image: url('{{ asset('template-html/assets/images/moto1.jpg') }}');">
+                        <div class="absolute inset-0 bg-black rounded-lg" style="opacity: 70%"></div>
+                        <div class="relative z-10">
+                            <h3 class="text-2xl font-bold text-white mb-4"><i class="fas fa-motorcycle mr-2"></i>Motos Vintage</h3>
                             <p class="text-lg text-white mb-6">Pour les passionnés de motos classiques, nous proposons une sélection de modèles rétro qui vous offrent une expérience de conduite inégalée. Parfait pour les amateurs de sensations fortes.</p>
-                            <a href="#"
-                               class="bg-[#F5F5F0] text-black hover:bg-black hover:text-[#F5F5F0] border-2 border-black font-playfair font-semibold px-8 py-3 rounded-none transition-all duration-300 hover:shadow-lg block text-center">
-                                Explorer les motos
+                            <a href="{{ path('app_motorcycle') }}"
+                               class="bg-primary text-gray-900 hover:bg-gray-700 hover:text-white font-playfair font-semibold px-8 py-3 rounded-lg transition-all duration-300 hover:shadow-lg block text-center">
+                                Explorer les motos <i class="fas fa-arrow-right ml-2"></i>
                             </a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Vans Category -->
-                <div class="w-1/3 relative">
-                    <div class="bg-cover bg-center p-6 rounded-lg shadow-lg" style="background-image: url('{{ asset('template-html/assets/images/van1.jpg') }}');">
-                        <!-- La div d'opacité est maintenant séparée du texte -->
-                        <div class="absolute inset-0 bg-black rounded-lg" style="opacity: 70%"></div> <!-- Opacité sur l'image -->
-                        <div class="relative z-10"> <!-- Contient le texte au-dessus de l'opacité -->
-                            <h3 class="text-2xl font-bold text-[#8B4513] mb-4">Vans Vintage</h3>
+                <div class="relative shadow-lg">
+                    <div class="bg-cover bg-center p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-2xl" style="background-image: url('{{ asset('template-html/assets/images/van1.jpg') }}');">
+                        <div class="absolute inset-0 bg-black rounded-lg" style="opacity: 70%"></div>
+                        <div class="relative z-10">
+                            <h3 class="text-2xl font-bold text-white mb-4"><i class="fas fa-shuttle-van mr-2"></i>Vans Vintage</h3>
                             <p class="text-lg text-white mb-6">Louez des vans rétro pour une aventure sur la route. Idéaux pour des escapades, des voyages entre amis ou des événements, ces vans offrent confort et style vintage.</p>
-                            <a href="#"
-                               class="bg-[#F5F5F0] text-black hover:bg-black hover:text-[#F5F5F0] border-2 border-black font-playfair font-semibold px-8 py-3 rounded-none transition-all duration-300 hover:shadow-lg block text-center">
-                                Explorer les vans
+                            <a href="{{ path('app_van') }}"
+                               class="bg-primary text-gray-900 hover:bg-gray-700 hover:text-white font-playfair font-semibold px-8 py-3 rounded-lg transition-all duration-300 hover:shadow-lg block text-center">
+                                Explorer les vans <i class="fas fa-arrow-right ml-2"></i>
                             </a>
                         </div>
                     </div>
