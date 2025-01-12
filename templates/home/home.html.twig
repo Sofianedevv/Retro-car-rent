@@ -163,32 +163,49 @@
         </div>
     </section>
 
-    <!-- Popular product section -->
-    <section id="popular-products" class="py-16 bg-white">
+    <!-- Popular vehicles section -->
+    <section id="popular-products" class="py-6 bg-white">
         <div class="container mx-auto px-4">
-            <h2 class="text-4xl font-bold mb-8 font-playfair text-center">Nos Véhicules Les Mieux Notés</h2>
-            <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+            <h2 class="text-3xl lg:text-4xl font-bold mb-4 text-gray-900 font-playfair">Nos <span class="text-[#b3a97d]">Véhicules</span> Les Mieux <span class="text-[#b3a97d]">Notés</span></h2>
+            <p class="text-lg mb-6 text-gray-800">
                 Découvrez notre sélection de véhicules les plus appréciés par nos clients. Des classiques intemporels qui ont fait leurs preuves.
             </p>
             <div class="flex flex-wrap -mx-4">
                 {% for vehicle in bestRatedVehicles %}
                     <div class="w-full sm:w-1/2 lg:w-1/4 px-4 mb-8">
-                        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                            <img src="{{ vehicle.defaultImage }}" alt="{{ vehicle.brand }} {{ vehicle.model }}" 
-                                 class="w-full h-48 object-cover">
+                        <div class="bg-[#faf5e4] rounded-lg shadow-lg shadow-[#b3a97d] overflow-hidden transition-transform duration-300 hover:scale-105">
+                            <!-- Image -->
+                            <div class="relative">
+                                <img src="{{ vehicle.defaultImage }}" alt="{{ vehicle.brand }} {{ vehicle.model }}" class="w-full h-48 object-cover">
+                                <!-- Ajout d'une superposition légère pour améliorer la lisibilité du texte sur l'image si nécessaire -->
+                                <div class="absolute inset-0 bg-black opacity-25"></div>
+                            </div>
+
+                            <!-- Contenu de la carte -->
                             <div class="p-4">
-                                <h3 class="text-xl font-bold mb-2 font-playfair">{{ vehicle.brand }} {{ vehicle.model }}</h3>
+                                <!-- Titre de la carte -->
+                                <h3 class="text-xl font-bold mb-2 font-playfair text-gray-800 truncate">{{ vehicle.brand }} {{ vehicle.model }}</h3>
+
+                                <!-- Évaluations avec icônes -->
                                 <div class="flex items-center mb-2">
+                                    <i class="fas fa-star text-yellow-400 mr-1"></i> <!-- Icône de note -->
                                     {% set avgRating = vehicle.averageRating %}
                                     {% for i in 1..5 %}
                                         <i class="fas fa-star {% if i <= avgRating %}text-yellow-400{% else %}text-gray-300{% endif %} mr-1"></i>
                                     {% endfor %}
                                     <span class="text-sm text-gray-600 ml-2">({{ vehicle.reviews|length }} avis)</span>
                                 </div>
-                                <p class="text-gray-600 mb-4">{{ vehicle.price }}€ / jour</p>
+
+                                <!-- Prix avec icône -->
+                                <div class="flex items-center mb-4">
+                                    <i class="fas fa-coins text-yellow-400 mr-2"></i> <!-- Icône de prix -->
+                                    <p class="text-green-700 font-bold">{{ vehicle.price }}€ <span class="text-sm text-gray-600 ml-2 font-normal font-playfair" >/ jour</span></p>
+                                </div>
+
+                                <!-- Bouton de détail -->
                                 <a href="{{ path('app_vehicle_show_details', {'vehicleId': vehicle.id}) }}"
-                                   class="bg-[#F5F5F0] text-black hover:bg-black hover:text-[#F5F5F0] border-2 border-black font-playfair font-semibold px-6 py-2 rounded-none transition-all duration-300 hover:shadow-lg block text-center">
-                                    Voir le détail
+                                   class="bg-gray-900 text-gray-100 hover:bg-gray-400 hover:text-gray-900 font-playfair font-semibold px-8 py-3 rounded-lg transition-all duration-300 hover:shadow-lg block text-center">
+                                    Voir le détail <i class="fas fa-arrow-right ml-2"></i> <!-- Icône de flèche -->
                                 </a>
                             </div>
                         </div>
