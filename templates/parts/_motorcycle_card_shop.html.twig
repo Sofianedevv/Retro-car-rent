@@ -1,14 +1,14 @@
 <div class="group relative bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-500">
     <div class="relative overflow-hidden h-64">
-        <img src={{motorcylce.defaultImage}} 
-             alt={{motorcylce.model}}
+        <img src={{motorcycle.defaultImage}}
+             alt={{motorcycle.model}}
              class="w-full h-full object-cover transform group-hover:scale-110 transition-all duration-700">
         <!-- Gradient overlay -->
         <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         
         <!-- Year badge -->
         <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-lg">
-            <span class="font-playfair text-[#8B4513] font-bold">{{motorcylce.year}}</span>
+            <span class="font-playfair text-[#8B4513] font-bold">{{motorcycle.year}}</span>
         </div>
         
         <!-- Rating badge -->
@@ -22,25 +22,25 @@
 
     <div class="p-6">
         <div class="mb-4">
-            <h3 class="font-playfair text-xl font-bold text-[#8B4513]">{{motorcylce.brand}}</h3>
-            <p class="text-gray-600">{{motorcylce.model}}</p>
+            <h3 class="font-playfair text-xl font-bold text-[#8B4513]">{{motorcycle.brand}}</h3>
+            <p class="text-gray-600">{{motorcycle.model}}</p>
         </div>
 
         <div class="flex items-center justify-between py-3 mb-4 bg-gray-50 rounded-lg px-4">
             <div class="text-sm">
                 <div class="flex items-center">
                     <i class="fas fa-cogs text-[#8B4513] mr-2"></i>
-                    <span class="font-medium">{{motorcylce.engineCapacity}} CC</span>
+                    <span class="font-medium">{{motorcycle.engineCapacity}} CC</span>
                 </div>
             </div>
             <div class="text-right">
-                <span class="font-bold text-2xl text-[#8B4513]">{{motorcylce.price}}€</span>
+                <span class="font-bold text-2xl text-[#8B4513]">{{motorcycle.price}}€</span>
                 <span class="text-gray-600 text-sm">/jour</span>
             </div>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
-            <a href="{{ path('app_vehicle_show_details', {'vehicleId': motorcylce.id}) }}"
+            <a href="{{ path('app_vehicle_show_details', {'vehicleId': motorcycle.id}) }}"
                class="bg-white text-[#8B4513] hover:bg-gray-50 border border-[#8B4513] rounded-lg font-medium px-4 py-2 transition-colors duration-300 flex items-center justify-center gap-2">
                <i class="fas fa-info-circle"></i>
                Détails

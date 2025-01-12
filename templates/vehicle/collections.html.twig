@@ -10,6 +10,9 @@
 			<!-- Products List Car -->
 			<div class="w-full p-8 mb-16">
 				<h2 class="font-playfair font-bold text-3xl text-[#8B4513] mb-8">Nos Voitures Classiques</h2>
+				<p class="text-center text-gray-700 font-playfair mb-6">
+					Plongez dans l'univers des voitures classiques, où chaque modèle est une pièce unique qui témoigne de l'art de l'automobile d'antan. De la voiture de collection parfaite à celle qui évoque les plus beaux souvenirs, notre sélection répondra à vos attentes les plus raffinées.
+				</p>
 				<!-- Products grid -->
 				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4">
 					{% for car in cars %}
@@ -19,7 +22,7 @@
 				<!-- Button Show more -->
 				<div class="flex justify-center mt-12">
 					<a href="{{ path('app_car') }}"
-						class="bg-[#8B4513] text-[#F5F5F0] hover:bg-[#F5F5F0] hover:text-[#8B4513] border-2 border-[#8B4513] font-playfair font-semibold px-8 py-3 rounded-none transition-all duration-300 hover:shadow-lg">
+					   class="bg-[#8B4513] text-[#F5F5F0] hover:bg-[#F5F5F0] hover:text-[#8B4513] border-2 border-[#8B4513] font-playfair font-semibold px-8 py-3 rounded-none transition-all duration-300 hover:shadow-lg">
 						Voir toutes les voitures
 					</a>
 				</div>
@@ -28,14 +31,17 @@
 			<!-- Products List Motorcycle -->
 			<div class="w-full p-8 mb-16 bg-white">
 				<h2 class="font-playfair font-bold text-3xl text-[#8B4513] mb-8">Nos Motos Vintage</h2>
+				<p class="text-center text-gray-700 font-playfair mb-6">
+					Laissez-vous séduire par nos motos vintage, symboles d'une époque où la liberté de rouler prenait une toute nouvelle dimension. Chaque moto de notre collection a été sélectionnée avec soin pour vous offrir une expérience authentique et intemporelle.
+				</p>
 				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4">
-					{% for motorcylce in motorcycles %}
-						{% include 'parts/_motorcycle_card_shop.html.twig' %}
+					{% for motorcycle in motorcycles %}
+						{% include 'parts/_motorcycle_card_shop.html.twig' with { 'motorcycle': motorcycle } %}
 					{% endfor %}
 				</div>
 				<div class="flex justify-center mt-12">
 					<a href="{{ path('app_motorcycle') }}"
-						class="bg-[#8B4513] text-[#F5F5F0] hover:bg-[#F5F5F0] hover:text-[#8B4513] border-2 border-[#8B4513] font-playfair font-semibold px-8 py-3 rounded-none transition-all duration-300 hover:shadow-lg">
+					   class="bg-[#8B4513] text-[#F5F5F0] hover:bg-[#F5F5F0] hover:text-[#8B4513] border-2 border-[#8B4513] font-playfair font-semibold px-8 py-3 rounded-none transition-all duration-300 hover:shadow-lg">
 						Voir toutes les motos
 					</a>
 				</div>
@@ -44,6 +50,9 @@
 			<!-- Products List Van -->
 			<div class="w-full p-8">
 				<h2 class="font-playfair font-bold text-3xl text-[#8B4513] mb-8">Nos Vans Rétro</h2>
+				<p class="text-center text-gray-700 font-playfair mb-6">
+					Revivez l’âge d’or des voyages en famille ou entre amis avec nos vans rétro. Offrant un mélange parfait de nostalgie et de praticité, nos vans sont idéaux pour ceux qui recherchent des aventures inoubliables sur la route.
+				</p>
 				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4">
 					{% for van in vans %}
 						{% include 'parts/_van_card_shop.html.twig' %}
@@ -51,7 +60,7 @@
 				</div>
 				<div class="flex justify-center mt-12">
 					<a href="{{ path('app_van') }}"
-						class="bg-[#8B4513] text-[#F5F5F0] hover:bg-[#F5F5F0] hover:text-[#8B4513] border-2 border-[#8B4513] font-playfair font-semibold px-8 py-3 rounded-none transition-all duration-300 hover:shadow-lg">
+					   class="bg-[#8B4513] text-[#F5F5F0] hover:bg-[#F5F5F0] hover:text-[#8B4513] border-2 border-[#8B4513] font-playfair font-semibold px-8 py-3 rounded-none transition-all duration-300 hover:shadow-lg">
 						Voir tous les vans
 					</a>
 				</div>
@@ -65,10 +74,10 @@
 			<div class="max-w-3xl mx-auto text-center">
 				<h2 class="text-3xl font-playfair font-bold mb-6 text-[#8B4513]">L'Excellence du Vintage</h2>
 				<p class="mb-6 text-gray-700 font-playfair">
-					Découvrez notre collection soigneusement sélectionnée de véhicules d'exception. Chaque modèle raconte une histoire unique et incarne l'élégance d'une époque révolue.
+					Découvrez notre collection soigneusement sélectionnée de véhicules d'exception. Chaque modèle raconte une histoire unique et incarne l'élégance d'une époque révolue. Nous mettons un point d'honneur à vous offrir des véhicules non seulement de qualité, mais aussi chargés d'émotion et d'histoire.
 				</p>
 				<p class="text-gray-700 font-playfair">
-					Que vous recherchiez une voiture classique pour un mariage, une moto vintage pour une balade nostalgique, ou un van rétro pour une aventure inoubliable, notre collection saura répondre à vos attentes les plus exigeantes.
+					Que vous recherchiez une voiture classique pour un mariage, une moto vintage pour une balade nostalgique, ou un van rétro pour une aventure inoubliable, notre collection saura répondre à vos attentes les plus exigeantes. Faites le choix de l'authenticité, du style et de l'aventure avec nos véhicules rares.
 				</p>
 			</div>
 		</div>
