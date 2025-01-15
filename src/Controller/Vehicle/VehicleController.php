@@ -4,6 +4,7 @@ namespace App\Controller\Vehicle;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -22,11 +23,21 @@ use App\Repository\FavoriteRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\VehicleOptionRepository;
 use App\Repository\ReviewRepository;
+
+use App\Service\Vehicle\VehicleService;
+use App\Form\ReservationType;
 use Doctrine\ORM\EntityManagerInterface;
 
 
 class VehicleController extends AbstractController
 {
+    private VehicleService $vehicleService;
+
+    public function __construct(VehicleService $vehicleService)
+    {
+        $this->vehicleService = $vehicleService;
+    }
+
     #[Route('/nos-vehicules', name: 'app_collections')]
     public function vehicules(VehicleRepository $vehicleRepository): Response
     {
@@ -224,7 +235,9 @@ class VehicleController extends AbstractController
         CategoryRepository $categoryRepository, 
         VehicleOptionRepository $vehicleOptionRepository, 
         ReviewRepository $reviewRepository,
-        FavoriteRepository $favoriteRepository
+        VehicleService $vehicleService,
+        FavoriteRepository $favoriteRepository,
+        Request $request
     ): Response
     {
         $user = $this->getUser();
@@ -233,11 +246,38 @@ class VehicleController extends AbstractController
         $options = $vehicleOptionRepository->findOptionsByVehicle($vehicle);
         $reviews = $reviewRepository->findBy(['vehicle' => $vehicle], ['createdAt' => 'DESC']);
         $averageRating = $reviewRepository->getAverageRating($vehicle);
-        $type = $this->getVehicleType($vehicle);
+        $type = $vehicleService->getVehicleType($vehicle);
 
         if(!$vehicle) {
             $this->addFlash('error', 'Ce véhicule n\'existe pas.');
             return $this->redirectToRoute('app_collections');
+        }
+
+        $form = $this->createForm(ReservationType::class, null, [
+            'vehicle' => $vehicle,
+        ]);
+        $form->handleRequest($request);
+        dump($form);
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $reservationData = $form->getData();
+            $vehicleId = $reservationData['vehicle'];
+            $rangeDate = $reservationData['rangeDate'];
+            $totalPrice = $reservationData['totalPrice'];
+            // dd($totalPrice);
+            if(is_string($rangeDate) ) {
+                    $dates = explode(' au ', $rangeDate);
+
+                        $startDate = new \DateTime(trim($dates[0]));
+                        $endDate = new \DateTime(trim($dates[1]));
+                
+            }
+            return $this->redirectToRoute('app_reservation_summary', [
+                'vehicleId' => $vehicle->getId(),
+                'startDate' => $startDate->format('Y-m-d'),
+                'endDate' => $endDate->format('Y-m-d'),
+                'totalPrice' => $totalPrice,
+            ]);
         }
         
         return $this->render('vehicle/_display_details.html.twig', [
@@ -246,7 +286,8 @@ class VehicleController extends AbstractController
             'categories'=> $categories,
             'options' => $options,
             'reviews' => $reviews,
-            'averageRating' => $averageRating
+            'averageRating' => $averageRating,
+            'form' => $form->createView()
         ]);
     }
 

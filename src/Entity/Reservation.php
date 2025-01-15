@@ -6,6 +6,8 @@ use App\Enum\StatusReservationEnum;
 use App\Repository\ReservationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 class Reservation
@@ -13,30 +15,48 @@ class Reservation
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['reservation:read', 'reservation:write'])]
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups(['reservation:read', 'reservation:write'])]
+
     private ?\DateTimeImmutable $startDate = null;
 
     #[ORM\Column]
+    #[Groups(['reservation:read', 'reservation:write'])]
     private ?\DateTimeImmutable $endDate = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    #[Groups(['reservation:read', 'reservation:write'])]
+
     private ?string $totalPrice = null;
 
     #[ORM\Column(enumType: StatusReservationEnum::class)]
+    #[Groups(['reservation:read'])]
+
     private ?StatusReservationEnum $status = null;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['reservation:read', 'reservation:write'])]
+
     private ?User $client = null;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['reservation:read', 'reservation:write'])]
+
     private ?Vehicle $vehicle = null;
 
     #[ORM\OneToOne(mappedBy: 'reservation', cascade: ['persist', 'remove'])]
     private ?Payment $payment = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\OneToOne(mappedBy: 'reservation', cascade: ['persist', 'remove'])]
+    private ?Invoice $invoice = null;
 
     public function getId(): ?int
     {
@@ -128,6 +148,34 @@ class Reservation
         }
 
         $this->payment = $payment;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getInvoice(): ?Invoice
+    {
+        return $this->invoice;
+    }
+
+    public function setInvoice(Invoice $invoice): static
+    {
+        if ($invoice->getReservation() !== $this) {
+            $invoice->setReservation($this);
+        }
+
+        $this->invoice = $invoice;
 
         return $this;
     }
