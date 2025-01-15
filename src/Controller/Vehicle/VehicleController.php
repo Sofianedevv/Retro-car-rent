@@ -249,6 +249,7 @@ class VehicleController extends AbstractController
             'averageRating' => $averageRating
         ]);
     }
+
     private function getVehicleType(Vehicle $vehicle): string
     {
         if ($vehicle instanceof Car) {
@@ -262,5 +263,4 @@ class VehicleController extends AbstractController
         return 'Type de véhicule inconnu';
     }
 
-   
 }
