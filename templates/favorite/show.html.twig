@@ -42,10 +42,11 @@
             <div class="bg-white rounded-xl shadow-xl p-6 mb-8">
                 <div class="flex flex-wrap items-center justify-between gap-4">
                     <div class="flex items-center space-x-4">
-                        <span class="text-[#8B4513] font-playfair">
-                            <i class="fas fa-heart mr-2"></i>
-                            {{ favorites|length }} véhicule(s) en favoris
-                        </span>
+                        {% set totalVehicles = 0 %}
+                        {% for favorite in favorites %}
+                            {% set totalVehicles = totalVehicles + favorite.vehicles|length %}
+                        {% endfor %}
+                        {{ totalVehicles }} véhicule(s) en favoris
                     </div>
                     <div class="flex items-center space-x-4">
                         <button class="text-[#8B4513] hover:text-[#734010] transition-colors duration-300">
