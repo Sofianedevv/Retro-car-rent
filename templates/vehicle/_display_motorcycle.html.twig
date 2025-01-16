@@ -79,17 +79,22 @@
             <!-- Filters -->
             <div id="filters" class="w-full md:w-1/4 p-6 hidden md:block bg-white shadow-lg">
                 <form method="get" action="{{ path('app_motorcycle') }}" class="space-y-6">
-                    <!-- Marque Filter -->
+                    <!-- Filtre Marque -->
                     <div class="mb-8 pb-6 border-b border-[#8B4513]/10">
                         <h3 class="text-xl font-playfair font-bold text-[#8B4513] mb-4">Marque</h3>
-                        <div class="space-y-2">
+                        <div class="space-y-2 max-h-48 overflow-y-auto">
                             {% for brand in brands %}
-                                <label class="flex items-center hover:text-[#8B4513] transition-colors cursor-pointer">
-                                    <input type="radio" name="brand" value="{{ brand }}" 
-                                           {% if filters.brand == brand %}checked{% endif %}
-                                           class="form-radio text-[#8B4513] focus:ring-[#8B4513]">
-                                    <span class="ml-2">{{ brand }}</span>
-                                </label>
+                                <div class="flex items-center">
+                                    <input type="checkbox" 
+                                           id="brand_{{ brand }}" 
+                                           name="brand[]" 
+                                           value="{{ brand }}"
+                                           {% if brand in filters.brand|default([]) %}checked{% endif %}
+                                           class="h-4 w-4 text-[#8B4513] border-gray-300 rounded focus:ring-[#8B4513]">
+                                    <label for="brand_{{ brand }}" class="ml-2 text-sm text-gray-900 hover:text-[#8B4513] transition-colors cursor-pointer">
+                                        {{ brand }}
+                                    </label>
+                                </div>
                             {% endfor %}
                         </div>
                     </div>
@@ -107,17 +112,22 @@
                         </div>
                     </div>
 
-                    <!-- Type de moto Filter -->
-                    <div class="mb-6 pb-8 border-b border-gray-line">
-                        <h3 class="text-lg font-semibold mb-6">Type</h3>
-                        <div class="space-y-2">
+                    <!-- Filtre Type de moteur -->
+                    <div class="mb-8 pb-6 border-b border-[#8B4513]/10">
+                        <h3 class="text-xl font-playfair font-bold text-[#8B4513] mb-4">Type de moteur</h3>
+                        <div class="space-y-2 max-h-48 overflow-y-auto">
                             {% for type in types %}
-                                <label class="flex items-center">
-                                    <input type="radio" name="type" value="{{ type }}"
-                                           {% if filters.type == type %}checked{% endif %}
-                                           class="form-radio">
-                                    <span class="ml-2">{{ type }}</span>
-                                </label>
+                                <div class="flex items-center">
+                                    <input type="checkbox" 
+                                           id="type_{{ type }}" 
+                                           name="type[]" 
+                                           value="{{ type }}"
+                                           {% if type in filters.type|default([]) %}checked{% endif %}
+                                           class="h-4 w-4 text-[#8B4513] border-gray-300 rounded focus:ring-[#8B4513]">
+                                    <label for="type_{{ type }}" class="ml-2 text-sm text-gray-900 hover:text-[#8B4513] transition-colors cursor-pointer">
+                                        {{ type }}
+                                    </label>
+                                </div>
                             {% endfor %}
                         </div>
                     </div>

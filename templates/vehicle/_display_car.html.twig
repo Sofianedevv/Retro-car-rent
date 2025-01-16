@@ -81,16 +81,21 @@
             <div id="filters" class="w-full md:w-1/4 p-6 hidden md:block bg-white shadow-lg">
                 <form method="get" action="{{ path('app_car') }}" class="space-y-6">
                     <!-- Marque Filter -->
-                    <div class="mb-8 pb-6 border-b border-[#8B4513]/10">
-                        <h3 class="text-xl font-playfair font-bold text-[#8B4513] mb-4">Marque</h3>
-                        <div class="space-y-2">
+                    <div class="mb-4">
+                        <label for="brand" class="block text-sm font-medium text-gray-700">Marque</label>
+                        <div class="mt-1 max-h-48 overflow-y-auto border border-gray-300 rounded-md p-2">
                             {% for brand in brands %}
-                                <label class="flex items-center hover:text-[#8B4513] transition-colors cursor-pointer">
-                                    <input type="radio" name="brand" value="{{ brand }}" 
-                                           {% if filters.brand == brand %}checked{% endif %}
-                                           class="form-radio text-[#8B4513] focus:ring-[#8B4513]">
-                                    <span class="ml-2">{{ brand }}</span>
+                            <div class="flex items-center mb-2">
+                                <input type="checkbox" 
+                                       id="brand_{{ brand }}" 
+                                       name="brand[]" 
+                                       value="{{ brand }}"
+                                       {% if brand in filters.brand|default([]) %}checked{% endif %}
+                                       class="h-4 w-4 text-[#8B4513] border-gray-300 rounded focus:ring-[#8B4513]">
+                                <label for="brand_{{ brand }}" class="ml-2 block text-sm text-gray-900">
+                                    {{ brand }}
                                 </label>
+                            </div>
                             {% endfor %}
                         </div>
                     </div>
@@ -123,17 +128,22 @@
                         </div>
                     </div>
 
-                    <!-- Carburant Filter -->
-                    <div class="mb-6 pb-8 border-b border-gray-line">
-                        <h3 class="text-lg font-semibold mb-6">Carburant</h3>
-                        <div class="space-y-2">
+                    <!-- Filtre Carburant -->
+                    <div class="mb-8 pb-6 border-b border-[#8B4513]/10">
+                        <h3 class="text-xl font-playfair font-bold text-[#8B4513] mb-4">Type de carburant</h3>
+                        <div class="space-y-2 max-h-48 overflow-y-auto">
                             {% for fuelType in fuelTypes %}
-                                <label class="flex items-center">
-                                    <input type="radio" name="fuelType" value="{{ fuelType }}"
-                                           {% if filters.fuelType == fuelType %}checked{% endif %}
-                                           class="form-radio">
-                                    <span class="ml-2">{{ fuelType }}</span>
-                                </label>
+                                <div class="flex items-center">
+                                    <input type="checkbox" 
+                                           id="fuelType_{{ fuelType }}" 
+                                           name="fuelType[]" 
+                                           value="{{ fuelType }}"
+                                           {% if fuelType in filters.fuelType|default([]) %}checked{% endif %}
+                                           class="h-4 w-4 text-[#8B4513] border-gray-300 rounded focus:ring-[#8B4513]">
+                                    <label for="fuelType_{{ fuelType }}" class="ml-2 text-sm text-gray-900 hover:text-[#8B4513] transition-colors cursor-pointer">
+                                        {{ fuelType }}
+                                    </label>
+                                </div>
                             {% endfor %}
                         </div>
                     </div>
@@ -164,17 +174,22 @@
                         </div>
                     </div>
 
-                    <!-- Nombre de portes Filter -->
-                    <div class="mb-6 pb-8 border-b border-gray-line">
-                        <h3 class="text-lg font-semibold mb-6">Nombre de portes</h3>
-                        <div class="space-y-2">
-                            {% for doors in nbDoorsOptions %}
-                                <label class="flex items-center">
-                                    <input type="radio" name="nbDoors" value="{{ doors }}"
-                                           {% if filters.nbDoors is not empty and filters.nbDoors == doors %}checked{% endif %}
-                                           class="form-radio">
-                                    <span class="ml-2">{{ doors }} portes</span>
-                                </label>
+                    <!-- Filtre Nombre de portes -->
+                    <div class="mb-8 pb-6 border-b border-[#8B4513]/10">
+                        <h3 class="text-xl font-playfair font-bold text-[#8B4513] mb-4">Nombre de portes</h3>
+                        <div class="space-y-2 max-h-48 overflow-y-auto">
+                            {% for door in [2, 3, 4, 5] %}
+                                <div class="flex items-center">
+                                    <input type="checkbox" 
+                                           id="nbDoors_{{ door }}" 
+                                           name="nbDoors[]" 
+                                           value="{{ door }}"
+                                           {% if door in filters.nbDoors|default([]) %}checked{% endif %}
+                                           class="h-4 w-4 text-[#8B4513] border-gray-300 rounded focus:ring-[#8B4513]">
+                                    <label for="nbDoors_{{ door }}" class="ml-2 text-sm text-gray-900 hover:text-[#8B4513] transition-colors cursor-pointer">
+                                        {{ door }} portes
+                                    </label>
+                                </div>
                             {% endfor %}
                         </div>
                     </div>

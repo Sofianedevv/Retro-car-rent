@@ -95,9 +95,9 @@ public function findCars(): array
             ->select('c')
             ->from('App\Entity\Car', 'c');
 
-        if (!empty($filters['brand'])) {
-            $qb->andWhere('c.brand = :brand')
-               ->setParameter('brand', $filters['brand']);
+        if (!empty($filters['brand']) && is_array($filters['brand'])) {
+            $qb->andWhere('c.brand IN (:brands)')
+               ->setParameter('brands', $filters['brand']);
         }
 
         if (!empty($filters['minPrice'])) {
@@ -115,9 +115,9 @@ public function findCars(): array
                ->setParameter('transmission', $filters['transmission']);
         }
 
-        if (!empty($filters['fuelType'])) {
-            $qb->andWhere('c.fuelType = :fuelType')
-               ->setParameter('fuelType', $filters['fuelType']);
+        if (!empty($filters['fuelType']) && is_array($filters['fuelType'])) {
+            $qb->andWhere('c.fuelType IN (:fuelTypes)')
+               ->setParameter('fuelTypes', $filters['fuelType']);
         }
 
         if (!empty($filters['availability'])) {
@@ -130,8 +130,8 @@ public function findCars(): array
                ->setParameter('nbSeats', $filters['nbSeats']);
         }
 
-        if (!empty($filters['nbDoors'])) {
-            $qb->andWhere('c.nbDoors = :nbDoors')
+        if (!empty($filters['nbDoors']) && is_array($filters['nbDoors'])) {
+            $qb->andWhere('c.nbDoors IN (:nbDoors)')
                ->setParameter('nbDoors', $filters['nbDoors']);
         }
 
@@ -177,9 +177,9 @@ public function findCars(): array
             ->select('m')
             ->from('App\Entity\Motorcycle', 'm');
 
-        if (!empty($filters['brand'])) {
-            $qb->andWhere('m.brand = :brand')
-               ->setParameter('brand', $filters['brand']);
+        if (!empty($filters['brand']) && is_array($filters['brand'])) {
+            $qb->andWhere('m.brand IN (:brands)')
+               ->setParameter('brands', $filters['brand']);
         }
 
         if (!empty($filters['minPrice'])) {
@@ -192,9 +192,9 @@ public function findCars(): array
                ->setParameter('maxPrice', $filters['maxPrice']);
         }
 
-        if (!empty($filters['type'])) {
-            $qb->andWhere('m.type = :type')
-               ->setParameter('type', $filters['type']);
+        if (!empty($filters['type']) && is_array($filters['type'])) {
+            $qb->andWhere('m.type IN (:types)')
+               ->setParameter('types', $filters['type']);
         }
 
         if (!empty($filters['minEngineCapacity'])) {
@@ -254,9 +254,9 @@ public function findCars(): array
             ->select('van')
             ->from('App\Entity\Van', 'van');
 
-        if (!empty($filters['brand'])) {
-            $qb->andWhere('van.brand = :brand')
-               ->setParameter('brand', $filters['brand']);
+        if (!empty($filters['brand']) && is_array($filters['brand'])) {
+            $qb->andWhere('van.brand IN (:brands)')
+               ->setParameter('brands', $filters['brand']);
         }
 
         if (!empty($filters['minPrice'])) {
@@ -304,13 +304,13 @@ public function findCars(): array
                ->setParameter('availability', true);
         }
 
-        if (!empty($filters['nbSeats'])) {
-            $qb->andWhere('van.nbSeats = :nbSeats')
+        if (!empty($filters['nbSeats']) && is_array($filters['nbSeats'])) {
+            $qb->andWhere('van.nbSeats IN (:nbSeats)')
                ->setParameter('nbSeats', $filters['nbSeats']);
         }
 
-        if (!empty($filters['nbDoors'])) {
-            $qb->andWhere('van.nbDoors = :nbDoors')
+        if (!empty($filters['nbDoors']) && is_array($filters['nbDoors'])) {
+            $qb->andWhere('van.nbDoors IN (:nbDoors)')
                ->setParameter('nbDoors', $filters['nbDoors']);
         }
 

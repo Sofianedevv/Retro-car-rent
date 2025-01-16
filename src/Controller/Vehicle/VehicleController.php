@@ -55,16 +55,16 @@ class VehicleController extends AbstractController
     {
         $search = $request->query->get('search');
         $filters = [
-            'brand' => $request->query->get('brand'),
+            'brand' => $request->query->all('brand'),
             'minPrice' => $request->query->get('minPrice'),
             'maxPrice' => $request->query->get('maxPrice'),
             'minYear' => $request->query->get('minYear'),
             'maxYear' => $request->query->get('maxYear'),
             'transmission' => $request->query->get('transmission'),
-            'fuelType' => $request->query->get('fuelType'),
+            'fuelType' => $request->query->all('fuelType'),
             'availability' => $request->query->get('availability'),
-            'nbSeats' => $request->query->get('nbSeats'),
-            'nbDoors' => $request->query->get('nbDoors'),
+            'nbSeats' => $request->query->all('nbSeats'),
+            'nbDoors' => $request->query->all('nbDoors'),
             'minMileage' => $request->query->get('minMileage'),
             'maxMileage' => $request->query->get('maxMileage'),
         ];
@@ -115,21 +115,21 @@ class VehicleController extends AbstractController
     }
     
     #[Route('/nos-motos', name: 'app_motorcycle')]
-    public function show_motorcycle(Request $request, VehicleRepository $vehicleRepository, FavoriteRepository $favoriteRepository): Response
+    public function show_motorcycles(Request $request, VehicleRepository $vehicleRepository, FavoriteRepository $favoriteRepository): Response
     {
         $search = $request->query->get('search');
         $filters = [
-            'brand' => $request->query->get('brand'),
+            'brand' => $request->query->all('brand'),
             'minPrice' => $request->query->get('minPrice'),
             'maxPrice' => $request->query->get('maxPrice'),
             'minYear' => $request->query->get('minYear'),
             'maxYear' => $request->query->get('maxYear'),
-            'type' => $request->query->get('type'),
-            'availability' => $request->query->get('availability'),
-            'minEngineCapacity' => $request->query->get('minEngineCapacity'),
-            'maxEngineCapacity' => $request->query->get('maxEngineCapacity'),
+            'type' => $request->query->all('type'),
             'minMileage' => $request->query->get('minMileage'),
             'maxMileage' => $request->query->get('maxMileage'),
+            'minEngineCapacity' => $request->query->get('minEngineCapacity'),
+            'maxEngineCapacity' => $request->query->get('maxEngineCapacity'),
+            'availability' => $request->query->get('availability'),
         ];
 
         if ($search) {
@@ -139,7 +139,7 @@ class VehicleController extends AbstractController
         }
 
         $brands = $vehicleRepository->findAllMotorcycleBrands();
-        $types = ['Sport', 'Cruiser', 'Trail', 'Roadster'];
+        $engineTypes = ['Sport', 'Cruiser', 'Trail', 'Roadster'];
         $years = range(2010, 1900, -1);
 
         $isFavorite = array_fill_keys(
@@ -163,7 +163,7 @@ class VehicleController extends AbstractController
             'motorcycles' => $motorcycles,
             'isFavorite' => $isFavorite,
             'brands' => $brands,
-            'types' => $types,
+            'types' => $engineTypes,
             'years' => $years,
             'filters' => $filters,
             'search' => $search
@@ -175,7 +175,7 @@ class VehicleController extends AbstractController
     {
         $search = $request->query->get('search');
         $filters = [
-            'brand' => $request->query->get('brand'),
+            'brand' => $request->query->all('brand'),
             'minPrice' => $request->query->get('minPrice'),
             'maxPrice' => $request->query->get('maxPrice'),
             'minYear' => $request->query->get('minYear'),
@@ -185,8 +185,8 @@ class VehicleController extends AbstractController
             'availability' => $request->query->get('availability'),
             'minMileage' => $request->query->get('minMileage'),
             'maxMileage' => $request->query->get('maxMileage'),
-            'nbSeats' => $request->query->get('nbSeats'),
-            'nbDoors' => $request->query->get('nbDoors'),
+            'nbSeats' => $request->query->all('nbSeats'),
+            'nbDoors' => $request->query->all('nbDoors'),
         ];
 
         if ($search) {

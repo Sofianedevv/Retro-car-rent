@@ -83,14 +83,19 @@
                     <!-- Marque Filter -->
                     <div class="mb-8 pb-6 border-b border-[#8B4513]/10">
                         <h3 class="text-xl font-playfair font-bold text-[#8B4513] mb-4">Marque</h3>
-                        <div class="space-y-2">
+                        <div class="space-y-2 max-h-48 overflow-y-auto">
                             {% for brand in brands %}
-                                <label class="flex items-center hover:text-[#8B4513] transition-colors cursor-pointer">
-                                    <input type="radio" name="brand" value="{{ brand }}" 
-                                           {% if filters.brand == brand %}checked{% endif %}
-                                           class="form-radio text-[#8B4513] focus:ring-[#8B4513]">
-                                    <span class="ml-2">{{ brand }}</span>
-                                </label>
+                                <div class="flex items-center">
+                                    <input type="checkbox" 
+                                           id="brand_{{ brand }}" 
+                                           name="brand[]" 
+                                           value="{{ brand }}"
+                                           {% if brand in filters.brand|default([]) %}checked{% endif %}
+                                           class="h-4 w-4 text-[#8B4513] border-gray-300 rounded focus:ring-[#8B4513]">
+                                    <label for="brand_{{ brand }}" class="ml-2 text-sm text-gray-900 hover:text-[#8B4513] transition-colors cursor-pointer">
+                                        {{ brand }}
+                                    </label>
+                                </div>
                             {% endfor %}
                         </div>
                     </div>
@@ -122,31 +127,41 @@
                     </div>
 
                     <!-- Nombre de places Filter -->
-                    <div class="mb-6 pb-8 border-b border-gray-line">
-                        <h3 class="text-lg font-semibold mb-6">Nombre de places</h3>
-                        <div class="space-y-2">
+                    <div class="mb-8 pb-6 border-b border-[#8B4513]/10">
+                        <h3 class="text-xl font-playfair font-bold text-[#8B4513] mb-4">Nombre de places</h3>
+                        <div class="space-y-2 max-h-48 overflow-y-auto">
                             {% for seats in nbSeatsOptions %}
-                                <label class="flex items-center">
-                                    <input type="radio" name="nbSeats" value="{{ seats }}"
-                                           {% if filters.nbSeats is not empty and filters.nbSeats == seats %}checked{% endif %}
-                                           class="form-radio">
-                                    <span class="ml-2">{{ seats }} places</span>
-                                </label>
+                                <div class="flex items-center">
+                                    <input type="checkbox" 
+                                           id="nbSeats_{{ seats }}" 
+                                           name="nbSeats[]" 
+                                           value="{{ seats }}"
+                                           {% if seats in filters.nbSeats|default([]) %}checked{% endif %}
+                                           class="h-4 w-4 text-[#8B4513] border-gray-300 rounded focus:ring-[#8B4513]">
+                                    <label for="nbSeats_{{ seats }}" class="ml-2 text-sm text-gray-900 hover:text-[#8B4513] transition-colors cursor-pointer">
+                                        {{ seats }} places
+                                    </label>
+                                </div>
                             {% endfor %}
                         </div>
                     </div>
 
                     <!-- Nombre de portes Filter -->
-                    <div class="mb-6 pb-8 border-b border-gray-line">
-                        <h3 class="text-lg font-semibold mb-6">Nombre de portes</h3>
-                        <div class="space-y-2">
-                            {% for doors in nbDoorsOptions %}
-                                <label class="flex items-center">
-                                    <input type="radio" name="nbDoors" value="{{ doors }}"
-                                           {% if filters.nbDoors is not empty and filters.nbDoors == doors %}checked{% endif %}
-                                           class="form-radio">
-                                    <span class="ml-2">{{ doors }} portes</span>
-                                </label>
+                    <div class="mb-8 pb-6 border-b border-[#8B4513]/10">
+                        <h3 class="text-xl font-playfair font-bold text-[#8B4513] mb-4">Nombre de portes</h3>
+                        <div class="space-y-2 max-h-48 overflow-y-auto">
+                            {% for door in nbDoorsOptions %}
+                                <div class="flex items-center">
+                                    <input type="checkbox" 
+                                           id="nbDoors_{{ door }}" 
+                                           name="nbDoors[]" 
+                                           value="{{ door }}"
+                                           {% if door in filters.nbDoors|default([]) %}checked{% endif %}
+                                           class="h-4 w-4 text-[#8B4513] border-gray-300 rounded focus:ring-[#8B4513]">
+                                    <label for="nbDoors_{{ door }}" class="ml-2 text-sm text-gray-900 hover:text-[#8B4513] transition-colors cursor-pointer">
+                                        {{ door }} portes
+                                    </label>
+                                </div>
                             {% endfor %}
                         </div>
                     </div>
