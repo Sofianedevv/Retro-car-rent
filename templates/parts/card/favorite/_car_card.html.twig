@@ -1,78 +1,48 @@
-<div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-[#8B4513]/10">
+
+
+<div class="bg-white shadow-xl rounded-lg overflow-hidden transform transition-all duration-300 hover:scale-105 relative">
+
+
 	<div class="relative">
 		{% if app.user %}
-			<div class="absolute top-4 right-4 z-10">
+			<div class="absolute top-2 right-2 flex items-center space-x-2 bg-white bg-opacity-70 px-2 py-1 rounded-full">
 				{% if isFavorite[car.id] %}
-					<a href="{{ path('app_favorite_delete', {'vehicleId': car.id}) }}" 
-						class="flex items-center space-x-2 bg-white/90 px-3 py-2 rounded-full hover:bg-white transition-colors duration-300">
-						<i class="fas fa-heart text-[#8B4513]"></i>
-						<span class="text-sm text-[#8B4513] font-playfair">Retirer des favoris</span>
-					</a>
+				<a href="{{ path('app_favorite_delete', {'vehicleId': car.id}) }}">
+					<i class="fa-solid fa-heart" style="color: #ff3d3d;"></i>
+					<span class="text-xs text-gray-800">Enregistrer</span>
+				</a>
 				{% else %}
-					<a href="{{ path('app_favorite_add', {'vehicleId': car.id}) }}" 
-						class="flex items-center space-x-2 bg-white/90 px-3 py-2 rounded-full hover:bg-white transition-colors duration-300">
-						<i class="far fa-heart text-[#8B4513]"></i>
-						<span class="text-sm text-[#8B4513] font-playfair">Ajouter aux favoris</span>
-					</a>
+				<a href="{{ path('app_favorite_add', {'vehicleId': car.id}) }}">
+					<i class="far fa-heart text-gray-700"></i>
+					<span class="text-xs text-gray-800">Enregistrer</span>
+				</a>
 				{% endif %}
 			</div>
 		{% endif %}
 
-		<a href="{{ path('app_vehicle_show_details', {vehicleId: car.id}) }}" class="block relative group">
-			<img src="{{ car.defaultImage }}" 
-				 alt="{{ car.brand }} {{ car.model }}" 
-				 class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105">
-			<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-		</a>
+
+		<img src="{{ car.defaultImage }}" alt="{{ car.model }}" class="w-full h-48 object-cover transition-all duration-300 group-hover:opacity-80">
 	</div>
 
-	<div class="p-6">
+	<div class="p-6 bg-gradient-to-b from-white via-gray-50 to-gray-100">
 		<div class="mb-4">
-			<div class="flex justify-between items-start mb-2">
-				<div>
-					<h3 class="font-playfair text-xl font-bold text-[#8B4513]">{{ car.model }}</h3>
-					<p class="text-gray-600 text-sm">{{ car.brand }}</p>
-				</div>
-				<p class="font-playfair font-bold text-[#8B4513] text-xl">
-					{{ car.price }}€<span class="text-sm font-normal text-gray-600">/jour</span>
-				</p>
-			</div>
-
-			<div class="grid grid-cols-2 gap-4 mt-4">
-				<div class="flex items-center space-x-2 text-gray-600">
-					<i class="fas fa-user-friends text-[#8B4513]"></i>
-					<span>{{ car.nbSeats }} sièges</span>
-				</div>
-				<div class="flex items-center space-x-2 text-gray-600">
-					<i class="fas fa-cog text-[#8B4513]"></i>
-					<span>{{ car.transmission }}</span>
-				</div>
-				<div class="flex items-center space-x-2 text-gray-600">
-					<i class="fas fa-calendar-alt text-[#8B4513]"></i>
-					<span>{{ car.year }}</span>
-				</div>
-				<div class="flex items-center space-x-2 text-gray-600">
-					<i class="fas fa-road text-[#8B4513]"></i>
-					<span>{{ car.mileage }} km</span>
-				</div>
-			</div>
-		</div>
-
-		<div class="flex items-center justify-between pt-4 border-t border-[#8B4513]/10">
-			<div class="flex items-center space-x-1">
-				<div class="flex">
-					{% for i in 1..5 %}
-						<i class="fas fa-star {% if i <= car.averageRating %}text-yellow-400{% else %}text-gray-300{% endif %}"></i>
-					{% endfor %}
-				</div>
-				<span class="text-sm text-gray-600">({{ car.reviews|length }} avis)</span>
-			</div>
-			
-			<a href="{{ path('app_vehicle_show_details', {vehicleId: car.id}) }}" 
-				class="inline-flex items-center space-x-2 text-[#8B4513] hover:text-[#734010] transition-colors duration-300">
-				<span class="font-playfair">Voir plus</span>
-				<i class="fas fa-arrow-right text-sm"></i>
+		<a href="{{ path('app_vehicle_show_details', {vehicleId: car.id}) }}">
+			<h3 class="text-lg font-bold text-gray-800 mb-1">{{ car.model }}</h3>
 			</a>
+			<p class="text-sm text-gray-500 mb-3 italic">{{ car.brand }}</p>
 		</div>
+
+		<div class="flex items-center justify-between my-4">
+			<div class="flex items-center text-gray-600 text-sm">
+				<i class="fas fa-user mr-2"></i>
+				{{car.nbSeats}}
+			</div>
+			<div class="flex items-center text-gray-600 text-sm">
+				<i class="fas fa-cogs mr-2"></i>
+				{{car.transmission}}
+			</div>
+			<div class="text-red-600 font-bold text-xl">{{car.price}}</div>
+		</div>
+
 	</div>
 </div>
