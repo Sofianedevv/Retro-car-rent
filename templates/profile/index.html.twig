@@ -3,58 +3,102 @@
 {% block title %}Mon Profil{% endblock %}
 
 {% block body %}
-<div class="max-w-4xl mx-auto p-6">
-    <h1 class="text-3xl font-semibold text-indigo-800 mb-6">Mon Profil</h1>
+    <!-- Hero Section -->
+    <section class="bg-primary text-gray-900 text-center py-16">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-4xl font-semibold font-playfair">
+                <i class="fas fa-user  mr-2"></i> Mon Profil
+           </h1>
+            <p class="mt-2 text-lg text-gray-500">Mettez à jour vos informations personnelles</p>
+        </div>
+    </section>
 
-    {% for label, messages in app.flashes %}
-        {% for message in messages %}
-            <div class="mb-4 p-4 rounded-lg {% if label == 'success' %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">
-                {{ message }}
-            </div>
+    <!-- Main Content -->
+    <div class="max-w-4xl mx-auto p-6">
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="mb-4 p-4 rounded-lg {% if label == 'success' %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
         {% endfor %}
-    {% endfor %}
 
-    <div class="bg-white p-6 rounded-lg shadow-md">
-        {{ form_start(form) }}
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="space-y-4">
-                    {{ form_row(form.firstName) }}
-                    {{ form_row(form.lastName) }}
+        <!-- Profil Form -->
+        <div class="bg-gray-50  p-8 rounded-xl mx-auto shadow-primary shadow-lg">
+            <div class="flex justify-center mb-4">
+                <div class="w-40 h-40 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
+                    <i class="fas fa-user fa-5x"></i> <!-- Icône utilisateur -->
                 </div>
-                <div class="space-y-4">
-                    {{ form_row(form.email) }}
-                    {{ form_row(form.phoneNumber) }}
+            </div>
+            {{ form_start(form) }}
+            <div class="space-y-6">
+                <h3 class="text-2xl sm:text-xl font-semibold text-gray-800">Informations personnelles</h3>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <!-- Nom -->
+                    <div class="flex flex-col space-y-2">
+                        <label class="text-lg font-semibold text-gray-700">{{ form.firstName.vars.label }}</label>
+                        {{ form_widget(form.firstName, {'attr': {'class': 'border border-gray-300 rounded-lg px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-primary'}}) }}
+                    </div>
+
+                    <!-- Prénom -->
+                    <div class="flex flex-col space-y-2">
+                        <label class="text-lg font-semibold text-gray-700">{{ form.lastName.vars.label }}</label>
+                        {{ form_widget(form.lastName, {'attr': {'class': 'border border-gray-300 rounded-lg px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-primary'}}) }}
+                    </div>
+
+                    <!-- Email -->
+                    <div class="flex flex-col space-y-2">
+                        <label class="text-lg font-semibold text-gray-700">{{ form.email.vars.label }}</label>
+                        {{ form_widget(form.email, {'attr': {'class': 'border border-gray-300 rounded-lg px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-primary'}}) }}
+                    </div>
+
+                    <!-- Téléphone -->
+                    <div class="flex flex-col space-y-2">
+                        <label class="text-lg font-semibold text-gray-700">{{ form.phoneNumber.vars.label }}</label>
+                        {{ form_widget(form.phoneNumber, {'attr': {'class': 'border border-gray-300 rounded-lg px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-primary'}}) }}
+                    </div>
                 </div>
             </div>
 
-            <div class="mt-6 border-t pt-6">
+            <!-- Divider -->
+            <div class="mt-6 pt-6">
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Changer le mot de passe</h3>
                 <div class="space-y-4">
-                    {{ form_row(form.plainPassword.first) }}
-                    {{ form_row(form.plainPassword.second) }}
+                    <div class="flex flex-col space-y-2">
+                        <label class="text-lg font-semibold text-gray-700">{{ form.plainPassword.first.vars.label }}</label>
+                        {{ form_widget(form.plainPassword.first, {'attr': {'class': 'border border-gray-300 rounded-lg px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-primary'}}) }}
+                    </div>
+                    <div class="flex flex-col space-y-2">
+                        <label class="text-lg font-semibold text-gray-700">{{ form.plainPassword.second.vars.label }}</label>
+                        {{ form_widget(form.plainPassword.second, {'attr': {'class': 'border border-gray-300 rounded-lg px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-primary'}}) }}
+                    </div>
                 </div>
             </div>
-
-            <div class="mt-6 flex justify-end">
-                <button type="submit" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary-dark transition duration-300">
-                    Enregistrer les modifications
+            <div class="flex justify-center mt-12">
+                <button
+                   type="submit"
+                   class="bg-gray-900 text-white hover:text-black hover:bg-white border-2 border-black rounded-lg px-8 py-3 transition-all duration-300 font-bold">
+                    <i class="fas fa-save mr-2"></i> Enregistrer
                 </button>
             </div>
-        {{ form_end(form) }}
-    </div>
 
-    <div class="mt-8 bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">Activité récente</h2>
-        <div class="space-y-4">
-            <div>
-                <h3 class="font-medium text-gray-700">Dernières réservations</h3>
-                {# TODO: Ajouter la liste des réservations #}
-            </div>
-            <div>
-                <h3 class="font-medium text-gray-700">Véhicules favoris</h3>
-                {# TODO: Ajouter la liste des favoris #}
+            {{ form_end(form) }}
+        </div>
+
+        <!-- Recent Activity Section -->
+        <div class="mt-8 bg-white p-6 rounded-lg shadow-primary shadow-lg">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Activité(s) récente(s)</h2>
+            <div class="space-y-4">
+                <div>
+                    <h3 class="font-medium text-gray-700">Dernières réservations</h3>
+                    {# TODO: Ajouter la liste des réservations #}
+                </div>
+                <div>
+                    <h3 class="font-medium text-gray-700">Véhicules favoris</h3>
+                    {# TODO: Ajouter la liste des favoris #}
+                </div>
             </div>
         </div>
     </div>
-</div>
-{% endblock %} 
+{% endblock %}
