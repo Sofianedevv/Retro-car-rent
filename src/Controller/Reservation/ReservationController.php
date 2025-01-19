@@ -113,7 +113,7 @@ class ReservationController extends AbstractController
                     $entityManager->flush();
     
                     $this->addFlash('success', 'Votre réservation a été enregistrée avec succès.');
-                    return $this->redirectToRoute('app_all_reservation', ['vehicleId' => $vehicleId]);
+                    // return $this->redirectToRoute('app_all_reservation', ['vehicleId' => $vehicleId]);
                 }
             }
     

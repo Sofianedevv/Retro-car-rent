@@ -37,6 +37,9 @@ class VehicleOption
     #[ORM\OneToMany(targetEntity: ReservationVehicleOption::class, mappedBy: 'vehicleOptions')]
     private Collection $reservationVehicleOptions;
 
+    #[ORM\Column]
+    private ?bool $singleChoice = null;
+
     public function __construct()
     {
         $this->vehicles = new ArrayCollection();
@@ -137,6 +140,18 @@ class VehicleOption
                 $reservationVehicleOption->setVehicleOptions(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isSingleChoice(): ?bool
+    {
+        return $this->singleChoice;
+    }
+
+    public function setSingleChoice(bool $singleChoice): static
+    {
+        $this->singleChoice = $singleChoice;
 
         return $this;
     }

@@ -12,7 +12,9 @@ document.addEventListener("DOMContentLoaded", function () {
     let totalPrice = vehiclePrice;
 
     function updateTotalPrice() {
-        totalPrice = vehiclePrice * (daysCountElement.textContent || 1) + totalOptionPrice;
+        const days = parseInt(daysCountElement.textContent) || 0;
+        const vehicleCost = days > 0 ? vehiclePrice * days : 0;
+        totalPrice = vehicleCost + totalOptionPrice;
         totalPriceElement.textContent = totalPrice.toFixed(2).replace('.', ',') + " €";
         optionPriceElement.textContent = totalOptionPrice.toFixed(2).replace('.', ',') + " €";
     }
@@ -51,6 +53,22 @@ document.addEventListener("DOMContentLoaded", function () {
     if (startDateInput.value && endDateInput.value) {
         calculateTotalPrice(startDateInput.value, endDateInput.value);
     }
+
+    const optionsCheckboxes = document.querySelectorAll('.checkbox');
+    optionsCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            const optionId = checkbox.id.split('_')[1];
+            const optionPrice = parseFloat(checkbox.getAttribute('data-price'));
+            if (checkbox.checked) {
+                totalOptionPrice += optionPrice;
+            } else {
+                totalOptionPrice -= optionPrice;
+            }
+            updateTotalPrice();
+            const hiddenInput = document.getElementById(`option_${optionId}_count_hidden`);
+            hiddenInput.value = checkbox.checked ? 1 : 0;
+        })
+    })
 
     const optionPlusButtons = document.querySelectorAll('.option-plus');
     const optionMinusButtons = document.querySelectorAll('.option-minus');
