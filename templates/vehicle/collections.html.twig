@@ -128,4 +128,42 @@
 			</div>
 		</div>
 	</section>
+	<!-- Scroll to top button -->
+	<button id="scrollToTopBtn" class="fixed bottom-6 right-6 bg-primary text-white rounded-full p-4 shadow-lg border-2 border-gray-900 hover:bg-primary/10 transition-all duration-300 ease-in-out" style="display: none;">
+		<i class="fas fa-arrow-up text-xl text-gray-900"></i>
+	</button>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+			const footer = document.querySelector('footer'); // Sélectionne le footer
+			const footerHeight = footer ? footer.offsetHeight : 0; // Récupère la hauteur du footer
+
+			// Masque le bouton au début
+			scrollToTopBtn.style.display = "none";
+
+			// Affiche le bouton lorsque l'utilisateur défile de plus de 150px
+			window.onscroll = function() {
+				if (document.body.scrollTop > 150 || document.documentElement.scrollTop > 150) {
+					scrollToTopBtn.style.display = "block";
+				} else {
+					scrollToTopBtn.style.display = "none";
+				}
+			};
+
+			// Ajuste la position du bouton lors du redimensionnement de la fenêtre
+			window.addEventListener('resize', function() {
+				const footerHeight = footer ? footer.offsetHeight : 0;
+				scrollToTopBtn.style.bottom = `${footerHeight + 20}px`; // Ajoute 20px d'espace entre le bouton et le footer
+			});
+
+			// Fonction pour faire défiler la page jusqu'en haut lorsqu'on clique sur le bouton
+			scrollToTopBtn.onclick = function() {
+				window.scrollTo({
+					top: 0,
+					behavior: 'smooth'
+				});
+			};
+		});
+	</script>
 {% endblock %}

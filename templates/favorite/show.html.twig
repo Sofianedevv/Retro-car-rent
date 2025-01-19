@@ -1,18 +1,18 @@
 {% extends 'base.html.twig' %}
-{% block title %}Vos Favoris{% endblock %}
+{% block title %}Mes Favoris{% endblock %}
 
 {% block body %}
-<div class="bg-[#F5F5F0] min-h-screen">
+<div class="bg-gray-100 min-h-screen">
     <!-- Hero Section -->
-    <div class="bg-[#8B4513] py-16">
+    <div class="bg-primary py-16">
         <div class="container mx-auto px-4">
             <div class="text-center">
-                <h1 class="text-5xl font-playfair font-bold text-[#F5F5F0] mb-4">
+                <h1 class="text-5xl font-playfair font-bold text-gray-900 mb-4">
+                    <i class="fas fa-heart text-gray-900 mr-2"></i>
                     Vos Favoris
                 </h1>
-                <div class="w-24 h-1 bg-[#F5F5F0] mx-auto mb-4"></div>
-                <p class="text-[#F5F5F0]/90 text-lg font-playfair">
-                    Retrouvez votre sélection de véhicules d'exception
+                <p class="text-gray-500 text-lg font-playfair">
+                    Retrouvez vos véhicules d'exception favoris et ne manquez jamais une occasion de les admirer.
                 </p>
             </div>
         </div>
@@ -39,16 +39,16 @@
             </div>
         {% else %}
             <!-- Filters and Sort -->
-            <div class="bg-white rounded-xl shadow-xl p-6 mb-8">
+            <div class="bg-white rounded-xl shadow-xl p-6 mb-8 hover:shadow-lg hover:scale-105 transition-all duration-500 ease-in-out">
                 <div class="flex flex-wrap items-center justify-between gap-4">
                     <div class="flex items-center space-x-4">
-                        <span class="text-[#8B4513] font-playfair">
-                            <i class="fas fa-heart mr-2"></i>
-                            {{ favorites|length }} véhicule(s) en favoris
-                        </span>
+            <span class="text-[#8B4513] font-playfair">
+                <i class="fas fa-heart mr-2"></i>
+                {{ favorites|length }} véhicule(s) en favoris
+            </span>
                     </div>
                     <div class="flex items-center space-x-4">
-                        <button class="text-[#8B4513] hover:text-[#734010] transition-colors duration-300">
+                        <button class="text-[#8B4513] hover:text-[#734010] transition-colors duration-300 ease-in-out">
                             <i class="fas fa-sort-amount-down mr-2"></i>
                             Prix décroissant
                         </button>
@@ -68,40 +68,43 @@
     </div>
 </div>
 
-<!-- Scroll to top button -->
-<button id="scrollToTop" 
-        class="fixed bottom-8 right-8 bg-[#8B4513] text-[#F5F5F0] p-4 rounded-full shadow-lg hover:bg-[#734010] transition-all duration-300 opacity-0 invisible">
-    <i class="fas fa-arrow-up"></i>
-</button>
-{% endblock %}
+    <!-- Scroll to top button -->
+    <button id="scrollToTopBtn" class="fixed bottom-6 right-6 bg-primary text-white rounded-full p-4 shadow-lg border-2 border-gray-900 hover:bg-primary/10 transition-all duration-300 ease-in-out" style="display: none;">
+        <i class="fas fa-arrow-up text-xl text-gray-900"></i>
+    </button>
 
-{% block javascripts %}
-{{ parent() }}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const scrollToTopButton = document.getElementById('scrollToTop');
-        
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                scrollToTopButton.classList.remove('opacity-0', 'invisible');
-                scrollToTopButton.classList.add('opacity-100');
-            } else {
-                scrollToTopButton.classList.add('opacity-0');
-                scrollToTopButton.classList.remove('opacity-100');
-                setTimeout(() => {
-                    if (window.pageYOffset <= 300) {
-                        scrollToTopButton.classList.add('invisible');
-                    }
-                }, 300);
-            }
-        });
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+            const footer = document.querySelector('footer'); // Sélectionne le footer
+            const footerHeight = footer ? footer.offsetHeight : 0; // Récupère la hauteur du footer
 
-        scrollToTopButton.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
+            // Masque le bouton au début
+            scrollToTopBtn.style.display = "none";
+
+            // Affiche le bouton lorsque l'utilisateur défile de plus de 150px
+            window.onscroll = function() {
+                if (document.body.scrollTop > 150 || document.documentElement.scrollTop > 150) {
+                    scrollToTopBtn.style.display = "block";
+                } else {
+                    scrollToTopBtn.style.display = "none";
+                }
+            };
+
+            // Ajuste la position du bouton lors du redimensionnement de la fenêtre
+            window.addEventListener('resize', function() {
+                const footerHeight = footer ? footer.offsetHeight : 0;
+                scrollToTopBtn.style.bottom = `${footerHeight + 20}px`; // Ajoute 20px d'espace entre le bouton et le footer
             });
+
+            // Fonction pour faire défiler la page jusqu'en haut lorsqu'on clique sur le bouton
+            scrollToTopBtn.onclick = function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            };
         });
-    });
-</script>
+    </script>
 {% endblock %}
+

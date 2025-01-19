@@ -26,21 +26,20 @@
     </style>
 </head>
 
-<body class="font-playfair">
+<body class="font-playfair flex flex-col min-h-screen">
 <!-- Header -->
 {% include 'parts/_header.html.twig' %}
 <!-- End of Header -->
 
 {% block body %}{% endblock %}
 
-<!-- Footer -->
-{% include 'parts/_footer.html.twig' %}
-<!-- End of Footer -->
 
 <script src="{{ asset('template-html/node_modules/swiper/swiper-bundle.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 <script src="{{ asset('template-html/assets/js/script.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js" integrity="sha512-K/oyQtMXpxI4+K0W7H25UopjM8pzq0yrVdFdG21Fh5dBe91I40pDd9A4lzNlHPHBIP2cwZuoxaUSX0GJSObvGA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+<!-- Footer -->
+{% include 'parts/_footer.html.twig' %}
+<!-- End of Footer -->
 </body>
 </html>

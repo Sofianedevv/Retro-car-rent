@@ -1,64 +1,79 @@
-<div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-[#8B4513]/10">
-	<a href="{{ path('app_vehicle_show_details', { vehicleId: vehicle.id })}}" class="block relative group">
-		<div class="h-48 bg-gray-200">
-			<img 
-				src="{{ vehicle.defaultImage }}" 
-				class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
-				alt="{{ vehicle.model }}"
-			/>
-			<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-		</div>
-	</a>
+<div class="group relative bg-gray-50 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-500">
+	<!-- Image Section -->
+<div class="relative overflow-hidden h-64">
+		<img src="{{vehicle.defaultImage}}"
+			 alt="{{vehicle.model}}"
+			 class="w-full h-full object-cover transform group-hover:scale-110 transition-all duration-700">
+		<!-- Overlay -->
+		<div class="absolute inset-0 bg-gradient-to-t from-gray-900/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
-	<div class="p-3">
-		<div class="flex justify-between items-start mb-2">
-			<div>
-				<h4 class="font-playfair text-base font-bold text-[#8B4513] group-hover:text-[#734010]">
-					{{ vehicle.model }}
-				</h4>
-				<p class="text-xs text-gray-600">{{ vehicle.brand }}</p>
-			</div>
-			<p class="font-playfair font-bold text-[#8B4513] text-base">
-				{{ vehicle.price }}€<span class="text-sm font-normal text-gray-600">/jour</span>
-			</p>
+	<!-- Rating Badge -->
+	{% if vehicle.averageRating is defined %}
+		<div class="absolute top-4 left-4 flex items-center bg-gray-100 text-gray-900 px-3 py-1 rounded-full shadow-lg font-bold text-sm z-10">
+			<i class="fas fa-star text-yellow-500 mr-1"></i>
+			{{ vehicle.averageRating|number_format(1) }}
+		</div>
+	{% endif %}
+
+	<!-- Favorite Badge -->
+	<div class="absolute top-4 right-4 flex items-center bg-gray-50 text-gray-900 px-3 py-1 rounded-full shadow-lg font-bold text-sm z-10">
+		<form action="{{ path('app_favorite_delete', {'vehicleId': vehicle.id}) }}" method="post">
+			<button type="submit" class="text-gray-400 hover:text-red-500 transition-all duration-200">
+				<i class="fas fa-heart-broken"></i>
+			</button>
+		</form>
+	</div>
+
+</div>
+
+	<!-- Content Section -->
+	<div class="p-6 space-y-4">
+		<!-- Title Section -->
+		<div class="flex justify-between items-center">
+			<h3 class="font-playfair text-xl font-bold text-gray-900">{{ vehicle.brand }}<span class="text-gray-500 font-light text-sm">({{ vehicle.year }})</span></h3>
+			<p class="text-gray-600 text-sm">{{ vehicle.model }}</p>
 		</div>
 
-		<div class="grid grid-cols-2 gap-1 text-xs text-gray-600 mb-2">
-			<div class="flex items-center space-x-1">
-				<i class="fas fa-calendar-alt text-[#8B4513] w-4"></i>
-				<span>{{ vehicle.year }}</span>
-			</div>
-			<div class="flex items-center space-x-1">
-				<i class="fas fa-road text-[#8B4513] w-4"></i>
-				<span>{{ vehicle.mileage }} km</span>
-			</div>
-			{% if vehicle.nbSeats is defined %}
-				<div class="flex items-center space-x-1">
-					<i class="fas fa-chair text-[#8B4513] w-4"></i>
-					<span>{{ vehicle.nbSeats }} sièges</span>
+		<!-- Divider -->
+		<hr class="border-t border-gray-300">
+
+		<div class="flex flex-col space-y-4">
+			<div class="flex items-center text-sm py-3 px-4 bg-primary/10 rounded-lg space-x-6">
+				<!-- Fuel Type -->
+				<div class="flex items-center gap-2 text-gray-600">
+					<i class="fas fa-gas-pump text-lg text-gray-900"></i>
+					<span class="text-sm">{{ vehicle.fuelType|capitalize }}</span>
 				</div>
-				<div class="flex items-center space-x-1">
-					<i class="fas fa-gas-pump text-[#8B4513] w-4"></i>
-					<span>{{ vehicle.fuelType }}</span>
-				</div>
-			{% endif %}
-		</div>
 
-		<div class="flex items-center justify-between pt-2 border-t border-[#8B4513]/10">
-			<a href="{{ path('app_vehicle_show_details', { vehicleId: vehicle.id })}}" 
-			   class="text-xs text-[#8B4513] hover:text-[#734010] transition-colors duration-300 flex items-center space-x-1">
-				<span>Détails</span>
-				<i class="fas fa-chevron-right text-xs"></i>
+				<!-- Mileage -->
+				<div class="flex items-center gap-2 text-gray-600">
+					<i class="fas fa-road text-lg text-gray-900"></i>
+					<span class="text-sm">{{ vehicle.mileage }}Km</span>
+				</div>
+
+				<!-- Price -->
+				<div class="ml-auto text-right">
+					<span class="text-gray-900 font-bold text-xl">{{ vehicle.price }}€</span>
+					<span class="text-gray-500">/jour</span>
+				</div>
+			</div>
+
+		</div>
+		<!-- Buttons Section -->
+		<div class="grid grid-cols-2 gap-3 mt-4">
+			<!-- Détails -->
+			<a href="{{ path('app_vehicle_show_details', { vehicleId: vehicle.id })}}"
+			   class="flex items-center justify-center bg-gray-50 text-gray-900 border-2 border-gray-900 hover:bg-gray-900 hover:text-white rounded-lg font-bold px-4 py-2 transition-all duration-300 gap-2">
+				<i class="fas fa-info-circle"></i>
+				Détails
 			</a>
-			
-			<form action="{{ path('app_favorite_delete', {'vehicleId': vehicle.id}) }}" method="post" class="inline">
-				<button type="submit" 
-						class="text-xs flex items-center space-x-1 text-red-500 hover:text-red-600 transition-colors duration-300">
-					<i class="fas fa-heart-broken"></i>
-					<span>Retirer</span>
-				</button>
-			</form>
+
+			<!-- Réserver -->
+			<a href="#"
+			   class="flex items-center justify-center bg-gray-900 text-white hover:border-2 hover:border-gray-900 hover:text-gray-900 hover:bg-white rounded-lg font-bold px-4 py-2 transition-all duration-300 gap-2">
+				<i class="fas fa-calendar-alt"></i>
+				Réserver
+			</a>
 		</div>
 	</div>
 </div>
-

@@ -84,7 +84,7 @@ class FavoriteController extends AbstractController
     
         if (!$user) {
             $this->addFlash('error', 'Vous devez être connecté pour voir vos favoris.');
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app');
         }
     
         $favorites = $favoriteRepository->findBy(['client' => $user]);
