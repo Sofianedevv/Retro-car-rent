@@ -23,6 +23,7 @@
                     {% endif %}
                     
                     <li><a href="{{ path('app_favorite_show') }}" class="hover:text-gray-600 font-playfair font-bold block py-2">Vos favoris</a></li>
+                    <li><a href="{{ path('app_invoice', {'clientId':app.user.id}) }}" class="hover:text-gray-600 font-playfair font-bold block py-2">Vos Factures</a></li>
                     <li class="relative">
                         <a href="{{ path('app_notifications') }}" class="hover:text-gray-600 font-playfair font-bold block py-2">
                             Notifications

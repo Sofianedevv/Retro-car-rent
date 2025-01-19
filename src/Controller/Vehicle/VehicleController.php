@@ -17,6 +17,9 @@ use App\Entity\Favorite;
 use App\Entity\Category;
 use App\Entity\Review;
 use App\Entity\Notification;
+use App\Entity\Reservation;
+use DateTimeImmutable;
+use App\Enum\StatusReservationEnum;
 
 use App\Repository\VehicleRepository;
 use App\Repository\FavoriteRepository;
@@ -26,6 +29,7 @@ use App\Repository\ReviewRepository;
 
 use App\Service\Vehicle\VehicleService;
 use App\Form\ReservationType;
+use App\Service\Reservation\ReservationService;
 use Doctrine\ORM\EntityManagerInterface;
 
 
@@ -237,7 +241,9 @@ class VehicleController extends AbstractController
         ReviewRepository $reviewRepository,
         VehicleService $vehicleService,
         FavoriteRepository $favoriteRepository,
-        Request $request
+        Request $request,
+        ReservationService $reservationService,
+        EntityManagerInterface $entityManager
     ): Response
     {
         $user = $this->getUser();
@@ -252,33 +258,9 @@ class VehicleController extends AbstractController
             $this->addFlash('error', 'Ce véhicule n\'existe pas.');
             return $this->redirectToRoute('app_collections');
         }
+        ;
 
-        $form = $this->createForm(ReservationType::class, null, [
-            'vehicle' => $vehicle,
-        ]);
-        $form->handleRequest($request);
-        dump($form);
-        if ($form->isSubmitted() && $form->isValid()) {
-            
-            $reservationData = $form->getData();
-            $vehicleId = $reservationData['vehicle'];
-            $rangeDate = $reservationData['rangeDate'];
-            $totalPrice = $reservationData['totalPrice'];
-            // dd($totalPrice);
-            if(is_string($rangeDate) ) {
-                    $dates = explode(' au ', $rangeDate);
 
-                        $startDate = new \DateTime(trim($dates[0]));
-                        $endDate = new \DateTime(trim($dates[1]));
-                
-            }
-            return $this->redirectToRoute('app_reservation_summary', [
-                'vehicleId' => $vehicle->getId(),
-                'startDate' => $startDate->format('Y-m-d'),
-                'endDate' => $endDate->format('Y-m-d'),
-                'totalPrice' => $totalPrice,
-            ]);
-        }
         
         return $this->render('vehicle/_display_details.html.twig', [
             'vehicle' => $vehicle,
@@ -287,11 +269,10 @@ class VehicleController extends AbstractController
             'options' => $options,
             'reviews' => $reviews,
             'averageRating' => $averageRating,
-            'form' => $form->createView(),
         ]);
     }
 
-        // return 'Type de véhicule inconnu';
+
     
 
    

@@ -2,10 +2,7 @@
 
 namespace App\Service\PDF;
 use Nucleos\DompdfBundle\Factory\DompdfFactoryInterface;
-use Nucleos\DompdfBundle\Wrapper\DompdfInterface;
 use App\Entity\Invoice;
-use App\Entity\Reservation;
-use App\Entity\User;
 use Twig\Environment ;
 
 class PdfService
@@ -21,9 +18,11 @@ class PdfService
 
     public function generatePDF(string $html): string
     {
+        $css = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/css/invoice.css');
         /** @var \Dompdf\Dompdf  $dompdf */
         $dompdf = $this->factory->create();
-        $dompdf->loadHtml($html);
+        $htmlWithCss = "<style>" . $css . "</style>" . $html;
+        $dompdf->loadHtml($htmlWithCss);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
         
@@ -35,12 +34,29 @@ class PdfService
         $reservation = $invoice->getReservation();
         $client = $reservation->getClient();
         $vehicle = $reservation->getVehicle();
+        $reservationOptions = $reservation->getReservationVehicleOptions();
+        $startDate = $reservation->getStartDate();
+        $endDate = $reservation->getEndDate();
+        $duration = $endDate->diff($startDate)->days;
+        $vehiclePrice = $vehicle->getPrice();
+        $totalPriceVehicle = $vehiclePrice * $duration;
+    
+        $totalPriceOptions = 0;
+        foreach ($reservationOptions as $option) {
+            $totalPriceOptions += $option->getPriceByOption();
+        }
 
         $html = $this->twig->render('invoice/pdf.html.twig', [
             'invoice' => $invoice,
             'reservation' => $reservation,
             'client' => $client,
             'vehicle' => $vehicle,
+            'reservationOptions' => $reservationOptions,
+            'totalPriceVehicle' => $totalPriceVehicle,
+            'totalPriceOptions' => $totalPriceOptions,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            'duration' => $duration,
         ]);
 
         return $this->generatePDF($html);

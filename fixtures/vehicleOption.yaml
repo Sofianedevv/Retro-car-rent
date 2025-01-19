@@ -3,3 +3,5 @@ App\Entity\VehicleOption:
         name: "option <current()>"
         description: "<text()>"
         price: 20
+        reservationVehicleOptions: 
+            - '@reservationVehicleOptions_*'

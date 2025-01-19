@@ -26,7 +26,7 @@ class CancelReservationMailer {
         $this->router = $router;
     }
 
-    public function sendCancelReservationEmail(string $userEmail, int $reservationId): JsonResponse {
+    public function sendCancelReservationEmail(string $userEmail, int $reservationId): void {
 
        $url = $this->router->generate('app_reservation_cancel', ['reservatioId' => $reservationId], UrlGeneratorInterface::ABSOLUTE_URL);
 
@@ -39,19 +39,8 @@ class CancelReservationMailer {
                 'url' => $url
             ]));
 
-        try {
             $this->mailer->send($email);
-            return new JsonResponse([
-                'message' => 'Email envoyé avec succès'
-            ], Response::HTTP_OK);
 
-        } catch (\Exception $e) {
-            return new JsonResponse([
-                'message' => 'Une erreur est survenue lors de l\'envoi de l\'email',
-                'error' => $e->getMessage()
-            ], Response::HTTP_BAD_REQUEST);
-
-        }
      
      
 

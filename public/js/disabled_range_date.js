@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
-    fetch(`/reservations/${vehicleId}`)
+    fetch(`/dates-reservations/${vehicleId}`)
         .then(response => response.json())
         .then(data => {
             const disabledRanges = data.map(reservation => ({

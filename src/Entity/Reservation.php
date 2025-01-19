@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Enum\StatusReservationEnum;
 use App\Repository\ReservationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -57,6 +59,19 @@ class Reservation
 
     #[ORM\OneToOne(mappedBy: 'reservation', cascade: ['persist', 'remove'])]
     private ?Invoice $invoice = null;
+
+    /**
+     * @var Collection<int, ReservationVehicleOption>
+     */
+    #[ORM\OneToMany(targetEntity: ReservationVehicleOption::class, mappedBy: 'reservation')]
+    private Collection $reservationVehicleOptions;
+
+    public function __construct()
+    {
+        $this->reservationVehicleOptions = new ArrayCollection();
+    }
+
+   
 
     public function getId(): ?int
     {
@@ -179,4 +194,35 @@ class Reservation
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, ReservationVehicleOption>
+     */
+    public function getReservationVehicleOptions(): Collection
+    {
+        return $this->reservationVehicleOptions;
+    }
+
+    public function addReservationVehicleOption(ReservationVehicleOption $reservationVehicleOption): static
+    {
+        if (!$this->reservationVehicleOptions->contains($reservationVehicleOption)) {
+            $this->reservationVehicleOptions->add($reservationVehicleOption);
+            $reservationVehicleOption->setReservation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservationVehicleOption(ReservationVehicleOption $reservationVehicleOption): static
+    {
+        if ($this->reservationVehicleOptions->removeElement($reservationVehicleOption)) {
+            // set the owning side to null (unless already changed)
+            if ($reservationVehicleOption->getReservation() === $this) {
+                $reservationVehicleOption->setReservation(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

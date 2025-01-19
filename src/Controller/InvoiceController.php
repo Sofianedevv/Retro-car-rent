@@ -14,7 +14,7 @@ use App\Service\PDF\PdfService;
 
 class InvoiceController extends AbstractController
 {
-    #[Route('/invoice/{clientId}', name: 'app_invoice')]
+    #[Route('/vos-factures/{clientId}', name: 'app_invoice')]
     public function getInvoices(int $clientId,PdfService $pdf, ReservationRepository $reservationRepository, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
