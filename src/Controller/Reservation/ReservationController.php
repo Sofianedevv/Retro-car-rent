@@ -51,7 +51,13 @@ class ReservationController extends AbstractController
             EntityManagerInterface $entityManager,
             ReservationService $reservationService,
         ): Response {
-
+            $user = $this->getUser();
+            $user = $this->getUser();
+            if (!$user) {
+                $this->addFlash('error', 'Vous devez être connecté pour effectuer une réservation.');
+                return $this->redirectToRoute('app_login');
+            }
+            
             $vehicle = $vehicleRepository->find($vehicleId);
             if (!$vehicle) {
                 $this->addFlash('error', 'Véhicule non trouvé.');
@@ -95,7 +101,6 @@ class ReservationController extends AbstractController
                     $totalOptionPrice = $reservationService->calculateOptionPrice($options);
                     $totalPrice = ($vehiclePrice * $days) + $totalOptionPrice;
     
-                    $user = $this->getUser();
                     $reservation = new Reservation();
                     $reservation->setClient($user);
                     $reservation->setVehicle($vehicle);
@@ -164,12 +169,16 @@ class ReservationController extends AbstractController
     #[Route('/annuler_reservation/{reservationId}', name: 'app_reservation_cancel', methods: ['POST'])]
     public function cancelReservation(int $reservationId, EntityManagerInterface $entityManagerInterface, ReservationRepository $reservationRepository, CancelReservationMailer $cancelReservationMailer): Response
     {
-
+        $user = $this->getUser();
+        if (!$user) {
+            $this->addFlash('error', 'Vous devez être connecté pour annuler une réservation.');
+            return $this->redirectToRoute('app_login');
+        }
         $reservation = $reservationRepository->find($reservationId);
 
         if(!$reservation){
             $this->addFlash('error', 'Réservation non trouvée.');
-            return $this->redirectToRoute('app_reservation_all');
+            return $this->redirectToRoute('app_all_reservation', ['clientId' => $user->getId()]);
         }
 
 
@@ -179,7 +188,7 @@ class ReservationController extends AbstractController
 
         if($limitTime >= 48){
             $this->addFlash('error', 'Vous ne pouvez pas annuler votre réservation après 48h.');
-            return $this->redirectToRoute('app_reservation_all');
+            return $this->redirectToRoute('app_all_reservation', ['clientId' => $user->getId()]);
         }
         $reservation->setStatus(StatusReservationEnum::CANCELLED);
 
@@ -187,7 +196,7 @@ class ReservationController extends AbstractController
         $cancelReservationMailer->sendCancelReservationEmail($this->getUser()->getEmail(), $reservationId);
 
         $this->addFlash('success', 'Votre réservation a bien été annulée.');
-        return $this->redirectToRoute('app_all_reservation');
+        return $this->redirectToRoute('app_all_reservation', ['clientId' => $user->getId()]);
     
     }
         #[Route('/dates/reservations/{vehicleId}', name: 'app_get_dates_reservations', methods: ['GET'])]
