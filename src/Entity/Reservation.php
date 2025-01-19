@@ -17,20 +17,20 @@ class Reservation
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['reservation:read', 'reservation:write'])]
+
     private ?int $id = null;
 
     #[ORM\Column]
-    #[Groups(['reservation:read', 'reservation:write'])]
+
 
     private ?\DateTimeImmutable $startDate = null;
 
     #[ORM\Column]
-    #[Groups(['reservation:read', 'reservation:write'])]
+  
     private ?\DateTimeImmutable $endDate = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    #[Groups(['reservation:read', 'reservation:write'])]
+ 
 
     private ?string $totalPrice = null;
 
@@ -41,17 +41,18 @@ class Reservation
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['reservation:read', 'reservation:write'])]
+
 
     private ?User $client = null;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['reservation:read', 'reservation:write'])]
+
 
     private ?Vehicle $vehicle = null;
 
     #[ORM\OneToOne(mappedBy: 'reservation', cascade: ['persist', 'remove'])]
+
     private ?Payment $payment = null;
 
     #[ORM\Column]

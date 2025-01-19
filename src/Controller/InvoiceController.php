@@ -23,19 +23,19 @@ class InvoiceController extends AbstractController
             $this->addFlash('error', 'Vous devez être connecté pour visualiser vos factures.');
             return $this->redirectToRoute('app_login');
         }
+        if (!$user || $user->getId() !== $clientId) {
+            $this->addFlash('error', 'Vous devez être connecté pour visualiser vos factures ou vous ne pouvez voir que vos propres factures.');
+            return $this->redirectToRoute('app_login');
+        }
         $reservations = $reservationRepository->findBy(['client' => $clientId]);
         $invoices = [];
         foreach ($reservations as $reservation) {
             $invoice = $reservation->getInvoice();
-
-            if(!$invoice) {
-                $invoice = new Invoice();
-                $invoice->setReservation($reservation);
-                $invoice->setCreatedAt(new \DateTimeImmutable());
-                $invoice->setInvoiceNumber('INV-'.uniqid());
-                $entityManager->persist($invoice);
-                $entityManager->flush();
+            if (!$invoice || !$invoice->getReservation()) {
+                $this->addFlash('error', 'Facture ou réservation manquante pour cette réservation.');
+                continue; 
             }
+            
             $pdfFile = $pdf->generateInvoicePdf($invoice);
             $invoices[] = [
                 'invoice' => $invoice,

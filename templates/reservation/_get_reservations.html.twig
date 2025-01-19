@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes Réservations de Véhicules{% endblock %}
+
+{% block body %}
+    <div class="container mx-auto p-8">
+        <h1 class="text-4xl font-bold text-[#1E40AF] mb-8 text-center">Mes Réservations de Véhicules</h1>
+
+        {% if app.flashes('error') %}
+            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6">
+                {% for message in app.flashes('error') %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="space-y-8">
+
+            {% if reservations is not empty %}
+                {% for reservation in reservations %}
+                        <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-300 hover:shadow-xl transition-shadow duration-300">
+                            <div class="flex justify-between items-start mb-6">
+                                <div class="flex-1">
+                                    <h2 class="text-2xl font-semibold text-[#1E40AF]">{{ reservation.vehicle.model }} ({{ reservation.vehicle.brand }})</h2>
+                                    <p class="text-sm text-gray-600 mt-1">Réservé le : {{ reservation.createdAt|date('d/m/Y') }}</p>
+                                    <p class="text-sm text-gray-600 mt-1">Du {{ reservation.startDate|date('d/m/Y') }} au {{ reservation.endDate|date('d/m/Y') }}</p>
+                                </div>
+                                <a href="{{ path('app_invoice', { 'clientId': app.user.id }) }}" class="bg-[#1E40AF] hover:bg-[#2563EB] text-white py-2 px-4 rounded-lg text-sm font-semibold transition duration-300">
+                                    Voir la Facture
+                                </a>
+                            </div>
+
+                            <div class="space-y-4 mb-6">
+                                <h3 class="text-lg font-medium text-[#374151]">Options Sélectionnées</h3>
+                                <ul class="list-disc ml-6 text-sm text-gray-700">
+                                    {% if reservation.reservationVehicleOptions is not empty %}
+                                        {% for option in reservation.reservationVehicleOptions %}
+                                            {% if option.vehicleOptions is not null %}
+                                                <li class="flex items-center">
+                                                    <span class="font-semibold">{{ option.vehicleOptions.name }}</span>
+                                                    {% if option.vehicleOptions.price %}
+                                                        - <span class="text-[#1E40AF]">Prix: {{ option.vehicleOptions.price }}€</span>
+                                                    {% endif %}
+                                                    {% if option.count %}
+                                                        - <span class="text-[#1E40AF]">Quantité: {{ option.count }}</span>
+                                                    {% endif %}
+                                                </li>
+                                            {% else %}
+                                                <li class="text-red-500">Option manquante pour cette réservation.</li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% else %}
+                                        <li>Aucune option sélectionnée.</li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+
+                            <div class="flex justify-center">
+                                <form action="{{ path('app_reservation_cancel', { 'reservationId': reservation.id }) }}" method="POST">
+                                    <button type="submit" class="bg-red-600 hover:bg-red-500 text-white py-2 px-6 rounded-lg font-semibold text-lg transition duration-300 w-full md:w-auto">
+                                        Annuler la réservation
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                {% endfor %}
+            {% endif %}
+
+        </div>
+    </div>
+{% endblock %}

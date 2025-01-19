@@ -6,7 +6,7 @@
     <table class="w-full">
         <tr>
             <td class="w-half">
-                <img src=""  width="200" />
+                <img src="{{ asset('template-html/assets/images/rcr-logo2.png') }}" alt="Logo" width="200" />
             </td>
             <td class="w-half">
                 <h2>Invoice ID: {{ invoice.invoiceNumber }}</h2>
@@ -40,7 +40,7 @@
             <tr>
                 <td><strong>Date de début:</strong> {{ startDate|date('d/m/Y') }}</td>
                 <td><strong>Date de fin:</strong> {{ endDate|date('d/m/Y') }}</td>
-                <td><strong>Durée:</strong> {{ duration }} jours</td>
+                <td><strong>Durée:</strong> {{ days }} jours</td>
             </tr>
         </table>
     </div>
@@ -59,13 +59,20 @@
             </tr>
 
             {% if reservationOptions is not empty %}
-
                 {% for option in reservationOptions %}
-                    <tr>
-                        <td>{{ option.count }}</td>
-                        <td>{{ option.vehicleOptions.name }}</td>
-                        <td>{{ option.vehicleOptions.price }}€</td>
-                    </tr>
+                    {% if option.vehicleOptions is not null %}
+                        <tr>
+                            <td>{{ option.count }}</td>
+                            <td>{{ option.vehicleOptions.name }}</td>
+                            <td>{{ option.vehicleOptions.price }}€</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td>1</td>
+                            <td>Option manquante</td>
+                            <td>0€</td>
+                        </tr>
+                    {% endif %}
                 {% endfor %}
             {% endif %}
         </table>

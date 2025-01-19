@@ -5,6 +5,7 @@ namespace App\Service\Mailer;
 use App\Entity\Reservation;
 use App\Entity\User;
 use App\Entity\Vehicle;
+use App\Repository\ReservationRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,28 +16,36 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CancelReservationMailer {
     private MailerInterface $mailer;
+    private ReservationRepository $reservationRepository;
     private EntityManagerInterface $entityManager;
-    private Environment $twig;
 
-    public function __construct(MailerInterface $mailer,EntityManagerInterface $entityManager, Environment $twig, UrlGeneratorInterface $router)
+
+    public function __construct(MailerInterface $mailer,EntityManagerInterface $entityManager, Environment $twig, ReservationRepository $reservationRepository)
     {
         $this->mailer = $mailer;
         $this->entityManager = $entityManager;
         $this->twig = $twig;
-        $this->router = $router;
+        $this->reservationRepository = $reservationRepository;
     }
 
     public function sendCancelReservationEmail(string $userEmail, int $reservationId): void {
 
-       $url = $this->router->generate('app_reservation_cancel', ['reservatioId' => $reservationId], UrlGeneratorInterface::ABSOLUTE_URL);
-
+        $reservation = $this->reservationRepository->find($reservationId);
+        $vehicle = $reservation->getVehicle();
+        $reservationDetails = [
+            'model' => $vehicle->getModel(),
+            'brand' => $vehicle->getBrand(),
+            'createdAt' => $reservation->getCreatedAt()->format('d/m/Y'),
+            'startDate' => $reservation->getStartDate()->format('d/m/Y'),
+            'endDate' => $reservation->getEndDate()->format('d/m/Y'),
+        ];
 
         $email = (new Email())
             ->from('noreply@retrocar.com')
             ->to($userEmail)
             ->subject('Annulation de réservation')
             ->html($this->twig->render('email/_cancel_reservation.html.twig', [
-                'url' => $url
+                'reservationDetails' => $reservationDetails
             ]));
 
             $this->mailer->send($email);

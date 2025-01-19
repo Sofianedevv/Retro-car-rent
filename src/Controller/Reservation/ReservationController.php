@@ -4,6 +4,7 @@ namespace App\Controller\Reservation;
 
 use App\Entity\Reservation;
 use App\Entity\Vehicle;
+use App\Entity\Invoice;
 use App\Entity\ReservationVehicleOption;
 use App\Repository\ReservationRepository;
 use App\Repository\VehicleRepository;
@@ -22,6 +23,9 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use DateTimeImmutable;
+use Ramsey\Uuid\Guid\Guid;
+
+
 
 
 
@@ -98,7 +102,7 @@ class ReservationController extends AbstractController
                     $reservation->setStartDate(DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $startDate->format('Y-m-d H:i:s')));
                     $reservation->setEndDate(DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $endDate->format('Y-m-d H:i:s')));
                     $reservation->setTotalPrice($totalPrice);
-                    $reservation->setStatus(StatusReservationEnum::PENDING);
+                    $reservation->setStatus(StatusReservationEnum::CONFIRMED);
                     $reservation->setCreatedAt(new DateTimeImmutable());
     
                     $entityManager->persist($reservation);
@@ -110,10 +114,18 @@ class ReservationController extends AbstractController
                         $reservationVehicleOption->setPriceByOption($optionData['count'] * $optionData['option']->getPrice());
                         $entityManager->persist($reservationVehicleOption);
                     }
+
+                    $invoice = new Invoice();
+                    $invoice->setReservation($reservation);
+                    $invoice->setCreatedAt(new DateTimeImmutable());
+                    $invoiceNumber = 'INV-' . Guid::uuid4()->toString();  
+                    $invoice->setInvoiceNumber($invoiceNumber);
+                    $entityManager->persist($invoice);
+                    
                     $entityManager->flush();
     
                     $this->addFlash('success', 'Votre réservation a été enregistrée avec succès.');
-                    // return $this->redirectToRoute('app_all_reservation', ['vehicleId' => $vehicleId]);
+                    return $this->redirectToRoute('app_all_reservation', ['clientId' => $user->getId()]);
                 }
             }
     
@@ -125,53 +137,54 @@ class ReservationController extends AbstractController
             ]);
         }
         
-    #[Route('/vos-reservations/{clientId}', name: 'app_all_reservation', methods: ['GET'])]
-    public function getReservation(int $clientId, ReservationRepository $reservationRepository): Response
-    {
-        $reservations = $reservationRepository->findBy(['client' => $clientId]);
-
-        if(empty($reservations)){
-            $this->addFlash('error', 'Vous n\'avez pas de réservation en cours.');
-        }
-
-        $allOptions = [];
-        foreach ($reservations as $reservation) {
-            $options = $reservation->getReservationVehicleOptions();
-            $allOptions[] = [
-                'reservation' => $reservation,
-                'options' => $options,
-            ];
-        }
-            
+        #[Route('/vos-reservations/{clientId}', name: 'app_all_reservation', methods: ['GET'])]
+        public function getReservation(int $clientId, ReservationRepository $reservationRepository): Response
+        {
+            $reservations = $reservationRepository->findBy(['client' => $clientId]);
         
-        return $this->render('reservation/all_reservation.html.twig', [
-            'reservations' => $reservations,
-            'allOptions' => $allOptions,
-        ]);
-    }    
+            if(empty($reservations)){
+                $this->addFlash('error', 'Vous n\'avez pas de réservation en cours.');
+            }
+            $reservationStatus = $reservationRepository->findBy(['status' => StatusReservationEnum::CONFIRMED]);
+            $reservationsOptions = [];
 
-    #[Route('/annuler_reservation/{reservationId}', name: 'app_reservation_cancel', methods: ['GET'])]
-    public function cancelReservation(int $reservationId, EntityManagerInterface $entityManagerInterface, ReservationRepository $reservationRepository): Response
+            foreach ($reservations as $reservation) {
+                $options = $reservation->getReservationVehicleOptions(); 
+                $reservationsOptions[] = $options;
+            }
+        
+            return $this->render('reservation/_get_reservations.html.twig', [
+                'reservations' => $reservations,
+                'reservationsOptions'=> $reservationsOptions,
+                'reservationStatus' => $reservationStatus
+            ]);
+        }
+         
+
+    #[Route('/annuler_reservation/{reservationId}', name: 'app_reservation_cancel', methods: ['POST'])]
+    public function cancelReservation(int $reservationId, EntityManagerInterface $entityManagerInterface, ReservationRepository $reservationRepository, CancelReservationMailer $cancelReservationMailer): Response
     {
 
         $reservation = $reservationRepository->find($reservationId);
+
         if(!$reservation){
             $this->addFlash('error', 'Réservation non trouvée.');
+            return $this->redirectToRoute('app_reservation_all');
         }
+
+
         $reservationCreatedAt = $reservation->getCreatedAt();
         $intervalTime = $reservationCreatedAt->diff(new DateTimeImmutable());
         $limitTime = ($intervalTime->days * 24) + $intervalTime->h;
+
         if($limitTime >= 48){
             $this->addFlash('error', 'Vous ne pouvez pas annuler votre réservation après 48h.');
             return $this->redirectToRoute('app_reservation_all');
         }
-        $options = $reservation->getReservationVehicleOptions();
-        foreach ($options as $option) {
-            $entityManagerInterface->remove($option);
-        }
+        $reservation->setStatus(StatusReservationEnum::CANCELLED);
 
-        $reservationRepository->remove($reservation);
-        $entityManagerInterface->flush();
+
+        $cancelReservationMailer->sendCancelReservationEmail($this->getUser()->getEmail(), $reservationId);
 
         $this->addFlash('success', 'Votre réservation a bien été annulée.');
         return $this->redirectToRoute('app_all_reservation');

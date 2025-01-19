@@ -3,17 +3,20 @@
 namespace App\Service\PDF;
 use Nucleos\DompdfBundle\Factory\DompdfFactoryInterface;
 use App\Entity\Invoice;
+use App\Service\Reservation\ReservationService;
 use Twig\Environment ;
 
 class PdfService
 {
     private $twig;
     private $factory;
+    private ReservationService $reservationService;
 
-    public function __construct(DompdfFactoryInterface $factory, Environment $twig)
+    public function __construct(DompdfFactoryInterface $factory, Environment $twig, ReservationService $reservationService)
     {
     $this->factory = $factory;
     $this->twig = $twig;
+    $this->reservationService = $reservationService;
     }
 
     public function generatePDF(string $html): string
@@ -37,9 +40,10 @@ class PdfService
         $reservationOptions = $reservation->getReservationVehicleOptions();
         $startDate = $reservation->getStartDate();
         $endDate = $reservation->getEndDate();
-        $duration = $endDate->diff($startDate)->days;
+        $days = $this->reservationService->calculateDays($startDate, $endDate);
+
         $vehiclePrice = $vehicle->getPrice();
-        $totalPriceVehicle = $vehiclePrice * $duration;
+        $totalPriceVehicle = $vehiclePrice * $days;
     
         $totalPriceOptions = 0;
         foreach ($reservationOptions as $option) {
@@ -56,7 +60,7 @@ class PdfService
             'totalPriceOptions' => $totalPriceOptions,
             'startDate' => $startDate,
             'endDate' => $endDate,
-            'duration' => $duration,
+            'days' => $days,
         ]);
 
         return $this->generatePDF($html);
