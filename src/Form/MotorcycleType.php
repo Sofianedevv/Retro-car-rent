@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Motorcycle;
 use App\Entity\Category;
+use App\Entity\MotorcycleType as EntityMotorcycleType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -67,8 +68,18 @@ class MotorcycleType extends AbstractType
                     'class' => 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500'
                 ]
             ])
+            ->add('motorcycleType', EntityType::class, [
+                'class' => EntityMotorcycleType::class,
+                'choice_label' => 'name',
+                'label' => 'Type de moto',
+                'required' => false,
+                'placeholder' => 'Sélectionnez un type de moto',
+                'attr' => [
+                    'class' => 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500'
+                ]
+            ])
             ->add('type', ChoiceType::class, [
-                'label' => 'Type',
+                'label' => 'Style',
                 'choices' => [
                     'Custom' => 'custom',
                     'Café Racer' => 'cafe_racer',

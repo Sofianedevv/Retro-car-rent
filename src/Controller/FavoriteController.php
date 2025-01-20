@@ -34,6 +34,8 @@ class FavoriteController extends AbstractController
             return $this->redirectToRoute('app');
         }
     
+        $referer = $request->headers->get('referer');
+    
         $favorite = $favoriteRepository->findOneBy(['client' => $user]);
     
         if (!$favorite) {
@@ -73,7 +75,7 @@ class FavoriteController extends AbstractController
         $entityManager->flush();
         
         $this->addFlash('success', $message);
-        return $this->redirectToRoute('app');
+        return $referer ? $this->redirect($referer) : $this->redirectToRoute('app_home');
     }
     
 
@@ -95,7 +97,7 @@ class FavoriteController extends AbstractController
     }
 
     #[Route('/delete_favorites/{vehicleId}', name: 'app_favorite_delete')]
-    public function deleteFavoris(int $vehicleId, EntityManagerInterface $entityManager, VehicleRepository $vehicleRepository, FavoriteRepository $favoriteRepository): Response
+    public function deleteFavoris(int $vehicleId, Request $request, EntityManagerInterface $entityManager, VehicleRepository $vehicleRepository, FavoriteRepository $favoriteRepository): Response
     {
         $user = $this->getUser();
 
@@ -103,6 +105,8 @@ class FavoriteController extends AbstractController
             $this->addFlash('error', 'Vous devez être connecté pour supprimer un favori.');
             return $this->redirectToRoute('app_login');
         }
+
+        $referer = $request->headers->get('referer');
 
         $vehicle = $vehicleRepository->find($vehicleId);
         $favorite = $favoriteRepository->findOneBy(['client' => $user]);
@@ -131,7 +135,7 @@ class FavoriteController extends AbstractController
             $this->addFlash('error', 'Aucun favori trouvé.');
         }
 
-        return $this->redirectToRoute('app_favorite_show');
+        return $referer ? $this->redirect($referer) : $this->redirectToRoute('app_home');
     }
     
     

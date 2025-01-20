@@ -3,6 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Vehicle;
+use App\Entity\Car;
+use App\Entity\Motorcycle;
+use App\Entity\Van;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -375,5 +378,47 @@ public function findCars(): array
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
+    }
+
+    public function findSimilar(Vehicle $vehicle, int $limit = 4): array
+    {
+        // Récupérer les catégories du véhicule actuel
+        $categories = $vehicle->getCategories();
+        $categoryIds = array_map(function($category) {
+            return $category->getId();
+        }, $categories->toArray());
+
+        // Déterminer le type de véhicule
+        $type = match (true) {
+            $vehicle instanceof Car => 'car',
+            $vehicle instanceof Motorcycle => 'motorcycle',
+            $vehicle instanceof Van => 'van',
+            default => throw new \InvalidArgumentException('Type de véhicule inconnu')
+        };
+
+        // Créer la requête de base
+        $qb = $this->createQueryBuilder('v')
+            ->leftJoin('v.categories', 'c')
+            ->leftJoin('v.reviews', 'r')
+            ->where('v.id != :currentId')
+            ->andWhere('v INSTANCE OF :type')
+            ->setParameter('currentId', $vehicle->getId())
+            ->setParameter('type', $type);
+
+        // Ajouter la condition sur les catégories si le véhicule en a
+        if (!empty($categoryIds)) {
+            $qb->andWhere('c.id IN (:categories)')
+               ->setParameter('categories', $categoryIds);
+        }
+
+        // Grouper par véhicule et ajouter des critères de tri
+        $qb->groupBy('v.id')
+           ->addSelect('AVG(r.rating) as HIDDEN avgRating')
+           ->addSelect('COUNT(r.id) as HIDDEN reviewCount')
+           ->orderBy('avgRating', 'DESC')
+           ->addOrderBy('reviewCount', 'DESC')
+           ->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
     }
 }

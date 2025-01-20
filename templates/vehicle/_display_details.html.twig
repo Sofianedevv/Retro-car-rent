@@ -7,386 +7,970 @@
 {% endblock %}
 
 {% block body %}
-	<div
-		class="max-w-4xl mx-auto p-4">
+	<style>
+		.detail-container {
+			max-width: 1200px;
+			margin: 0 auto;
+			padding: 1rem;
+			@media (min-width: 640px) {
+				padding: 2rem;
+			}
+		}
+		
+		.breadcrumb {
+			font-size: 0.9rem;
+			color: #666;
+			margin-bottom: 2rem;
+		}
+		
+		.breadcrumb a {
+			color: #8B4513;
+			transition: color 0.3s ease;
+		}
+		
+		.breadcrumb a:hover {
+			color: #5d2d0d;
+		}
+		
+		.vehicle-title {
+			font-size: 2.5rem;
+			color: #2d3748;
+			margin-bottom: 1rem;
+			font-weight: 700;
+		}
+		
+		.price-rating-container {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 2rem;
+			padding: 1rem;
+			background: #f8f9fa;
+			border-radius: 8px;
+		}
+		
+		.price {
+			font-size: 2rem;
+			color: #8B4513;
+			font-weight: 700;
+		}
+		
+		.price-period {
+			font-size: 1rem;
+			color: #666;
+		}
+		
+		.content-column {
+			grid-column: 1 / -1;  /* Prend toute la largeur */
+		}
+		
+		.main-content {
+			display: grid;
+			grid-template-columns: 1fr;
+			gap: 2rem;
+			margin-bottom: 2rem;
+			@media (min-width: 1024px) {
+				grid-template-columns: 2fr 1fr;
+			}
+		}
+		
+		.details-card {
+			background: white;
+			padding: 2rem;
+			border-radius: 12px;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+			position: sticky;
+			top: 2rem;
+		}
+		
+		.specs-grid {
+			display: grid;
+			grid-template-columns: 1fr;
+			gap: 1.5rem;
+			margin-top: 1.5rem;
+			@media (min-width: 640px) {
+				grid-template-columns: repeat(2, 1fr);
+			}
+		}
+		
+		.spec-item {
+			display: flex;
+			align-items: center;
+			gap: 1rem;
+			padding: 1rem;
+			background: #f8f9fa;
+			border-radius: 8px;
+		}
+		
+		.spec-icon {
+			width: 40px;
+			height: 40px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: #8B4513;
+			color: white;
+			border-radius: 50%;
+		}
+		
+		.reviews-section {
+			margin-top: 3rem;
+			background: white;
+			padding: 2rem;
+			border-radius: 12px;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+		}
+		
+		.review-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 2rem;
+			padding-bottom: 1rem;
+			border-bottom: 2px solid #f3f4f6;
+		}
+		
+		.review-card {
+			background: #f8f9fa;
+			border-radius: 12px;
+			padding: 1.5rem;
+			margin-bottom: 1.5rem;
+			transition: transform 0.2s ease;
+		}
+		
+		.review-card:hover {
+			transform: translateY(-2px);
+		}
+		
+		.review-reply {
+			margin-left: 3rem;
+			position: relative;
+		}
+		
+		.review-reply::before {
+			content: '';
+			position: absolute;
+			left: -1.5rem;
+			top: 0;
+			bottom: 0;
+			width: 2px;
+			background: #e5e7eb;
+		}
+		
+		.booking-form {
+			position: sticky;
+			top: 2rem;
+		}
+		
+		/* Styles pour la nouvelle galerie */
+		.gallery-container {
+			display: flex;
+			flex-direction: column;
+			gap: 1.5rem;
+			background: white;
+			padding: 1.5rem;
+			border-radius: 12px;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+			margin-bottom: 2rem;
+			max-width: 1400px;
+			margin-left: auto;
+			margin-right: auto;
+			@media (min-width: 768px) {
+				flex-direction: row;
+			}
+		}
+		
+		.main-image-container {
+			flex: 1;
+			position: relative;
+			overflow: hidden;
+			border-radius: 8px;
+			height: 300px;
+			@media (min-width: 768px) {
+				height: 400px;
+			}
+			@media (min-width: 1024px) {
+				height: 500px;
+			}
+		}
+		
+		.main-image {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			transition: transform 0.3s ease;
+		}
+		
+		.main-image:hover {
+			transform: scale(1.03);
+		}
+		
+		.thumbnails-container {
+			display: flex;
+			flex-direction: row;
+			overflow-x: auto;
+			gap: 0.75rem;
+			width: 100%;
+			@media (min-width: 768px) {
+				flex-direction: column;
+				width: 200px;
+				overflow-x: visible;
+			}
+		}
+		
+		.thumbnail {
+			width: 100px;
+			height: 150px;
+			object-fit: cover;
+			border-radius: 6px;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			border: 3px solid transparent;
+			opacity: 0.7;
+			@media (min-width: 768px) {
+				width: 200px;
+			}
+		}
+		
+		.thumbnail:hover {
+			opacity: 1;
+			transform: translateX(-5px);
+		}
+		
+		.thumbnail.active {
+			border-color: #8B4513;
+			opacity: 1;
+		}
+		
+		/* Style pour l'overlay au survol de l'image principale */
+		.main-image-container::after {
+			content: '🔍';
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			font-size: 2rem;
+			opacity: 0;
+			transition: opacity 0.3s ease;
+			pointer-events: none;
+		}
+		
+		.main-image-container:hover::after {
+			opacity: 1;
+		}
+		
+		/* Section véhicules similaires */
+		.similar-vehicles {
+			margin-top: 4rem;
+			padding: 2rem;
+			background: white;
+			border-radius: 12px;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+		}
+		
+		.similar-vehicles-grid {
+			display: grid;
+			grid-template-columns: 1fr;
+			gap: 2rem;
+			margin-top: 2rem;
+			@media (min-width: 640px) {
+				grid-template-columns: repeat(2, 1fr);
+			}
+			@media (min-width: 1024px) {
+				grid-template-columns: repeat(3, 1fr);
+			}
+		}
+		
+		.similar-vehicle-card {
+			background: #f8f9fa;
+			border-radius: 8px;
+			overflow: hidden;
+			transition: transform 0.3s ease;
+		}
+		
+		.similar-vehicle-card:hover {
+			transform: translateY(-5px);
+		}
+		
+		.similar-vehicle-image {
+			width: 100%;
+			height: 200px;
+			object-fit: cover;
+		}
+	</style>
 
-		{# Affichage des messages flash #}
-		{% for label, messages in app.flashes %}
-			{% for message in messages %}
-				<div class="mb-4 p-4 rounded-lg {% if label == 'success' %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">
-					{{ message }}
-				</div>
-			{% endfor %}
-		{% endfor %}
-
-		<div class="text-center mb-8">
-			<h1 class="text-4xl font-extrabold text-gray-800">{{ vehicle.brand }}
-				-
-				{{ vehicle.model }}</h1>
+	<div class="detail-container">
+		<div class="breadcrumb">
+			<a href="{{ path('app_collections') }}">Accueil</a> >
+			<a href="#">{{ vehicle.brand }}</a> >
+			<span>{{ vehicle.model }}</span>
 		</div>
 
-		<div class="flex flex-col lg:flex-row bg-gradient-to-r from-gray-100 via-gray-200 to-gray-300 shadow-xl rounded-lg overflow-hidden">
-			<div class="lg:w-1/2 p-4">
-				<div class="mb-4">
-					<img src="{{ vehicle.defaultImage }}" alt="{{ vehicle.model }}" class="w-full h-80 object-cover rounded-lg shadow-lg border-4 border-gray-300 transition-transform transform hover:scale-105" id="mainImage">
-				</div>
+		<h1 class="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 mb-4">{{ vehicle.brand }} {{ vehicle.model }} {{ vehicle.year }}</h1>
 
-				{% if vehicle.vehicleImages|length > 0 %}
-					<div class="grid grid-cols-4 gap-2 mt-4">
-						<div class="aspect-w-16 aspect-h-9">
-							<img src="{{ vehicle.defaultImage }}" alt="Image par défaut" class="w-full h-20 object-cover rounded cursor-pointer hover:opacity-75 transition-opacity" onclick="changeMainImage(this.src)">
-						</div>
-						{% for image in vehicle.vehicleImages %}
-							<div class="aspect-w-16 aspect-h-9">
-								<img src="{{ asset('uploads/vehicles/' ~ image.url) }}" alt="Image {{ loop.index }}" class="w-full h-20 object-cover rounded cursor-pointer hover:opacity-75 transition-opacity" onclick="changeMainImage(this.src)">
-							</div>
-						{% endfor %}
-					</div>
-				{% endif %}
+		<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-4 bg-gray-50 rounded-lg mb-6">
+			<div class="price-block">
+				<span class="text-xl md:text-2xl lg:text-3xl font-bold text-[#8B4513]">{{ vehicle.price }}€</span>
+				<span class="price-period">/jour</span>
 			</div>
-
-			<div class="lg:w-1/2 p-6 bg-gray-100">
-				<div class="text-center mb-6">
-					<h2 class="text-3xl font-semibold text-gray-700">Détails du véhicule</h2>
-				</div>
-
-				<ul class="space-y-4 text-gray-600 text-lg">
-					{% if type == 'Car' %}
-						<li>
-							<strong class="text-blue-600">Nombre de sièges:</strong>
-							{{ vehicle.nbSeats }}
-						</li>
-						<li>
-							<strong class="text-blue-600">Nombre de portes:</strong>
-							{{ vehicle.nbDoors }}
-						</li>
-						<li>
-							<strong class="text-blue-600">Taille du coffre:</strong>
-							{{ vehicle.trunkSize }}
-							L
-						</li>
-						<li>
-							<strong class="text-blue-600">Transmission:</strong>
-							{{ vehicle.transmission }}
-						</li>
-					{% elseif type == 'Van' %}
-						<li>
-							<strong class="text-blue-600">Volume de chargement:</strong>
-							{{ vehicle.cargoVolume }}
-							m³
-						</li>
-					{% elseif type == 'Motorcycle' %}
-						<li>
-							<strong class="text-blue-600">Cylindrée:</strong>
-							{{ vehicle.engineCapacity }}
-							cc
-						</li>
-					{% endif %}
-
-					<li>
-						<strong class="text-blue-600">Année:</strong>
-						{{ vehicle.year }}
-					</li>
-					<li>
-						<strong class="text-blue-600">Kilométrage:</strong>
-						{{ vehicle.mileage }}
-						km
-					</li>
-					<li>
-						<strong class="text-yellow-800">Type carburant:</strong>
-						{{ vehicle.fuelType }}
-					</li>
-					<li>
-						<strong class="text-blue-600">Catégories:</strong>
-						{% for category in categories %}
-							<span class="bg-blue-200 text-blue-700 py-1 px-3 rounded-full text-sm">{{ category.name }}</span>
-						{% else %}
-							Aucune catégorie disponible.
-						{% endfor %}
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="w-full bg-white p-6 rounded-lg shadow-lg mx-auto mb-8">
-	<h4 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Sélectionnez vos options</h4>
-	<div class="space-y-6">
-		{% for option in vehicle.vehicleOptions %}
-			<div class="flex items-center justify-between bg-gray-50 p-5 rounded-lg shadow-md hover:shadow-xl transition duration-300 ease-in-out border border-gray-200">
-				<div class="flex items-center space-x-4">
-					<button class="option-minus text-gray-600 hover:text-gray-800 focus:outline-none transition duration-200" data-option-id="{{ option.id }}" data-price="20">
-						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12h12"/>
-						</svg>
-					</button>
-
-					<span id="option_{{ option.id }}_count" class="text-lg font-semibold text-gray-800">{{ option.count ?? 0 }}</span>
-
-					<button class="option-plus text-gray-600 hover:text-gray-800 focus:outline-none transition duration-200" data-option-id="{{ option.id }}" data-price="20">
-						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6"/>
-						</svg>
-					</button>
-					<span class="text-lg font-semibold text-gray-800">{{ option.price }}
-						€/options</span>
-					<span class="text-lg font-medium text-gray-800">{{ option.name }}</span>
-				</div>
-
-				<p class="text-sm text-gray-500 mt-2">{{ option.description }}</p>
-			</div>
-		{% endfor %}
-	</div>
-</div>
-
-
-<div class="w-full md:w-2/3 lg:w-1/3 bg-white p-6 rounded-lg shadow-lg mx-auto">
-	<h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">Réservez ce véhicule</h3>
-	<input type="hidden" id="vehicle-data" data-vehicle-id="{{ vehicle.id }}"/>
-
-
-	{{ form_start(form, { 'attr': {'id': 'reservation-form', 'class': 'space-y-6'} }) }}
-	<div>
-		<label for="reservation_startDate" class="block text-lg font-medium text-gray-700 mb-2">
-			Date de départ et de retour
-		</label>
-		{{ form_widget(form.startDate, {
-            }) }}
-	</div>
-	<div>
-		<label for="reservation_endDate" class="block text-lg font-medium text-gray-700 mb-2">
-			Date de retour
-		</label>
-		{{ form_widget(form.endDate, {
-				'attr': {}
-
-            }) }}
-	</div>
-
-	<div>
-		<label for="priceDetails" class="block text-lg font-medium text-gray-700 mb-2">
-			Détail du prix
-		</label>
-		<div id="priceDetails" class="bg-gray-50 p-4 rounded-lg border border-gray-300 space-y-2">
-			<div class="flex justify-between items-center" id="pricePerDay" data-price= "{{ vehicle.price }}">
-				<span class="text-gray-600">Prix par jour</span>
-				<span class="font-semibold text-gray-800" id="vehicle-price">{{ vehicle.price }}
-					€</span>
-			</div>
-			<div class="flex justify-between items-center">
-				<span class="text-gray-600">Prix avec options</span>
-				<span class="font-semibold text-red-500" id="options-price">0.00 €</span>
-			</div>
-			<div class="flex justify-between items-center">
-				<span class="text-gray-600">Nombre de jours</span>
-				<span class="font-semibold text-red-500" id="daysCount">0</span>
-			</div>
-			<div class="border-t border-gray-300 mt-2 pt-2 flex justify-between items-center">
-				<span class="font-semibold text-gray-800">Total</span>
-				<span class="font-bold text-blue-600" id="totalPrice">0.00 €</span>
-			</div>
-		</div>
-	</div>
-
-	<div class="flex justify-between items-center mt-6">
-		<button type="button" class="w-full md:w-auto bg-gray-500 text-white py-2 px-6 rounded-lg hover:bg-gray-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">
-			Annuler
-		</button>
-		<button type="submit" class="w-full md:w-auto bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50 ml-4">
-			Réserver
-		</button>
-	</div>
-	{{ form_end(form) }}
-</div>
-
-<div class=" container mt-12">
-	<h3 class="text-3xl font-semibold text-indigo-800 mb-6">Avis clients</h3>
-
-	<div class="mb-8">
-		<div class="flex items-center">
-			<div class="flex items-center">
-				{% for i in 1..5 %}
-					{% if i <= averageRating %}
-						<i class="fas fa-star text-yellow-400"></i>
-					{% else %}
-						<i class="far fa-star text-yellow-400"></i>
-					{% endif %}
-				{% endfor %}
-			</div>
-			<span class="ml-2 text-lg text-gray-600">{{ averageRating }}/5 ({{ reviews|length }}
-				avis)</span>
-		</div>
-	</div>
-
-	{% if app.user %}
-		<div class="bg-white p-6 rounded-lg shadow-md mb-8">
-			<h4 class="text-xl font-semibold mb-4">Donnez votre avis</h4>
-			<form action="{{ path('app_review_add', {'vehicleId': vehicle.id}) }}" method="POST" class="space-y-4" id="reviewForm">
-				<div class="rating flex space-x-1 mb-4">
+			<div class="rating-block">
+				<div class="stars">
 					{% for i in 1..5 %}
-						<input type="radio" name="rating" value="{{ i }}" id="star{{ i }}" class="hidden">
-						<label for="star{{ i }}" class="cursor-pointer">
-							<i class="far fa-star text-1xl text-yellow-400"></i>
-						</label>
+						<i class="fas fa-star {% if i <= vehicle.averageRating %}text-yellow-400{% else %}text-gray-300{% endif %}"></i>
 					{% endfor %}
 				</div>
-				<div>
-					<label class="block text-gray-700 mb-2">Commentaire</label>
-					<textarea name="comment" rows="4" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500" required></textarea>
-				</div>
-				<button type="submit" class="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition duration-300">
-					Publier mon avis
-				</button>
-			</form>
+				<span class="text-sm text-gray-600">({{ vehicle.reviews|length }} avis)</span>
+			</div>
 		</div>
 
-		<script>
-			document.addEventListener('DOMContentLoaded', function () {
-const ratingContainer = document.querySelector('.rating');
-const stars = ratingContainer.querySelectorAll('i');
-const inputs = ratingContainer.querySelectorAll('input');
-
-// Fonction pour remplir les étoiles
-function fillStars(selectedIndex) {
-stars.forEach((star, index) => {
-if (index <= selectedIndex) {
-star.classList.remove('far');
-star.classList.add('fas');
-} else {
-star.classList.remove('fas');
-star.classList.add('far');
-}
-});
-}
-
-// Gérer le survol
-stars.forEach((star, index) => {
-const label = star.parentElement;
-
-// Au survol
-label.addEventListener('mouseover', () => {
-fillStars(index);
-});
-
-// Quand on quitte le survol
-label.addEventListener('mouseout', () => { // Retrouver l'étoile sélectionnée
-const selectedInput = Array.from(inputs).find(input => input.checked);
-const selectedIndex = selectedInput ? parseInt(selectedInput.value) - 1 : -1;
-fillStars(selectedIndex);
-});
-
-// Au clic
-label.addEventListener('click', () => {
-inputs[index].checked = true;
-fillStars(index);
-});
-});
-});
-
-document.getElementById('reviewForm').addEventListener('submit', function (e) {
-e.preventDefault();
-const formData = new FormData(this);
-console.log('Données du formulaire:', {
-rating: formData.get('rating'),
-comment: formData.get('comment')
-});
-this.submit();
-});
-		</script>
-	{% endif %}
-
-	<div class="space-y-6">
-		{% for review in reviews %}
-			{% if not review.parent %}
-				<div class="bg-white p-6 rounded-lg shadow-md">
-					<div class="flex justify-between items-start mb-4">
-						<div>
-							<div class="flex items-center mb-2">
-								{% for i in 1..5 %}
-									{% if i <= review.rating %}
-										<i class="fas fa-star text-yellow-400"></i>
-									{% else %}
-										<i class="far fa-star text-yellow-400"></i>
-									{% endif %}
-								{% endfor %}
-							</div>
-							<p class="text-gray-600">Par
-								{{ review.publisher.firstName }}
-								{{ review.publisher.lastName }}
-								le
-								{{ review.createdAt|date('d/m/Y') }}</p>
-						</div>
-						{% if app.user and app.user == review.publisher %}
-							<div class="flex space-x-2">
-								<a href="{{ path('app_review_edit', {'id': review.id}) }}" class="text-blue-600 hover:text-blue-800">
-									<i class="fas fa-edit"></i>
-								</a>
-								<a href="{{ path('app_review_delete', {'id': review.id}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet avis ?')" class="text-red-600 hover:text-red-800">
-									<i class="fas fa-trash"></i>
-								</a>
-							</div>
-						{% endif %}
+		<div class="main-content">
+			<div class="content-column">
+				<div class="gallery-container">
+					<div class="main-image-container" onclick="openModal(document.getElementById('mainImage').src)">
+						<img id="mainImage" 
+							 src="{{ vehicle.defaultImage }}" 
+							 alt="{{ vehicle.brand }} {{ vehicle.model }}"
+							 class="main-image">
 					</div>
-					<p class="text-gray-700">{{ review.comment }}</p>
-
-					<!-- Réponses -->
-					<div class="mt-4 ml-8 space-y-4">
-						{% for reply in review.replies %}
-							<div class="bg-gray-50 p-4 rounded-lg border-l-4 border-gray-300">
-								<div class="flex justify-between items-start mb-2">
-									<p class="text-gray-600">Réponse de
-										{{ reply.publisher.firstName }}
-										{{ reply.publisher.lastName }}
-										le
-										{{ reply.createdAt|date('d/m/Y') }}</p>
-									{% if app.user and app.user == reply.publisher %}
-										<div class="flex space-x-2">
-											<a href="{{ path('app_review_edit_reply', {'id': reply.id}) }}" class="text-blue-600 hover:text-blue-800">
-												<i class="fas fa-edit"></i>
-											</a>
-											<a href="{{ path('app_review_delete', {'id': reply.id}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette réponse ?')" class="text-red-600 hover:text-red-800">
-												<i class="fas fa-trash"></i>
-											</a>
-										</div>
-									{% endif %}
-								</div>
-								<p class="text-gray-700">{{ reply.comment }}</p>
-							</div>
+					<div class="thumbnails-container">
+						<img src="{{ vehicle.defaultImage }}" 
+							 alt="Thumbnail 0"
+							 onclick="changeMainImage(this)"
+							 class="thumbnail active"
+							 data-src="{{ vehicle.defaultImage }}">
+						{% for image in vehicle.vehicleImages %}
+							<img src="{{ asset('uploads/vehicles/' ~ image.url) }}" 
+								 alt="Thumbnail {{ loop.index }}"
+								 onclick="changeMainImage(this)"
+								 class="thumbnail"
+								 data-src="{{ asset('uploads/vehicles/' ~ image.url) }}">
 						{% endfor %}
 					</div>
+				</div>
+			</div>
+		</div>
 
-					<!-- Formulaire de réponse -->
-					{% if app.user %}
-						<button onclick="toggleReplyForm('reply-form-{{ review.id }}')" class="mt-4 text-black hover:text-gray-800 text-sm font-medium">
-							Répondre
-						</button>
-						<form id="reply-form-{{ review.id }}" action="{{ path('app_review_reply', {'id': review.id}) }}" method="POST" class="mt-4 ml-8 hidden">
-							<textarea name="comment" rows="3" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500" required placeholder="Votre réponse..."></textarea>
-							<button type="submit" class="mt-2 bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition duration-300">
-								Publier la réponse
-							</button>
-						</form>
+		<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+			<div class="location-section bg-white p-6 rounded-lg shadow-sm">
+				<h2 class="text-2xl font-semibold mb-4">Localisation</h2>
+				<div class="flex items-center gap-2 mb-4">
+					<i class="fas fa-map-marker-alt text-[#8B4513]"></i>
+					<span class="text-gray-700">Paris, France</span>
+				</div>
+				<div id="map" class="h-[200px] sm:h-[250px] md:h-[300px] w-full rounded-lg"></div>
+			</div>
+
+			<div class="details-card">
+				<h2 class="text-2xl font-semibold mb-4">Caractéristiques</h2>
+				<div class="specs-grid">
+					<div class="spec-item">
+						<div class="spec-icon">
+							<i class="fas fa-road"></i>
+						</div>
+						<div>
+							<div class="text-sm text-gray-600">Kilométrage</div>
+							<div class="font-semibold">{{ vehicle.mileage }} km</div>
+						</div>
+					</div>
+					{% if type == 'Car' %}
+						<div class="spec-item">
+							<div class="spec-icon">
+								<i class="fas fa-chair"></i>
+							</div>
+							<div>
+								<div class="text-sm text-gray-600">Nombre de sièges</div>
+								<div class="font-semibold">{{ vehicle.nbSeats }}</div>
+							</div>
+						</div>
+						<div class="spec-item">
+							<div class="spec-icon">
+								<i class="fas fa-door-open"></i>
+							</div>
+							<div>
+								<div class="text-sm text-gray-600">Nombre de portes</div>
+								<div class="font-semibold">{{ vehicle.nbDoors }}</div>
+							</div>
+						</div>
+						<div class="spec-item">
+							<div class="spec-icon">
+								<i class="fas fa-warehouse"></i>
+							</div>
+							<div>
+								<div class="text-sm text-gray-600">Taille du coffre</div>
+								<div class="font-semibold">{{ vehicle.trunkSize }} L</div>
+							</div>
+						</div>
+						<div class="spec-item">
+							<div class="spec-icon">
+								<i class="fas fa-cog"></i>
+							</div>
+							<div>
+								<div class="text-sm text-gray-600">Transmission</div>
+								<div class="font-semibold">{{ vehicle.transmission }}</div>
+							</div>
+						</div>
+					{% elseif type == 'Van' %}
+						<div class="spec-item">
+							<div class="spec-icon">
+								<i class="fas fa-warehouse"></i>
+							</div>
+							<div>
+								<div class="text-sm text-gray-600">Volume de chargement</div>
+								<div class="font-semibold">{{ vehicle.cargoVolume }} m³</div>
+							</div>
+						</div>
+					{% elseif type == 'Motorcycle' %}
+						<div class="spec-item">
+							<div class="spec-icon">
+								<i class="fas fa-bicycle"></i>
+							</div>
+							<div>
+								<div class="text-sm text-gray-600">Cylindrée</div>
+								<div class="font-semibold">{{ vehicle.engineCapacity }} cc</div>
+							</div>
+						</div>
 					{% endif %}
+					<div class="spec-item">
+						<div class="spec-icon">
+							<i class="fas fa-calendar-alt"></i>
+						</div>
+						<div>
+							<div class="text-sm text-gray-600">Année</div>
+							<div class="font-semibold">{{ vehicle.year }}</div>
+						</div>
+					</div>
+					<div class="spec-item">
+						<div class="spec-icon">
+							<i class="fas fa-gas-pump"></i>
+						</div>
+						<div>
+							<div class="text-sm text-gray-600">Type carburant</div>
+							<div class="font-semibold">{{ vehicle.fuelType }}</div>
+						</div>
+					</div>
+					<div class="spec-item">
+						<div class="spec-icon">
+							<i class="fas fa-tags"></i>
+						</div>
+						<div>
+							<div class="text-sm text-gray-600">Catégories</div>
+							<div class="font-semibold">
+								{% for category in categories %}
+									<span class="bg-blue-200 text-blue-700 py-1 px-3 rounded-full text-sm">{{ category.name }}</span>
+								{% else %}
+									Aucune catégorie disponible.
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="reviews-section">
+			<h2 class="text-2xl font-bold mb-6">Avis locataires</h2>
+			
+			<div class="flex flex-col md:flex-row items-start gap-6 md:gap-12 mb-8">
+				<div class="flex flex-col items-start">
+					<div class="text-4xl font-bold mb-2">{{ averageRating }}/5 </div>
+					<div class="flex items-center gap-1 mb-1">
+						{% for i in 1..5 %}
+							<i class="fas fa-star {% if i <= averageRating %}text-yellow-400{% else %}text-gray-200{% endif %}"></i>
+						{% endfor %}
+					</div>
+					<div class="text-gray-500">{{ reviews|length }} avis</div>
+				</div>
+				
+				{# Graphique des notes #}
+				<div class="flex-1">
+					{% for i in 5..1 %}
+						<div class="flex items-center gap-2 mb-2">
+							<div class="w-8 text-sm text-gray-600">{{ i }}</div>
+							<div class="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+								{% set count = 0 %}
+								{% for review in reviews %}
+									{% if review.rating == i %}
+										{% set count = count + 1 %}
+									{% endif %}
+								{% endfor %}
+								{% set percentage = reviews|length > 0 ? (count / reviews|length * 100) : 0 %}
+								<div class="h-full bg-[#8B4513]" style="width: {{ percentage }}%"></div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+
+			{% if app.user %}
+				<div class="bg-gradient-to-r from-[#8B4513]/5 to-[#8B4513]/10 p-6 rounded-lg mb-8 border border-[#8B4513]/20">
+					<h4 class="text-xl font-semibold mb-4">Donnez votre avis</h4>
+					<form action="{{ path('app_review_add', {'vehicleId': vehicle.id}) }}" method="POST" class="space-y-4 w-full max-w-2xl mx-auto" id="reviewForm">
+						<div class="rating flex space-x-1 mb-4">
+							{% for i in 1..5 %}
+								<input type="radio" name="rating" value="{{ i }}" id="star{{ i }}" class="hidden">
+								<label for="star{{ i }}" class="cursor-pointer">
+									<i class="far fa-star text-2xl text-yellow-400 hover:scale-110 transition-transform"></i>
+								</label>
+							{% endfor %}
+						</div>
+						<div>
+							<label class="block text-gray-700 mb-2">Commentaire</label>
+							<textarea name="comment" rows="4" 
+									class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B4513] focus:border-[#8B4513] transition-all resize-none"
+									placeholder="Partagez votre expérience..." 
+									required></textarea>
+						</div>
+						<button type="submit" 
+								class="bg-[#8B4513] text-white px-6 py-3 rounded-lg hover:bg-[#6d3610] transition-all duration-300 flex items-center gap-2">
+							<i class="fas fa-paper-plane"></i>
+							Publier mon avis
+						</button>
+					</form>
+				</div>
+
+				<script>
+					document.addEventListener('DOMContentLoaded', function () {
+						const ratingContainer = document.querySelector('.rating');
+						const stars = ratingContainer.querySelectorAll('i');
+						const inputs = ratingContainer.querySelectorAll('input');
+
+						// Fonction pour remplir les étoiles
+						function fillStars(selectedIndex) {
+							stars.forEach((star, index) => {
+								if (index <= selectedIndex) {
+									star.classList.remove('far');
+									star.classList.add('fas');
+								} else {
+									star.classList.remove('fas');
+									star.classList.add('far');
+								}
+							});
+						}
+
+						// Gérer le survol
+						stars.forEach((star, index) => {
+							const label = star.parentElement;
+
+							// Au survol
+							label.addEventListener('mouseover', () => {
+								fillStars(index);
+							});
+
+							// Quand on quitte le survol
+							label.addEventListener('mouseout', () => { // Retrouver l'étoile sélectionnée
+								const selectedInput = Array.from(inputs).find(input => input.checked);
+								const selectedIndex = selectedInput ? parseInt(selectedInput.value) - 1 : -1;
+								fillStars(selectedIndex);
+							});
+
+							// Au clic
+							label.addEventListener('click', () => {
+								inputs[index].checked = true;
+								fillStars(index);
+							});
+						});
+					});
+
+					document.getElementById('reviewForm').addEventListener('submit', function (e) {
+						e.preventDefault();
+						const formData = new FormData(this);
+						console.log('Données du formulaire:', {
+							rating: formData.get('rating'),
+							comment: formData.get('comment')
+						});
+						this.submit();
+					});
+				</script>
+			{% endif %}
+
+			{# Liste des avis #}
+			<div class="grid grid-cols-1 lg:grid-cols-2 gap-6" id="reviews-container">
+				{# Afficher seulement les 2 derniers avis #}
+				{% set lastTwoReviews = reviews|slice(0, 2) %}
+				{% for review in lastTwoReviews %}
+					{% if not review.parent %}
+						<div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+							<div class="flex items-start gap-4">
+								<div class="w-12 h-12 rounded-full bg-[#8B4513]/10 flex items-center justify-center">
+									<span class="text-[#8B4513] font-semibold text-lg">
+										{{ review.publisher.firstName|first|upper }}
+									</span>
+								</div>
+								<div class="flex-1">
+									<div class="flex justify-between items-start">
+										<div>
+											<h3 class="font-semibold text-lg">{{ review.publisher.firstName }}</h3>
+											<div class="flex items-center gap-2 mt-1">
+												<div class="flex">
+													{% for i in 1..5 %}
+														<i class="fas fa-star {% if i <= review.rating %}text-yellow-400{% else %}text-gray-200{% endif %}"></i>
+													{% endfor %}
+												</div>
+												<span class="text-gray-500 text-sm">{{ review.createdAt|date('d/m/Y') }}</span>
+											</div>
+										</div>
+										{% if app.user and app.user == review.publisher %}
+											<div class="flex gap-2">
+												<a href="{{ path('app_review_edit', {'id': review.id}) }}" 
+												   class="text-gray-400 hover:text-[#8B4513] transition-colors">
+													<i class="fas fa-edit"></i>
+												</a>
+												<a href="{{ path('app_review_delete', {'id': review.id}) }}" 
+												   class="text-gray-400 hover:text-red-500 transition-colors">
+													<i class="fas fa-trash"></i>
+												</a>
+											</div>
+										{% endif %}
+									</div>
+									<p class="mt-3 text-gray-700">{{ review.comment }}</p>
+
+									<!-- Réponses -->
+									<div class="mt-4 ml-8 space-y-4">
+										{% for reply in review.replies %}
+											<div class="bg-gray-50 p-4 rounded-lg border-l-4 border-[#8B4513]">
+												<div class="flex justify-between items-start mb-2">
+													<p class="text-gray-600">
+														Réponse de {{ reply.publisher.firstName }} {{ reply.publisher.lastName }}
+														<span class="text-gray-500 text-sm ml-2">{{ reply.createdAt|date('d/m/Y') }}</span>
+													</p>
+													{% if app.user and app.user == reply.publisher %}
+														<div class="flex gap-2">
+															<a href="{{ path('app_review_edit_reply', {'id': reply.id}) }}" 
+															   class="text-gray-400 hover:text-[#8B4513] transition-colors">
+																<i class="fas fa-edit"></i>
+															</a>
+															<a href="{{ path('app_review_delete', {'id': reply.id}) }}" 
+															   onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette réponse ?')"
+															   class="text-gray-400 hover:text-red-500 transition-colors">
+																<i class="fas fa-trash"></i>
+															</a>
+														</div>
+													{% endif %}
+												</div>
+												<p class="text-gray-700">{{ reply.comment }}</p>
+											</div>
+										{% endfor %}
+									</div>
+
+									<!-- Bouton et formulaire de réponse -->
+									{% if app.user %}
+										<button onclick="window.toggleReplyForm('reply-form-{{ review.id }}')" 
+											class="mt-4 text-[#8B4513] hover:text-[#6d3610] text-sm font-medium flex items-center gap-1">
+											<i class="fas fa-reply"></i>
+											Répondre
+										</button>
+										<form id="reply-form-{{ review.id }}" 
+											action="{{ path('app_review_reply', {'id': review.id}) }}" 
+											method="POST" 
+											class="mt-4 ml-8 hidden">
+											<textarea name="comment" 
+												rows="3" 
+												class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B4513] focus:border-[#8B4513] transition-all resize-none" 
+												required 
+												placeholder="Votre réponse..."></textarea>
+											<button type="submit" 
+												class="mt-2 bg-[#8B4513] text-white px-4 py-2 rounded-lg hover:bg-[#6d3610] transition-all duration-300">
+												Publier la réponse
+											</button>
+										</form>
+									{% endif %}
+								</div>
+							</div>
+						</div>
+					{% endif %}
+				{% else %}
+					<p class="text-gray-600 text-center italic">Aucun avis pour le moment.</p>
+				{% endfor %}
+			</div>
+
+			{% if reviews|length > 2 %}
+				<div class="text-center mt-8">
+					<button onclick="loadMoreReviews()" 
+							id="load-more-button"
+							class="bg-white border-2 border-[#8B4513] text-[#8B4513] px-6 py-2 rounded-lg hover:bg-[#8B4513] hover:text-white transition-all duration-300">
+						Voir plus d'avis
+					</button>
+					<button onclick="showLessReviews()"
+							id="show-less-button"
+							class="hidden bg-white border-2 border-[#8B4513] text-[#8B4513] px-6 py-2 rounded-lg hover:bg-[#8B4513] hover:text-white transition-all duration-300">
+						Voir moins d'avis
+					</button>
 				</div>
 			{% endif %}
-		{% else %}
-			<p class="text-gray-600 text-center">Aucun avis pour le moment.</p>
-		{% endfor %}
+		</div>
+
+		<div class="similar-vehicles">
+			<h2 class="text-2xl font-semibold mb-6">Véhicules similaires</h2>
+			<div class="similar-vehicles-grid">
+				{% for similar in similar_vehicles %}
+					<a href="{{ path('app_vehicle_show_details', {'vehicleId': similar.id}) }}" class="similar-vehicle-card">
+						<img src="{{ similar.defaultImage }}" 
+							 alt="{{ similar.brand }} {{ similar.model }}"
+							 class="similar-vehicle-image">
+						<div class="p-4">
+							<h3 class="font-semibold text-lg mb-2">{{ similar.brand }} {{ similar.model }}</h3>
+							<div class="flex justify-between items-center">
+								<span class="text-[#8B4513] font-bold">{{ similar.price }}€/jour</span>
+								<div class="flex items-center">
+									<i class="fas fa-star text-yellow-400 mr-1"></i>
+									<span>{{ similar.averageRating|number_format(1) }}</span>
+								</div>
+							</div>
+						</div>
+					</a>
+				{% endfor %}
+			</div>
+		</div>
 	</div>
-</div>
 
-{% block javascripts %}
 	<script>
-		function toggleReplyForm(formId) {
-const form = document.getElementById(formId);
-form.classList.toggle('hidden');
-}
+		// Fonctions pour la galerie photo
+		function changeMainImage(src) {
+			document.getElementById('mainImage').src = src;
+		}
 
-function changeMainImage(src) {
-document.getElementById('mainImage').src = src;
-}
+		window.changeMainImage = function(thumbnail) {
+			// Mettre à jour l'image principale
+			const mainImage = document.getElementById('mainImage');
+			mainImage.src = thumbnail.dataset.src;
+
+			// Mettre à jour la classe active des miniatures
+			document.querySelectorAll('.thumbnail').forEach(thumb => {
+				thumb.classList.remove('active');
+			});
+			thumbnail.classList.add('active');
+		};
+
+		// Fonction pour ouvrir la modal (si vous avez une modal)
+		function openModal(imageSrc) {
+			// Code pour ouvrir la modal avec l'image
+			console.log('Opening modal with image:', imageSrc);
+		}
+
+		// Fonction pour basculer l'affichage du formulaire de réponse
+		window.toggleReplyForm = function(formId) {
+			const form = document.getElementById(formId);
+			if (form) {
+				form.classList.toggle('hidden');
+			}
+		};
+
+		const userId = {{ app.user ? app.user.id : 'null' }};
+		let currentPage = 1;
+		const reviewsPerPage = 2;
+		const initialReviews = 2;
+		const allReviews = [
+			{% for review in reviews %}
+				{
+					id: {{ review.id }},
+					rating: {{ review.rating }},
+					comment: {{ review.comment|json_encode|raw }},
+					createdAt: {{ review.createdAt|date('U') }},
+					publisher: {
+						firstName: {{ review.publisher.firstName|json_encode|raw }},
+						lastName: {{ review.publisher.lastName|json_encode|raw }},
+						id: {{ review.publisher.id }}
+					}
+				}{% if not loop.last %},{% endif %}
+			{% endfor %}
+		];
+		
+		function loadMoreReviews() {
+			const startIndex = currentPage * reviewsPerPage;
+			const endIndex = startIndex + reviewsPerPage;
+			const nextReviews = allReviews.slice(startIndex, endIndex);
+			
+			const container = document.getElementById('reviews-container');
+			
+			nextReviews.forEach((review, index) => {
+				const reviewElement = createReviewElement(review);
+				if (container.children.length % 2 === 0) {
+					reviewElement.classList.add('col-start-1');
+				} else {
+					reviewElement.classList.add('col-start-2');
+				}
+				container.appendChild(reviewElement);
+			});
+			
+			currentPage++;
+			
+			// Si on a affiché tous les avis
+			if (endIndex >= allReviews.length) {
+				document.getElementById('load-more-button').style.display = 'none';
+				document.getElementById('show-less-button').style.display = 'inline-block';
+			}
+		}
+		
+		function showLessReviews() {
+			const container = document.getElementById('reviews-container');
+			// Supprimer tous les avis
+			container.innerHTML = '';
+			
+			// Réafficher les 2 premiers avis
+			const initialReviewsArray = allReviews.slice(0, initialReviews);
+			initialReviewsArray.forEach(review => {
+				const reviewElement = createReviewElement(review);
+				container.appendChild(reviewElement);
+			});
+			
+			// Réinitialiser la pagination
+			currentPage = 1;
+			
+			// Afficher/masquer les boutons
+			document.getElementById('load-more-button').style.display = 'inline-block';
+			document.getElementById('show-less-button').style.display = 'none';
+		}
+		
+		function createReviewElement(review) {
+			const div = document.createElement('div');
+			div.className = 'bg-white p-6 rounded-lg shadow-sm border border-gray-100';
+			
+			// Créer le HTML pour un avis
+			div.innerHTML = `
+				<div class="flex items-start gap-4">
+					<div class="w-12 h-12 rounded-full bg-[#8B4513]/10 flex items-center justify-center">
+						<span class="text-[#8B4513] font-semibold text-lg">
+							${review.publisher.firstName.charAt(0).toUpperCase()}
+						</span>
+					</div>
+					<div class="flex-1">
+						<div class="flex justify-between items-start">
+							<div>
+								<h3 class="font-semibold text-lg">${review.publisher.firstName}</h3>
+								<div class="flex items-center gap-2 mt-1">
+									<div class="flex">
+										${createStarRating(review.rating)}
+									</div>
+									<span class="text-gray-500 text-sm">${formatDate(review.createdAt)}</span>
+								</div>
+							</div>
+							${review.publisher.id === userId ? `
+								<div class="flex gap-2">
+									<a href="/review/edit/${review.id}" 
+									   class="text-gray-400 hover:text-[#8B4513] transition-colors">
+										<i class="fas fa-edit"></i>
+									</a>
+									<a href="/review/delete/${review.id}" 
+									   onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet avis ?')"
+									   class="text-gray-400 hover:text-red-500 transition-colors">
+										<i class="fas fa-trash"></i>
+									</a>
+								</div>
+							` : ''}
+						</div>
+						<p class="mt-3 text-gray-700">${review.comment}</p>
+
+						<!-- Réponses -->
+						<div class="mt-4 ml-8 space-y-4">
+							${review.replies ? review.replies.map(reply => `
+								<div class="bg-gray-50 p-4 rounded-lg border-l-4 border-[#8B4513]">
+									<div class="flex justify-between items-start mb-2">
+										<p class="text-gray-600">
+											Réponse de ${reply.publisher.firstName} ${reply.publisher.lastName}
+											<span class="text-gray-500 text-sm ml-2">${formatDate(reply.createdAt)}</span>
+										</p>
+										${reply.publisher.id === userId ? `
+											<div class="flex gap-2">
+												<a href="/review/edit-reply/${reply.id}" 
+												   class="text-gray-400 hover:text-[#8B4513] transition-colors">
+													<i class="fas fa-edit"></i>
+												</a>
+												<a href="/review/delete/${reply.id}" 
+												   onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette réponse ?')"
+												   class="text-gray-400 hover:text-red-500 transition-colors">
+													<i class="fas fa-trash"></i>
+												</a>
+											</div>
+										` : ''}
+									</div>
+									<p class="text-gray-700">${reply.comment}</p>
+								</div>
+							`).join('') : ''}
+						</div>
+
+						<!-- Bouton et formulaire de réponse -->
+						${userId ? `
+							<button onclick="window.toggleReplyForm('reply-form-${review.id}')" 
+								class="mt-4 text-[#8B4513] hover:text-[#6d3610] text-sm font-medium flex items-center gap-1">
+								<i class="fas fa-reply"></i>
+								Répondre
+							</button>
+							<form id="reply-form-${review.id}" 
+								action="/review/reply/${review.id}" 
+								method="POST" 
+								class="mt-4 ml-8 hidden">
+								<textarea name="comment" 
+									rows="3" 
+									class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B4513] focus:border-[#8B4513] transition-all resize-none" 
+									required 
+									placeholder="Votre réponse..."></textarea>
+								<button type="submit" 
+									class="mt-2 bg-[#8B4513] text-white px-4 py-2 rounded-lg hover:bg-[#6d3610] transition-all duration-300">
+									Publier la réponse
+								</button>
+							</form>
+						` : ''}
+					</div>
+				</div>
+			`;
+			
+			return div;
+		}
+		
+		function createStarRating(rating) {
+			let stars = '';
+			for (let i = 1; i <= 5; i++) {
+				stars += `<i class="fas fa-star ${i <= rating ? 'text-yellow-400' : 'text-gray-200'}"></i>`;
+			}
+			return stars;
+		}
+		
+		function formatDate(timestamp) {
+			const date = new Date(timestamp * 1000);
+			return date.toLocaleDateString('fr-FR');
+		}
 	</script>
 	<script src={{ asset('js/disabled_range_date.js') }}></script>
 	<script src={{ asset('js/total_price.js') }}></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}"></script>
+	<script>
+		// Initialiser la carte Google Maps
+		function initMap() {
+			// Coordonnées de Paris
+			const paris = { lat: 48.8566, lng: 2.3522 };
+			
+			// Créer la carte
+			const map = new google.maps.Map(document.getElementById("map"), {
+				zoom: 12,
+				center: paris,
+				styles: [
+					{
+						"featureType": "all",
+						"elementType": "geometry",
+						"stylers": [{ "color": "#f5f5f5" }]
+					},
+					{
+						"featureType": "water",
+						"elementType": "geometry",
+						"stylers": [{ "color": "#c9c9c9" }]
+					},
+					{
+						"featureType": "water",
+						"elementType": "labels.text.fill",
+						"stylers": [{ "color": "#9e9e9e" }]
+					}
+				]
+			});
+			
+			// Ajouter un marqueur
+			const marker = new google.maps.Marker({
+				position: paris,
+				map: map,
+				title: "Location du véhicule"
+			});
+		}
 
-{% endblock %}{% endblock %}
+		// Initialiser la carte quand la page est chargée
+		window.addEventListener('load', initMap);
+	</script>
+{% endblock %}

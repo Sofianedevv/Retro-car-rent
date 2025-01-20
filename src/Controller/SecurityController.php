@@ -19,6 +19,10 @@ class SecurityController extends AbstractController
     {
         // Si l'utilisateur est déjà connecté, on le redirige vers la page d'accueil
         if ($this->getUser()) {
+            // Si l'utilisateur est banni, on le redirige vers la page de bannissement
+            if ($this->getUser()->isBanned()) {
+                return $this->redirectToRoute('app_banned');
+            }
             $this->addFlash('info', 'Vous êtes déjà connecté');
             return $this->redirectToRoute('app');
         }
@@ -29,8 +33,8 @@ class SecurityController extends AbstractController
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('security/login.html.twig', [
+            'error' => $error,
             'last_username' => $lastUsername,
-            'error' => $error
         ]);
     }
 
@@ -78,5 +82,16 @@ class SecurityController extends AbstractController
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
+    }
+
+    #[Route('/banned', name: 'app_banned')]
+    public function banned(): Response
+    {
+        $user = $this->getUser();
+        if (!$user || !$user->isBanned()) {
+            return $this->redirectToRoute('app_login');
+        }
+        
+        return $this->render('security/banned.html.twig');
     }
 }

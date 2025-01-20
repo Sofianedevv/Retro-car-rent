@@ -249,10 +249,15 @@ class AdminController extends AbstractController
 
     // Gestion des utilisateurs
     #[Route('/users', name: 'users')]
-    public function users(UserRepository $userRepository): Response
+    public function users(): Response
     {
-        return $this->render('admin/users.html.twig', [
-            'users' => $userRepository->findAll(),
-        ]);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        return $this->render('admin/users.html.twig');
+    }
+
+    #[Route('/reservations', name: 'reservations')]
+    public function reservations(): Response
+    {
+        return $this->render('admin/reservations.html.twig');
     }
 } 

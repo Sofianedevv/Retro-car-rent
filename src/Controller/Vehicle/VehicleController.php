@@ -242,16 +242,18 @@ class VehicleController extends AbstractController
     {
         $user = $this->getUser();
         $vehicle = $vehicleRepository->find($vehicleId);
+        if (!$vehicle) {
+            throw $this->createNotFoundException('Vehicle not found');
+        }
+
         $categories = $categoryRepository->findCategoriesByVehicle($vehicle);
         $options = $vehicleOptionRepository->findOptionsByVehicle($vehicle);
         $reviews = $reviewRepository->findBy(['vehicle' => $vehicle], ['createdAt' => 'DESC']);
         $averageRating = $reviewRepository->getAverageRating($vehicle);
         $type = $vehicleService->getVehicleType($vehicle);
 
-        if(!$vehicle) {
-            $this->addFlash('error', 'Ce véhicule n\'existe pas.');
-            return $this->redirectToRoute('app_collections');
-        }
+        // Récupérer les véhicules similaires
+        $similarVehicles = $vehicleRepository->findSimilar($vehicle);
 
         $form = $this->createForm(ReservationType::class, null, [
             'vehicle' => $vehicle,
@@ -285,9 +287,14 @@ class VehicleController extends AbstractController
             'type' => $type,
             'categories'=> $categories,
             'options' => $options,
-            'reviews' => $reviews,
+            'reviews' => array_values(array_filter($reviews, function($review) {
+                return $review->getParent() === null;
+            })),
             'averageRating' => $averageRating,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'similar_vehicles' => $similarVehicles,
+            'userId' => $this->getUser() ? $this->getUser()->getId() : null,
+            'google_maps_api_key' => $this->getParameter('google_maps_api_key'),
         ]);
     }
 

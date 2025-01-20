@@ -12,8 +12,12 @@
         </div>
 
         {% if error %}
-            <div class="mb-4 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 font-playfair">
-                {{ error.messageKey|trans(error.messageData, 'security') }}
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+                {% if error is iterable %}
+                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                {% else %}
+                    {{ error }}
+                {% endif %}
             </div>
         {% endif %}
 
