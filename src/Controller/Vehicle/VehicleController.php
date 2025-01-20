@@ -29,7 +29,9 @@ use App\Repository\ReviewRepository;
 
 use App\Service\Vehicle\VehicleService;
 use App\Form\ReservationType;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Service\Reservation\ReservationService;
+use App\Security\Voter\VehicleVoter;
 use Doctrine\ORM\EntityManagerInterface;
 
 
@@ -42,6 +44,7 @@ class VehicleController extends AbstractController
         $this->vehicleService = $vehicleService;
     }
 
+    #[IsGranted(attribute: VehicleVoter::VIEW)]
     #[Route('/nos-vehicules', name: 'app_collections')]
     public function vehicules(VehicleRepository $vehicleRepository): Response
     {
@@ -54,6 +57,8 @@ class VehicleController extends AbstractController
             'vans' => $vans,
         ]);
     }
+
+    #[IsGranted(attribute: VehicleVoter::VIEW)]
     #[Route('/nos-voitures', name: 'app_car')]
     public function show_cars(Request $request, VehicleRepository $vehicleRepository, FavoriteRepository $favoriteRepository): Response
     {
@@ -118,6 +123,7 @@ class VehicleController extends AbstractController
         ]);
     }
     
+    #[IsGranted(attribute: VehicleVoter::VIEW)]
     #[Route('/nos-motos', name: 'app_motorcycle')]
     public function show_motorcycle(Request $request, VehicleRepository $vehicleRepository, FavoriteRepository $favoriteRepository): Response
     {
@@ -174,6 +180,7 @@ class VehicleController extends AbstractController
         ]);
     }
 
+    #[IsGranted(attribute: VehicleVoter::VIEW)]
     #[Route('/nos-van', name: 'app_van')]
     public function show_vans(Request $request, VehicleRepository $vehicleRepository, FavoriteRepository $favoriteRepository): Response
     {
@@ -232,6 +239,7 @@ class VehicleController extends AbstractController
         ]);
     }
 
+    #[IsGranted(attribute: VehicleVoter::VIEW)]
     #[Route('/details/{vehicleId}', name: 'app_vehicle_show_details')]
     public function showDetails(
         int $vehicleId, 
