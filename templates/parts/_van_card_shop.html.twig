@@ -10,6 +10,13 @@
         <div class="absolute top-4 left-4 bg-gray-100 text-gray-900 px-3 py-1 rounded-full shadow-lg font-bold text-sm">
             {{ van.year }}
         </div>
+        <!-- Rating Badge -->
+        {% if van.averageRating is defined %}
+            <div class="absolute top-4 right-4 flex items-center bg-gray-50 text-gray-900 px-3 py-1 rounded-full shadow-lg font-bold text-sm">
+                <i class="fas fa-star text-yellow-500 mr-1"></i>
+                {{ van.averageRating|number_format(1) }}
+            </div>
+        {% endif %}
     </div>
 
     <!-- Content Section -->

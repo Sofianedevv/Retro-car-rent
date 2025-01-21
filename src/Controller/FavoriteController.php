@@ -73,7 +73,7 @@ class FavoriteController extends AbstractController
         $entityManager->flush();
         
         $this->addFlash('success', $message);
-        return $this->redirectToRoute('app');
+        return $this->redirectToRoute('app_favorite_show');
     }
     
 
