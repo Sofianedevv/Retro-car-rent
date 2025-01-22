@@ -44,7 +44,6 @@ class VehicleController extends AbstractController
         $this->vehicleService = $vehicleService;
     }
 
-    #[IsGranted(attribute: VehicleVoter::VIEW)]
     #[Route('/nos-vehicules', name: 'app_collections')]
     public function vehicules(VehicleRepository $vehicleRepository): Response
     {
@@ -58,7 +57,6 @@ class VehicleController extends AbstractController
         ]);
     }
 
-    #[IsGranted(attribute: VehicleVoter::VIEW)]
     #[Route('/nos-voitures', name: 'app_car')]
     public function show_cars(Request $request, VehicleRepository $vehicleRepository, FavoriteRepository $favoriteRepository): Response
     {
@@ -123,7 +121,6 @@ class VehicleController extends AbstractController
         ]);
     }
     
-    #[IsGranted(attribute: VehicleVoter::VIEW)]
     #[Route('/nos-motos', name: 'app_motorcycle')]
     public function show_motorcycle(Request $request, VehicleRepository $vehicleRepository, FavoriteRepository $favoriteRepository): Response
     {
@@ -180,7 +177,6 @@ class VehicleController extends AbstractController
         ]);
     }
 
-    #[IsGranted(attribute: VehicleVoter::VIEW)]
     #[Route('/nos-van', name: 'app_van')]
     public function show_vans(Request $request, VehicleRepository $vehicleRepository, FavoriteRepository $favoriteRepository): Response
     {
@@ -239,7 +235,6 @@ class VehicleController extends AbstractController
         ]);
     }
 
-    #[IsGranted(attribute: VehicleVoter::VIEW)]
     #[Route('/details/{vehicleId}', name: 'app_vehicle_show_details')]
     public function showDetails(
         int $vehicleId, 
