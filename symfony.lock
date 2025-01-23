@@ -63,6 +63,18 @@
             "./config/packages/nelmio_alice.yaml"
         ]
     },
+    "nucleos/dompdf-bundle": {
+        "version": "4.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "3.1",
+            "ref": "ac77a0c751bdccab42ddc73d7290719b31ecb691"
+        },
+        "files": [
+            "./config/packages/nucleos_dompdf.yaml"
+        ]
+    },
     "phpunit/phpunit": {
         "version": "9.6",
         "recipe": {
@@ -170,6 +182,15 @@
         "files": [
             "./config/packages/mailer.yaml"
         ]
+    },
+    "symfony/mailtrap-mailer": {
+        "version": "7.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "7.2",
+            "ref": "e1d25e0fab8778b977233aff6762d3791eab3155"
+        }
     },
     "symfony/maker-bundle": {
         "version": "1.61",

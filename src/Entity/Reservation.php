@@ -4,8 +4,12 @@ namespace App\Entity;
 
 use App\Enum\StatusReservationEnum;
 use App\Repository\ReservationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 class Reservation
@@ -13,30 +17,62 @@ class Reservation
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+
     private ?int $id = null;
 
     #[ORM\Column]
+
+
     private ?\DateTimeImmutable $startDate = null;
 
     #[ORM\Column]
+  
     private ?\DateTimeImmutable $endDate = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+ 
+
     private ?string $totalPrice = null;
 
     #[ORM\Column(enumType: StatusReservationEnum::class)]
+    #[Groups(['reservation:read'])]
+
     private ?StatusReservationEnum $status = null;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
+
+
     private ?User $client = null;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
+
+
     private ?Vehicle $vehicle = null;
 
     #[ORM\OneToOne(mappedBy: 'reservation', cascade: ['persist', 'remove'])]
+
     private ?Payment $payment = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\OneToOne(mappedBy: 'reservation', cascade: ['persist', 'remove'])]
+    private ?Invoice $invoice = null;
+
+    /**
+     * @var Collection<int, ReservationVehicleOption>
+     */
+    #[ORM\OneToMany(targetEntity: ReservationVehicleOption::class, mappedBy: 'reservation')]
+    private Collection $reservationVehicleOptions;
+
+    public function __construct()
+    {
+        $this->reservationVehicleOptions = new ArrayCollection();
+    }
+
+   
 
     public function getId(): ?int
     {
@@ -131,4 +167,63 @@ class Reservation
 
         return $this;
     }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getInvoice(): ?Invoice
+    {
+        return $this->invoice;
+    }
+
+    public function setInvoice(Invoice $invoice): static
+    {
+        if ($invoice->getReservation() !== $this) {
+            $invoice->setReservation($this);
+        }
+
+        $this->invoice = $invoice;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ReservationVehicleOption>
+     */
+    public function getReservationVehicleOptions(): Collection
+    {
+        return $this->reservationVehicleOptions;
+    }
+
+    public function addReservationVehicleOption(ReservationVehicleOption $reservationVehicleOption): static
+    {
+        if (!$this->reservationVehicleOptions->contains($reservationVehicleOption)) {
+            $this->reservationVehicleOptions->add($reservationVehicleOption);
+            $reservationVehicleOption->setReservation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservationVehicleOption(ReservationVehicleOption $reservationVehicleOption): static
+    {
+        if ($this->reservationVehicleOptions->removeElement($reservationVehicleOption)) {
+            // set the owning side to null (unless already changed)
+            if ($reservationVehicleOption->getReservation() === $this) {
+                $reservationVehicleOption->setReservation(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

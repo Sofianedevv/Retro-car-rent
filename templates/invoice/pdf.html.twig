@@ -1,0 +1,91 @@
+{% extends 'base_pdf.html.twig' %}
+
+{% block title %}Facture N°{{ invoice.invoiceNumber }}{% endblock %}
+
+{% block content %}
+    <table class="w-full">
+        <tr>
+            <td class="w-half">
+                <img src="{{ asset('template-html/assets/images/rcr-logo2.png') }}" alt="Logo" width="200" />
+            </td>
+            <td class="w-half">
+                <h2>Invoice ID: {{ invoice.invoiceNumber }}</h2>
+            </td>
+        </tr>
+    </table>
+
+    <div class="margin-top">
+        <table class="w-full">
+            <tr>
+                <td class="w-half">
+                    <div><h4>Client:</h4></div>
+                    <div>{{ client.firstName }} {{ client.lastName }}</div>
+                    <div>{{ client.email }}</div>
+                    <div>{{ client.phoneNumber }}</div>
+                </td>
+                <td class="w-half">
+                    <div><h4>Entreprise:</h4></div>
+                    <div>RRR</div>
+                    <div>123 Rue de Rétro, 75001 Paris, France</div>
+                    <div>Tél: +33 1 23 45 67 89</div>
+                    <div>SIRET: 123 456 789 00010</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="margin-top">
+        <h4>Détails de la réservation</h4>
+        <table class="w-full">
+            <tr>
+                <td><strong>Date de début:</strong> {{ startDate|date('d/m/Y') }}</td>
+                <td><strong>Date de fin:</strong> {{ endDate|date('d/m/Y') }}</td>
+                <td><strong>Durée:</strong> {{ days }} jours</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="margin-top">
+        <table class="w-full">
+            <tr>
+                <th>Qty</th>
+                <th>Description</th>
+                <th>Price</th>
+            </tr>
+            <tr class="items">
+                <td>1</td> 
+                <td>{{ vehicle.brand }} - {{ vehicle.model }}</td>
+                <td>{{ vehicle.price }}€</td>
+            </tr>
+
+            {% if reservationOptions is not empty %}
+                {% for option in reservationOptions %}
+                    {% if option.vehicleOptions is not null %}
+                        <tr>
+                            <td>{{ option.count }}</td>
+                            <td>{{ option.vehicleOptions.name }}</td>
+                            <td>{{ option.vehicleOptions.price }}€</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td>1</td>
+                            <td>Option manquante</td>
+                            <td>0€</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </table>
+    </div>
+
+    <div class="total">
+        <p><strong>Total HT (Véhicule):</strong> {{ totalPriceVehicle }}€</p>
+        <p><strong>Prix des options:</strong> {{ totalPriceOptions }}€</p>
+        <p><strong>Total TTC:</strong> {{ totalPriceVehicle + totalPriceOptions }}€</p>
+    </div>
+
+    <div class="footer margin-top">
+        <div>Conditions Générales de Vente : La présente facture est régie par les conditions générales de vente de l'entreprise RRR. Le paiement est dû à la réception de la facture. Tout retard de paiement entraînera des pénalités de retard selon la législation en vigueur.</div>
+        <div>&copy; RRR</div>
+    </div>
+{% endblock %}

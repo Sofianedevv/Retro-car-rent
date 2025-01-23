@@ -1,0 +1,80 @@
+<?php
+
+namespace App\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\User;
+use App\Entity\Reservation;
+use App\Entity\Invoice;
+use App\Repository\ReservationRepository;
+use App\Repository\InvoiceRepository;
+use App\Service\PDF\PdfService;
+
+class InvoiceController extends AbstractController
+{
+    #[Route('/vos-factures/{clientId}', name: 'app_invoice')]
+    public function getInvoices(int $clientId,PdfService $pdf, ReservationRepository $reservationRepository, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+
+        if (!$user) {
+            $this->addFlash('error', 'Vous devez être connecté pour visualiser vos factures.');
+            return $this->redirectToRoute('app_login');
+        }
+        if (!$user || $user->getId() !== $clientId) {
+            $this->addFlash('error', 'Vous devez être connecté pour visualiser vos factures ou vous ne pouvez voir que vos propres factures.');
+            return $this->redirectToRoute('app_login');
+        }
+        $reservations = $reservationRepository->findBy(['client' => $clientId]);
+        $invoices = [];
+        foreach ($reservations as $reservation) {
+            $invoice = $reservation->getInvoice();
+            if (!$invoice || !$invoice->getReservation()) {
+                $this->addFlash('error', 'Facture ou réservation manquante pour cette réservation.');
+                continue; 
+            }
+            
+            $pdfFile = $pdf->generateInvoicePdf($invoice);
+            $invoices[] = [
+                'invoice' => $invoice,
+                'pdf' => base64_encode($pdfFile),
+            ];
+
+        }
+
+        return $this->render('invoice/index.html.twig', [
+           'invoices' => $invoices,
+        ]);
+    }
+
+    #[Route('/factures/{clientId}/{reservationId}', name: 'app_invoice_download')]
+    public function downloadInvoice(int $clientId, int $reservationId, InvoiceRepository $invoiceRepository, PdfService $pdfService): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        if ($user->getId() !== $clientId) {
+            return $this->json(['error' => 'Vous n\'êtes pas autorisé à télécharger cette facture.'], Response::HTTP_FORBIDDEN);
+        }
+
+        $invoice = $invoiceRepository->findOneBy([
+            'reservation' => $reservationId,
+        ]);
+
+        if (!$invoice || $invoice->getReservation()->getClient()->getId() !== $clientId) {
+            return $this->json(['error' => 'Facture introuvable ou vous n\'êtes pas autorisé à accéder à cette facture.'], Response::HTTP_FORBIDDEN);
+        }
+
+        $pdfContent = $pdfService->generateInvoicePdf($invoice);
+
+        return new Response($pdfContent, Response::HTTP_OK, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="facture_' . $invoice->getId() . '.pdf"',
+        ]);
+    }
+}

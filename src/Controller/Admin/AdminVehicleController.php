@@ -12,12 +12,14 @@ use App\Form\MotorcycleType;
 use App\Repository\CarRepository;
 use App\Repository\VanRepository;
 use App\Repository\MotorcycleRepository;
+use App\Security\Voter\VehicleVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Filesystem\Filesystem;
@@ -25,6 +27,7 @@ use Symfony\Component\Filesystem\Filesystem;
 #[Route('/admin')]
 class AdminVehicleController extends AbstractController
 {
+    #[IsGranted(VehicleVoter::MANAGE_ALL)]
     #[Route('/vehicles', name: 'admin_vehicles')]
     public function index(
         CarRepository $carRepository,
@@ -37,13 +40,14 @@ class AdminVehicleController extends AbstractController
             'motorcycles' => $motorcycleRepository->findAll(),
         ]);
     }
-
+    #[IsGranted(VehicleVoter::CREATE)]
     #[Route('/vehicle/car/new', name: 'admin_vehicle_car_new')]
     public function newCar(
         Request $request, 
         EntityManagerInterface $entityManager,
         SluggerInterface $slugger
     ): Response {
+
         $car = new Car();
         $form = $this->createForm(CarType::class, $car);
         $form->handleRequest($request);
@@ -83,7 +87,7 @@ class AdminVehicleController extends AbstractController
             'vehicle_type' => 'car'
         ]);
     }
-
+    #[IsGranted(attribute: VehicleVoter::CREATE)]
     #[Route('/vehicle/van/new', name: 'admin_vehicle_van_new')]
     public function newVan(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -104,7 +108,7 @@ class AdminVehicleController extends AbstractController
             'vehicle_type' => 'van'
         ]);
     }
-
+    #[IsGranted(VehicleVoter::CREATE)]
     #[Route('/vehicle/motorcycle/new', name: 'admin_vehicle_motorcycle_new')]
     public function newMotorcycle(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -126,7 +130,8 @@ class AdminVehicleController extends AbstractController
         ]);
     }
 
-    // Routes pour l'édition
+    #[IsGranted(attribute: VehicleVoter::EDIT, subject: 'car')]
+
     #[Route('/vehicle/car/{id}/edit', name: 'admin_vehicle_car_edit')]
     public function editCar(
         Request $request, 
@@ -172,6 +177,7 @@ class AdminVehicleController extends AbstractController
         ]);
     }
 
+    #[IsGranted(attribute: VehicleVoter::EDIT, subject: 'van')]
     #[Route('/vehicle/van/{id}/edit', name: 'admin_vehicle_van_edit')]
     public function editVan(
         Request $request, 
@@ -217,6 +223,7 @@ class AdminVehicleController extends AbstractController
         ]);
     }
 
+    #[IsGranted(attribute: VehicleVoter::EDIT, subject: 'motorcycle')]
     #[Route('/vehicle/motorcycle/{id}/edit', name: 'admin_vehicle_motorcycle_edit')]
     public function editMotorcycle(
         Request $request, 
@@ -276,21 +283,17 @@ class AdminVehicleController extends AbstractController
             default => throw new \RuntimeException('Type de véhicule inconnu'),
         };
         
-        // Supprimer le fichier physique
         $imagePath = $this->getParameter('vehicle_images_directory').'/'.$image->getUrl();
         if ($filesystem->exists($imagePath)) {
             $filesystem->remove($imagePath);
         }
 
-        // Supprimer l'entrée en base de données
         $entityManager->remove($image);
         $entityManager->flush();
 
         $this->addFlash('success', 'L\'image a été supprimée avec succès.');
         
-        // Rediriger vers la page d'édition appropriée
         return $this->redirectToRoute("admin_vehicle_{$vehicleType}_edit", ['id' => $vehicle->getId()]);
     }
 
-    // Ajoutez les méthodes similaires pour l'édition des vans et des motos
 } 

@@ -25,6 +25,7 @@ use App\Entity\Notification;
 #[IsGranted('ROLE_ADMIN')]
 class AdminController extends AbstractController
 {
+
     #[Route('/', name: 'dashboard')]
     public function index(VehicleRepository $vehicleRepository, UserRepository $userRepository, CategoryRepository $categoryRepository, ReservationRepository $reservationRepository): Response
     {
@@ -47,7 +48,7 @@ class AdminController extends AbstractController
         ]);
     }
 
-    // CRUD pour les voitures
+    
     #[Route('/vehicle/car/new', name: 'vehicle_car_new')]
     public function newCar(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
@@ -58,10 +59,9 @@ class AdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($car);
             
-            // Notifier tous les utilisateurs non-admin du nouveau véhicule
             $users = $userRepository->findAll();
             foreach ($users as $user) {
-                if (!in_array('ROLE_ADMIN', $user->getRoles())) {  // Ne pas notifier les admins
+                if (!in_array('ROLE_ADMIN', $user->getRoles())) {  
                     $notification = new Notification();
                     $notification->setMessage(sprintf(
                         'Une nouvelle voiture est disponible : %s %s',
@@ -108,7 +108,6 @@ class AdminController extends AbstractController
         ]);
     }
 
-    // CRUD pour les vans
     #[Route('/vehicle/van/new', name: 'vehicle_van_new')]
     public function newVan(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
@@ -119,7 +118,6 @@ class AdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($van);
             
-            // Notifier tous les utilisateurs non-admin du nouveau véhicule
             $users = $userRepository->findAll();
             foreach ($users as $user) {
                 if (!in_array('ROLE_ADMIN', $user->getRoles())) {
@@ -169,7 +167,6 @@ class AdminController extends AbstractController
         ]);
     }
 
-    // CRUD pour les motos
     #[Route('/vehicle/motorcycle/new', name: 'vehicle_motorcycle_new')]
     public function newMotorcycle(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
@@ -180,7 +177,6 @@ class AdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($motorcycle);
             
-            // Notifier tous les utilisateurs non-admin du nouveau véhicule
             $users = $userRepository->findAll();
             foreach ($users as $user) {
                 if (!in_array('ROLE_ADMIN', $user->getRoles())) {
@@ -229,6 +225,7 @@ class AdminController extends AbstractController
             'vehicle_type' => 'motorcycle'
         ]);
     }
+
 
     // Suppression commune pour tous les types de véhicules
     #[Route('/vehicle/{id}/delete', name: 'vehicle_delete')]

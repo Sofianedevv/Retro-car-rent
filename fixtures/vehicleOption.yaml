@@ -1,4 +1,8 @@
 App\Entity\VehicleOption:
     vehicleOption_{1..5}:
-        name: "option <current()>"
-        description: "<text()>"
+      name: "option <current()>"
+      description: "<text()>"
+      price: 20
+      reservationVehicleOptions: 
+        - '@reservationVehicleOptions_*'
+      singleChoice: <boolean()>

@@ -5,6 +5,7 @@ namespace App\Controller\Vehicle;
 use App\Repository\CarRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -17,17 +18,30 @@ use App\Entity\Favorite;
 use App\Entity\Category;
 use App\Entity\Review;
 use App\Entity\Notification;
+use App\Entity\Reservation;
+use DateTimeImmutable;
+use App\Enum\StatusReservationEnum;
 
 use App\Repository\VehicleRepository;
 use App\Repository\FavoriteRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\VehicleOptionRepository;
 use App\Repository\ReviewRepository;
+
+use App\Service\Vehicle\VehicleService;
+use App\Service\Reservation\ReservationService;
 use Doctrine\ORM\EntityManagerInterface;
 
 
 class VehicleController extends AbstractController
 {
+    private VehicleService $vehicleService;
+
+    public function __construct(VehicleService $vehicleService)
+    {
+        $this->vehicleService = $vehicleService;
+    }
+
     #[Route('/nos-vehicules', name: 'app_collections')]
     public function vehicules(VehicleRepository $vehicleRepository): Response
     {
@@ -40,6 +54,7 @@ class VehicleController extends AbstractController
             'vans' => $vans,
         ]);
     }
+
     #[Route('/nos-voitures', name: 'app_car')]
     public function show_cars(Request $request, VehicleRepository $vehicleRepository, FavoriteRepository $favoriteRepository): Response
     {
@@ -224,7 +239,11 @@ class VehicleController extends AbstractController
         CategoryRepository $categoryRepository, 
         VehicleOptionRepository $vehicleOptionRepository, 
         ReviewRepository $reviewRepository,
-        FavoriteRepository $favoriteRepository
+        VehicleService $vehicleService,
+        FavoriteRepository $favoriteRepository,
+        Request $request,
+        ReservationService $reservationService,
+        EntityManagerInterface $entityManager
     ): Response
     {
         $user = $this->getUser();
@@ -233,12 +252,15 @@ class VehicleController extends AbstractController
         $options = $vehicleOptionRepository->findOptionsByVehicle($vehicle);
         $reviews = $reviewRepository->findBy(['vehicle' => $vehicle], ['createdAt' => 'DESC']);
         $averageRating = $reviewRepository->getAverageRating($vehicle);
-        $type = $this->getVehicleType($vehicle);
+        $type = $vehicleService->getVehicleType($vehicle);
 
         if(!$vehicle) {
             $this->addFlash('error', 'Ce véhicule n\'existe pas.');
             return $this->redirectToRoute('app_collections');
         }
+        ;
+
+
         
         return $this->render('vehicle/_display_details.html.twig', [
             'vehicle' => $vehicle,
@@ -246,21 +268,12 @@ class VehicleController extends AbstractController
             'categories'=> $categories,
             'options' => $options,
             'reviews' => $reviews,
-            'averageRating' => $averageRating
+            'averageRating' => $averageRating,
         ]);
     }
-    private function getVehicleType(Vehicle $vehicle): string
-    {
-        if ($vehicle instanceof Car) {
-            return 'Car';
-        } elseif ($vehicle instanceof Van) {
-            return 'Van';
-        } elseif ($vehicle instanceof Motorcycle) {
-            return 'Motorcycle';
-        }
 
-        return 'Type de véhicule inconnu';
-    }
+
+    
 
    
 }

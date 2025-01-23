@@ -17,7 +17,7 @@ use App\Entity\Notification;
 
 class FavoriteController extends AbstractController
 {
-    #[Route('/favoris/add/{vehicleId}', name: 'app_favorite_add')]
+    #[Route('/ajouter-favoris/{vehicleId}', name: 'app_favorite_add')]
     public function addFavoris(int $vehicleId, Request $request, EntityManagerInterface $entityManager, VehicleRepository $vehicleRepository, FavoriteRepository $favoriteRepository): Response
     {
         $user = $this->getUser();
@@ -46,7 +46,6 @@ class FavoriteController extends AbstractController
             $favorite->removeVehicle($vehicle);
             $message = sprintf('Vous avez retiré %s %s de vos favoris', $vehicle->getBrand(), $vehicle->getModel());
             
-            // Créer une notification pour le retrait des favoris
             $notification = new Notification();
             $notification->setMessage($message);
             $notification->setCreatedAt(new \DateTimeImmutable());
@@ -59,7 +58,6 @@ class FavoriteController extends AbstractController
             $favorite->addVehicle($vehicle);
             $message = sprintf('Vous avez ajouté %s %s à vos favoris', $vehicle->getBrand(), $vehicle->getModel());
             
-            // Créer une notification pour l'ajout aux favoris
             $notification = new Notification();
             $notification->setMessage($message);
             $notification->setCreatedAt(new \DateTimeImmutable());
@@ -77,7 +75,7 @@ class FavoriteController extends AbstractController
     }
     
 
-    #[Route('/show_favorites', name: 'app_favorite_show')]
+    #[Route('/vos-favoris', name: 'app_favorite_show')]
     public function showFavoris(FavoriteRepository $favoriteRepository): Response
     {
         $user = $this->getUser();
@@ -94,7 +92,7 @@ class FavoriteController extends AbstractController
         ]);
     }
 
-    #[Route('/delete_favorites/{vehicleId}', name: 'app_favorite_delete')]
+    #[Route('/supprimer-favoris/{vehicleId}', name: 'app_favorite_delete')]
     public function deleteFavoris(int $vehicleId, EntityManagerInterface $entityManager, VehicleRepository $vehicleRepository, FavoriteRepository $favoriteRepository): Response
     {
         $user = $this->getUser();
@@ -111,7 +109,6 @@ class FavoriteController extends AbstractController
             if ($favorite->getVehicles()->contains($vehicle)) {
                 $favorite->removeVehicle($vehicle);
                 
-                // Créer une notification pour le retrait des favoris
                 $message = sprintf('Vous avez retiré %s %s de vos favoris', $vehicle->getBrand(), $vehicle->getModel());
                 $notification = new Notification();
                 $notification->setMessage($message);
