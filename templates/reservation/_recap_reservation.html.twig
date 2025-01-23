@@ -12,7 +12,7 @@
 				<div class="bg-gray-50 p-4 rounded-lg border border-gray-300 space-y-4">
 					<h4 class="text-xl font-semibold text-gray-800">Détails</h4>
 					<div class="flex justify-between items-center">
-						<span class="text-gray-600">Véhicule</span>
+						<span class="text-gray-600" data-vehicle-id="{{ vehicle.id }}">Véhicule</span>
 						<span class="font-semibold text-gray-800">{{ vehicle.brand }}</span>
 					</div>
 					<div class="flex justify-between items-center">
@@ -107,9 +107,12 @@
 				{{ form_end(form) }}
 			</div>
 		</div>
+		
 	</div>
+s
 
 	{% block javascripts %}
+
 		<script src="{{ asset('js/disabled_range_date.js') }}"></script>
 		<script src="{{ asset('js/total_price.js') }}"></script>
 	{% endblock %}

@@ -145,14 +145,17 @@ class ReservationController extends AbstractController
         #[Route('/vos-reservations/{clientId}', name: 'app_all_reservation', methods: ['GET'])]
         public function getReservation(int $clientId, ReservationRepository $reservationRepository): Response
         {
-            $reservations = $reservationRepository->findBy(['client' => $clientId]);
+            $reservations = $reservationRepository->findBy([
+                'client' => $clientId,
+                'status' => StatusReservationEnum::CONFIRMED  
+            ]);
         
-            if(empty($reservations)){
-                $this->addFlash('error', 'Vous n\'avez pas de réservation en cours.');
+            if (empty($reservations)) {
+                $this->addFlash('error', 'Vous n\'avez pas de réservation confirmée en cours.');
             }
-            $reservationStatus = $reservationRepository->findBy(['status' => StatusReservationEnum::CONFIRMED]);
+        
             $reservationsOptions = [];
-
+        
             foreach ($reservations as $reservation) {
                 $options = $reservation->getReservationVehicleOptions(); 
                 $reservationsOptions[] = $options;
@@ -160,11 +163,9 @@ class ReservationController extends AbstractController
         
             return $this->render('reservation/_get_reservations.html.twig', [
                 'reservations' => $reservations,
-                'reservationsOptions'=> $reservationsOptions,
-                'reservationStatus' => $reservationStatus
+                'reservationsOptions' => $reservationsOptions,
             ]);
         }
-         
 
     #[Route('/annuler_reservation/{reservationId}', name: 'app_reservation_cancel', methods: ['POST'])]
     public function cancelReservation(int $reservationId, EntityManagerInterface $entityManagerInterface, ReservationRepository $reservationRepository, CancelReservationMailer $cancelReservationMailer): Response
@@ -191,6 +192,7 @@ class ReservationController extends AbstractController
             return $this->redirectToRoute('app_all_reservation', ['clientId' => $user->getId()]);
         }
         $reservation->setStatus(StatusReservationEnum::CANCELLED);
+        $entityManagerInterface->flush();
 
 
         $cancelReservationMailer->sendCancelReservationEmail($this->getUser()->getEmail(), $reservationId);

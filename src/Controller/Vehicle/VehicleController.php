@@ -28,10 +28,7 @@ use App\Repository\VehicleOptionRepository;
 use App\Repository\ReviewRepository;
 
 use App\Service\Vehicle\VehicleService;
-use App\Form\ReservationType;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Service\Reservation\ReservationService;
-use App\Security\Voter\VehicleVoter;
 use Doctrine\ORM\EntityManagerInterface;
 
 
