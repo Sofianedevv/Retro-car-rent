@@ -86,9 +86,15 @@ class FavoriteController extends AbstractController
         }
     
         $favorites = $favoriteRepository->findBy(['client' => $user]);
-    
+
+        $nbFavorites = 0;
+        foreach ($favorites as $favorite) {
+            $nbFavorites += count($favorite->getVehicles()); 
+        }
+        
         return $this->render('favorite/show.html.twig', [
             'favorites' => $favorites,
+            'nbFavorites' => $nbFavorites
         ]);
     }
 
