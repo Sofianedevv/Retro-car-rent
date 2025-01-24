@@ -30,6 +30,13 @@ class HomeController extends AbstractController
             'bestRatedVehicles' => $bestRatedVehicles
         ]);
     }
+    // about page
+    #[Route('/about', name: 'app_about')]
+    public function about(): Response
+    {
+        return $this->render('home/about.html.twig', [
+        ]);
+    }
 
     // #[Route('/home', name: 'app_home')]
     // public function index(
