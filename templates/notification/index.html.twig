@@ -3,7 +3,7 @@
 {% block title %}Vos notifications{% endblock %}
 
 {% block body %}
-    <div class="bg-gray-50">
+    <div class="bg-gray-50 min-h-screen">
         <div class="max-w-4xl mx-auto p-6">
             <div class="flex justify-between items-center mb-6">
                 <h1 class="text-3xl font-semibold text-gray-900 font-playfair flex items-center space-x-2">
@@ -19,16 +19,16 @@
                 {% endif %}
             </div>
 
-            <div class="space-y-4">
+            <div class="space-y-0">
                 {% for notification in notifications %}
-                    <div class="bg-white p-4 rounded-lg shadow-lg transition-transform transform hover:shadow-xl hover:-translate-y-1
-            {% if not notification.readStatus %}
-                border-2
-                {% if notification.type == 'new_vehicle' %}border-green-500
-                {% elseif notification.type == 'new_favorite' %}border-yellow-500
-                {% elseif notification.type == 'new_reply' %}border-blue-500
-                {% else %}border-gray-500{% endif %}
-            {% endif %}">
+                    <div class="bg-white mb-4 last:mb-0 p-4 rounded-lg shadow-lg transition-transform transform hover:shadow-xl hover:-translate-y-1
+                    {% if not notification.readStatus %}
+                        border-2
+                        {% if notification.type == 'new_vehicle' %}border-green-500
+                        {% elseif notification.type == 'new_favorite' %}border-yellow-500
+                        {% elseif notification.type == 'new_reply' %}border-blue-500
+                        {% else %}border-gray-500{% endif %}
+                    {% endif %}">
                         <div class="flex justify-between items-start">
                             <div class="flex items-center space-x-3">
                                 {% if notification.type == 'new_vehicle' %}
@@ -79,4 +79,4 @@
             </div>
         </div>
     </div>
-{% endblock %} 
+{% endblock %}
