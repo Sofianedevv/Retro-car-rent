@@ -28,3 +28,7 @@ services:
     App\EventSubscriber\NotificationSubscriber:
         tags:
             - { name: kernel.event_subscriber }
+
+    App\DataFixtures\:
+        resource: '../src/DataFixtures/'
+        tags: ['doctrine.fixture.orm']

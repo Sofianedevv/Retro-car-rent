@@ -1,36 +1,43 @@
 # fixtures/review.yaml
 App\Entity\Review:
-  review_1:
-    rating: 4.5
-    comment: "Super expérience, voiture magnifique et bien entretenue."
-    created_at: '<dateTimeBetween("-1 week", "+1 week")>'
-    vehicle: '@vehicle_car_*'  
-    publisher: '@user_with_reviews_*'  
+    review_{1..15}:
+        rating: '<numberBetween(1, 5)>'
+        comment: '<text(150)>'
+        createdAt: '<(new \DateTimeImmutable())>'
+        vehicle: '@vehicle_car_1'
+        publisher: '@user_1'
 
-  review_2:
-    rating: 5
-    comment: "Excellent van, très rapide et agréable à conduire."
-    created_at: '<dateTimeBetween("-1 week", "+1 week")>'
-    vehicle: '@vehicle_van_*'
-    publisher: '@user_with_reviews_*'  
+    review_1:
+        rating: 4.5
+        comment: "Super expérience, voiture magnifique et bien entretenue."
+        created_at: '<dateTimeBetween("-1 week", "+1 week")>'
+        vehicle: '@vehicle_car_1'
+        publisher: '@user_with_reviews_1'
 
-  review_3:
-    rating: 3.5
-    comment: "Bonnes performances, mais l'intérieur pourrait être amélioré."
-    created_at: '<dateTimeBetween("-1 week", "+1 week")>'
-    vehicle: '@vehicle_motorcycle_*'
-    publisher: '@user_with_reviews_*'  
+    review_2:
+        rating: 5
+        comment: "Excellent van, très rapide et agréable à conduire."
+        created_at: '<dateTimeBetween("-1 week", "+1 week")>'
+        vehicle: '@vehicle_van_1'
+        publisher: '@user_with_reviews_2'  
+
+    review_3:
+        rating: 3.5
+        comment: "Bonnes performances, mais l'intérieur pourrait être amélioré."
+        created_at: '<dateTimeBetween("-1 week", "+1 week")>'
+        vehicle: '@vehicle_motorcycle_1'
+        publisher: '@user_with_reviews_3'  
     
-  review_4:
-    rating: 3.5
-    comment: "Bonnes performances, mais l'intérieur pourrait être amélioré."
-    created_at: '<dateTimeBetween("-1 week", "+1 week")>'
-    vehicle: '@vehicle_motorcycle_*'
-    publisher: '@user_with_reviews_*'  
+    review_4:
+        rating: 3.5
+        comment: "Bonnes performances, mais l'intérieur pourrait être amélioré."
+        created_at: '<dateTimeBetween("-1 week", "+1 week")>'
+        vehicle: '@vehicle_motorcycle_*'
+        publisher: '@user_with_reviews_*'  
 
-  review_5:
-    rating: 3.5
-    comment: "Bonnes performances, mais l'intérieur pourrait être amélioré."
-    created_at: '<dateTimeBetween("-1 week", "+1 week")>'
-    vehicle: '@vehicle_motorcycle_*'
-    publisher: '@user_with_reviews_*'  
+    review_5:
+        rating: 3.5
+        comment: "Bonnes performances, mais l'intérieur pourrait être amélioré."
+        created_at: '<dateTimeBetween("-1 week", "+1 week")>'
+        vehicle: '@vehicle_motorcycle_*'
+        publisher: '@user_with_reviews_*'  

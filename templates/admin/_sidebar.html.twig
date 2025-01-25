@@ -32,7 +32,7 @@
             <li>
                 <a href="{{ path('admin_reservations') }}" 
                    class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors
-                   {{ app.request.get('_route') == 'admin_reservations' ? 'bg-gray-700 text-white' : '' }}">
+                   {{ app.request.get('_route') starts with 'admin_reservation' ? 'bg-gray-700 text-white' : '' }}">
                     <i class="fas fa-calendar-alt w-6"></i>
                     <span>Réservations</span>
                 </a>

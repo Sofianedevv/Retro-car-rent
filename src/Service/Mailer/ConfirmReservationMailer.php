@@ -3,10 +3,6 @@
 namespace App\Service\Mailer;
 
 use App\Entity\Reservation;
-use App\Entity\User;
-use App\Entity\Vehicle;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
@@ -24,7 +20,7 @@ class ConfirmReservationMailer {
         $this->twig = $twig;
     }
 
-    public function sendConfirmationEmail(Reservation $reservation): JsonResponse {
+    public function sendConfirmationEmail(Reservation $reservation): void {
 
         $startDate = $reservation->getStartDate()->format('d/m/Y');
         $endDate = $reservation->getEndDate()->format('d/m/Y');
@@ -44,19 +40,8 @@ class ConfirmReservationMailer {
                 'totalPrice' => $totalPrice
             ]));
 
-        try {
             $this->mailer->send($email);
-            return new JsonResponse([
-                'message' => 'Email envoyé avec succès'
-            ], Response::HTTP_OK);
 
-        } catch (\Exception $e) {
-            return new JsonResponse([
-                'message' => 'Une erreur est survenue lors de l\'envoi de l\'email',
-                'error' => $e->getMessage()
-            ], Response::HTTP_BAD_REQUEST);
-
-        }
      
      
 

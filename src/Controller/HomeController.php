@@ -31,7 +31,7 @@ class HomeController extends AbstractController
         ]);
     }
 
-    // #[Route('/home', name: 'app_home')]
+    // #[Route('/home', name: 'app')]
     // public function index(
     //     CarRepository $carRepository,
     //     MotorcycleRepository $motorcycleRepository,

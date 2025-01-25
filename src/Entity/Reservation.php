@@ -4,9 +4,13 @@ namespace App\Entity;
 
 use App\Enum\StatusReservationEnum;
 use App\Repository\ReservationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
@@ -15,20 +19,20 @@ class Reservation
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['reservation:read', 'reservation:write'])]
+
     private ?int $id = null;
 
     #[ORM\Column]
-    #[Groups(['reservation:read', 'reservation:write'])]
+
 
     private ?\DateTimeImmutable $startDate = null;
 
     #[ORM\Column]
-    #[Groups(['reservation:read', 'reservation:write'])]
+  
     private ?\DateTimeImmutable $endDate = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    #[Groups(['reservation:read', 'reservation:write'])]
+ 
 
     private ?string $totalPrice = null;
 
@@ -39,17 +43,18 @@ class Reservation
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['reservation:read', 'reservation:write'])]
+
 
     private ?User $client = null;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['reservation:read', 'reservation:write'])]
+
 
     private ?Vehicle $vehicle = null;
 
     #[ORM\OneToOne(mappedBy: 'reservation', cascade: ['persist', 'remove'])]
+
     private ?Payment $payment = null;
 
     #[ORM\Column]
@@ -57,6 +62,25 @@ class Reservation
 
     #[ORM\OneToOne(mappedBy: 'reservation', cascade: ['persist', 'remove'])]
     private ?Invoice $invoice = null;
+
+    /**
+     * @var Collection<int, ReservationVehicleOption>
+     */
+    #[ORM\OneToMany(targetEntity: ReservationVehicleOption::class, mappedBy: 'reservation')]
+    private Collection $reservationVehicleOptions;
+
+    #[ORM\Column(type: 'uuid', unique: true, nullable: true)]
+    private ?UuidInterface $reference = null;
+
+    public function __construct()
+    {
+        $this->reservationVehicleOptions = new ArrayCollection();
+        // Commentez temporairement cette ligne
+        // $this->reference = Uuid::uuid4();
+        $this->createdAt = new \DateTimeImmutable();
+    }
+
+   
 
     public function getId(): ?int
     {
@@ -179,4 +203,46 @@ class Reservation
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, ReservationVehicleOption>
+     */
+    public function getReservationVehicleOptions(): Collection
+    {
+        return $this->reservationVehicleOptions;
+    }
+
+    public function addReservationVehicleOption(ReservationVehicleOption $reservationVehicleOption): static
+    {
+        if (!$this->reservationVehicleOptions->contains($reservationVehicleOption)) {
+            $this->reservationVehicleOptions->add($reservationVehicleOption);
+            $reservationVehicleOption->setReservation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservationVehicleOption(ReservationVehicleOption $reservationVehicleOption): static
+    {
+        if ($this->reservationVehicleOptions->removeElement($reservationVehicleOption)) {
+            // set the owning side to null (unless already changed)
+            if ($reservationVehicleOption->getReservation() === $this) {
+                $reservationVehicleOption->setReservation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getReference(): ?UuidInterface
+    {
+        return $this->reference;
+    }
+
+    public function setReference(UuidInterface $reference): self
+    {
+        $this->reference = $reference;
+        return $this;
+    }
+
 }

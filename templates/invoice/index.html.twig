@@ -3,41 +3,42 @@
 {% block title %}Factures{% endblock %}
 
 {% block body %}
-
-    <div class="overflow-x-auto bg-white shadow-md rounded-lg">
-        <table class="min-w-full table-auto">
-            <thead>
-                <tr class="bg-gray-100 text-gray-700">
-                    <th class="py-3 px-4 text-left text-sm font-medium">Numéro de Facture</th>
-                    <th class="py-3 px-4 text-left text-sm font-medium">Client</th>
-                    <th class="py-3 px-4 text-left text-sm font-medium">Véhicule</th>
-                    <th class="py-3 px-4 text-left text-sm font-medium">Montant</th>
-                    <th class="py-3 px-4 text-left text-sm font-medium">Date de création</th>
-                    <th class="py-3 px-4 text-left text-sm font-medium">Actions</th>
-                </tr>
-            </thead>
-            <tbody class="text-gray-700">
-                {% for invoiceData in invoices %}
-                    <tr class="border-b hover:bg-gray-50">
-                        <td class="py-3 px-4 text-sm">{{ invoiceData.invoice.invoiceNumber }}</td>
-                        <td class="py-3 px-4 text-sm">{{ invoiceData.invoice.reservation.client.lastName }} {{ invoiceData.invoice.reservation.client.firstName }}</td>
-                        <td class="py-3 px-4 text-sm">{{ invoiceData.invoice.reservation.vehicle.model }}</td>
-                        <td class="py-3 px-4 text-sm">{{ invoiceData.invoice.reservation.totalPrice }} €</td>
-                        <td class="py-3 px-4 text-sm">{{ invoiceData.invoice.createdAt|date('d/m/Y') }}</td>
-                        <td class="py-3 px-4 text-sm">
-                            <a href="data:application/pdf;base64,{{ invoiceData.pdf }}" download="Facture_{{ invoiceData.invoice.invoiceNumber }}.pdf">
-                                <button class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50">
-                                    Consulter
-                                </button>
-                            </a>
-                        </td>
-                    </tr>
-                {% else %}
+    <div class="mt-6 mb-6"> 
+        <div class="overflow-x-auto bg-white shadow-lg rounded-lg">
+            <table class="min-w-full table-auto">
+                <thead class="bg-blue-600 text-white">
                     <tr>
-                        <td colspan="6" class="py-3 px-4 text-center text-sm text-gray-500">Aucune facture disponible.</td>
+                        <th class="py-4 px-6">Numéro de Facture</th>
+                        <th class="py-4 px-6">Client</th>
+                        <th class="py-4 px-6">Véhicule</th>
+                        <th class="py-4 px-6">Montant</th>
+                        <th class="py-4 px-6">Date</th>
+                        <th class="py-4 px-6">Actions</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody class="text-gray-700">
+                    {% for invoiceData in invoices %}
+                        <tr class="border-b hover:bg-gray-100">
+                            <td class="py-3 px-6">{{ invoiceData.invoice.invoiceNumber }}</td>
+                            <td class="py-3 px-6">{{ invoiceData.invoice.reservation.client.firstName }} {{ invoiceData.invoice.reservation.client.lastName }}</td>
+                            <td class="py-3 px-6">{{ invoiceData.invoice.reservation.vehicle.model }}</td>
+                            <td class="py-3 px-6">{{ invoiceData.invoice.reservation.totalPrice }} €</td>
+                            <td class="py-3 px-6">{{ invoiceData.invoice.createdAt|date('d/m/Y') }}</td>
+                            <td class="py-3 px-6 text-center">
+                                <a href="data:application/pdf;base64,{{ invoiceData.pdf }}" download="Facture_{{ invoiceData.invoice.invoiceNumber }}.pdf">
+                                    <button class="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded-full">
+                                        <i class="fas fa-download"></i> Télécharger
+                                    </button>
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center py-3">Aucune facture disponible.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 {% endblock %}
