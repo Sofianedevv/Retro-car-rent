@@ -3,7 +3,6 @@
         <!-- Logo et Texte -->
         <a href="{{ path('app') }}" class="flex items-center" aria-label="Retour à la page d'accueil">
             <img src="{{ asset('template-html/assets/images/logo.svg') }}" alt="Logo" class="h-20 w-auto">
-{#            <img src="{{ asset('template-html/assets/images/logo_4.svg') }}" alt="Logo" class="h-14 w-auto">#}
         </a>
 
         <!-- Hamburger menu -->
@@ -17,8 +16,8 @@
 
         <!-- Navigation (Desktop) -->
         <nav class="hidden lg:flex md:flex-grow justify-center">
-            <ul class="flex justify-center space-x-4 text-white">
-                <li><a href="{{ path('app') }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair" aria-label="Page d'accueil">
+            <ul class="flex justify-center space-x-2 text-white">
+                <li><a href="{{ path('app') }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair mr-2" aria-label="Page d'accueil">
                         <i class="fas fa-home mr-2"></i>Accueil
                     </a></li>
                 <li><a href="{{ path('app_collections') }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair" aria-label="Collections de véhicules">
@@ -30,17 +29,26 @@
                                 <i class="fas fa-cogs mr-2"></i>Administrateur
                             </a></li>
                     {% endif %}
-                    <li><a href="{{ path('app_favorite_show') }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair" aria-label="Liste des favoris">
-                            <i class="fas fa-heart mr-2"></i>Favoris
-                        </a>
-                    </li>
+
+                    <!-- Empêche les administrateurs de voir les sections suivantes -->
+                    {% if not is_granted('ROLE_ADMIN') %}
+                        <li><a href="{{ path('app_favorite_show') }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair" aria-label="Liste des favoris">
+                                <i class="fas fa-heart mr-2"></i>Favoris
+                            </a></li>
+                        <li><a href="{{ path('app_all_reservation', {'clientId': app.user.id}) }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair" aria-label="Réservations">
+                                <i class="fas fa-calendar-check mr-2"></i>Réservations
+                            </a></li>
+                        <li><a href="{{ path('app_invoice', {'clientId': app.user.id}) }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair" aria-label="Factures">
+                                <i class="fas fa-file-invoice mr-2"></i>Factures
+                            </a></li>
+                    {% endif %}
+
                     <li class="relative">
                         <a href="{{ path('app_notifications') }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair" aria-label="Notifications">
                             <i class="fas fa-bell mr-2"></i>Notifications
                             {% if unread_notifications_count > 0 %}
                                 <span class="absolute -top-1 -right-1 bg-red-500 text-white text-sm font-bold rounded-full h-4 w-4 flex items-center justify-center notification-badge text-center leading-none">
-{#                                     {{ unread_notifications_count }}#}
-                                </span>
+                    </span>
                             {% endif %}
                         </a>
                     </li>
@@ -49,7 +57,7 @@
         </nav>
 
         <!-- Profil et Connexion (Desktop) -->
-        <div class="hidden lg:flex items-center space-x-4 relative">
+        <div class="hidden lg:flex items-center space-x-2 relative">
             {% if app.user %}
                 <a href="{{ path('app_profile') }}" class="hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition-all duration-300 font-playfair" aria-label="Profil utilisateur">
                     <i class="fas fa-user mr-2"></i>{{ app.user.firstName }}
@@ -83,9 +91,18 @@
                             <i class="fas fa-cogs mr-2"></i>Administrateur
                         </a></li>
                 {% endif %}
-                <li><a href="{{ path('app_favorite_show') }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair">
-                        <i class="fas fa-heart mr-2"></i>Favoris
-                    </a></li>
+                <!-- Liens visibles uniquement pour les utilisateurs NON admin -->
+                {% if not is_granted('ROLE_ADMIN') %}
+                    <li><a href="{{ path('app_favorite_show') }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair">
+                            <i class="fas fa-heart mr-2"></i>Favoris
+                        </a></li>
+                    <li><a href="{{ path('app_all_reservation', {'clientId': app.user.id}) }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair">
+                            <i class="fas fa-calendar-check mr-2"></i>Réservations
+                        </a></li>
+                    <li><a href="{{ path('app_invoice', {'clientId': app.user.id}) }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair">
+                            <i class="fas fa-file-invoice mr-2"></i>Factures
+                        </a></li>
+                {% endif %}
                 <li><a href="{{ path('app_notifications') }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair">
                         <i class="fas fa-bell mr-2"></i>Notifications
                     </a></li>
@@ -99,6 +116,7 @@
             {% endif %}
         </ul>
     </nav>
+
 </header>
 
 <script>
