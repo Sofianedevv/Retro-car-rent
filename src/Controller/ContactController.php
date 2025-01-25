@@ -41,12 +41,10 @@ class ContactController extends AbstractController
                       'contact' => $contact
                   ]));
 
-            // Envoi direct via le transport SMTP
             $transport->send($email);
             
             $this->addFlash('success', 'Message envoyé avec succès !');
             
-            // Retourner une réponse sans redirection
             return $this->render('contact/index.html.twig', [
                 'form' => $this->createForm(ContactType::class, new Contact())->createView(),
                 'sent' => true
