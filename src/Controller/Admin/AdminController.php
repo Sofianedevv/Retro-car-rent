@@ -19,7 +19,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Flasher\Prime\FlasherInterface;
 use App\Entity\Notification;
+
 
 #[Route('/admin', name: 'admin_')]
 #[IsGranted('ROLE_ADMIN')]
@@ -50,7 +52,7 @@ class AdminController extends AbstractController
 
     
     #[Route('/vehicle/car/new', name: 'vehicle_car_new')]
-    public function newCar(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
+    public function newCar(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository, FlasherInterface $flasher): Response
     {
         $car = new Car();
         $form = $this->createForm(CarType::class, $car);
@@ -78,7 +80,7 @@ class AdminController extends AbstractController
             }
 
             $entityManager->flush();
-            $this->addFlash('success', 'La voiture a été ajoutée avec succès.');
+           $flasher->addSuccess( 'La voiture a été ajoutée avec succès.');
             return $this->redirectToRoute('admin_vehicles');
         }
 
@@ -89,7 +91,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/vehicle/car/{id}/edit', name: 'vehicle_car_edit')]
-    public function editCar(Car $car, Request $request, EntityManagerInterface $entityManager): Response
+    public function editCar(Car $car, Request $request, EntityManagerInterface $entityManager, FlasherInterface $flasher): Response
     {
         $form = $this->createForm(CarType::class, $car);
         $form->handleRequest($request);
@@ -97,7 +99,7 @@ class AdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            $this->addFlash('success', 'La voiture a été modifiée avec succès.');
+           $flasher->addSuccess( 'La voiture a été modifiée avec succès.');
             return $this->redirectToRoute('admin_vehicles');
         }
 
@@ -109,7 +111,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/vehicle/van/new', name: 'vehicle_van_new')]
-    public function newVan(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
+    public function newVan(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository, FlasherInterface $flasher): Response
     {
         $van = new Van();
         $form = $this->createForm(VanType::class, $van);
@@ -137,7 +139,7 @@ class AdminController extends AbstractController
             }
 
             $entityManager->flush();
-            $this->addFlash('success', 'Le van a été ajouté avec succès.');
+           $flasher->addSuccess( 'Le van a été ajouté avec succès.');
             return $this->redirectToRoute('admin_vehicles');
         }
 
@@ -148,7 +150,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/vehicle/van/{id}/edit', name: 'vehicle_van_edit')]
-    public function editVan(Van $van, Request $request, EntityManagerInterface $entityManager): Response
+    public function editVan(Van $van, Request $request, EntityManagerInterface $entityManager, FlasherInterface $flasher): Response
     {
         $form = $this->createForm(VanType::class, $van);
         $form->handleRequest($request);
@@ -156,7 +158,7 @@ class AdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            $this->addFlash('success', 'Le van a été modifié avec succès.');
+           $flasher->addSuccess( 'Le van a été modifié avec succès.');
             return $this->redirectToRoute('admin_vehicles');
         }
 
@@ -168,7 +170,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/vehicle/motorcycle/new', name: 'vehicle_motorcycle_new')]
-    public function newMotorcycle(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
+    public function newMotorcycle(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository, FlasherInterface $flasher): Response
     {
         $motorcycle = new Motorcycle();
         $form = $this->createForm(MotorcycleType::class, $motorcycle);
@@ -196,7 +198,7 @@ class AdminController extends AbstractController
             }
 
             $entityManager->flush();
-            $this->addFlash('success', 'La moto a été ajoutée avec succès.');
+           $flasher->addSuccess( 'La moto a été ajoutée avec succès.');
             return $this->redirectToRoute('admin_vehicles');
         }
 
@@ -207,7 +209,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/vehicle/motorcycle/{id}/edit', name: 'vehicle_motorcycle_edit')]
-    public function editMotorcycle(Motorcycle $motorcycle, Request $request, EntityManagerInterface $entityManager): Response
+    public function editMotorcycle(Motorcycle $motorcycle, Request $request, EntityManagerInterface $entityManager, FlasherInterface $flasher): Response
     {
         $form = $this->createForm(MotorcycleType::class, $motorcycle);
         $form->handleRequest($request);
@@ -215,7 +217,7 @@ class AdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            $this->addFlash('success', 'La moto a été modifiée avec succès.');
+           $flasher->addSuccess( 'La moto a été modifiée avec succès.');
             return $this->redirectToRoute('admin_vehicles');
         }
 
@@ -227,9 +229,8 @@ class AdminController extends AbstractController
     }
 
 
-    // Suppression commune pour tous les types de véhicules
     #[Route('/vehicle/{id}/delete', name: 'vehicle_delete')]
-    public function deleteVehicle(int $id, VehicleRepository $vehicleRepository, EntityManagerInterface $entityManager): Response
+    public function deleteVehicle(int $id, VehicleRepository $vehicleRepository, EntityManagerInterface $entityManager, FlasherInterface $flasher): Response
     {
         $vehicle = $vehicleRepository->find($id);
         
@@ -240,11 +241,10 @@ class AdminController extends AbstractController
         $entityManager->remove($vehicle);
         $entityManager->flush();
 
-        $this->addFlash('success', 'Le véhicule a été supprimé avec succès.');
+       $flasher->addSuccess( 'Le véhicule a été supprimé avec succès.');
         return $this->redirectToRoute('admin_vehicles');
     }
 
-    // Gestion des utilisateurs
     #[Route('/users', name: 'users')]
     public function users(UserRepository $userRepository): Response
     {

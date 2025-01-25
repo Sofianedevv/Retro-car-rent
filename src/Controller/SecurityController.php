@@ -11,21 +11,20 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use Flasher\Prime\FlasherInterface;
+
 
 class SecurityController extends AbstractController
 {
     #[Route('/login', name: 'app_login')]
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(AuthenticationUtils $authenticationUtils, FlasherInterface $flasher): Response
     {
-        // Si l'utilisateur est déjà connecté, on le redirige vers la page d'accueil
         if ($this->getUser()) {
-            $this->addFlash('info', 'Vous êtes déjà connecté');
+            $flasher->addInfo('Vous êtes déjà connecté');
             return $this->redirectToRoute('app');
         }
 
-        // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
-        // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('security/login.html.twig', [
@@ -41,11 +40,10 @@ class SecurityController extends AbstractController
     }
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, FlasherInterface $flasher): Response
     {
-        // Si l'utilisateur est déjà connecté, on le redirige vers la page d'accueil
         if ($this->getUser()) {
-            $this->addFlash('info', 'Vous êtes déjà connecté');
+            $flasher->addInfo('Vous êtes déjà connecté');
             return $this->redirectToRoute('app');
         }
 
@@ -54,7 +52,6 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
@@ -62,16 +59,14 @@ class SecurityController extends AbstractController
                 )
             );
 
-            // Définir la date de création
             $user->setCreatedAt(new \DateTimeImmutable());
             
-            // Définir le rôle par défaut
             $user->setRoles(['ROLE_USER']);
 
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Votre compte a été créé avec succès');
+            $flasher->addSuccess('Votre compte a été créé avec succès');
             return $this->redirectToRoute('app_login');
         }
 

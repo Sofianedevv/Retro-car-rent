@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use DateTimeImmutable;
+use Flasher\Prime\FlasherInterface;
+
 
 class AdminUserController extends AbstractController
 {
@@ -27,7 +29,8 @@ class AdminUserController extends AbstractController
     public function new(
         Request $request, 
         EntityManagerInterface $entityManager,
-        UserPasswordHasherInterface $passwordHasher
+        UserPasswordHasherInterface $passwordHasher,
+        FlasherInterface $flasher
     ): Response
     {
         $user = new User();
@@ -35,20 +38,18 @@ class AdminUserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Hash du mot de passe
             $hashedPassword = $passwordHasher->hashPassword(
                 $user,
                 $form->get('password')->getData()
             );
             $user->setPassword($hashedPassword);
             
-            // Date de création avec DateTimeImmutable au lieu de DateTime
             $user->setCreatedAt(new DateTimeImmutable());
 
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Utilisateur créé avec succès.');
+           $flasher->addSuccess( 'Utilisateur créé avec succès.');
             return $this->redirectToRoute('admin_users');
         }
 
@@ -62,14 +63,14 @@ class AdminUserController extends AbstractController
         Request $request, 
         User $user, 
         EntityManagerInterface $entityManager,
-        UserPasswordHasherInterface $passwordHasher
+        UserPasswordHasherInterface $passwordHasher,
+        FlasherInterface $flasher
     ): Response
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Hash du nouveau mot de passe si fourni
             if ($password = $form->get('password')->getData()) {
                 $hashedPassword = $passwordHasher->hashPassword($user, $password);
                 $user->setPassword($hashedPassword);
@@ -77,7 +78,7 @@ class AdminUserController extends AbstractController
 
             $entityManager->flush();
 
-            $this->addFlash('success', 'Utilisateur modifié avec succès.');
+           $flasher->addSuccess( 'Utilisateur modifié avec succès.');
             return $this->redirectToRoute('admin_users');
         }
 
@@ -91,13 +92,14 @@ class AdminUserController extends AbstractController
     public function delete(
         Request $request, 
         User $user, 
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        FlasherInterface $flasher
     ): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             $entityManager->remove($user);
             $entityManager->flush();
-            $this->addFlash('success', 'Utilisateur supprimé avec succès.');
+           $flasher->addSuccess( 'Utilisateur supprimé avec succès.');
         }
 
         return $this->redirectToRoute('admin_users');

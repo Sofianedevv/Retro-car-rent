@@ -23,6 +23,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Filesystem\Filesystem;
+use Flasher\Prime\FlasherInterface;
 
 #[Route('/admin')]
 class AdminVehicleController extends AbstractController
@@ -45,7 +46,8 @@ class AdminVehicleController extends AbstractController
     public function newCar(
         Request $request, 
         EntityManagerInterface $entityManager,
-        SluggerInterface $slugger
+        SluggerInterface $slugger,
+        FlasherInterface $flasher
     ): Response {
 
         $car = new Car();
@@ -71,14 +73,14 @@ class AdminVehicleController extends AbstractController
                     $vehicleImage->setUrl($newFilename);
                     $car->addVehicleImage($vehicleImage);
                 } catch (FileException $e) {
-                    $this->addFlash('error', 'Une erreur est survenue lors du téléchargement de l\'image');
+                   $flasher->addError( 'Une erreur est survenue lors du téléchargement de l\'image');
                 }
             }
 
             $entityManager->persist($car);
             $entityManager->flush();
 
-            $this->addFlash('success', 'La voiture a été ajoutée avec succès.');
+           $flasher->addSuccess( 'La voiture a été ajoutée avec succès.');
             return $this->redirectToRoute('admin_vehicles');
         }
 
@@ -89,7 +91,7 @@ class AdminVehicleController extends AbstractController
     }
     #[IsGranted(attribute: VehicleVoter::CREATE)]
     #[Route('/vehicle/van/new', name: 'admin_vehicle_van_new')]
-    public function newVan(Request $request, EntityManagerInterface $entityManager): Response
+    public function newVan(Request $request, EntityManagerInterface $entityManager, FlasherInterface $flasher): Response
     {
         $van = new Van();
         $form = $this->createForm(VanType::class, $van);
@@ -99,7 +101,7 @@ class AdminVehicleController extends AbstractController
             $entityManager->persist($van);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Le van a été ajouté avec succès.');
+           $flasher->addSuccess( 'Le van a été ajouté avec succès.');
             return $this->redirectToRoute('admin_vehicles');
         }
 
@@ -110,7 +112,7 @@ class AdminVehicleController extends AbstractController
     }
     #[IsGranted(VehicleVoter::CREATE)]
     #[Route('/vehicle/motorcycle/new', name: 'admin_vehicle_motorcycle_new')]
-    public function newMotorcycle(Request $request, EntityManagerInterface $entityManager): Response
+    public function newMotorcycle(Request $request, EntityManagerInterface $entityManager, FlasherInterface $flasher): Response
     {
         $motorcycle = new Motorcycle();
         $form = $this->createForm(MotorcycleType::class, $motorcycle);
@@ -120,7 +122,7 @@ class AdminVehicleController extends AbstractController
             $entityManager->persist($motorcycle);
             $entityManager->flush();
 
-            $this->addFlash('success', 'La moto a été ajoutée avec succès.');
+           $flasher->addSuccess( 'La moto a été ajoutée avec succès.');
             return $this->redirectToRoute('admin_vehicles');
         }
 
@@ -137,7 +139,8 @@ class AdminVehicleController extends AbstractController
         Request $request, 
         Car $car, 
         EntityManagerInterface $entityManager,
-        SluggerInterface $slugger
+        SluggerInterface $slugger,
+        FlasherInterface $flasher
     ): Response {
         $form = $this->createForm(CarType::class, $car);
         $form->handleRequest($request);
@@ -161,12 +164,12 @@ class AdminVehicleController extends AbstractController
                     $vehicleImage->setUrl($newFilename);
                     $car->addVehicleImage($vehicleImage);
                 } catch (FileException $e) {
-                    $this->addFlash('error', 'Une erreur est survenue lors du téléchargement de l\'image');
+                   $flasher->addError( 'Une erreur est survenue lors du téléchargement de l\'image');
                 }
             }
 
             $entityManager->flush();
-            $this->addFlash('success', 'La voiture a été modifiée avec succès.');
+           $flasher->addSuccess( 'La voiture a été modifiée avec succès.');
             return $this->redirectToRoute('admin_vehicles');
         }
 
@@ -183,7 +186,8 @@ class AdminVehicleController extends AbstractController
         Request $request, 
         Van $van, 
         EntityManagerInterface $entityManager,
-        SluggerInterface $slugger
+        SluggerInterface $slugger,
+        FlasherInterface $flasher
     ): Response {
         $form = $this->createForm(VanType::class, $van);
         $form->handleRequest($request);
@@ -207,12 +211,12 @@ class AdminVehicleController extends AbstractController
                     $vehicleImage->setUrl($newFilename);
                     $van->addVehicleImage($vehicleImage);
                 } catch (FileException $e) {
-                    $this->addFlash('error', 'Une erreur est survenue lors du téléchargement de l\'image');
+                   $flasher->addError( 'Une erreur est survenue lors du téléchargement de l\'image');
                 }
             }
 
             $entityManager->flush();
-            $this->addFlash('success', 'Le van a été modifié avec succès.');
+           $flasher->addSuccess( 'Le van a été modifié avec succès.');
             return $this->redirectToRoute('admin_vehicles');
         }
 
@@ -229,7 +233,8 @@ class AdminVehicleController extends AbstractController
         Request $request, 
         Motorcycle $motorcycle, 
         EntityManagerInterface $entityManager,
-        SluggerInterface $slugger
+        SluggerInterface $slugger,
+        FlasherInterface $flasher
     ): Response {
         $form = $this->createForm(MotorcycleType::class, $motorcycle);
         $form->handleRequest($request);
@@ -253,12 +258,12 @@ class AdminVehicleController extends AbstractController
                     $vehicleImage->setUrl($newFilename);
                     $motorcycle->addVehicleImage($vehicleImage);
                 } catch (FileException $e) {
-                    $this->addFlash('error', 'Une erreur est survenue lors du téléchargement de l\'image');
+                   $flasher->addError( 'Une erreur est survenue lors du téléchargement de l\'image');
                 }
             }
 
             $entityManager->flush();
-            $this->addFlash('success', 'La moto a été modifiée avec succès.');
+           $flasher->addSuccess( 'La moto a été modifiée avec succès.');
             return $this->redirectToRoute('admin_vehicles');
         }
 
@@ -273,7 +278,8 @@ class AdminVehicleController extends AbstractController
     public function deleteImage(
         VehicleImage $image, 
         EntityManagerInterface $entityManager,
-        Filesystem $filesystem
+        Filesystem $filesystem,
+        FLasherInterface $flasher
     ): Response {
         $vehicle = $image->getVehicle();
         $vehicleType = match (true) {
@@ -291,7 +297,7 @@ class AdminVehicleController extends AbstractController
         $entityManager->remove($image);
         $entityManager->flush();
 
-        $this->addFlash('success', 'L\'image a été supprimée avec succès.');
+       $flasher->addSuccess( 'L\'image a été supprimée avec succès.');
         
         return $this->redirectToRoute("admin_vehicle_{$vehicleType}_edit", ['id' => $vehicle->getId()]);
     }

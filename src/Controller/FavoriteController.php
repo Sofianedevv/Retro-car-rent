@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
+use Flasher\Prime\FlasherInterface;
 
 use App\Entity\Vehicle;
 use App\Entity\Favorite;
@@ -18,19 +19,20 @@ use App\Entity\Notification;
 class FavoriteController extends AbstractController
 {
     #[Route('/ajouter-favoris/{vehicleId}', name: 'app_favorite_add')]
-    public function addFavoris(int $vehicleId, Request $request, EntityManagerInterface $entityManager, VehicleRepository $vehicleRepository, FavoriteRepository $favoriteRepository): Response
+    public function addFavoris(int $vehicleId, Request $request, EntityManagerInterface $entityManager, VehicleRepository $vehicleRepository, FavoriteRepository $favoriteRepository, FlasherInterface $flasher): Response
     {
         $user = $this->getUser();
         
         if (!$user) {
-            $this->addFlash('error', 'Vous devez être connecté pour ajouter un favori.');
+            $flasher->addInfo('Vous devez être connecté pour ajouter un favori.');
+            
             return $this->redirectToRoute('app_login');
         }
     
         $vehicle = $vehicleRepository->find($vehicleId);
     
         if (!$vehicle) {
-            $this->addFlash('error', 'Le véhicule n\'existe pas.');
+         $flasher->addError('Le véhicule n\'existe pas.');
             return $this->redirectToRoute('app');
         }
     
@@ -45,7 +47,7 @@ class FavoriteController extends AbstractController
         if ($favorite->getVehicles()->contains($vehicle)) {
             $favorite->removeVehicle($vehicle);
             $message = sprintf('Vous avez retiré %s %s de vos favoris', $vehicle->getBrand(), $vehicle->getModel());
-            
+
             $notification = new Notification();
             $notification->setMessage($message);
             $notification->setCreatedAt(new \DateTimeImmutable());
@@ -58,6 +60,7 @@ class FavoriteController extends AbstractController
             $favorite->addVehicle($vehicle);
             $message = sprintf('Vous avez ajouté %s %s à vos favoris', $vehicle->getBrand(), $vehicle->getModel());
             
+
             $notification = new Notification();
             $notification->setMessage($message);
             $notification->setCreatedAt(new \DateTimeImmutable());
@@ -69,19 +72,19 @@ class FavoriteController extends AbstractController
         }
     
         $entityManager->flush();
+        $flasher->addSuccess($message);
         
-        $this->addFlash('success', $message);
-        return $this->redirectToRoute('app');
+        return $this->redirectToRoute(route: 'app');
     }
     
 
     #[Route('/vos-favoris', name: 'app_favorite_show')]
-    public function showFavoris(FavoriteRepository $favoriteRepository): Response
+    public function showFavoris(FavoriteRepository $favoriteRepository, FlasherInterface $flasher): Response
     {
         $user = $this->getUser();
     
         if (!$user) {
-            $this->addFlash('error', 'Vous devez être connecté pour voir vos favoris.');
+         $flasher->addInfo('Vous devez être connecté pour voir vos favoris.');
             return $this->redirectToRoute('app_home');
         }
     
@@ -99,12 +102,12 @@ class FavoriteController extends AbstractController
     }
 
     #[Route('/supprimer-favoris/{vehicleId}', name: 'app_favorite_delete')]
-    public function deleteFavoris(int $vehicleId, EntityManagerInterface $entityManager, VehicleRepository $vehicleRepository, FavoriteRepository $favoriteRepository): Response
+    public function deleteFavoris(int $vehicleId, EntityManagerInterface $entityManager, VehicleRepository $vehicleRepository, FavoriteRepository $favoriteRepository, FlasherInterface $flasher): Response
     {
         $user = $this->getUser();
 
         if (!$user) {
-            $this->addFlash('error', 'Vous devez être connecté pour supprimer un favori.');
+         $flasher->addInfo('Vous devez être connecté pour supprimer un favori.');
             return $this->redirectToRoute('app_login');
         }
 
@@ -116,6 +119,7 @@ class FavoriteController extends AbstractController
                 $favorite->removeVehicle($vehicle);
                 
                 $message = sprintf('Vous avez retiré %s %s de vos favoris', $vehicle->getBrand(), $vehicle->getModel());
+            
                 $notification = new Notification();
                 $notification->setMessage($message);
                 $notification->setCreatedAt(new \DateTimeImmutable());
@@ -126,12 +130,12 @@ class FavoriteController extends AbstractController
                 $entityManager->persist($notification);
                 $entityManager->flush();
                 
-                $this->addFlash('success', $message);
+                $flasher->addSuccess($message);
             } else {
-                $this->addFlash('error', 'Ce véhicule n\'est pas dans vos favoris.');
+             $flasher->addError('Ce véhicule n\'est pas dans vos favoris.');
             }
         } else {
-            $this->addFlash('error', 'Aucun favori trouvé.');
+         $flasher->addInfo('Aucun favori trouvé.');
         }
 
         return $this->redirectToRoute('app_favorite_show');

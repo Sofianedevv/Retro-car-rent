@@ -7,19 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
-
-
-use App\Entity\Car;
-use App\Entity\Van;
-use App\Entity\Motorcycle;
-use App\Entity\Vehicle;
-use App\Entity\Favorite;
-use App\Entity\Category;
-use App\Entity\Review;
-use App\Entity\Notification;
-use App\Entity\Reservation;
-use DateTimeImmutable;
-use App\Enum\StatusReservationEnum;
+use Flasher\Prime\FlasherInterface;
 
 use App\Repository\VehicleRepository;
 use App\Repository\FavoriteRepository;
@@ -28,8 +16,7 @@ use App\Repository\VehicleOptionRepository;
 use App\Repository\ReviewRepository;
 
 use App\Service\Vehicle\VehicleService;
-use App\Service\Reservation\ReservationService;
-use Doctrine\ORM\EntityManagerInterface;
+
 
 
 class VehicleController extends AbstractController
@@ -240,10 +227,7 @@ class VehicleController extends AbstractController
         VehicleOptionRepository $vehicleOptionRepository, 
         ReviewRepository $reviewRepository,
         VehicleService $vehicleService,
-        FavoriteRepository $favoriteRepository,
-        Request $request,
-        ReservationService $reservationService,
-        EntityManagerInterface $entityManager
+        FlasherInterface $flasher
     ): Response
     {
         $user = $this->getUser();
@@ -255,7 +239,7 @@ class VehicleController extends AbstractController
         $type = $vehicleService->getVehicleType($vehicle);
 
         if(!$vehicle) {
-            $this->addFlash('error', 'Ce véhicule n\'existe pas.');
+           $flasher->addError( 'Ce véhicule n\'existe pas.');
             return $this->redirectToRoute('app_collections');
         }
         ;

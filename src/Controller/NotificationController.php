@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Flasher\Prime\FlasherInterface;
 
 #[Route('/notifications')]
 class NotificationController extends AbstractController
@@ -75,7 +76,8 @@ class NotificationController extends AbstractController
     public function delete(
         int $id,
         NotificationRepository $notificationRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        FlasherInterface $flasher
     ): Response {
         $notification = $notificationRepository->find($id);
         
@@ -86,7 +88,7 @@ class NotificationController extends AbstractController
         $entityManager->remove($notification);
         $entityManager->flush();
 
-        $this->addFlash('success', 'Notification supprimée avec succès');
+        $flasher->addSuccess('Notification supprimée avec succès');
         return $this->redirectToRoute('app_notifications');
     }
 } 
