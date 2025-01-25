@@ -19,16 +19,18 @@
                 {% endif %}
             </div>
 
-            <div class="space-y-0">
+            <div class="space-y-4">
                 {% for notification in notifications %}
-                    <div class="bg-white mb-4 last:mb-0 p-4 rounded-lg shadow-lg transition-transform transform hover:shadow-xl hover:-translate-y-1
-                    {% if not notification.readStatus %}
-                        border-2
-                        {% if notification.type == 'new_vehicle' %}border-green-500
-                        {% elseif notification.type == 'new_favorite' %}border-yellow-500
-                        {% elseif notification.type == 'new_reply' %}border-blue-500
-                        {% else %}border-gray-500{% endif %}
-                    {% endif %}">
+                    <div class="bg-white mb-4 p-4 rounded-lg shadow-lg transition-transform transform hover:shadow-xl hover:-translate-y-1
+        {% if not notification.readStatus %}
+            border-2
+            {% if notification.type == 'new_vehicle' %}border-green-500
+            {% elseif notification.type == 'new_favorite' %}border-yellow-500
+            {% elseif notification.type == 'new_reply' %}border-blue-500
+            {% else %}border-gray-500{% endif %}
+        {% else %}
+            opacity-75
+        {% endif %}">
                         <div class="flex justify-between items-start">
                             <div class="flex items-center space-x-3">
                                 {% if notification.type == 'new_vehicle' %}
