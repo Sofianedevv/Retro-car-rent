@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+{% block title %}À propos de Nous{% endblock %}
+{% block body %}
+    <!-- About Section -->
+    <section id="about" class="py-16 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <!-- Title -->
+            <div class="mb-12">
+                <h2 class="text-5xl font-bold mb-4">À propos de Nous</h2>
+                <p class="text-lg max-w-2xl mx-auto">
+                    Découvrez notre histoire, nos valeurs, et notre mission. Nous sommes passionnés par la préservation de l'authenticité des véhicules vintage et nous nous engageons à offrir des expériences uniques à nos clients.
+                </p>
+            </div>
+
+            <!-- Our Story -->
+            <div class="flex flex-col lg:flex-row items-center mb-12">
+                <div class="lg:w-1/2">
+                    <img src="{{ asset('template-html/assets/images/ban1.jpeg') }}" alt="Notre Histoire" class="w-auto h-auto rounded-lg shadow-lg">
+                </div>
+                <div class="lg:w-1/2 lg:pl-12 mt-6 lg:mt-0 ml-4">
+                    <h3 class="text-3xl font-bold mb-4">Notre Histoire</h3>
+                    <p class="text-lg">
+                        Depuis notre création, nous avons cherché à offrir une expérience unique en permettant à nos clients de conduire des véhicules vintage qui incarnent l’élégance et la nostalgie. Notre passion pour les véhicules classiques nous a poussés à créer une collection soigneusement sélectionnée de voitures, motos et vans rétro, afin de faire revivre des souvenirs tout en offrant une expérience mémorable sur la route.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Our Mission -->
+            <div class="mb-12">
+                <h3 class="text-3xl font-bold mb-4 text-left">Notre Mission</h3>
+                <p class="text-lg max-w-3xl mx-auto text-left">
+                    Notre mission est de fournir à nos clients des véhicules vintage de qualité supérieure pour toutes sortes d’occasions spéciales. Nous croyons que chaque moment mérite d’être vécu avec un style intemporel. C’est pourquoi nous offrons un service personnalisé pour chaque location, en nous assurant que vous viviez une expérience inoubliable, que ce soit pour un mariage, un shooting photo ou simplement pour un road trip entre amis.
+                </p>
+            </div>
+
+            <!-- Our Values -->
+            <div class="mb-12">
+                <h3 class="text-3xl font-bold mb-4 text-left">Nos Valeurs</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"> <!-- Modifié de gap-12 à gap-8 pour réduire l'espacement horizontal -->
+                    <div class="text-center p-8 bg-white rounded-lg shadow-lg hover:scale-105 transform transition duration-300 mb-6"> <!-- Ajout de mb-6 pour l'espacement entre les cartes -->
+                        <div class="mb-4 mt-4 p-4">
+                            <h4 class="text-2xl font-semibold mb-4 text-gray-800">Authenticité</h4>
+                            <p class="text-lg text-gray-600">
+                                Nous nous engageons à offrir des véhicules qui préservent l’authenticité et le charme des époques passées. Chaque véhicule est soigneusement sélectionné pour sa qualité et son histoire.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="text-center p-8 bg-white rounded-lg shadow-lg hover:scale-105 transform transition duration-300 mb-6">
+                        <div class="mb-4 mt-4">
+                            <h4 class="text-2xl font-semibold mb-4 text-gray-800">Qualité</h4>
+                            <p class="text-lg text-gray-600 p-4">
+                                Nous veillons à ce que chaque véhicule soit restauré et entretenu avec soin, afin d’assurer une expérience de conduite sûre et agréable.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="text-center p-8 bg-white rounded-lg shadow-lg hover:scale-105 transform transition duration-300 mb-6">
+                        <div class="mb-4 mt-4 p-4">
+                            <h4 class="text-2xl font-semibold mb-4 text-gray-800">Service Client</h4>
+                            <p class="text-lg text-gray-600">
+                                Notre équipe dédiée est toujours prête à répondre à vos besoins et à rendre chaque étape de la location aussi fluide et agréable que possible.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Our Team -->
+            <div class="mb-12">
+                <h3 class="text-3xl font-bold mb-4 text-left">Rencontrez notre Équipe</h3>
+                <div class="flex flex-wrap justify-between gap-6"> <!-- Ajout de gap-6 pour espacer les éléments -->
+                    <div class="text-center w-48 mb-6"> <!-- Ajout de mb-6 pour espacer verticalement les cartes -->
+                        <img src="https://ui-avatars.com/api/?name=Jean+Dupont&background=random&color=fff&size=200" alt="Membre de l'équipe" class="w-32 h-32 mx-auto rounded-full mb-4">
+                        <h4 class="text-xl font-semibold">Jean Dupont</h4>
+                        <p class="text-lg text-gray-500">Fondateur</p>
+                    </div>
+                    <div class="text-center w-48 mb-6">
+                        <img src="https://ui-avatars.com/api/?name=Marie+Martin&background=random&color=fff&size=200" alt="Membre de l'équipe" class="w-32 h-32 mx-auto rounded-full mb-4">
+                        <h4 class="text-xl font-semibold">Marie Martin</h4>
+                        <p class="text-lg text-gray-500">Responsable des Véhicules</p>
+                    </div>
+                    <div class="text-center w-48 mb-6">
+                        <img src="https://ui-avatars.com/api/?name=Pierre+Lefevre&background=random&color=fff&size=200" alt="Membre de l'équipe" class="w-32 h-32 mx-auto rounded-full mb-4">
+                        <h4 class="text-xl font-semibold">Pierre Lefevre</h4>
+                        <p class="text-lg text-gray-500">Chef du Service Client</p>
+                    </div>
+                    <div class="text-center w-48 mb-6">
+                        <img src="https://ui-avatars.com/api/?name=Sophie+Durand&background=random&color=fff&size=200" alt="Membre de l'équipe" class="w-32 h-32 mx-auto rounded-full mb-4">
+                        <h4 class="text-xl font-semibold">Sophie Durand</h4>
+                        <p class="text-lg text-gray-500">Chargée des Réservations</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+{% endblock %}

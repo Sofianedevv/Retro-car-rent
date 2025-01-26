@@ -43,105 +43,112 @@ class ReservationController extends AbstractController
 
     #[Route('/nouvelle_reservation/{vehicleId}', name: 'app_add_reservation', methods: ['GET','POST'])]
     public function addReservation(
-            ConfirmReservationMailer $confirmReservationMailer,
-            int $vehicleId,
-            Request $request,
-            VehicleRepository $vehicleRepository,
-            VehicleOptionRepository $vehicleOptionRepository,
-            EntityManagerInterface $entityManager,
-            ReservationService $reservationService,
-        ): Response {
-            $user = $this->getUser();
-            $user = $this->getUser();
-            if (!$user) {
-                $this->addFlash('error', 'Vous devez être connecté pour effectuer une réservation.');
-                return $this->redirectToRoute('app_login');
-            }
-            
-            $vehicle = $vehicleRepository->find($vehicleId);
-            if (!$vehicle) {
-                $this->addFlash('error', 'Véhicule non trouvé.');
-            }
-    
-            $options = [];
-            $totalOptionPrice = 0;
-    
-            $form = $this->createForm(ReservationType::class, [
-                'vehicle' => $vehicle,
-            ]);
-    
-            if ($request->isMethod('POST')) {
-                $form->handleRequest($request);
-    
-                $selectedOptions = $request->get('options', []);
-                foreach ($selectedOptions as $optionId => $count) {
-                    $count = (int) $count;  
-                    if ($count > 0) {
-                        $option = $vehicleOptionRepository->find($optionId);
-                        if ($option) {
-                            $options[] = [
-                                'option' => $option,
-                                'count' => $count,
-                            ];
-                        }
-                    }
-                }
-    
-                if ($form->isSubmitted() && $form->isValid()) {
-                    $startDate = $form->get('startDate')->getData();
-                    $endDate = $form->get('endDate')->getData();
-    
-                    if ($startDate >= $endDate) {
-                        $this->addFlash('error', 'La date de fin doit être postérieure à la date de début.');
-                        return $this->redirectToRoute('app_reservation_summary', ['vehicleId' => $vehicleId]);
-                    }
-    
-                    $days = $reservationService->calculateDays($startDate, $endDate);
-                    $vehiclePrice = $vehicle->getPrice();
-                    $totalOptionPrice = $reservationService->calculateOptionPrice($options);
-                    $totalPrice = ($vehiclePrice * $days) + $totalOptionPrice;
-    
-                    $reservation = new Reservation();
-                    $reservation->setClient($user);
-                    $reservation->setVehicle($vehicle);
-                    $reservation->setStartDate(DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $startDate->format('Y-m-d H:i:s')));
-                    $reservation->setEndDate(DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $endDate->format('Y-m-d H:i:s')));
-                    $reservation->setTotalPrice($totalPrice);
-                    $reservation->setStatus(StatusReservationEnum::CONFIRMED);
-                    $reservation->setCreatedAt(new DateTimeImmutable());
-    
-                    $entityManager->persist($reservation);
-                    foreach ($options as $optionData) {
-                        $reservationVehicleOption = new ReservationVehicleOption();
-                        $reservationVehicleOption->setReservation($reservation);
-                        $reservationVehicleOption->setVehicleOptions($optionData['option']);
-                        $reservationVehicleOption->setCount($optionData['count']);
-                        $reservationVehicleOption->setPriceByOption($optionData['count'] * $optionData['option']->getPrice());
-                        $entityManager->persist($reservationVehicleOption);
-                    }
-
-                    $invoice = new Invoice();
-                    $invoice->setReservation($reservation);
-                    $invoice->setCreatedAt(new DateTimeImmutable());
-                    $invoiceNumber = 'INV-' . Guid::uuid4()->toString();  
-                    $invoice->setInvoiceNumber($invoiceNumber);
-                    $entityManager->persist($invoice);
-                    
-                    $entityManager->flush();
-    
-                    $this->addFlash('success', 'Votre réservation a été enregistrée avec succès.');
-                    return $this->redirectToRoute('app_all_reservation', ['clientId' => $user->getId()]);
-                }
-            }
-    
-            return $this->render('reservation/_recap_reservation.html.twig', [
-                'vehicle' => $vehicle,
-                'options' => $options,
-                'totalOptionPrice' => $totalOptionPrice,
-                'form' => $form->createView(),
-            ]);
+        ConfirmReservationMailer $confirmReservationMailer,
+        int $vehicleId,
+        Request $request,
+        VehicleRepository $vehicleRepository,
+        VehicleOptionRepository $vehicleOptionRepository,
+        EntityManagerInterface $entityManager,
+        ReservationService $reservationService,
+    ): Response {
+        $user = $this->getUser();
+        if (!$user) {
+            $this->addFlash('error', 'Vous devez être connecté pour effectuer une réservation.');
+            return $this->redirectToRoute('app_login');
         }
-        
+
+        $vehicle = $vehicleRepository->find($vehicleId);
+        if (!$vehicle) {
+            $this->addFlash('error', 'Véhicule non trouvé.');
+            return $this->redirectToRoute('app_vehicle_list');
+        }
+
+        $options = [];
+        $totalOptionPrice = 0;
+
+        $form = $this->createForm(ReservationType::class, [
+            'vehicle' => $vehicle,
+        ]);
+
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+
+            $selectedOptions = $request->get('options', []);
+            foreach ($selectedOptions as $optionId => $count) {
+                $count = (int) $count;
+                if ($count > 0) {
+                    $option = $vehicleOptionRepository->find($optionId);
+                    if ($option) {
+                        $options[] = [
+                            'option' => $option,
+                            'count' => $count,
+                        ];
+                    }
+                }
+            }
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                // Récupérer les champs séparés
+                $startDate = $form->get('startDate')->getData();
+                $startTime = $form->get('startTime')->getData();
+                $endDate = $form->get('endDate')->getData();
+                $endTime = $form->get('endTime')->getData();
+
+                // Combiner date et heure
+                $startDateTime = new \DateTimeImmutable($startDate->format('Y-m-d') . ' ' . $startTime->format('H:i:s'));
+                $endDateTime = new \DateTimeImmutable($endDate->format('Y-m-d') . ' ' . $endTime->format('H:i:s'));
+
+                if ($startDateTime >= $endDateTime) {
+                    $this->addFlash('error', 'La date de fin doit être postérieure à la date de début.');
+                    return $this->redirectToRoute('app_reservation_summary', ['vehicleId' => $vehicleId]);
+                }
+
+                $days = $reservationService->calculateDays($startDateTime, $endDateTime);
+                $vehiclePrice = $vehicle->getPrice();
+                $totalOptionPrice = $reservationService->calculateOptionPrice($options);
+                $totalPrice = ($vehiclePrice * $days) + $totalOptionPrice;
+
+                $reservation = new Reservation();
+                $reservation->setClient($user);
+                $reservation->setVehicle($vehicle);
+                $reservation->setStartDate($startDateTime);
+                $reservation->setEndDate($endDateTime);
+                $reservation->setTotalPrice($totalPrice);
+                $reservation->setStatus(StatusReservationEnum::CONFIRMED);
+                $reservation->setCreatedAt(new DateTimeImmutable());
+
+                $entityManager->persist($reservation);
+                foreach ($options as $optionData) {
+                    $reservationVehicleOption = new ReservationVehicleOption();
+                    $reservationVehicleOption->setReservation($reservation);
+                    $reservationVehicleOption->setVehicleOptions($optionData['option']);
+                    $reservationVehicleOption->setCount($optionData['count']);
+                    $reservationVehicleOption->setPriceByOption($optionData['count'] * $optionData['option']->getPrice());
+                    $entityManager->persist($reservationVehicleOption);
+                }
+
+                $invoice = new Invoice();
+                $invoice->setReservation($reservation);
+                $invoice->setCreatedAt(new DateTimeImmutable());
+                $invoiceNumber = 'INV-' . Guid::uuid4()->toString();
+                $invoice->setInvoiceNumber($invoiceNumber);
+                $entityManager->persist($invoice);
+
+                $entityManager->flush();
+
+                $this->addFlash('success', 'Votre réservation a été enregistrée avec succès.');
+                return $this->redirectToRoute('app_all_reservation', ['clientId' => $user->getId()]);
+            }
+        }
+
+        return $this->render('reservation/_recap_reservation.html.twig', [
+            'vehicle' => $vehicle,
+            'options' => $options,
+            'totalOptionPrice' => $totalOptionPrice,
+            'form' => $form->createView(),
+        ]);
+    }
+
         #[Route('/vos-reservations/{clientId}', name: 'app_all_reservation', methods: ['GET'])]
         public function getReservation(int $clientId, ReservationRepository $reservationRepository): Response
         {

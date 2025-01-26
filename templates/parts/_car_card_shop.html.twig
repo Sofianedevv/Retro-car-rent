@@ -1,50 +1,78 @@
-<div class="group relative bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-500">
+<div class="group relative bg-gray-50 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-500">
+    <!-- Image Section -->
     <div class="relative overflow-hidden h-64">
-        <img src={{car.defaultImage}} 
-             alt={{car.model}}
+        <img src="{{car.defaultImage}}"
+             alt="{{car.model}}"
              class="w-full h-full object-cover transform group-hover:scale-110 transition-all duration-700">
-        <!-- Gradient overlay -->
-        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        <!-- Year badge -->
-        <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-lg">
-            <span class="font-playfair text-[#8B4513] font-bold">{{car.year}}</span>
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-gray-900/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <!-- Year Badge -->
+        <div class="absolute top-4 left-4 bg-gray-100 text-gray-900 px-3 py-1 rounded-full shadow-lg font-bold text-sm">
+            {{ car.year }}
         </div>
-        <!-- Rating badge -->
+        <!-- Rating Badge -->
         {% if car.averageRating is defined %}
-        <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-lg flex items-center">
-            <i class="fas fa-star text-yellow-500 mr-1"></i>
-            <span class="font-bold">{{ car.averageRating|number_format(1) }}</span>
-        </div>
+            <div class="absolute top-4 right-4 flex items-center bg-gray-50 text-gray-900 px-3 py-1 rounded-full shadow-lg font-bold text-sm">
+                <i class="fas fa-star text-yellow-500 mr-1"></i>
+                {{ car.averageRating|number_format(1) }}
+            </div>
         {% endif %}
     </div>
 
-    <div class="p-6">
-        <div class="mb-4">
-            <h3 class="font-playfair text-xl font-bold text-[#8B4513]">{{car.brand}}</h3>
-            <p class="text-gray-600">{{car.model}}</p>
+    <!-- Content Section -->
+    <div class="p-6 space-y-4">
+        <!-- Title Section -->
+        <div class="flex justify-between items-center">
+            <h3 class="font-playfair text-xl font-bold text-gray-900">{{ car.brand }}</h3>
+            <p class="text-gray-600 text-sm">{{ car.model }}</p>
         </div>
 
-        <div class="flex items-center justify-between py-3 mb-4 bg-gray-50 rounded-lg px-4">
-            <div class="text-sm">
-                <div class="flex items-center">
-                    <i class="fas fa-users text-[#8B4513] mr-2"></i>
-                    <span class="font-medium">{{car.nbSeats}} places</span>
+        <!-- Divider -->
+        <hr class="border-t border-gray-300">
+
+        <div class="flex flex-col space-y-4">
+            <!-- Information Section -->
+            <div class="flex items-center justify-between text-sm py-3 px-4 bg-primary/10 rounded-lg">
+                <div class="flex items-center gap-2 text-gray-600">
+                    <i class="fas fa-users text-gray-500"></i>
+                    <span>{{ car.nbSeats }} places</span>
+                </div>
+                <div class="text-right">
+                    <span class="text-gray-900 font-bold text-xl">{{ car.price }}€</span>
+                    <span class="text-gray-500">/jour</span>
                 </div>
             </div>
-            <div class="text-right">
-                <span class="font-bold text-2xl text-[#8B4513]">{{car.price}}€</span>
-                <span class="text-gray-600 text-sm">/jour</span>
+
+            <hr class="border-t border-gray-300">
+
+            <!-- Features Section -->
+            <div class="grid grid-cols-3 gap-3 py-4">
+                <div class="flex flex-col items-center text-gray-600">
+                    <i class="fas fa-gas-pump text-lg text-gray-900"></i>
+                    <span class="text-sm">{{ car.fuelType|capitalize }}</span>
+                </div>
+                <div class="flex flex-col items-center text-gray-600">
+                    <i class="fas fa-cogs text-lg text-gray-900"></i>
+                    <span class="text-sm">{{ car.transmission|capitalize }}</span>
+                </div>
+                <div class="flex flex-col items-center text-gray-600">
+                    <i class="fas fa-road text-lg text-gray-900"></i>
+                    <span class="text-sm">{{ car.mileage }}Km</span>
+                </div>
             </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-3">
+        <!-- Buttons -->
+        <div class="grid grid-cols-2 gap-3 mt-4">
             <a href="{{ path('app_vehicle_show_details', {'vehicleId': car.id}) }}"
-                class="bg-white text-[#8B4513] hover:bg-gray-50 border border-[#8B4513] rounded-lg font-medium px-4 py-2 transition-colors duration-300 flex items-center justify-center gap-2">
+               class="flex items-center justify-center bg-gray-50 text-gray-900 border-2 border-gray-900 hover:bg-gray-900 hover:text-white rounded-lg font-bold px-4 py-2 transition-all duration-300 gap-2">
                 <i class="fas fa-info-circle"></i>
                 Détails
             </a>
-            <a href="#" 
-                class="bg-[#8B4513] text-white hover:bg-[#734010] rounded-lg font-medium px-4 py-2 transition-colors duration-300 flex items-center justify-center gap-2">
+
+
+            <a href="{{ path('app_add_reservation', {'vehicleId': car.id}) }}"
+               class="flex items-center justify-center bg-gray-900 text-white hover:border-2 hover:border-gray-900 hover:text-gray-900 hover:bg-white rounded-lg font-bold px-4 py-2 transition-all duration-300 gap-2">
                 <i class="fas fa-calendar-alt"></i>
                 Réserver
             </a>

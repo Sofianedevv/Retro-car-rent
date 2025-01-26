@@ -3,78 +3,79 @@
 {% block title %}Inscription{% endblock %}
 
 {% block body %}
-<div class="min-h-screen flex items-center justify-center bg-[#F5F5F0] py-12">
-    <div class="max-w-md w-full bg-white p-8 rounded-lg shadow-2xl border-2 border-[#8B4513]">
-        <div class="text-center mb-8">
-            <h1 class="text-4xl font-playfair font-bold text-[#8B4513]">Inscription</h1>
-            <div class="mt-2 h-1 w-16 bg-[#8B4513] mx-auto"></div>
-            <p class="text-gray-600 mt-4">Créez votre compte pour commencer l'aventure</p>
-        </div>
-
-        {% for flash_error in app.flashes('verify_email_error') %}
-            <div class="mb-4 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 font-playfair">
-                {{ flash_error }}
+    <div class="min-h-screen flex items-center justify-center bg-gray-100 py-12">
+        <div class="max-w-md w-full bg-gray-900 p-8 rounded-lg shadow-2xl shadow-current">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-playfair font-bold text-[#b3a97d]">Inscription</h1>
+                <div class="mt-2 h-1 w-16 bg-primary mx-auto"></div>
+                <p class="text-gray-100 mt-4">Créez votre compte pour commencer l'aventure</p>
             </div>
-        {% endfor %}
 
-        {{ form_start(registrationForm, {'attr': {'class': 'space-y-6'}}) }}
+            {% for flash_error in app.flashes('verify_email_error') %}
+                <div class="mb-4 p-4 bg-gray-100 border-l-4 border-primary text-gray-900 font-playfair">
+                    {{ flash_error }}
+                </div>
+            {% endfor %}
+
+            {{ form_start(registrationForm, {'attr': {'class': 'space-y-6'}}) }}
             <div>
-                {{ form_label(registrationForm.firstName, 'Prénom', {'label_attr': {'class': 'block text-sm font-medium text-[#8B4513]'}}) }}
+                {{ form_label(registrationForm.firstName, 'Prénom', {'label_attr': {'class': 'block text-lg font-medium text-primary'}}) }}
                 {{ form_widget(registrationForm.firstName, {'attr': {
-                    'class': 'mt-1 block w-full px-4 py-3 bg-[#F5F5F0] border-2 border-[#8B4513]/20 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B4513] focus:border-[#8B4513] transition-colors duration-300'
+                    'class': 'mt-1 block w-full px-4 py-3 bg-gray-100 border-2 border-primary/20 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors duration-300 transform hover:border-primary hover:shadow-lg'
                 }}) }}
             </div>
 
             <div>
-                {{ form_label(registrationForm.lastName, 'Nom', {'label_attr': {'class': 'block text-sm font-medium text-[#8B4513]'}}) }}
+                {{ form_label(registrationForm.lastName, 'Nom', {'label_attr': {'class': 'block text-lg font-medium text-primary'}}) }}
                 {{ form_widget(registrationForm.lastName, {'attr': {
-                    'class': 'mt-1 block w-full px-4 py-3 bg-[#F5F5F0] border-2 border-[#8B4513]/20 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B4513] focus:border-[#8B4513] transition-colors duration-300'
+                    'class': 'mt-1 block w-full px-4 py-3 bg-gray-100 border-2 border-primary/20 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors duration-300 transform hover:border-primary hover:shadow-lg'
                 }}) }}
             </div>
 
             <div>
-                {{ form_label(registrationForm.phoneNumber, 'Téléphone', {'label_attr': {'class': 'block text-sm font-medium text-[#8B4513]'}}) }}
+                {{ form_label(registrationForm.phoneNumber, 'Téléphone', {'label_attr': {'class': 'block text-lg font-medium text-primary'}}) }}
                 {{ form_widget(registrationForm.phoneNumber, {'attr': {
-                    'class': 'mt-1 block w-full px-4 py-3 bg-[#F5F5F0] border-2 border-[#8B4513]/20 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B4513] focus:border-[#8B4513] transition-colors duration-300'
+                    'class': 'mt-1 block w-full px-4 py-3 bg-gray-100 border-2 border-primary/20 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors duration-300 transform hover:border-primary hover:shadow-lg'
                 }}) }}
             </div>
 
             <div>
-                {{ form_label(registrationForm.email, 'Email', {'label_attr': {'class': 'block text-sm font-medium text-[#8B4513]'}}) }}
+                {{ form_label(registrationForm.email, 'Email', {'label_attr': {'class': 'block text-lg font-medium text-primary'}}) }}
                 {{ form_widget(registrationForm.email, {'attr': {
-                    'class': 'mt-1 block w-full px-4 py-3 bg-[#F5F5F0] border-2 border-[#8B4513]/20 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B4513] focus:border-[#8B4513] transition-colors duration-300'
+                    'class': 'mt-1 block w-full px-4 py-3 bg-gray-100 border-2 border-primary/20 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors duration-300 transform hover:border-primary hover:shadow-lg'
                 }}) }}
             </div>
 
             <div>
-                {{ form_label(registrationForm.plainPassword, 'Mot de passe', {'label_attr': {'class': 'block text-sm font-medium text-[#8B4513]'}}) }}
+                {{ form_label(registrationForm.plainPassword, 'Mot de passe', {'label_attr': {'class': 'block text-lg font-medium text-primary'}}) }}
                 {{ form_widget(registrationForm.plainPassword, {'attr': {
-                    'class': 'mt-1 block w-full px-4 py-3 bg-[#F5F5F0] border-2 border-[#8B4513]/20 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B4513] focus:border-[#8B4513] transition-colors duration-300'
+                    'class': 'mt-1 block w-full px-4 py-3 bg-gray-100 border-2 border-primary/20 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors duration-300 transform hover:border-primary hover:shadow-lg'
                 }}) }}
             </div>
 
             <div class="flex items-center">
                 {{ form_widget(registrationForm.agreeTerms, {'attr': {
-                    'class': 'h-4 w-4 text-[#8B4513] focus:ring-[#8B4513] border-[#8B4513]/20 rounded transition-colors duration-300'
+                    'class': 'h-4 w-4 text-primary focus:ring-primary border-primary/20 rounded transition-colors duration-300'
                 }}) }}
                 {{ form_label(registrationForm.agreeTerms, 'J\'accepte les conditions d\'utilisation', {'label_attr': {
-                    'class': 'ml-2 block text-sm text-[#8B4513]'
+                    'class': 'ml-2 block text-lg text-primary'
                 }}) }}
             </div>
 
-            <button type="submit" class="w-full flex justify-center py-3 px-4 border-2 border-[#8B4513] rounded-md shadow-md text-[#F5F5F0] bg-[#8B4513] hover:bg-[#734010] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#8B4513] transition-all duration-300 font-playfair text-lg">
+            <button type="submit"
+                    class="w-full flex justify-center border-primary shadow-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary bg-[#b3a97d] hover:bg-transparent  hover:text-primary border border-transparent hover:border-primary font-semibold rounded-lg px-8 py-3 transition-all duration-300 font-playfair text-lg">
                 S'inscrire
             </button>
-        {{ form_end(registrationForm) }}
+            {{ form_end(registrationForm) }}
 
-        <div class="mt-6 text-center">
-            <p class="text-sm text-[#8B4513]">
-                Déjà inscrit ? 
-                <a href="{{ path('app_login') }}" class="font-medium text-[#8B4513] hover:text-[#734010] underline transition-colors duration-300">
-                    Se connecter
-                </a>
-            </p>
+            <div class="mt-6 text-center">
+                <p class="text-sm text-primary">
+                    Déjà inscrit ?
+                    <a href="{{ path('app_login') }}" class="font-medium text-primary hover:text-[#b3a97d] underline transition-colors duration-300">
+                        Se connecter
+                    </a>
+                </p>
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}

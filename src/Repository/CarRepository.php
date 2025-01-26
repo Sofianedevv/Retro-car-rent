@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Car;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -51,4 +52,31 @@ class CarRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+//    public function findCarsByFiltersWithPagination(array $filters, int $page = 1, int $limit = 6): Paginator
+//    {
+//        $queryBuilder = $this->createQueryBuilder('v');
+//
+//        // Appliquez les filtres
+//        if (!empty($filters['brand'])) {
+//            $queryBuilder->andWhere('v.brand = :brand')
+//                ->setParameter('brand', $filters['brand']);
+//        }
+//        if (!empty($filters['minPrice'])) {
+//            $queryBuilder->andWhere('v.price >= :minPrice')
+//                ->setParameter('minPrice', $filters['minPrice']);
+//        }
+//        if (!empty($filters['maxPrice'])) {
+//            $queryBuilder->andWhere('v.price <= :maxPrice')
+//                ->setParameter('maxPrice', $filters['maxPrice']);
+//        }
+//        // Ajoutez d'autres filtres ici...
+//
+//        // Pagination
+//        $queryBuilder->setFirstResult(($page - 1) * $limit)
+//            ->setMaxResults($limit);
+//
+//        return new Paginator($queryBuilder);
+//    }
+
+
 }

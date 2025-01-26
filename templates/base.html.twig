@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="icon" href="{{ asset('template-html/assets/images/favicon.png') }}" />
+    <link rel="icon" type="image/svg+xml" href="{{ asset('template-html/assets/images/logo_black.svg') }}" class="h-20 w-auto" />
     <title>{% block title %}Home page{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css" integrity="sha512-MQXduO8IQnJVq1qmySpN87QQkiR1bZHtorbJBD0tzy7/0U9+YIC93QWHeGTEoojMVHWWNkoCp8V6OzVSYrX0oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ asset('template-html/assets/css/styles.css') }}">
     <link rel="stylesheet" href="{{ asset('template-html/node_modules/swiper/swiper-bundle.css') }}">
     <link rel="stylesheet" href="{{ asset('template-html/assets/css/custom.css') }}">
@@ -23,25 +23,26 @@
         .fl-wrapper {
             z-index: 100 !important;
         }
+        html {
+            scroll-behavior: smooth;
+        }
     </style>
 </head>
 
-<body>
+<body class="font-playfair flex flex-col min-h-screen">
 <!-- Header -->
 {% include 'parts/_header.html.twig' %}
 <!-- End of Header -->
 
 {% block body %}{% endblock %}
 
-<!-- Footer -->
-{% include 'parts/_footer.html.twig' %}
-<!-- End of Footer -->
 
 <script src="{{ asset('template-html/node_modules/swiper/swiper-bundle.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 <script src="{{ asset('template-html/assets/js/script.js') }}"></script>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://npmcdn.com/flatpickr/dist/l10n/fr.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js" integrity="sha512-K/oyQtMXpxI4+K0W7H25UopjM8pzq0yrVdFdG21Fh5dBe91I40pDd9A4lzNlHPHBIP2cwZuoxaUSX0GJSObvGA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- Footer -->
+{% include 'parts/_footer.html.twig' %}
+<!-- End of Footer -->
 </body>
-
 </html>

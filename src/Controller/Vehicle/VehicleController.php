@@ -2,6 +2,7 @@
 
 namespace App\Controller\Vehicle;
 
+use App\Repository\CarRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -51,16 +52,16 @@ class VehicleController extends AbstractController
     {
         $search = $request->query->get('search');
         $filters = [
-            'brand' => $request->query->get('brand'),
+            'brand' => $request->query->all('brand'),
             'minPrice' => $request->query->get('minPrice'),
             'maxPrice' => $request->query->get('maxPrice'),
             'minYear' => $request->query->get('minYear'),
             'maxYear' => $request->query->get('maxYear'),
             'transmission' => $request->query->get('transmission'),
-            'fuelType' => $request->query->get('fuelType'),
+            'fuelType' => $request->query->all('fuelType'),
             'availability' => $request->query->get('availability'),
-            'nbSeats' => $request->query->get('nbSeats'),
-            'nbDoors' => $request->query->get('nbDoors'),
+            'nbSeats' => $request->query->all('nbSeats'),
+            'nbDoors' => $request->query->all('nbDoors'),
             'minMileage' => $request->query->get('minMileage'),
             'maxMileage' => $request->query->get('maxMileage'),
         ];
@@ -82,7 +83,7 @@ class VehicleController extends AbstractController
         $nbSeatsOptions = [2, 4, 5, 7, 8, 9];
         $nbDoorsOptions = [2, 3, 4, 5];
         $years = range(2010, 1900, -1);
-    
+
         $isFavorite = array_fill_keys(
             array_map(function($car) { return $car->getId(); }, $carsPerPage->getItems()),
             false
@@ -98,9 +99,9 @@ class VehicleController extends AbstractController
                 }
             }
         }
-    
 
-    
+
+
         return $this->render('vehicle/_display_car.html.twig', [
             'cars' => $carsPerPage,
             'isFavorite' => $isFavorite, 
@@ -114,7 +115,6 @@ class VehicleController extends AbstractController
             'search' => $search
         ]);
     }
-    
     #[Route('/nos-motos', name: 'app_motorcycle')]
     public function show_motorcycle(
         Request $request,
