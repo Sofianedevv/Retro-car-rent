@@ -21,7 +21,7 @@ class PdfService
 
     public function generatePDF(string $html): string
     {
-        $css = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/css/invoice.css');
+        $css = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/template-html/assets/css/styles.css');
         /** @var \Dompdf\Dompdf  $dompdf */
         $dompdf = $this->factory->create();
         $htmlWithCss = "<style>" . $css . "</style>" . $html;
@@ -49,6 +49,7 @@ class PdfService
         foreach ($reservationOptions as $option) {
             $totalPriceOptions += $option->getPriceByOption();
         }
+        $css = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/template-html/assets/css/styles.css');
 
         $html = $this->twig->render('invoice/pdf.html.twig', [
             'invoice' => $invoice,
@@ -62,8 +63,9 @@ class PdfService
             'endDate' => $endDate,
             'days' => $days,
         ]);
+        $htmlWithCss = "<style>" . $css . "</style>" . $html;
 
-        return $this->generatePDF($html);
+        return $this->generatePDF($htmlWithCss);
     }
     
 }
