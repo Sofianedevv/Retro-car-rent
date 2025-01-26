@@ -12,6 +12,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.3",
         "doctrine/orm": "^3.3",
         "hautelook/alice-bundle": "^2.13",
+        "knplabs/knp-paginator-bundle": "^6.6",
         "nucleos/dompdf-bundle": "^4.3",
         "paragonie/sodium_compat": "^2.1",
         "php-flasher/flasher-symfony": "^2.1",

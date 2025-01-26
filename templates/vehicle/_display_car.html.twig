@@ -240,29 +240,9 @@
                 {% endfor %}
                 </div>
                 <!-- Pagination -->
-                <div class="flex justify-center mt-12">
-                    <nav aria-label="Page navigation">
-                        <ul class="inline-flex space-x-4">
-                            <li>
-                                <a href="#"
-                                   class="bg-[#8B4513] text-[#F5F5F0] w-12 h-12 flex items-center justify-center border-2 border-[#8B4513] font-playfair hover:bg-[#734010] transition-colors duration-300">
-                                    1
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                   class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-primary hover:text-white">2</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                   class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-primary hover:text-white">3</a>
-                            </li>
-                            <li>
-                                <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full">Next</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
+
+                {{ knp_pagination_render(cars) }}
+
             </div>
         </div>
     </div>
