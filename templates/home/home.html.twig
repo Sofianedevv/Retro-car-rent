@@ -3,28 +3,62 @@
 
 {% block body %}
 <!-- Hero Banner -->
-    <section id="banner" class="relative mb-6 bg-primary py-12">
-        <div class="relative flex flex-col justify-center items-start text-black h-full px-6 lg:px-20">
-            <h2 class="text-4xl lg:text-5xl font-bold mb-6 font-playfair">
-                Découvrez notre collection intemporelle de véhicules vintage
-            </h2>
-            <p class="text-md lg:text-lg mb-8 leading-relaxed">
-                Plongez dans un univers où l’élégance rencontre la nostalgie. Chaque voiture raconte une histoire,
-                alliant design rétro et qualité exceptionnelle. Vivez une expérience unique avec notre sélection
-                de véhicules soigneusement restaurés et prêts à sublimer vos moments spéciaux.
-            </p>
-            <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6">
-                <!-- Bouton Réserver -->
-                <a href="{{ path('app_collections') }}"
-                   class="bg-gray-900 text-white hover:text-black hover:bg-white border-2 border-black rounded-lg px-8 py-3 transition-all duration-300 font-bold">
-                    Réserver
-                </a>
-                <!-- Bouton En savoir plus -->
-                <a href="{{ path('app_about') }}"
-                   class="bg-gray-900 text-white hover:text-black hover:bg-white border-2 border-black rounded-lg px-8 py-3  transition-all duration-300 font-bold">
-                    En savoir plus
-                </a>
-            </div>
+    <section id="banner" class="relative mb-6 flex bg-gradient-to-tr from-[#e0d8b0] to-[#8B4513]">
+        <div class="w-1/2 p-6 ml-16 flex flex-col justify-center items-start text-black">
+            <!-- Formulaire de recherche aligné à gauche -->
+            <form action="#" method="GET" class="w-full max-w-sm bg-white p-6 rounded-lg shadow-lg">
+                <div class="space-y-4">
+                    <!-- Type de véhicule -->
+                    <div>
+                        <label for="vehicle_type" class="block text-sm font-extrabold text-black">Type de véhicule</label>
+                        <select id="vehicle_type" name="vehicle_type" class="mt-2 w-full border-2 bg-primary border-[#8B4513] rounded-lg px-4 py-2">
+                            <option value="car">Voiture</option>
+                            <option value="van">Van</option>
+                            <option value="motorcycle">Moto</option>
+                        </select>
+                    </div>
+
+                    <!-- Bloc Dates et Heures -->
+                    <div class="border-2 border-[#8B4513] rounded-lg p-4 space-y-4">
+                        <!-- Date et Heure de départ -->
+                        <div class="flex items-center space-x-4">
+                            <div class="w-1/2">
+                                <label for="departure_date" class="block text-sm font-extrabold text-black">Date de départ</label>
+                                <input type="date" id="departure_date" name="departure_date" class="mt-2 w-full border-2 border-[#8B4513] rounded-lg px-4 py-2" required>
+                            </div>
+                            <div class="w-1/2">
+                                <label for="departure_time" class="block text-sm font-extrabold text-black">Heure de départ</label>
+                                <input type="time" id="departure_time" name="departure_time" class="mt-2 w-full border-2 border-[#8B4513] rounded-lg px-4 py-2" required>
+                            </div>
+                        </div>
+                        <div class="border-t border-[#8B4513] my-2"></div>
+                        <!-- Date et Heure de retour -->
+                        <div class="flex items-center space-x-4">
+                            <div class="w-1/2">
+                                <label for="return_date" class="block text-sm font-extrabold text-black">Date de retour</label>
+                                <input type="date" id="return_date" name="return_date" class="mt-2 w-full border-2 border-[#8B4513] rounded-lg px-4 py-2" required>
+                            </div>
+                            <div class="w-1/2">
+                                <label for="return_time" class="block text-sm font-extrabold text-black">Heure de retour</label>
+                                <input type="time" id="return_time" name="return_time" class="mt-2 w-full border-2 border-[#8B4513] rounded-lg px-4 py-2" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bouton Rechercher -->
+                <div class="mt-6">
+                    <button type="submit" class="w-full bg-gray-900 text-white hover:text-black hover:bg-white border-2 border-black rounded-lg px-8 py-3 transition-all duration-300 font-bold">
+                        Rechercher
+                    </button>
+                </div>
+            </form>
+
+        </div>
+
+        <!-- Section image à droite -->
+        <div class="w-1/2 p-6 mt-3">
+            <img src="{{ asset('template-html/assets/images/hero-section.png') }}" alt="Image véhicules vintage" class="w-full h-96 object-cover rounded-lg shadow-lg">
         </div>
     </section>
 
