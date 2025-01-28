@@ -35,7 +35,7 @@
                         <div class="ml-4">
                             <h3 class="text-sm font-medium text-gray-500">Confirmées</h3>
                             <p class="text-2xl font-semibold text-gray-900">
-                                {{ reservations|filter(r => r.status == constant('App\\Enum\\StatusReservationEnum::CONFIRMED'))|length }}
+                                {{ reservations|filter(r => r.status.value == constant('App\\Enum\\StatusReservationEnum::CONFIRMED'))|length }}
                             </p>
                         </div>
                     </div>
@@ -49,7 +49,7 @@
                         <div class="ml-4">
                             <h3 class="text-sm font-medium text-gray-500">En attente</h3>
                             <p class="text-2xl font-semibold text-gray-900">
-                                {{ reservations|filter(r => r.status == constant('App\\Enum\\StatusReservationEnum::PENDING'))|length }}
+                                {{ reservations|filter(r => r.status.value == constant('App\\Enum\\StatusReservationEnum::PENDING'))|length }}
                             </p>
                         </div>
                     </div>
@@ -63,7 +63,7 @@
                         <div class="ml-4">
                             <h3 class="text-sm font-medium text-gray-500">Annulées</h3>
                             <p class="text-2xl font-semibold text-gray-900">
-                                {{ reservations|filter(r => r.status == constant('App\\Enum\\StatusReservationEnum::CANCELLED'))|length }}
+                                {{ reservations|filter(r => r.status.value == constant('App\\Enum\\StatusReservationEnum::CANCELLED'))|length }}
                             </p>
                         </div>
                     </div>
@@ -90,9 +90,9 @@
                                         </h3>
                                     </div>
                                     <span class="inline-flex px-3 py-1 rounded-full text-xs font-medium
-                                        {% if reservation.status.value == 'CONFIRMED' %}
+                                        {% if reservation.status.value|lower == 'confirmed' %}
                                             bg-green-100 text-green-800
-                                        {% elseif reservation.status.value == 'PENDING' %}
+                                        {% elseif reservation.status.value|lower == 'pending' %}
                                             bg-yellow-100 text-yellow-800
                                         {% else %}
                                             bg-red-100 text-red-800
