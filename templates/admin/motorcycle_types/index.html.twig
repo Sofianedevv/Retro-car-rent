@@ -1,0 +1,54 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Types de motos{% endblock %}
+
+{% block admin_content %}
+<div class="space-y-6">
+    <div class="flex justify-between items-center">
+        <div>
+            <h1 class="text-3xl font-semibold text-gray-800">Types de motos</h1>
+            <p class="mt-1 text-gray-600">Gérez les différents types de motos disponibles</p>
+        </div>
+        <a href="{{ path('admin_motorcycle_type_new') }}" class="inline-flex items-center px-4 py-2 bg-[#8B4513] text-white rounded-md hover:bg-[#734010] transition-colors">
+            <i class="fas fa-plus mr-2"></i> Nouveau type
+        </a>
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Motos</th>
+                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                {% for type in types %}
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ type.name }}</td>
+                        <td class="px-6 py-4">{{ type.description|default('-') }}</td>
+                        <td class="px-6 py-4">{{ type.motorcycles is defined ? type.motorcycles|length : 0 }}</td>
+                        <td class="px-6 py-4 text-right space-x-2">
+                            <a href="{{ path('admin_motorcycle_type_edit', {'id': type.id}) }}" class="text-indigo-600 hover:text-indigo-900">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <form method="post" action="{{ path('admin_motorcycle_type_delete', {'id': type.id}) }}" class="inline">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ type.id) }}">
+                                <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce type ?')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="px-6 py-4 text-center text-gray-500">Aucun type de moto trouvé</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %} 

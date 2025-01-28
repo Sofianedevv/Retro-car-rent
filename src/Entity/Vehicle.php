@@ -72,14 +72,14 @@ class Vehicle
     #[ORM\OneToMany(mappedBy: 'vehicle', targetEntity: VehicleImage::class, cascade: ['persist', 'remove'])]
     private Collection $vehicleImages;
 
+    #[ORM\Column(length: 255)]
+    private ?string $defaultImage = null;
+
     /**
      * @var Collection<int, Category>
      */
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'vehicles')]
     private Collection $categories;
-
-    #[ORM\Column(length: 255)]
-    private ?string $defaultImage = null;
 
     private $imageFiles;
 
@@ -322,30 +322,6 @@ class Vehicle
         return $this;
     }
 
-    /**
-     * @return Collection<int, Category>
-     */
-    public function getCategories(): Collection
-    {
-        return $this->categories;
-    }
-
-    public function addCategory(Category $category): static
-    {
-        if (!$this->categories->contains($category)) {
-            $this->categories->add($category);
-        }
-
-        return $this;
-    }
-
-    public function removeCategory(Category $category): static
-    {
-        $this->categories->removeElement($category);
-
-        return $this;
-    }
-
     public function getDefaultImage(): ?string
     {
         return $this->defaultImage;
@@ -371,5 +347,29 @@ class Vehicle
         }
 
         return round($total / $reviews->count(), 1);
+    }
+
+    /**
+     * @return Collection<int, Category>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): static
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): static
+    {
+        $this->categories->removeElement($category);
+
+        return $this;
     }
 }

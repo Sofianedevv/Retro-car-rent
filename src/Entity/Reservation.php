@@ -9,6 +9,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
@@ -67,9 +69,15 @@ class Reservation
     #[ORM\OneToMany(targetEntity: ReservationVehicleOption::class, mappedBy: 'reservation')]
     private Collection $reservationVehicleOptions;
 
+    #[ORM\Column(type: 'uuid', unique: true, nullable: true)]
+    private ?UuidInterface $reference = null;
+
     public function __construct()
     {
         $this->reservationVehicleOptions = new ArrayCollection();
+        // Commentez temporairement cette ligne
+        // $this->reference = Uuid::uuid4();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
    
@@ -223,6 +231,17 @@ class Reservation
             }
         }
 
+        return $this;
+    }
+
+    public function getReference(): ?UuidInterface
+    {
+        return $this->reference;
+    }
+
+    public function setReference(UuidInterface $reference): self
+    {
+        $this->reference = $reference;
         return $this;
     }
 

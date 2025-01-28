@@ -77,10 +77,19 @@
                 <form method="get" action="{{ path('app_motorcycle') }}" class="space-y-6">
                                         <div class="mb-8 pb-6 border-b border-[#8B4513]/10">
                         <h3 class="text-xl font-playfair font-bold text-[#8B4513] mb-4">Marque</h3>
-                        <select name="brand" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-[#8B4513]">
-                            <option value="">Sélectionner une marque</option>
+                        <div class="space-y-2 max-h-48 overflow-y-auto">
                             {% for brand in brands %}
-                                <option value="{{ brand }}" {% if filters.brand == brand %}selected{% endif %}>{{ brand }}</option>
+                                <div class="flex items-center">
+                                    <input type="checkbox" 
+                                           id="brand_{{ brand }}" 
+                                           name="brand[]" 
+                                           value="{{ brand }}"
+                                           {% if brand in filters.brand|default([]) %}checked{% endif %}
+                                           class="h-4 w-4 text-[#8B4513] border-gray-300 rounded focus:ring-[#8B4513]">
+                                    <label for="brand_{{ brand }}" class="ml-2 text-sm text-gray-900 hover:text-[#8B4513] transition-colors cursor-pointer">
+                                        {{ brand }}
+                                    </label>
+                                </div>
                             {% endfor %}
                         </select>
                     </div>
@@ -97,8 +106,29 @@
                         </div>
                     </div>
 
-                                        <div class="mb-6 pb-8 border-b border-gray-line">
-                        <h3 class="text-lg font-semibold mb-6">Cylindrée</h3>
+                    <!-- Filtre Type de moteur -->
+                    <div class="mb-8 pb-6 border-b border-[#8B4513]/10">
+                        <h3 class="text-xl font-playfair font-bold text-[#8B4513] mb-4">Type de moteur</h3>
+                        <div class="space-y-2 max-h-48 overflow-y-auto">
+                            {% for type in types %}
+                                <div class="flex items-center">
+                                    <input type="checkbox" 
+                                           id="type_{{ type }}" 
+                                           name="type[]" 
+                                           value="{{ type }}"
+                                           {% if type in filters.type|default([]) %}checked{% endif %}
+                                           class="h-4 w-4 text-[#8B4513] border-gray-300 rounded focus:ring-[#8B4513]">
+                                    <label for="type_{{ type }}" class="ml-2 text-sm text-gray-900 hover:text-[#8B4513] transition-colors cursor-pointer">
+                                        {{ type }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Cylindrée Filter -->
+                    <div class="mb-8 pb-6 border-b border-[#8B4513]/10">
+                        <h3 class="text-xl font-playfair font-bold text-[#8B4513] mb-4">Cylindrée</h3>
                         <div class="flex flex-col space-y-2">
                             <input type="number" name="minEngineCapacity" placeholder="Cylindrée min"
                                    value="{{ filters.minEngineCapacity }}"

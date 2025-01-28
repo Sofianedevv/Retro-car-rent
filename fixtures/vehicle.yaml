@@ -1,5 +1,11 @@
-
 App\Entity\Vehicle:
+  vehicle_template (template):
+    brand: '<company()>'
+    model: '<word()>'
+    year: '<numberBetween(1950, 1990)>'
+    price: '<numberBetween(100, 500)>'
+    fuelType: '<randomElement(["essence", "diesel"])>'
+    mileage: '<numberBetween(10000, 150000)>'
   vehicle (template):
     model: "Model <current()>"
     brand: "Brand <current()>"
@@ -8,7 +14,9 @@ App\Entity\Vehicle:
     fuelType: "essence"
     mileage: 45000
     availability: true
-  
+    defaultImage: 'https://picsum.photos/400/550?random=<numberBetween(1, 100)>'
+    categories: ['@category_1', '@category_2']
+
 App\Entity\Car:
   vehicle_car_{1..50} (extends vehicle):
     nbSeats: <numberBetween(1, 4)>
@@ -70,32 +78,9 @@ App\Entity\Motorcycle (extends vehicle):
 App\Entity\VehicleImage:
   vehicle_image_{1..5}:
     url: 'https://picsum.photos/400/550?random=<numberBetween(1, 100)>'
+    vehicle: '@vehicle_car_1'
 
 App\Entity\Favorite:
-  favorite_1:
-    vehicles:
-      - "@vehicle_car_*"
-      - "@vehicle_van_*"
-    client: "@user_with_favorites_*"
-
-  favorite_2:
-    vehicles:
-      - "@vehicle_car_*"
-      - "@vehicle_motorcycle_*"
-    client: "@user_with_favorites_*"
-
-  favorite_3:
-    vehicles:
-      - "@vehicle_car_*"
-      - "@vehicle_motorcycle_*"
-    client: "@user_with_favorites_*"
-
-  favorite_4:
-    vehicles: 
-      - "@vehicle_car_*"
-    client: "@user_with_favorites_*"
-
-  favorite_5:
-    vehicles: 
-      - "@vehicle_van_*"
-    client: "@user_with_favorites_*"
+  favorite_{1..5}:
+    vehicles: ['@vehicle_car_1']
+    client: '@user_1'

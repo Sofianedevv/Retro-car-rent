@@ -72,19 +72,35 @@
                     });
                 </script>
             </div>
-
-            <div class="flex flex-col md:flex-row my-8">
-                                <div id="filters" class="w-full md:w-1/4 p-6 hidden md:block bg-white shadow-lg rounded-lg">
-                    <form method="get" action="{{ path('app_car') }}" class="space-y-6">
-                                                <div class="mb-8 pb-6 border-b border-[#8B4513]/10">
-                            <h3 class="text-xl font-playfair font-bold text-[#8B4513] mb-4">Marque</h3>
-                            <select name="brand" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-[#8B4513]">
-                                <option value="">Sélectionner une marque</option>
-                                {% for brand in brands %}
-                                    <option value="{{ brand }}" {% if filters.brand == brand %}selected{% endif %}>{{ brand }}</option>
-                                {% endfor %}
-                            </select>
+        </div>
+        <!-- Filter Toggle Button for Mobile -->
+        <div class="block md:hidden text-center mb-4">
+            <button id="products-toggle-filters"
+                    class="bg-primary text-white py-2 px-4 rounded-full focus:outline-none">Show Filters</button>
+        </div>
+        <div class="flex flex-col md:flex-row">
+            <!-- Filters -->
+            <div id="filters" class="w-full md:w-1/4 p-6 hidden md:block bg-white shadow-lg">
+                <form method="get" action="{{ path('app_car') }}" class="space-y-6">
+                    <!-- Marque Filter -->
+                    <div class="mb-4">
+                        <label for="brand" class="block text-sm font-medium text-gray-700">Marque</label>
+                        <div class="mt-1 max-h-48 overflow-y-auto border border-gray-300 rounded-md p-2">
+                            {% for brand in brands %}
+                            <div class="flex items-center mb-2">
+                                <input type="checkbox" 
+                                       id="brand_{{ brand }}" 
+                                       name="brand[]" 
+                                       value="{{ brand }}"
+                                       {% if brand in filters.brand|default([]) %}checked{% endif %}
+                                       class="h-4 w-4 text-[#8B4513] border-gray-300 rounded focus:ring-[#8B4513]">
+                                <label for="brand_{{ brand }}" class="ml-2 block text-sm text-gray-900">
+                                    {{ brand }}
+                                </label>
+                            </div>
+                            {% endfor %}
                         </div>
+                    </div>
 
                                                 <div class="mb-6 pb-8 border-b border-gray-line">
                             <h3 class="text-lg font-semibold mb-6">Prix</h3>
@@ -110,17 +126,25 @@
                             </select>
                         </div>
 
-                                                <div class="mb-6 pb-8 border-b border-gray-line">
-                            <h3 class="text-lg font-semibold mb-6">Carburant</h3>
-                            <select name="fuelType" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-[#8B4513]">
-                                <option value="">Sélectionner le carburant</option>
-                                {% for fuelType in fuelTypes %}
-                                    <option value="{{ fuelType }}" {% if filters.fuelType == fuelType %}selected{% endif %}>
+                    <!-- Filtre Carburant -->
+                    <div class="mb-8 pb-6 border-b border-[#8B4513]/10">
+                        <h3 class="text-xl font-playfair font-bold text-[#8B4513] mb-4">Type de carburant</h3>
+                        <div class="space-y-2 max-h-48 overflow-y-auto">
+                            {% for fuelType in fuelTypes %}
+                                <div class="flex items-center">
+                                    <input type="checkbox" 
+                                           id="fuelType_{{ fuelType }}" 
+                                           name="fuelType[]" 
+                                           value="{{ fuelType }}"
+                                           {% if fuelType in filters.fuelType|default([]) %}checked{% endif %}
+                                           class="h-4 w-4 text-[#8B4513] border-gray-300 rounded focus:ring-[#8B4513]">
+                                    <label for="fuelType_{{ fuelType }}" class="ml-2 text-sm text-gray-900 hover:text-[#8B4513] transition-colors cursor-pointer">
                                         {{ fuelType }}
-                                    </option>
-                                {% endfor %}
-                            </select>
+                                    </label>
+                                </div>
+                            {% endfor %}
                         </div>
+                    </div>
 
                                                 <div class="mb-6 pb-8 border-b border-gray-line">
                             <h3 class="text-lg font-semibold mb-6">Disponibilité</h3>
@@ -144,17 +168,25 @@
                             </select>
                         </div>
 
-                                                <div class="mb-6 pb-8 border-b border-gray-line">
-                            <h3 class="text-lg font-semibold mb-6">Nombre de portes</h3>
-                            <select name="nbDoors" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-[#8B4513]">
-                                <option value="">Sélectionner le nombre de portes</option>
-                                {% for doors in nbDoorsOptions %}
-                                    <option value="{{ doors }}" {% if filters.nbDoors is not empty and filters.nbDoors == doors %}selected{% endif %}>
-                                        {{ doors }} portes
-                                    </option>
-                                {% endfor %}
-                            </select>
+                    <!-- Filtre Nombre de portes -->
+                    <div class="mb-8 pb-6 border-b border-[#8B4513]/10">
+                        <h3 class="text-xl font-playfair font-bold text-[#8B4513] mb-4">Nombre de portes</h3>
+                        <div class="space-y-2 max-h-48 overflow-y-auto">
+                            {% for door in [2, 3, 4, 5] %}
+                                <div class="flex items-center">
+                                    <input type="checkbox" 
+                                           id="nbDoors_{{ door }}" 
+                                           name="nbDoors[]" 
+                                           value="{{ door }}"
+                                           {% if door in filters.nbDoors|default([]) %}checked{% endif %}
+                                           class="h-4 w-4 text-[#8B4513] border-gray-300 rounded focus:ring-[#8B4513]">
+                                    <label for="nbDoors_{{ door }}" class="ml-2 text-sm text-gray-900 hover:text-[#8B4513] transition-colors cursor-pointer">
+                                        {{ door }} portes
+                                    </label>
+                                </div>
+                            {% endfor %}
                         </div>
+                    </div>
 
                                                 <div class="mb-6 pb-8 border-b border-gray-line">
                             <h3 class="text-lg font-semibold mb-6">Année</h3>

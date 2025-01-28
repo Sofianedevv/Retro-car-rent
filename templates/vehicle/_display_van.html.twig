@@ -77,10 +77,19 @@
                 <form method="get" action="{{ path('app_van') }}" class="space-y-6">
                                         <div class="mb-8 pb-6 border-b border-[#8B4513]/10">
                         <h3 class="text-xl font-playfair font-bold text-[#8B4513] mb-4">Marque</h3>
-                        <select name="brand" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-[#8B4513]">
-                            <option value="">Sélectionner une marque</option>
+                        <div class="space-y-2 max-h-48 overflow-y-auto">
                             {% for brand in brands %}
-                                <option value="{{ brand }}" {% if filters.brand == brand %}selected{% endif %}>{{ brand }}</option>
+                                <div class="flex items-center">
+                                    <input type="checkbox" 
+                                           id="brand_{{ brand }}" 
+                                           name="brand[]" 
+                                           value="{{ brand }}"
+                                           {% if brand in filters.brand|default([]) %}checked{% endif %}
+                                           class="h-4 w-4 text-[#8B4513] border-gray-300 rounded focus:ring-[#8B4513]">
+                                    <label for="brand_{{ brand }}" class="ml-2 text-sm text-gray-900 hover:text-[#8B4513] transition-colors cursor-pointer">
+                                        {{ brand }}
+                                    </label>
+                                </div>
                             {% endfor %}
                         </select>
                     </div>
@@ -109,26 +118,42 @@
                         </div>
                     </div>
 
-                                        <div class="mb-6 pb-8 border-b border-gray-line">
-                        <h3 class="text-lg font-semibold mb-6">Nombre de places</h3>
-                        <select name="nbSeats" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-[#8B4513]">
-                            <option value="">Sélectionner le nombre de places</option>
+                    <!-- Nombre de places Filter -->
+                    <div class="mb-8 pb-6 border-b border-[#8B4513]/10">
+                        <h3 class="text-xl font-playfair font-bold text-[#8B4513] mb-4">Nombre de places</h3>
+                        <div class="space-y-2 max-h-48 overflow-y-auto">
                             {% for seats in nbSeatsOptions %}
-                                <option value="{{ seats }}" {% if filters.nbSeats is not empty and filters.nbSeats == seats %}selected{% endif %}>
-                                    {{ seats }} places
-                                </option>
+                                <div class="flex items-center">
+                                    <input type="checkbox" 
+                                           id="nbSeats_{{ seats }}" 
+                                           name="nbSeats[]" 
+                                           value="{{ seats }}"
+                                           {% if seats in filters.nbSeats|default([]) %}checked{% endif %}
+                                           class="h-4 w-4 text-[#8B4513] border-gray-300 rounded focus:ring-[#8B4513]">
+                                    <label for="nbSeats_{{ seats }}" class="ml-2 text-sm text-gray-900 hover:text-[#8B4513] transition-colors cursor-pointer">
+                                        {{ seats }} places
+                                    </label>
+                                </div>
                             {% endfor %}
                         </select>
                     </div>
 
-                                        <div class="mb-6 pb-8 border-b border-gray-line">
-                        <h3 class="text-lg font-semibold mb-6">Nombre de portes</h3>
-                        <select name="nbDoors" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-[#8B4513]">
-                            <option value="">Sélectionner le nombre de portes</option>
-                            {% for doors in nbDoorsOptions %}
-                                <option value="{{ doors }}" {% if filters.nbDoors is not empty and filters.nbDoors == doors %}selected{% endif %}>
-                                    {{ doors }} portes
-                                </option>
+                    <!-- Nombre de portes Filter -->
+                    <div class="mb-8 pb-6 border-b border-[#8B4513]/10">
+                        <h3 class="text-xl font-playfair font-bold text-[#8B4513] mb-4">Nombre de portes</h3>
+                        <div class="space-y-2 max-h-48 overflow-y-auto">
+                            {% for door in nbDoorsOptions %}
+                                <div class="flex items-center">
+                                    <input type="checkbox" 
+                                           id="nbDoors_{{ door }}" 
+                                           name="nbDoors[]" 
+                                           value="{{ door }}"
+                                           {% if door in filters.nbDoors|default([]) %}checked{% endif %}
+                                           class="h-4 w-4 text-[#8B4513] border-gray-300 rounded focus:ring-[#8B4513]">
+                                    <label for="nbDoors_{{ door }}" class="ml-2 text-sm text-gray-900 hover:text-[#8B4513] transition-colors cursor-pointer">
+                                        {{ door }} portes
+                                    </label>
+                                </div>
                             {% endfor %}
                         </select>
                     </div>

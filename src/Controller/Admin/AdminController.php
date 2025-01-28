@@ -21,6 +21,9 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Flasher\Prime\FlasherInterface;
 use App\Entity\Notification;
+use App\Entity\Reservation;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 
 #[Route('/admin', name: 'admin_')]
@@ -246,10 +249,122 @@ class AdminController extends AbstractController
     }
 
     #[Route('/users', name: 'users')]
-    public function users(UserRepository $userRepository): Response
+    public function users(): Response
     {
-        return $this->render('admin/users.html.twig', [
-            'users' => $userRepository->findAll(),
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        return $this->render('admin/users.html.twig');
+    }
+
+    #[Route('/reservations', name: 'reservations')]
+    public function reservations(ReservationRepository $reservationRepository): Response
+    {
+        $reservations = $reservationRepository->findAll();
+        
+        // Ajout d'un dump pour vérifier les statuts
+        foreach ($reservations as $reservation) {
+            dump($reservation->getStatus());
+        }
+        
+        return $this->render('admin/reservations.html.twig', [
+            'reservations' => $reservations,
         ]);
+    }
+
+    #[Route('/reservation/{id}', name: 'reservation_show')]
+    public function showReservation(Reservation $reservation): Response
+    {
+        return $this->render('admin/reservation/show.html.twig', [
+            'reservation' => $reservation,
+        ]);
+    }
+
+    #[Route('/reservation/{id}/edit', name: 'reservation_edit')]
+    public function editReservation(Reservation $reservation): Response
+    {
+        return $this->render('admin/reservation/edit.html.twig', [
+            'reservation' => $reservation,
+        ]);
+    }
+
+    #[Route('/reservation/{id}/invoice', name: 'reservation_invoice_download')]
+    public function downloadInvoice(Reservation $reservation): Response
+    {
+        // Configure Dompdf selon vos préférences
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isPhpEnabled', true);
+
+        // Instancier Dompdf
+        $dompdf = new Dompdf($options);
+
+        // Calculer les totaux
+        $totalPriceOptions = $reservation->getReservationVehicleOptions()->reduce(
+            function ($sum, $option) {
+                return $sum + ($option->getVehicleOptions() ? $option->getVehicleOptions()->getPrice() * $option->getCount() : 0);
+            }, 
+            0
+        );
+
+        $totalPriceVehicle = $reservation->getTotalPrice() - $totalPriceOptions;
+
+        // Calculer le nombre de jours
+        $interval = $reservation->getStartDate()->diff($reservation->getEndDate());
+        $days = $interval->days;
+
+        // Générer le HTML de la facture en utilisant le template existant
+        $html = $this->renderView('invoice/pdf.html.twig', [
+            'invoice' => $reservation->getInvoice(),
+            'client' => $reservation->getClient(),
+            'vehicle' => $reservation->getVehicle(),
+            'startDate' => $reservation->getStartDate(),
+            'endDate' => $reservation->getEndDate(),
+            'days' => $days,
+            'reservationOptions' => $reservation->getReservationVehicleOptions(),
+            'totalPriceVehicle' => $totalPriceVehicle,
+            'totalPriceOptions' => $totalPriceOptions
+        ]);
+
+        // Charger le HTML dans Dompdf
+        $dompdf->loadHtml($html);
+
+        // Configurer le format du papier
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Rendre le PDF
+        $dompdf->render();
+
+        // Générer un nom de fichier
+        $filename = sprintf('facture-%s.pdf', $reservation->getId());
+
+        // Retourner le PDF comme réponse
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
+            ]
+        );
+    }
+
+    #[Route('/reservation/{id}/cancel', name: 'reservation_cancel')]
+    public function cancelReservation(Reservation $reservation, EntityManagerInterface $entityManager): Response
+    {
+        // Mettre à jour le statut de la réservation à CANCELLED
+        $reservation->setStatus(\App\Enum\StatusReservationEnum::CANCELLED);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'La réservation a été annulée avec succès.');
+        return $this->redirectToRoute('admin_reservations');
+    }
+
+    #[Route('/reservation/{id}/delete', name: 'reservation_delete')]
+    public function deleteReservation(Reservation $reservation, EntityManagerInterface $entityManager): Response
+    {
+        $entityManager->remove($reservation);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'La réservation a été supprimée avec succès.');
+        return $this->redirectToRoute('admin_reservations');
     }
 } 

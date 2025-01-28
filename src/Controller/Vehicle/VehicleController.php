@@ -54,13 +54,17 @@ class VehicleController extends AbstractController
         $search = $request->query->get('search');
         $filters = [
             'brand' => $request->query->all('brand'),
+            'brand' => $request->query->all('brand'),
             'minPrice' => $request->query->get('minPrice'),
             'maxPrice' => $request->query->get('maxPrice'),
             'minYear' => $request->query->get('minYear'),
             'maxYear' => $request->query->get('maxYear'),
             'transmission' => $request->query->get('transmission'),
             'fuelType' => $request->query->all('fuelType'),
+            'fuelType' => $request->query->all('fuelType'),
             'availability' => $request->query->get('availability'),
+            'nbSeats' => $request->query->all('nbSeats'),
+            'nbDoors' => $request->query->all('nbDoors'),
             'nbSeats' => $request->query->all('nbSeats'),
             'nbDoors' => $request->query->all('nbDoors'),
             'minMileage' => $request->query->get('minMileage'),
@@ -125,17 +129,17 @@ class VehicleController extends AbstractController
     {
         $search = $request->query->get('search');
         $filters = [
-            'brand' => $request->query->get('brand'),
+            'brand' => $request->query->all('brand'),
             'minPrice' => $request->query->get('minPrice'),
             'maxPrice' => $request->query->get('maxPrice'),
             'minYear' => $request->query->get('minYear'),
             'maxYear' => $request->query->get('maxYear'),
-            'type' => $request->query->get('type'),
-            'availability' => $request->query->get('availability'),
-            'minEngineCapacity' => $request->query->get('minEngineCapacity'),
-            'maxEngineCapacity' => $request->query->get('maxEngineCapacity'),
+            'type' => $request->query->all('type'),
             'minMileage' => $request->query->get('minMileage'),
             'maxMileage' => $request->query->get('maxMileage'),
+            'minEngineCapacity' => $request->query->get('minEngineCapacity'),
+            'maxEngineCapacity' => $request->query->get('maxEngineCapacity'),
+            'availability' => $request->query->get('availability'),
         ];
 
         if ($search) {
@@ -151,7 +155,7 @@ class VehicleController extends AbstractController
             10
         );
         $brands = $vehicleRepository->findAllMotorcycleBrands();
-        $types = ['Sport', 'Cruiser', 'Trail', 'Roadster'];
+        $engineTypes = ['Sport', 'Cruiser', 'Trail', 'Roadster'];
         $years = range(2010, 1900, -1);
 
         $isFavorite = array_fill_keys(
@@ -175,7 +179,7 @@ class VehicleController extends AbstractController
             'motorcycles' => $motorcyclePerPage,
             'isFavorite' => $isFavorite,
             'brands' => $brands,
-            'types' => $types,
+            'types' => $engineTypes,
             'years' => $years,
             'filters' => $filters,
             'search' => $search
@@ -191,7 +195,7 @@ class VehicleController extends AbstractController
     {
         $search = $request->query->get('search');
         $filters = [
-            'brand' => $request->query->get('brand'),
+            'brand' => $request->query->all('brand'),
             'minPrice' => $request->query->get('minPrice'),
             'maxPrice' => $request->query->get('maxPrice'),
             'minYear' => $request->query->get('minYear'),
@@ -201,8 +205,8 @@ class VehicleController extends AbstractController
             'availability' => $request->query->get('availability'),
             'minMileage' => $request->query->get('minMileage'),
             'maxMileage' => $request->query->get('maxMileage'),
-            'nbSeats' => $request->query->get('nbSeats'),
-            'nbDoors' => $request->query->get('nbDoors'),
+            'nbSeats' => $request->query->all('nbSeats'),
+            'nbDoors' => $request->query->all('nbDoors'),
         ];
 
         if ($search) {
@@ -264,6 +268,10 @@ class VehicleController extends AbstractController
     {
         $user = $this->getUser();
         $vehicle = $vehicleRepository->find($vehicleId);
+        if (!$vehicle) {
+            throw $this->createNotFoundException('Vehicle not found');
+        }
+
         $categories = $categoryRepository->findCategoriesByVehicle($vehicle);
         $options = $vehicleOptionRepository->findOptionsByVehicle($vehicle);
         $reviews = $reviewRepository->findBy(['vehicle' => $vehicle], ['createdAt' => 'DESC']);
@@ -274,7 +282,9 @@ class VehicleController extends AbstractController
            $flasher->addError( 'Ce véhicule n\'existe pas.');
             return $this->redirectToRoute('app_collections');
         }
-        ;
+        // Récupérer les véhicules similaires
+        $similarVehicles = $vehicleRepository->findSimilar($vehicle);
+        
 
 
         
@@ -283,10 +293,16 @@ class VehicleController extends AbstractController
             'type' => $type,
             'categories'=> $categories,
             'options' => $options,
-            'reviews' => $reviews,
+            'reviews' => array_values(array_filter($reviews, function($review) {
+                return $review->getParent() === null;
+            })),
             'averageRating' => $averageRating,
+            'similar_vehicles' => $similarVehicles,
+            'userId' => $this->getUser() ? $this->getUser()->getId() : null,
+            'google_maps_api_key' => $this->getParameter('google_maps_api_key'),
         ]);
     }
+
 
     #[Route('/vehicules-disponible/{startDateTime}/{endDateTime}', name: 'app_available')]
     public function showAvailableVehicles(

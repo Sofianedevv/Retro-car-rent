@@ -36,6 +36,8 @@ class FavoriteController extends AbstractController
             return $this->redirectToRoute('app');
         }
     
+        $referer = $request->headers->get('referer');
+    
         $favorite = $favoriteRepository->findOneBy(['client' => $user]);
     
         if (!$favorite) {
@@ -75,7 +77,7 @@ class FavoriteController extends AbstractController
         $flasher->addSuccess($message);
         
         $this->addFlash('success', $message);
-        return $this->redirectToRoute('app_favorite_show');
+        return $referer ? $this->redirect($referer) : $this->redirectToRoute('app');
     }
     
 
@@ -86,7 +88,7 @@ class FavoriteController extends AbstractController
     
         if (!$user) {
          $flasher->addInfo('Vous devez être connecté pour voir vos favoris.');
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app');
         }
     
         $favorites = $favoriteRepository->findBy(['client' => $user]);
@@ -103,7 +105,7 @@ class FavoriteController extends AbstractController
     }
 
     #[Route('/supprimer-favoris/{vehicleId}', name: 'app_favorite_delete')]
-    public function deleteFavoris(int $vehicleId, EntityManagerInterface $entityManager, VehicleRepository $vehicleRepository, FavoriteRepository $favoriteRepository, FlasherInterface $flasher): Response
+    public function deleteFavoris(int $vehicleId,Request $request, EntityManagerInterface $entityManager, VehicleRepository $vehicleRepository, FavoriteRepository $favoriteRepository, FlasherInterface $flasher): Response
     {
         $user = $this->getUser();
 
@@ -111,6 +113,8 @@ class FavoriteController extends AbstractController
          $flasher->addInfo('Vous devez être connecté pour supprimer un favori.');
             return $this->redirectToRoute('app_login');
         }
+
+        $referer = $request->headers->get('referer');
 
         $vehicle = $vehicleRepository->find($vehicleId);
         $favorite = $favoriteRepository->findOneBy(['client' => $user]);
@@ -139,7 +143,7 @@ class FavoriteController extends AbstractController
          $flasher->addInfo('Aucun favori trouvé.');
         }
 
-        return $this->redirectToRoute('app_favorite_show');
+        return $referer ? $this->redirect($referer) : $this->redirectToRoute('app');
     }
     
     
