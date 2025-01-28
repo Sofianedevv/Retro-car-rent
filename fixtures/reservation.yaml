@@ -1,11 +1,10 @@
 App\Entity\Reservation:
   reservation_template (template):
-    startDate: '<dateTimeBetween("now", "+1 month")>'
-    endDate: '<dateTimeBetween("+1 month", "+2 months")>'
-    createdAt: '<(new \DateTimeImmutable())>'
+    startDate: '<dateTimeBetween("-1 week", "+1 week")>'
+    endDate: '<dateTimeBetween("-1 week", "+1 week")>'
+    createdAt: '<dateTimeBetween("-1 week", "+1 week")>'
     totalPrice: '<randomFloat(2, 50, 2500)>'
-    vehicle: '@vehicle_car_1'
-    client: '@user_1'
+     
 
   reservation_1 (extends reservation_template):
     status: !php/const 'App\Enum\StatusReservationEnum::CONFIRMED'
@@ -32,15 +31,6 @@ App\Entity\Reservation:
       - '@reservationVehicleOptions_*'  
     
 
-  reservation_{1..10}:
-    startDate: '<dateTimeBetween("now", "+1 month")>'
-    endDate: '<dateTimeBetween("+1 month", "+2 months")>'
-    totalPrice: '<numberBetween(200, 2000)>'
-    status: '<randomElement(["pending", "confirmed", "cancelled"])>'
-    createdAt: '<(new \DateTimeImmutable())>'
-    client: '@user_1'
-    vehicle: '@vehicle_car_1'
-
 
 
 App\Entity\Payment:
@@ -64,10 +54,10 @@ App\Entity\Payment:
     reservation: '@reservation_3'
 
 
-App\Entity\Invoice:
-    invoice_{1..10}:
-        invoiceNumber: 'INV-<current()>'
-        createdAt: '<(new \DateTimeImmutable())>'
-        reservation: '@reservation_<current()>'
+# App\Entity\Invoice:
+#     invoice_{1..10}:
+#         invoiceNumber: 'INV-<current()>'
+#         createdAt: '<(new \DateTimeImmutable())>'
+#         reservation: '@reservation_*'
 
 

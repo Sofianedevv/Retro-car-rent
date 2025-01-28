@@ -1,4 +1,4 @@
 App\Entity\VehicleImage:
     image_{1..20}:
         url: 'https://picsum.photos/400/550?random=<numberBetween(1, 100)>'
-        vehicle: '@vehicle_car_<numberBetween(1, 5)>' 
+        vehicle: '@vehicle_car_*' 

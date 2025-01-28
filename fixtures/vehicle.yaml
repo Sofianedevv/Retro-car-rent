@@ -1,21 +1,14 @@
 App\Entity\Vehicle:
-  vehicle_template (template):
+  vehicle (template):
     brand: '<company()>'
     model: '<word()>'
     year: '<numberBetween(1950, 1990)>'
-    price: '<numberBetween(100, 500)>'
+    price: <numberBetween(15, 50)>
     fuelType: '<randomElement(["essence", "diesel"])>'
     mileage: '<numberBetween(10000, 150000)>'
-  vehicle (template):
-    model: "Model <current()>"
-    brand: "Brand <current()>"
-    year: 1965
-    price: <numberBetween(15, 50)>
-    fuelType: "essence"
-    mileage: 45000
     availability: true
     defaultImage: 'https://picsum.photos/400/550?random=<numberBetween(1, 100)>'
-    categories: ['@category_1', '@category_2']
+    categories: '@category_*'
 
 App\Entity\Car:
   vehicle_car_{1..50} (extends vehicle):
@@ -29,7 +22,7 @@ App\Entity\Car:
     favorites:
       - '@favorite_*'  
     vehicleOptions:
-      - '@vehicleOption_*'  
+      - '@option_*'  
     reservations:
       - '@reservation_*' 
     reviews:
@@ -48,7 +41,7 @@ App\Entity\Van:
     favorites:
       - '@favorite_*'  
     vehicleOptions:
-      - '@vehicleOption_*'  
+      - '@option_*'  
     reservations:
       - '@reservation_*' 
     reviews:
@@ -66,7 +59,7 @@ App\Entity\Motorcycle (extends vehicle):
     favorites:
       - '@favorite_*'  
     vehicleOptions:
-      - '@vehicleOption_*'  
+      - '@option_*'  
     reservations:
       - '@reservation_*' 
     reviews:
@@ -81,6 +74,30 @@ App\Entity\VehicleImage:
     vehicle: '@vehicle_car_1'
 
 App\Entity\Favorite:
-  favorite_{1..5}:
-    vehicles: ['@vehicle_car_1']
-    client: '@user_1'
+  favorite_1:
+    vehicles:
+      - "@vehicle_car_*"
+      - "@vehicle_van_*"
+    client: "@user_with_favorites_*"
+
+  favorite_2:
+    vehicles:
+      - "@vehicle_car_*"
+      - "@vehicle_motorcycle_*"
+    client: "@user_with_favorites_*"
+
+  favorite_3:
+    vehicles:
+      - "@vehicle_car_*"
+      - "@vehicle_motorcycle_*"
+    client: "@user_with_favorites_*"
+
+  favorite_4:
+    vehicles: 
+      - "@vehicle_car_*"
+    client: "@user_with_favorites_*"
+
+  favorite_5:
+    vehicles: 
+      - "@vehicle_van_*"
+    client: "@user_with_favorites_*"
