@@ -10,6 +10,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Flasher\Prime\FlasherInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 use App\Repository\VehicleRepository;
 use App\Repository\FavoriteRepository;
@@ -287,8 +288,67 @@ class VehicleController extends AbstractController
         ]);
     }
 
-
+    #[Route('/vehicules-disponible/{startDateTime}/{endDateTime}', name: 'app_available')]
+    public function showAvailableVehicles(
+        string $startDateTime, 
+        string $endDateTime,
+        VehicleRepository $vehicleRepository, 
+        SessionInterface $session,
+        FlasherInterface $flasher, 
+        PaginatorInterface $paginator,
+        Request $request,
+    ): Response {
+        $startDate = \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $startDateTime);
+        $endDate = \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $endDateTime);
     
+        if (!$startDate || !$endDate) {
+            $flasher->error('Le format des dates et heures est invalide.');
+            return $this->redirectToRoute('app_available', [
+                'startDateTime' => $startDate ? $startDate->format('Y-m-d H:i:s') : '',
+                'endDateTime' => $endDate ? $endDate->format('Y-m-d H:i:s') : '',
+            ]);
+        }
+    
+        $availableVehiclesIds = $session->get('available_vehicles_ids', []);
+        
+        if (empty($availableVehiclesIds)) {
+            $flasher->info('Aucun véhicule disponible pour les dates et heures sélectionnées.');
+            return $this->redirectToRoute('app_available', [
+                'startDateTime' => $startDate->format('Y-m-d H:i:s'),
+                'endDateTime' => $endDate->format('Y-m-d H:i:s'),
+            ]);
+        }
+    
+        $vehicles = $vehicleRepository->findBy(['id' => $availableVehiclesIds]);
 
-   
+        $pagination = $paginator->paginate(
+            $vehicles,
+            $request->query->getInt('page', 1),
+            20
+        );
+    
+        $cars = [];
+        $motorcycles = [];
+        $vans = [];
+    
+        foreach ($pagination->getItems() as $vehicle) {
+            if ($vehicle instanceof \App\Entity\Car) {
+                $cars[] = $vehicle;
+            } elseif ($vehicle instanceof \App\Entity\Motorcycle) {
+                $motorcycles[] = $vehicle;
+            } elseif ($vehicle instanceof \App\Entity\Van) {
+                $vans[] = $vehicle;
+            }
+        }
+    
+        return $this->render('vehicle/_available_vehicle.html.twig', [
+            'cars' => $cars,
+            'motorcycles' => $motorcycles,
+            'vans' => $vans,
+            'startDateTime' => $startDate->format('Y-m-d H:i:s'),
+            'endDateTime' => $endDate->format('Y-m-d H:i:s'),
+            'pagination' => $pagination,
+        ]);
+    }
+    
 }
