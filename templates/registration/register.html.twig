@@ -47,10 +47,23 @@
             </div>
 
             <div>
-                {{ form_label(registrationForm.plainPassword, 'Mot de passe', {'label_attr': {'class': 'block text-lg font-medium text-primary'}}) }}
-                {{ form_widget(registrationForm.plainPassword, {'attr': {
-                    'class': 'mt-1 block w-full px-4 py-3 bg-gray-100 border-2 border-primary/20 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors duration-300 transform hover:border-primary hover:shadow-lg'
-                }}) }}
+                <div class="space-y-4">
+                    <div>
+                        {{ form_label(registrationForm.plainPassword.first) }}
+                        {{ form_widget(registrationForm.plainPassword.first) }}
+                        <div class="text-red-500 text-sm mt-1">
+                            {{ form_errors(registrationForm.plainPassword.first) }}
+                        </div>
+                    </div>
+                    
+                    <div>
+                        {{ form_label(registrationForm.plainPassword.second) }}
+                        {{ form_widget(registrationForm.plainPassword.second) }}
+                        <div class="text-red-500 text-sm mt-1">
+                            {{ form_errors(registrationForm.plainPassword.second) }}
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="flex items-center">
@@ -68,14 +81,37 @@
             </button>
             {{ form_end(registrationForm) }}
 
-            <div class="mt-6 text-center">
-                <p class="text-sm text-primary">
-                    Déjà inscrit ?
-                    <a href="{{ path('app_login') }}" class="font-medium text-primary hover:text-[#b3a97d] underline transition-colors duration-300">
-                        Se connecter
-                    </a>
-                </p>
-            </div>
+        <div class="mt-6 text-center">
+            <p class="text-sm text-[#8B4513]">
+                Déjà inscrit ? 
+                <a href="{{ path('app_login') }}" class="font-medium text-[#8B4513] hover:text-[#734010] underline transition-colors duration-300">
+                    Se connecter
+                </a>
+            </p>
         </div>
     </div>
+</div>
+
+{% block javascripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form[name="registration_form"]');
+        const password = document.getElementById('registration_form_plainPassword_first');
+        const confirmPassword = document.getElementById('registration_form_plainPassword_second');
+
+        form.addEventListener('submit', function(e) {
+            if (password.value !== confirmPassword.value) {
+                e.preventDefault();
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'text-red-500 text-sm mt-1';
+                errorDiv.textContent = 'Les mots de passe ne correspondent pas';
+                confirmPassword.parentNode.appendChild(errorDiv);
+                
+                // Supprimer le message d'erreur après 3 secondes
+                setTimeout(() => errorDiv.remove(), 3000);
+            }
+        });
+    });
+</script>
+{% endblock %}
 {% endblock %}

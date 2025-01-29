@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Facture - Réservation #{{ reservation.id }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .invoice-details {
+            margin-bottom: 30px;
+        }
+        .client-details, .vehicle-details {
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f5f5f5;
+        }
+        .total {
+            text-align: right;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>FACTURE</h1>
+            <p>Réservation #{{ reservation.id }}</p>
+            <p>Date : {{ reservation.createdAt|date('d/m/Y') }}</p>
+        </div>
+
+        <div class="client-details">
+            <h2>Client</h2>
+            <p>{{ reservation.client.firstName }} {{ reservation.client.lastName }}</p>
+            <p>{{ reservation.client.email }}</p>
+            <p>{{ reservation.client.phoneNumber }}</p>
+        </div>
+
+        <div class="vehicle-details">
+            <h2>Véhicule</h2>
+            <p>{{ reservation.vehicle.brand }} {{ reservation.vehicle.model }}</p>
+            <p>Année : {{ reservation.vehicle.year }}</p>
+        </div>
+
+        <div class="invoice-details">
+            <h2>Détails de la réservation</h2>
+            <table>
+                <tr>
+                    <th>Description</th>
+                    <th>Prix</th>
+                </tr>
+                <tr>
+                    <td>Location du véhicule ({{ reservation.startDate|date('d/m/Y') }} au {{ reservation.endDate|date('d/m/Y') }})</td>
+                    <td>{{ reservation.totalPrice - reservation.reservationVehicleOptions|reduce((sum, option) => sum + option.priceByOption, 0) }}€</td>
+                </tr>
+                {% for option in reservation.reservationVehicleOptions %}
+                <tr>
+                    <td>{{ option.vehicleOptions.name }}</td>
+                    <td>{{ option.priceByOption }}€</td>
+                </tr>
+                {% endfor %}
+            </table>
+
+            <div class="total">
+                Total : {{ reservation.totalPrice }}€
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Merci de votre confiance !</p>
+            <p>Retro Car Rent - Location de véhicules de collection</p>
+        </div>
+    </div>
+</body>
+</html> 

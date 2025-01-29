@@ -192,7 +192,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ motorcycle.model }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ motorcycle.price }}€</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ motorcycle.engineCapacity }} cc</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ motorcycle.type }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ motorcycle.type }} ({{ motorcycle.motorcycleType ? motorcycle.motorcycleType.name : 'Non défini' }})</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
                                             {{ motorcycle.availability ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">

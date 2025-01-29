@@ -8,19 +8,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
-
-
-use App\Entity\Car;
-use App\Entity\Van;
-use App\Entity\Motorcycle;
-use App\Entity\Vehicle;
-use App\Entity\Favorite;
-use App\Entity\Category;
-use App\Entity\Review;
-use App\Entity\Notification;
-use App\Entity\Reservation;
-use DateTimeImmutable;
-use App\Enum\StatusReservationEnum;
+use Flasher\Prime\FlasherInterface;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 use App\Repository\VehicleRepository;
 use App\Repository\FavoriteRepository;
@@ -29,8 +19,7 @@ use App\Repository\VehicleOptionRepository;
 use App\Repository\ReviewRepository;
 
 use App\Service\Vehicle\VehicleService;
-use App\Service\Reservation\ReservationService;
-use Doctrine\ORM\EntityManagerInterface;
+
 
 
 class VehicleController extends AbstractController
@@ -56,10 +45,15 @@ class VehicleController extends AbstractController
     }
 
     #[Route('/nos-voitures', name: 'app_car')]
-    public function show_cars(Request $request, VehicleRepository $vehicleRepository, FavoriteRepository $favoriteRepository): Response
+    public function show_cars(
+        Request $request,
+        VehicleRepository $vehicleRepository,
+        FavoriteRepository $favoriteRepository,
+        PaginatorInterface $paginator): Response
     {
         $search = $request->query->get('search');
         $filters = [
+            'brand' => $request->query->all('brand'),
             'brand' => $request->query->all('brand'),
             'minPrice' => $request->query->get('minPrice'),
             'maxPrice' => $request->query->get('maxPrice'),
@@ -67,18 +61,26 @@ class VehicleController extends AbstractController
             'maxYear' => $request->query->get('maxYear'),
             'transmission' => $request->query->get('transmission'),
             'fuelType' => $request->query->all('fuelType'),
+            'fuelType' => $request->query->all('fuelType'),
             'availability' => $request->query->get('availability'),
+            'nbSeats' => $request->query->all('nbSeats'),
+            'nbDoors' => $request->query->all('nbDoors'),
             'nbSeats' => $request->query->all('nbSeats'),
             'nbDoors' => $request->query->all('nbDoors'),
             'minMileage' => $request->query->get('minMileage'),
             'maxMileage' => $request->query->get('maxMileage'),
         ];
-
+        
         if ($search) {
             $cars = $vehicleRepository->findCarsBySearch($search);
         } else {
             $cars = $vehicleRepository->findCarsByFilters($filters);
         }
+        $carsPerPage = $paginator->paginate(
+            $cars,
+            $request->query->getInt('page', 1),
+            10
+        );
 
         $brands = $vehicleRepository->findAllCarBrands();
         $transmissions = ['Automatique', 'Manuelle'];
@@ -88,7 +90,7 @@ class VehicleController extends AbstractController
         $years = range(2010, 1900, -1);
 
         $isFavorite = array_fill_keys(
-            array_map(function($car) { return $car->getId(); }, $cars),
+            array_map(function($car) { return $car->getId(); }, $carsPerPage->getItems()),
             false
         );
 
@@ -97,7 +99,7 @@ class VehicleController extends AbstractController
             $favorite = $favoriteRepository->findOneBy(['client' => $user]);
             if ($favorite) {
                 $favoriteVehicles = $favorite->getVehicles();
-                foreach ($cars as $car) {
+                foreach ($carsPerPage->getItems() as $car) {
                     $isFavorite[$car->getId()] = $favoriteVehicles->contains($car);
                 }
             }
@@ -106,8 +108,8 @@ class VehicleController extends AbstractController
 
 
         return $this->render('vehicle/_display_car.html.twig', [
-            'cars' => $cars,
-            'isFavorite' => $isFavorite,
+            'cars' => $carsPerPage,
+            'isFavorite' => $isFavorite, 
             'brands' => $brands,
             'transmissions' => $transmissions,
             'fuelTypes' => $fuelTypes,
@@ -119,21 +121,25 @@ class VehicleController extends AbstractController
         ]);
     }
     #[Route('/nos-motos', name: 'app_motorcycle')]
-    public function show_motorcycle(Request $request, VehicleRepository $vehicleRepository, FavoriteRepository $favoriteRepository): Response
+    public function show_motorcycle(
+        Request $request,
+        VehicleRepository $vehicleRepository,
+        FavoriteRepository $favoriteRepository,
+        PaginatorInterface $paginator): Response
     {
         $search = $request->query->get('search');
         $filters = [
-            'brand' => $request->query->get('brand'),
+            'brand' => $request->query->all('brand'),
             'minPrice' => $request->query->get('minPrice'),
             'maxPrice' => $request->query->get('maxPrice'),
             'minYear' => $request->query->get('minYear'),
             'maxYear' => $request->query->get('maxYear'),
-            'type' => $request->query->get('type'),
-            'availability' => $request->query->get('availability'),
-            'minEngineCapacity' => $request->query->get('minEngineCapacity'),
-            'maxEngineCapacity' => $request->query->get('maxEngineCapacity'),
+            'type' => $request->query->all('type'),
             'minMileage' => $request->query->get('minMileage'),
             'maxMileage' => $request->query->get('maxMileage'),
+            'minEngineCapacity' => $request->query->get('minEngineCapacity'),
+            'maxEngineCapacity' => $request->query->get('maxEngineCapacity'),
+            'availability' => $request->query->get('availability'),
         ];
 
         if ($search) {
@@ -142,12 +148,18 @@ class VehicleController extends AbstractController
             $motorcycles = $vehicleRepository->findMotorcyclesByFilters($filters);
         }
 
+
+        $motorcyclePerPage = $paginator->paginate(
+            $motorcycles,
+            $request->query->getInt('page', 1),
+            10
+        );
         $brands = $vehicleRepository->findAllMotorcycleBrands();
-        $types = ['Sport', 'Cruiser', 'Trail', 'Roadster'];
+        $engineTypes = ['Sport', 'Cruiser', 'Trail', 'Roadster'];
         $years = range(2010, 1900, -1);
 
         $isFavorite = array_fill_keys(
-            array_map(function($motorcycle) { return $motorcycle->getId(); }, $motorcycles),
+            array_map(function($motorcycle) { return $motorcycle->getId(); }, $motorcyclePerPage->getItems()),
             false
         );
 
@@ -156,7 +168,7 @@ class VehicleController extends AbstractController
             $favorite = $favoriteRepository->findOneBy(['client' => $user]);
             if ($favorite) {
                 $favoriteVehicles = $favorite->getVehicles();
-                foreach ($motorcycles as $motorcycle) {
+                foreach ($motorcyclePerPage as $motorcycle) {
                     $isFavorite[$motorcycle->getId()] = $favoriteVehicles->contains($motorcycle);
                 }
             }
@@ -164,10 +176,10 @@ class VehicleController extends AbstractController
         
 
         return $this->render('vehicle/_display_motorcycle.html.twig', [
-            'motorcycles' => $motorcycles,
+            'motorcycles' => $motorcyclePerPage,
             'isFavorite' => $isFavorite,
             'brands' => $brands,
-            'types' => $types,
+            'types' => $engineTypes,
             'years' => $years,
             'filters' => $filters,
             'search' => $search
@@ -175,11 +187,15 @@ class VehicleController extends AbstractController
     }
 
     #[Route('/nos-van', name: 'app_van')]
-    public function show_vans(Request $request, VehicleRepository $vehicleRepository, FavoriteRepository $favoriteRepository): Response
+    public function show_vans(
+        Request $request,
+        VehicleRepository $vehicleRepository,
+        FavoriteRepository $favoriteRepository,
+        PaginatorInterface $paginator): Response
     {
         $search = $request->query->get('search');
         $filters = [
-            'brand' => $request->query->get('brand'),
+            'brand' => $request->query->all('brand'),
             'minPrice' => $request->query->get('minPrice'),
             'maxPrice' => $request->query->get('maxPrice'),
             'minYear' => $request->query->get('minYear'),
@@ -189,8 +205,8 @@ class VehicleController extends AbstractController
             'availability' => $request->query->get('availability'),
             'minMileage' => $request->query->get('minMileage'),
             'maxMileage' => $request->query->get('maxMileage'),
-            'nbSeats' => $request->query->get('nbSeats'),
-            'nbDoors' => $request->query->get('nbDoors'),
+            'nbSeats' => $request->query->all('nbSeats'),
+            'nbDoors' => $request->query->all('nbDoors'),
         ];
 
         if ($search) {
@@ -199,13 +215,20 @@ class VehicleController extends AbstractController
             $vans = $vehicleRepository->findVansByFilters($filters);
         }
 
+        $vanPerPage = $paginator->paginate(
+            $vans,
+            $request->query->getInt('page', 1),
+            10
+        );
+
+
         $brands = $vehicleRepository->findAllVanBrands();
         $years = range(2010, 1900, -1);
         $nbSeatsOptions = [2, 3, 5, 6, 7, 8, 9];
         $nbDoorsOptions = [2, 3, 4, 5];
 
         $isFavorite = array_fill_keys(
-            array_map(function($van) { return $van->getId(); }, $vans),
+            array_map(function($van) { return $van->getId(); }, $vanPerPage->getItems()),
             false
         );
 
@@ -214,14 +237,14 @@ class VehicleController extends AbstractController
             $favorite = $favoriteRepository->findOneBy(['client' => $user]);
             if ($favorite) {
                 $favoriteVehicles = $favorite->getVehicles();
-                foreach ($vans as $van) {
+                foreach ($vanPerPage as $van) {
                     $isFavorite[$van->getId()] = $favoriteVehicles->contains($van);
                 }
             }
         }
 
         return $this->render('vehicle/_display_van.html.twig', [
-            'vans' => $vans,
+            'vans' => $vanPerPage,
             'isFavorite' => $isFavorite,
             'brands' => $brands,
             'years' => $years,
@@ -240,14 +263,15 @@ class VehicleController extends AbstractController
         VehicleOptionRepository $vehicleOptionRepository, 
         ReviewRepository $reviewRepository,
         VehicleService $vehicleService,
-        FavoriteRepository $favoriteRepository,
-        Request $request,
-        ReservationService $reservationService,
-        EntityManagerInterface $entityManager
+        FlasherInterface $flasher
     ): Response
     {
         $user = $this->getUser();
         $vehicle = $vehicleRepository->find($vehicleId);
+        if (!$vehicle) {
+            throw $this->createNotFoundException('Vehicle not found');
+        }
+
         $categories = $categoryRepository->findCategoriesByVehicle($vehicle);
         $options = $vehicleOptionRepository->findOptionsByVehicle($vehicle);
         $reviews = $reviewRepository->findBy(['vehicle' => $vehicle], ['createdAt' => 'DESC']);
@@ -255,10 +279,12 @@ class VehicleController extends AbstractController
         $type = $vehicleService->getVehicleType($vehicle);
 
         if(!$vehicle) {
-            $this->addFlash('error', 'Ce véhicule n\'existe pas.');
+           $flasher->addError( 'Ce véhicule n\'existe pas.');
             return $this->redirectToRoute('app_collections');
         }
-        ;
+        // Récupérer les véhicules similaires
+        $similarVehicles = $vehicleRepository->findSimilar($vehicle);
+        
 
 
         
@@ -267,13 +293,78 @@ class VehicleController extends AbstractController
             'type' => $type,
             'categories'=> $categories,
             'options' => $options,
-            'reviews' => $reviews,
+            'reviews' => array_values(array_filter($reviews, function($review) {
+                return $review->getParent() === null;
+            })),
             'averageRating' => $averageRating,
+            'similar_vehicles' => $similarVehicles,
+            'userId' => $this->getUser() ? $this->getUser()->getId() : null,
+            'google_maps_api_key' => $this->getParameter('google_maps_api_key'),
         ]);
     }
 
 
+    #[Route('/vehicules-disponible/{startDateTime}/{endDateTime}', name: 'app_available')]
+    public function showAvailableVehicles(
+        string $startDateTime, 
+        string $endDateTime,
+        VehicleRepository $vehicleRepository, 
+        SessionInterface $session,
+        FlasherInterface $flasher, 
+        PaginatorInterface $paginator,
+        Request $request,
+    ): Response {
+        $startDate = \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $startDateTime);
+        $endDate = \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $endDateTime);
     
+        if (!$startDate || !$endDate) {
+            $flasher->error('Le format des dates et heures est invalide.');
+            return $this->redirectToRoute('app_available', [
+                'startDateTime' => $startDate ? $startDate->format('Y-m-d H:i:s') : '',
+                'endDateTime' => $endDate ? $endDate->format('Y-m-d H:i:s') : '',
+            ]);
+        }
+    
+        $availableVehiclesIds = $session->get('available_vehicles_ids', []);
+        
+        if (empty($availableVehiclesIds)) {
+            $flasher->info('Aucun véhicule disponible pour les dates et heures sélectionnées.');
+            return $this->redirectToRoute('app_available', [
+                'startDateTime' => $startDate->format('Y-m-d H:i:s'),
+                'endDateTime' => $endDate->format('Y-m-d H:i:s'),
+            ]);
+        }
+    
+        $vehicles = $vehicleRepository->findBy(['id' => $availableVehiclesIds]);
 
-   
+        $pagination = $paginator->paginate(
+            $vehicles,
+            $request->query->getInt('page', 1),
+            20
+        );
+    
+        $cars = [];
+        $motorcycles = [];
+        $vans = [];
+    
+        foreach ($pagination->getItems() as $vehicle) {
+            if ($vehicle instanceof \App\Entity\Car) {
+                $cars[] = $vehicle;
+            } elseif ($vehicle instanceof \App\Entity\Motorcycle) {
+                $motorcycles[] = $vehicle;
+            } elseif ($vehicle instanceof \App\Entity\Van) {
+                $vans[] = $vehicle;
+            }
+        }
+    
+        return $this->render('vehicle/_available_vehicle.html.twig', [
+            'cars' => $cars,
+            'motorcycles' => $motorcycles,
+            'vans' => $vans,
+            'startDateTime' => $startDate->format('Y-m-d H:i:s'),
+            'endDateTime' => $endDate->format('Y-m-d H:i:s'),
+            'pagination' => $pagination,
+        ]);
+    }
+    
 }

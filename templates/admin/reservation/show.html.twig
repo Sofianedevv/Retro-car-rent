@@ -1,0 +1,154 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de la réservation{% endblock %}
+
+{% block body %}
+    {% include "admin/_sidebar.html.twig" %}
+
+    <main class="p-4 sm:ml-64">
+        <div class="p-6 bg-gray-100 min-h-screen">
+            <div class="mb-6 flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800 mb-2">Réservation #{{ reservation.id }}</h1>
+                    <p class="text-gray-600">Détails complets de la réservation</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <a href="{{ path('admin_reservations') }}" 
+                       class="inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        Retour
+                    </a>
+
+                    {% if reservation.status.value != 'CANCELLED' %}
+                        <form action="{{ path('admin_reservation_cancel', {'id': reservation.id}) }}" 
+                              method="POST" 
+                              onsubmit="return confirm('Êtes-vous sûr de vouloir annuler cette réservation ?');"
+                              class="inline">
+                            <button type="submit" 
+                                    class="inline-flex items-center px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700">
+                                <i class="fas fa-ban mr-2"></i>
+                                Annuler
+                            </button>
+                        </form>
+                    {% endif %}
+
+                    <form action="{{ path('admin_reservation_delete', {'id': reservation.id}) }}" 
+                          method="POST" 
+                          onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer définitivement cette réservation ?');"
+                          class="inline">
+                        <button type="submit" 
+                                class="inline-flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+                            <i class="fas fa-trash mr-2"></i>
+                            Supprimer
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                {# En-tête avec statut #}
+                <div class="p-6 border-b border-gray-200">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center">
+                            <span class="px-3 py-1 rounded-full text-sm font-semibold
+                                {% if reservation.status.value == 'CONFIRMED' %}
+                                    bg-green-100 text-green-800
+                                {% elseif reservation.status.value == 'PENDING' %}
+                                    bg-yellow-100 text-yellow-800
+                                {% else %}
+                                    bg-red-100 text-red-800
+                                {% endif %}">
+                                {{ reservation.status.value }}
+                            </span>
+                            <span class="ml-4 text-gray-500">Créée le {{ reservation.createdAt|date('d/m/Y H:i') }}</span>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                {# Informations principales #}
+                <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {# Client #}
+                    <div class="space-y-4">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4">Informations client</h2>
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <i class="fas fa-user w-6 text-gray-400"></i>
+                                <span class="ml-2">{{ reservation.client.firstName }} {{ reservation.client.lastName }}</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-envelope w-6 text-gray-400"></i>
+                                <span class="ml-2">{{ reservation.client.email }}</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-phone w-6 text-gray-400"></i>
+                                <span class="ml-2">{{ reservation.client.phoneNumber }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# Véhicule #}
+                    <div class="space-y-4">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4">Informations véhicule</h2>
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <i class="fas fa-car w-6 text-gray-400"></i>
+                                <span class="ml-2">{{ reservation.vehicle.brand }} {{ reservation.vehicle.model }}</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-calendar w-6 text-gray-400"></i>
+                                <span class="ml-2">Année {{ reservation.vehicle.year }}</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-tachometer-alt w-6 text-gray-400"></i>
+                                <span class="ml-2">{{ reservation.vehicle.mileage }} km</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Détails de la réservation #}
+                <div class="p-6 border-t border-gray-200">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-semibold text-gray-800">Détails de la réservation</h2>
+                        <a href="{{ path('admin_reservation_invoice_download', {'id': reservation.id}) }}" 
+                           class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                            <i class="fas fa-file-pdf mr-2"></i>
+                            Télécharger la facture
+                        </a>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <i class="fas fa-calendar-alt w-6 text-gray-400"></i>
+                                <div class="ml-2">
+                                    <div>Début: {{ reservation.startDate|date('d/m/Y') }}</div>
+                                    <div>Fin: {{ reservation.endDate|date('d/m/Y') }}</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-euro-sign w-6 text-gray-400"></i>
+                                <span class="ml-2 text-lg font-semibold">{{ reservation.totalPrice }}€</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% if reservation.reservationVehicleOptions|length > 0 %}
+                    {# Options #}
+                    <div class="p-6 border-t border-gray-200">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4">Options sélectionnées</h2>
+                        <div class="space-y-3">
+                            {% for option in reservation.reservationVehicleOptions %}
+                                <div class="flex items-center justify-between py-2">
+                                    <span>{{ option.vehicleOptions.name }}</span>
+                                    <span class="font-semibold">{{ option.priceByOption }}€</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+{% endblock %} 

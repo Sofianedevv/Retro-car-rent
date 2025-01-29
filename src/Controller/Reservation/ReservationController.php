@@ -88,15 +88,13 @@ class ReservationController extends AbstractController
             }
 
             if ($form->isSubmitted() && $form->isValid()) {
-                // Récupérer les champs séparés
                 $startDate = $form->get('startDate')->getData();
                 $startTime = $form->get('startTime')->getData();
                 $endDate = $form->get('endDate')->getData();
                 $endTime = $form->get('endTime')->getData();
 
-                // Combiner date et heure
-                $startDateTime = new \DateTimeImmutable($startDate->format('Y-m-d') . ' ' . $startTime->format('H:i:s'));
-                $endDateTime = new \DateTimeImmutable($endDate->format('Y-m-d') . ' ' . $endTime->format('H:i:s'));
+                $startDateTime = new DateTimeImmutable($startDate->format('Y-m-d') . ' ' . $startTime->format('H:i:s'));
+                $endDateTime = new DateTimeImmutable($endDate->format('Y-m-d') . ' ' . $endTime->format('H:i:s'));
 
                 if ($startDateTime >= $endDateTime) {
                     $this->addFlash('error', 'La date de fin doit être postérieure à la date de début.');
@@ -232,6 +230,10 @@ class ReservationController extends AbstractController
         
             return new JsonResponse($data, Response::HTTP_OK);
         }
+
+        #
+
+
     
 }
 

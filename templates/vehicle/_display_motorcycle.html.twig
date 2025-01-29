@@ -4,22 +4,19 @@
 <section id="shop" class="bg-[#F5F5F0]">
     <div class="mx-auto">
         <div class="bg-primary py-16 relative">
-            <!-- Bouton retour discret mais visible -->
-            <div class="absolute top4 left-4">
+                        <div class="absolute top4 left-4">
                 <a href="{{ path('app_collections') }}"
                    class="bg-[#8B4513] text-white hover:bg-white hover:text-black border-black rounded-full px-6 py-3 text-sm transition-all duration-300 flex items-center shadow-md hover:shadow-lg">
                     <i class="fas fa-arrow-left mr-2"></i>
                 </a>
             </div>
 
-            <!-- Titre et description -->
-            <div class="mb-12 text-center">
+                        <div class="mb-12 text-center">
                 <h1 class="text-4xl font-playfair font-bold text-[#8B4513]">Nos Motos de Collection</h1>
                 <p class="text-gray-600 mt-4 max-w-2xl mx-auto">Découvrez notre sélection de motos d'exception, mêlant puissance et élégance pour des sensations uniques.</p>
             </div>
 
-            <!-- Barre de recherche -->
-            <div class="max-w-3xl mx-auto">
+                        <div class="max-w-3xl mx-auto">
                 <form method="get" action="{{ path('app_motorcycle') }}" class="flex items-center gap-4">
                     <div class="flex-1 relative">
                         <input type="text"
@@ -50,16 +47,14 @@
                  {% if motorcycles|length > 0 %}
                      <span class="font-semibold text-[#8B4513]">{{ motorcycles|length }}</span> &nbsp; résultat(s) trouvé(s) pour "<span class="font-semibold text-[#8B4513]">{{ search }}</span>"
                  {% else %}
-                     <!-- Icône de résultat vide -->
-                     <i class="fas fa-times-circle text-[#8B4513] mr-2"></i>
+                                          <i class="fas fa-times-circle text-[#8B4513] mr-2"></i>
                      Aucun résultat trouvé pour "<span class="font-semibold text-[#8B4513]">{{ search }}</span>"
                  {% endif %}
              </p>
          </div>
      {% endif %}
 
-     <!-- Bouton pour afficher/masquer les filtres en version mobile -->
-     <div class="block md:hidden text-center py-4">
+          <div class="block md:hidden text-center py-4">
          <button id="toggle-filters"
                  class="bg-[#8B4513] text-white py-2 px-4 rounded-full focus:outline-none">
              Voir les filtres
@@ -77,24 +72,29 @@
              });
          </script>
      </div>
-        <!-- Filter Toggle Button for Mobile -->
-        <div class="flex flex-col md:flex-row my-8">
-            <!-- Filters -->
-            <div id="filters" class="w-full md:w-1/4 p-6 hidden md:block bg-white shadow-lg rounded-lg">
+                <div class="flex flex-col md:flex-row my-8">
+                        <div id="filters" class="w-full md:w-1/4 p-6 hidden md:block bg-white shadow-lg rounded-lg">
                 <form method="get" action="{{ path('app_motorcycle') }}" class="space-y-6">
-                    <!-- Marque Filter -->
-                    <div class="mb-8 pb-6 border-b border-[#8B4513]/10">
+                                        <div class="mb-8 pb-6 border-b border-[#8B4513]/10">
                         <h3 class="text-xl font-playfair font-bold text-[#8B4513] mb-4">Marque</h3>
-                        <select name="brand" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-[#8B4513]">
-                            <option value="">Sélectionner une marque</option>
+                        <div class="space-y-2 max-h-48 overflow-y-auto">
                             {% for brand in brands %}
-                                <option value="{{ brand }}" {% if filters.brand == brand %}selected{% endif %}>{{ brand }}</option>
+                                <div class="flex items-center">
+                                    <input type="checkbox" 
+                                           id="brand_{{ brand }}" 
+                                           name="brand[]" 
+                                           value="{{ brand }}"
+                                           {% if brand in filters.brand|default([]) %}checked{% endif %}
+                                           class="h-4 w-4 text-[#8B4513] border-gray-300 rounded focus:ring-[#8B4513]">
+                                    <label for="brand_{{ brand }}" class="ml-2 text-sm text-gray-900 hover:text-[#8B4513] transition-colors cursor-pointer">
+                                        {{ brand }}
+                                    </label>
+                                </div>
                             {% endfor %}
                         </select>
                     </div>
 
-                    <!-- Prix Filter -->
-                    <div class="mb-6 pb-8 border-b border-gray-line">
+                                        <div class="mb-6 pb-8 border-b border-gray-line">
                         <h3 class="text-lg font-semibold mb-6">Prix</h3>
                         <div class="flex flex-col space-y-2">
                             <input type="number" name="minPrice" placeholder="Prix min"
@@ -106,9 +106,29 @@
                         </div>
                     </div>
 
+                    <!-- Filtre Type de moteur -->
+                    <div class="mb-8 pb-6 border-b border-[#8B4513]/10">
+                        <h3 class="text-xl font-playfair font-bold text-[#8B4513] mb-4">Type de moteur</h3>
+                        <div class="space-y-2 max-h-48 overflow-y-auto">
+                            {% for type in types %}
+                                <div class="flex items-center">
+                                    <input type="checkbox" 
+                                           id="type_{{ type }}" 
+                                           name="type[]" 
+                                           value="{{ type }}"
+                                           {% if type in filters.type|default([]) %}checked{% endif %}
+                                           class="h-4 w-4 text-[#8B4513] border-gray-300 rounded focus:ring-[#8B4513]">
+                                    <label for="type_{{ type }}" class="ml-2 text-sm text-gray-900 hover:text-[#8B4513] transition-colors cursor-pointer">
+                                        {{ type }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
                     <!-- Cylindrée Filter -->
-                    <div class="mb-6 pb-8 border-b border-gray-line">
-                        <h3 class="text-lg font-semibold mb-6">Cylindrée</h3>
+                    <div class="mb-8 pb-6 border-b border-[#8B4513]/10">
+                        <h3 class="text-xl font-playfair font-bold text-[#8B4513] mb-4">Cylindrée</h3>
                         <div class="flex flex-col space-y-2">
                             <input type="number" name="minEngineCapacity" placeholder="Cylindrée min"
                                    value="{{ filters.minEngineCapacity }}"
@@ -119,8 +139,7 @@
                         </div>
                     </div>
 
-                    <!-- Type de moto Filter -->
-                    <div class="mb-6 pb-8 border-b border-gray-line">
+                                        <div class="mb-6 pb-8 border-b border-gray-line">
                         <h3 class="text-lg font-semibold mb-6">Type</h3>
                         <select name="type" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-[#8B4513]">
                             <option value="">Sélectionner un type</option>
@@ -130,8 +149,7 @@
                         </select>
                     </div>
 
-                    <!-- Année Filter -->
-                    <div class="mb-6 pb-8 border-b border-gray-line">
+                                        <div class="mb-6 pb-8 border-b border-gray-line">
                         <h3 class="text-lg font-semibold mb-6">Année</h3>
                         <div class="flex flex-col space-y-2">
                             <select name="minYear" class="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-[#8B4513]">
@@ -153,8 +171,7 @@
                         </div>
                     </div>
 
-                    <!-- Kilométrage Filter -->
-                    <div class="mb-6 pb-8 border-b border-gray-line">
+                                        <div class="mb-6 pb-8 border-b border-gray-line">
                         <h3 class="text-lg font-semibold mb-6">Kilométrage</h3>
                         <div class="flex flex-col space-y-2">
                             <input type="number" name="minMileage" placeholder="Kilométrage min"
@@ -166,8 +183,7 @@
                         </div>
                     </div>
 
-                    <!-- Disponibilité Filter -->
-                    <div class="mb-6 pb-8 border-b border-gray-line">
+                                        <div class="mb-6 pb-8 border-b border-gray-line">
                         <h3 class="text-lg font-semibold mb-6">Disponibilité</h3>
                         <label class="flex items-center">
                             <input type="checkbox" name="availability" value="1"
@@ -190,59 +206,29 @@
                 </form>
             </div>
 
-            <!-- Products List -->
-            <div class="w-full md:w-3/4 p-6">
-                <!-- Products grid -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- All Car -->
-                {% for motorcylce in motorcycles %}
+                        <div class="w-full md:w-3/4 p-6">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                                    {% for motorcylce in motorcycles %}
                     {% include 'parts/card/favorite/_motorcycle_card.html.twig' %}
                 {% endfor %}
                 </div>
-                <!-- Pagination -->
-                <div class="flex justify-center mt-12">
-                    <nav aria-label="Page navigation">
-                        <ul class="inline-flex space-x-4">
-                            <li>
-                                <a href="#"
-                                   class="bg-[#8B4513] text-[#F5F5F0] w-12 h-12 flex items-center justify-center border-2 border-[#8B4513] font-playfair hover:bg-[#734010] transition-colors duration-300">
-                                    1
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                   class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-primary hover:text-white">2</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                   class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-primary hover:text-white">3</a>
-                            </li>
-                            <li>
-                                <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full">Next</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
+                                {{ knp_pagination_render(motorcycles) }}
+
             </div>
         </div>
     </div>
 
 </div>
-    <!-- Scroll to top button -->
-    <button id="scrollToTopBtn" class="fixed bottom-6 right-6 bg-primary text-white rounded-full p-4 shadow-lg border-2 border-gray-900 hover:bg-primary/10 transition-all duration-300 ease-in-out" style="display: none;">
+        <button id="scrollToTopBtn" class="fixed bottom-6 right-6 bg-primary text-white rounded-full p-4 shadow-lg border-2 border-gray-900 hover:bg-primary/10 transition-all duration-300 ease-in-out" style="display: none;">
         <i class="fas fa-arrow-up text-xl text-gray-900"></i>
     </button>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const scrollToTopBtn = document.getElementById('scrollToTopBtn');
-            const footer = document.querySelector('footer'); // Sélectionne le footer
-            const footerHeight = footer ? footer.offsetHeight : 0; // Récupère la hauteur du footer
-
-            // Masque le bouton au début
+            const footer = document.querySelector('footer'); 
+            const footerHeight = footer ? footer.offsetHeight : 0; 
             scrollToTopBtn.style.display = "none";
-
-            // Affiche le bouton lorsque l'utilisateur défile de plus de 150px
             window.onscroll = function() {
                 if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
                     scrollToTopBtn.style.display = "block";
@@ -250,14 +236,10 @@
                     scrollToTopBtn.style.display = "none";
                 }
             };
-
-            // Ajuste la position du bouton lors du redimensionnement de la fenêtre
             window.addEventListener('resize', function() {
                 const footerHeight = footer ? footer.offsetHeight : 0;
-                scrollToTopBtn.style.bottom = `${footerHeight + 20}px`; // Ajoute 20px d'espace entre le bouton et le footer
+                scrollToTopBtn.style.bottom = `${footerHeight + 20}px`; 
             });
-
-            // Fonction pour faire défiler la page jusqu'en haut lorsqu'on clique sur le bouton
             scrollToTopBtn.onclick = function() {
                 window.scrollTo({
                     top: 0,

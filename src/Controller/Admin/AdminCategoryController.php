@@ -10,11 +10,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Flasher\Prime\FlasherInterface;
+use Knp\Component\Pager\PaginatorInterface;
 
 class AdminCategoryController extends AbstractController
 {
     #[Route('/admin/category', name: 'admin_categories')]
-    public function index(CategoryRepository $categoryRepository): Response
+    public function index(CategoryRepository $categoryRepository, PaginatorInterface $paginator, Request $request): Response
     {
         $categories = $categoryRepository->findAll();
         $categoriesData = [];
@@ -48,7 +50,7 @@ class AdminCategoryController extends AbstractController
     }
     
     #[Route('/admin/category/new', name: 'admin_category_new')]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, FlasherInterface $flasher): Response
     {
         $category = new Category();
         $form = $this->createForm(CategoryType::class, $category);
@@ -58,7 +60,7 @@ class AdminCategoryController extends AbstractController
             $entityManager->persist($category);
             $entityManager->flush();
     
-            $this->addFlash('success', 'Catégorie créée avec succès.');
+            $flasher->addSuccess('Catégorie créée avec succès.');
             return $this->redirectToRoute('admin_categories');
         }
     
@@ -68,7 +70,7 @@ class AdminCategoryController extends AbstractController
     } 
 
     #[Route('/admin/category/{id}/edit', name: 'admin_category_edit')]
-    public function edit(Request $request, Category $category, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Category $category, EntityManagerInterface $entityManager, FlasherInterface $flasher): Response
     {
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
@@ -76,7 +78,7 @@ class AdminCategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            $this->addFlash('success', 'Catégorie modifiée avec succès.');
+            $flasher->addSucces('Catégorie modifiée avec succès.');
             return $this->redirectToRoute('admin_categories');
         }
 
@@ -87,12 +89,12 @@ class AdminCategoryController extends AbstractController
     }
 
     #[Route('/admin/category/{id}/delete', name: 'admin_category_delete', methods: ['POST'])]
-    public function delete(Request $request, Category $category, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Category $category, EntityManagerInterface $entityManager, FlasherInterface $flasher): Response
     {
         if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {
             $entityManager->remove($category);
             $entityManager->flush();
-            $this->addFlash('success', 'Catégorie supprimée avec succès.');
+            $flasher->addSuccess('Catégorie supprimée avec succès.');
         }
 
         return $this->redirectToRoute('admin_categories');

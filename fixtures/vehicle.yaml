@@ -1,16 +1,17 @@
-
 App\Entity\Vehicle:
   vehicle (template):
-    model: "Model <current()>"
-    brand: "Brand <current()>"
-    year: 1965
+    brand: '<company()>'
+    model: '<word()>'
+    year: '<numberBetween(1950, 1990)>'
     price: <numberBetween(15, 50)>
-    fuelType: "essence"
-    mileage: 45000
+    fuelType: '<randomElement(["essence", "diesel"])>'
+    mileage: '<numberBetween(10000, 150000)>'
     availability: true
-  
+    defaultImage: 'https://picsum.photos/400/550?random=<numberBetween(1, 100)>'
+    categories: '@category_*'
+
 App\Entity\Car:
-  vehicle_car_{1..10} (extends vehicle):
+  vehicle_car_{1..50} (extends vehicle):
     nbSeats: <numberBetween(1, 4)>
     nbDoors: <numberBetween(1, 4)>
     trunkSize: <numberBetween(100, 500)>
@@ -21,7 +22,7 @@ App\Entity\Car:
     favorites:
       - '@favorite_*'  
     vehicleOptions:
-      - '@vehicleOption_*'  
+      - '@option_*'  
     reservations:
       - '@reservation_*' 
     reviews:
@@ -30,7 +31,7 @@ App\Entity\Car:
       - '@vehicle_image_*' 
     
 App\Entity\Van:
- vehicle_van_{1..5} (extends vehicle):
+ vehicle_van_{1..50} (extends vehicle):
     cargoVolume: 12000
     nbSeats: 3
     nbDoors: 3
@@ -40,7 +41,7 @@ App\Entity\Van:
     favorites:
       - '@favorite_*'  
     vehicleOptions:
-      - '@vehicleOption_*'  
+      - '@option_*'  
     reservations:
       - '@reservation_*' 
     reviews:
@@ -49,7 +50,7 @@ App\Entity\Van:
       - '@vehicle_image_*' 
 
 App\Entity\Motorcycle (extends vehicle):
-  vehicle_motorcycle_{1..5}:
+  vehicle_motorcycle_{1..50}:
     engineCapacity: 883
     defaultImage: 'https://picsum.photos/400/550?random=<numberBetween(1, 100)>'
     type: "Cruiser"
@@ -58,7 +59,7 @@ App\Entity\Motorcycle (extends vehicle):
     favorites:
       - '@favorite_*'  
     vehicleOptions:
-      - '@vehicleOption_*'  
+      - '@option_*'  
     reservations:
       - '@reservation_*' 
     reviews:
@@ -70,6 +71,7 @@ App\Entity\Motorcycle (extends vehicle):
 App\Entity\VehicleImage:
   vehicle_image_{1..5}:
     url: 'https://picsum.photos/400/550?random=<numberBetween(1, 100)>'
+    vehicle: '@vehicle_car_1'
 
 App\Entity\Favorite:
   favorite_1:

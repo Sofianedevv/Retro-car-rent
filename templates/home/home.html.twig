@@ -2,77 +2,60 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-<!-- Hero Banner -->
     <section id="banner" class="relative mb-6 flex bg-gradient-to-tr from-[#e0d8b0] to-[#8B4513]">
-        <div class="w-1/2 p-6 ml-16 flex flex-col justify-center items-start text-black">
-            <!-- Formulaire de recherche aligné à gauche -->
-            <form action="#" method="GET" class="w-full max-w-sm bg-white p-6 rounded-lg shadow-lg">
-                <div class="space-y-4">
-                    <!-- Type de véhicule -->
-                    <div>
-                        <label for="vehicle_type" class="block text-sm font-extrabold text-black">Type de véhicule</label>
-                        <select id="vehicle_type" name="vehicle_type" class="mt-2 w-full border-2 bg-primary border-[#8B4513] rounded-lg px-4 py-2">
-                            <option value="car">Voiture</option>
-                            <option value="van">Van</option>
-                            <option value="motorcycle">Moto</option>
-                        </select>
-                    </div>
+        <div class="w-full md:w-1/2 p-6 ml-16 flex flex-col justify-center items-start text-black">
+            <form action="#" method="GET" class="w-full max-w-md bg-white p-8 rounded-2xl shadow-2xl">
+                {{ form_start(form) }}
+                    <div class="space-y-6">
+                        <div>
+                            {{ form_row(form.vehicle_type) }}
+                        </div>
 
-                    <!-- Bloc Dates et Heures -->
-                    <div class="border-2 border-[#8B4513] rounded-lg p-4 space-y-4">
-                        <!-- Date et Heure de départ -->
-                        <div class="flex items-center space-x-4">
-                            <div class="w-1/2">
-                                <label for="departure_date" class="block text-sm font-extrabold text-black">Date de départ</label>
-                                <input type="date" id="departure_date" name="departure_date" class="mt-2 w-full border-2 border-[#8B4513] rounded-lg px-4 py-2" required>
+                        <div class="border-2 border-[#8B4513] rounded-lg p-6 space-y-6">
+                            <div class="flex items-center space-x-6">
+                                <div class="w-1/2">
+                                    {{ form_row(form.start_date) }}
+                                </div>
+                                <div class="w-1/2">
+                                    {{ form_row(form.start_time) }}
+                                </div>
                             </div>
-                            <div class="w-1/2">
-                                <label for="departure_time" class="block text-sm font-extrabold text-black">Heure de départ</label>
-                                <input type="time" id="departure_time" name="departure_time" class="mt-2 w-full border-2 border-[#8B4513] rounded-lg px-4 py-2" required>
+
+                            <div class="border-t border-[#8B4513] my-4"></div>
+
+                            <div class="flex items-center space-x-6">
+                                <div class="w-1/2">
+                                    {{ form_row(form.end_date) }}
+                                </div>
+                                <div class="w-1/2">
+                                    {{ form_row(form.end_time) }}
+                                </div>
                             </div>
                         </div>
-                        <div class="border-t border-[#8B4513] my-2"></div>
-                        <!-- Date et Heure de retour -->
-                        <div class="flex items-center space-x-4">
-                            <div class="w-1/2">
-                                <label for="return_date" class="block text-sm font-extrabold text-black">Date de retour</label>
-                                <input type="date" id="return_date" name="return_date" class="mt-2 w-full border-2 border-[#8B4513] rounded-lg px-4 py-2" required>
-                            </div>
-                            <div class="w-1/2">
-                                <label for="return_time" class="block text-sm font-extrabold text-black">Heure de retour</label>
-                                <input type="time" id="return_time" name="return_time" class="mt-2 w-full border-2 border-[#8B4513] rounded-lg px-4 py-2" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Bouton Rechercher -->
-                <div class="mt-6">
-                    <button type="submit" class="w-full bg-gray-900 text-white hover:text-black hover:bg-white border-2 border-black rounded-lg px-8 py-3 transition-all duration-300 font-bold">
-                        Rechercher
-                    </button>
-                </div>
+                        <button type="submit" class="w-full py-3 bg-[#8B4513] text-white font-semibold rounded-lg hover:bg-[#a66321] transition-all duration-300">
+                            Rechercher
+                        </button>
+                    </div>
+                {{ form_end(form) }}
             </form>
-
         </div>
 
-        <!-- Section image à droite -->
         <div class="w-1/2 p-6 mt-3">
             <img src="{{ asset('template-html/assets/images/hero-section.png') }}" alt="Image véhicules vintage" class="w-full h-96 object-cover rounded-lg shadow-lg">
         </div>
     </section>
 
- <!-- Featured Section -->
-    <section class="py-6">
-        <!-- Grand titre -->
-        <div class="mb-3 lg:mb-12 mx-6 lg:mx-12">
+
+
+     <section class="py-6">
+                <div class="mb-3 lg:mb-12 mx-6 lg:mx-12">
             <h2 class="text-4xl font-bold text-center font-playfair">
                 Découvrez comment <span class="text-[#b3a97d]">Louer</span> votre voiture <span class="text-[#b3a97d]">Rétro</span> en quelques étapes simples
             </h2>
         </div>
 
-        <!-- Cartes -->
-        <div class="relative items-center w-full px-3 py-3 mx-auto md:px-12 lg:px-24 max-w-7xl">
+                <div class="relative items-center w-full px-3 py-3 mx-auto md:px-12 lg:px-24 max-w-7xl">
             <div class="grid w-full grid-cols-1 gap-6 mx-auto lg:grid-cols-3">
                 {% include 'parts/_blog_card.html.twig' with {
                     image_url : asset('template-html/assets/images/b5.jpg'),
@@ -98,12 +81,10 @@
         </div>
     </section>
 
-<!-- Services section -->
     <section id="services" class="py-12 bg-gray-900 mb-12">
         <div class="container mx-auto px-4">
             <div class="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-16">
-                <!-- Left side: Text content -->
-                <div class="w-full lg:w-1/2">
+                                <div class="w-full lg:w-1/2">
                     <h2 class="text-3xl lg:text-4xl font-bold mb-4 text-gray-100 font-playfair">
                         Découvrez les avantages de nos services
                     </h2>
@@ -122,8 +103,7 @@
                     </div>
                 </div>
 
-                <!-- Right side: Image -->
-                <div class="w-full lg:w-1/2">
+                                <div class="w-full lg:w-1/2">
 
                     <img src="{{ asset('template-html/assets/images/b1.jpg') }}" alt="Vintage Car"
                          class="w-full h-auto rounded-lg shadow-lg transition-transform duration-300 hover:scale-105">
@@ -132,25 +112,20 @@
         </div>
     </section>
 
-<!-- Category section -->
     <section id="category-section" class="py-12 bg-gray-100 mb-12">
         <div class="container mx-auto px-4">
-            <!-- Grand titre aligné à gauche avec un margin-left réduit -->
-            <div class="flex mb-4">
+                        <div class="flex mb-4">
                 <h3 class="text-4xl font-bold mb-2 mr-12 font-playfair text-gray-900">Explorez Nos <span class="text-[#b3a97d]">Catégories</span></h3>
             </div>
 
-            <!-- Le paragraphe avec une marge réduite -->
-            <div class="mb-8">
+                        <div class="mb-8">
                 <p class="text-lg text-gray-800">
                     Découvrez une large gamme de véhicules vintage, chacun sélectionné pour sa beauté et son histoire. Choisissez la catégorie qui vous convient pour rendre vos occasions spéciales encore plus mémorables.
                 </p>
             </div>
 
-            <!-- Les 3 catégories avec une disposition en grille -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-                <!-- Voitures Category -->
-                <div class="relative shadow-lg">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+                                <div class="relative shadow-lg">
                     <div class="bg-cover bg-center p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-2xl" style="background-image: url('{{ asset('template-html/assets/images/b6.jpg') }}');">
                         <div class="absolute inset-0 bg-black rounded-lg" style="opacity: 70%"></div>
                         <div class="relative z-10">
@@ -164,8 +139,7 @@
                     </div>
                 </div>
 
-                <!-- Motos Category -->
-                <div class="relative shadow-lg">
+                                <div class="relative shadow-lg">
                     <div class="bg-cover bg-center p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-2xl" style="background-image: url('{{ asset('template-html/assets/images/moto1.jpg') }}');">
                         <div class="absolute inset-0 bg-black rounded-lg" style="opacity: 70%"></div>
                         <div class="relative z-10">
@@ -179,8 +153,7 @@
                     </div>
                 </div>
 
-                <!-- Vans Category -->
-                <div class="relative shadow-lg">
+                                <div class="relative shadow-lg">
                     <div class="bg-cover bg-center p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-2xl" style="background-image: url('{{ asset('template-html/assets/images/van1.jpg') }}');">
                         <div class="absolute inset-0 bg-black rounded-lg" style="opacity: 70%"></div>
                         <div class="relative z-10">
@@ -197,8 +170,7 @@
         </div>
     </section>
 
-    <!-- Popular vehicles section -->
-    <section id="popular-products" class="py-6 bg-white">
+        <section id="popular-products" class="py-6 bg-white">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl lg:text-4xl font-bold mb-4 text-gray-900 font-playfair">Nos <span class="text-[#b3a97d]">Véhicules</span> Les Mieux <span class="text-[#b3a97d]">Notés</span></h2>
             <p class="text-lg mb-6 text-gray-800">
@@ -208,39 +180,29 @@
                 {% for vehicle in bestRatedVehicles %}
                     <div class="w-full sm:w-1/2 lg:w-1/4 px-4 mb-8">
                         <div class="bg-[#faf5e4] rounded-lg shadow-lg shadow-[#b3a97d] overflow-hidden transition-transform duration-300 hover:scale-105">
-                            <!-- Image -->
-                            <div class="relative">
+                                                        <div class="relative">
                                 <img src="{{ vehicle.defaultImage }}" alt="{{ vehicle.brand }} {{ vehicle.model }}" class="w-full h-48 object-cover">
-                                <!-- Ajout d'une superposition légère pour améliorer la lisibilité du texte sur l'image si nécessaire -->
-                                <div class="absolute inset-0 bg-black opacity-25"></div>
+                                                                <div class="absolute inset-0 bg-black opacity-25"></div>
                             </div>
 
-                            <!-- Contenu de la carte -->
-                            <div class="p-4">
-                                <!-- Titre de la carte -->
-                                <h3 class="text-xl font-bold mb-2 font-playfair text-gray-800 truncate">{{ vehicle.brand }} {{ vehicle.model }}</h3>
+                                                        <div class="p-4">
+                                                                <h3 class="text-xl font-bold mb-2 font-playfair text-gray-800 truncate">{{ vehicle.brand }} {{ vehicle.model }}</h3>
 
-                                <!-- Évaluations avec icônes -->
-                                <div class="flex items-center mb-2">
-                                    <i class="fas fa-star text-yellow-400 mr-1"></i> <!-- Icône de note -->
-                                    {% set avgRating = vehicle.averageRating %}
+                                                                <div class="flex items-center mb-2">
+                                    <i class="fas fa-star text-yellow-400 mr-1"></i>                                     {% set avgRating = vehicle.averageRating %}
                                     {% for i in 1..5 %}
                                         <i class="fas fa-star {% if i <= avgRating %}text-yellow-400{% else %}text-gray-300{% endif %} mr-1"></i>
                                     {% endfor %}
                                     <span class="text-sm text-gray-600 ml-2">({{ vehicle.reviews|length }} avis)</span>
                                 </div>
 
-                                <!-- Prix avec icône -->
-                                <div class="flex items-center mb-4">
-                                    <i class="fas fa-coins text-yellow-400 mr-2"></i> <!-- Icône de prix -->
-                                    <p class="text-green-700 font-bold">{{ vehicle.price }}€ <span class="text-sm text-gray-600 ml-2 font-normal font-playfair" >/ jour</span></p>
+                                                                <div class="flex items-center mb-4">
+                                    <i class="fas fa-coins text-yellow-400 mr-2"></i>                                     <p class="text-green-700 font-bold">{{ vehicle.price }}€ <span class="text-sm text-gray-600 ml-2 font-normal font-playfair" >/ jour</span></p>
                                 </div>
 
-                                <!-- Bouton de détail -->
-                                <a href="{{ path('app_vehicle_show_details', {'vehicleId': vehicle.id}) }}"
+                                                                <a href="{{ path('app_vehicle_show_details', {'vehicleId': vehicle.id}) }}"
                                    class="bg-gray-900 text-gray-100 hover:bg-gray-400 hover:text-gray-900 font-playfair font-semibold px-8 py-3 rounded-lg transition-all duration-300 hover:shadow-lg block text-center">
-                                    Voir le détail <i class="fas fa-arrow-right ml-2"></i> <!-- Icône de flèche -->
-                                </a>
+                                    Voir le détail <i class="fas fa-arrow-right ml-2"></i>                                 </a>
                             </div>
                         </div>
                     </div>
@@ -269,6 +231,11 @@
 {#            </div>#}
 {#        </div>#}
 {#    </section>#}
+
+    {% block javascripts %}
+
+        <script src="{{ asset('js/checkDatesAvailables.js') }}"></script>
+    {% endblock %}
 {% endblock %}
 
 

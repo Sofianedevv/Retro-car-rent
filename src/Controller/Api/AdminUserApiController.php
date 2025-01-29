@@ -70,11 +70,13 @@ class AdminUserApiController extends AbstractController
     ): JsonResponse {
         $user = $serializer->deserialize($request->getContent(), User::class, 'json');
         
+        // Validation
         $errors = $validator->validate($user);
         if (count($errors) > 0) {
             return new JsonResponse($serializer->serialize($errors, 'json'), Response::HTTP_BAD_REQUEST, [], true);
         }
 
+        // Hash du mot de passe
         if ($plainPassword = $user->getPlainPassword()) {
             $user->setPassword($passwordHasher->hashPassword($user, $plainPassword));
         }
@@ -102,10 +104,12 @@ class AdminUserApiController extends AbstractController
     ): JsonResponse {
         $data = json_decode($request->getContent(), true);
         
+        // Ne mettre à jour que les rôles
         if (isset($data['roles'])) {
             $user->setRoles($data['roles']);
         }
 
+        // Validation
         $errors = $validator->validate($user);
         if (count($errors) > 0) {
             return new JsonResponse($serializer->serialize($errors, 'json'), Response::HTTP_BAD_REQUEST, [], true);
@@ -120,14 +124,17 @@ class AdminUserApiController extends AbstractController
     public function delete(User $user, EntityManagerInterface $em): JsonResponse
     {
         try {
+            // Vérifier si l'utilisateur existe
             if (!$user) {
                 throw new \Exception('Utilisateur non trouvé');
             }
             
+            // Empêcher la suppression de son propre compte
             if ($user === $this->getUser()) {
                 throw new \Exception('Vous ne pouvez pas supprimer votre propre compte');
             }
 
+            // Supprimer d'abord les relations
             foreach ($user->getReservations() as $reservation) {
                 $em->remove($reservation);
             }

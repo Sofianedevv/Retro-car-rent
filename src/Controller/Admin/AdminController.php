@@ -19,7 +19,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Flasher\Prime\FlasherInterface;
 use App\Entity\Notification;
+use App\Entity\Reservation;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+
 
 #[Route('/admin', name: 'admin_')]
 #[IsGranted('ROLE_ADMIN')]
@@ -50,7 +55,7 @@ class AdminController extends AbstractController
 
     
     #[Route('/vehicle/car/new', name: 'vehicle_car_new')]
-    public function newCar(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
+    public function newCar(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository, FlasherInterface $flasher): Response
     {
         $car = new Car();
         $form = $this->createForm(CarType::class, $car);
@@ -78,7 +83,7 @@ class AdminController extends AbstractController
             }
 
             $entityManager->flush();
-            $this->addFlash('success', 'La voiture a été ajoutée avec succès.');
+           $flasher->addSuccess( 'La voiture a été ajoutée avec succès.');
             return $this->redirectToRoute('admin_vehicles');
         }
 
@@ -89,7 +94,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/vehicle/car/{id}/edit', name: 'vehicle_car_edit')]
-    public function editCar(Car $car, Request $request, EntityManagerInterface $entityManager): Response
+    public function editCar(Car $car, Request $request, EntityManagerInterface $entityManager, FlasherInterface $flasher): Response
     {
         $form = $this->createForm(CarType::class, $car);
         $form->handleRequest($request);
@@ -97,7 +102,7 @@ class AdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            $this->addFlash('success', 'La voiture a été modifiée avec succès.');
+           $flasher->addSuccess( 'La voiture a été modifiée avec succès.');
             return $this->redirectToRoute('admin_vehicles');
         }
 
@@ -109,7 +114,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/vehicle/van/new', name: 'vehicle_van_new')]
-    public function newVan(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
+    public function newVan(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository, FlasherInterface $flasher): Response
     {
         $van = new Van();
         $form = $this->createForm(VanType::class, $van);
@@ -137,7 +142,7 @@ class AdminController extends AbstractController
             }
 
             $entityManager->flush();
-            $this->addFlash('success', 'Le van a été ajouté avec succès.');
+           $flasher->addSuccess( 'Le van a été ajouté avec succès.');
             return $this->redirectToRoute('admin_vehicles');
         }
 
@@ -148,7 +153,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/vehicle/van/{id}/edit', name: 'vehicle_van_edit')]
-    public function editVan(Van $van, Request $request, EntityManagerInterface $entityManager): Response
+    public function editVan(Van $van, Request $request, EntityManagerInterface $entityManager, FlasherInterface $flasher): Response
     {
         $form = $this->createForm(VanType::class, $van);
         $form->handleRequest($request);
@@ -156,7 +161,7 @@ class AdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            $this->addFlash('success', 'Le van a été modifié avec succès.');
+           $flasher->addSuccess( 'Le van a été modifié avec succès.');
             return $this->redirectToRoute('admin_vehicles');
         }
 
@@ -168,7 +173,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/vehicle/motorcycle/new', name: 'vehicle_motorcycle_new')]
-    public function newMotorcycle(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
+    public function newMotorcycle(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository, FlasherInterface $flasher): Response
     {
         $motorcycle = new Motorcycle();
         $form = $this->createForm(MotorcycleType::class, $motorcycle);
@@ -196,7 +201,7 @@ class AdminController extends AbstractController
             }
 
             $entityManager->flush();
-            $this->addFlash('success', 'La moto a été ajoutée avec succès.');
+           $flasher->addSuccess( 'La moto a été ajoutée avec succès.');
             return $this->redirectToRoute('admin_vehicles');
         }
 
@@ -207,7 +212,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/vehicle/motorcycle/{id}/edit', name: 'vehicle_motorcycle_edit')]
-    public function editMotorcycle(Motorcycle $motorcycle, Request $request, EntityManagerInterface $entityManager): Response
+    public function editMotorcycle(Motorcycle $motorcycle, Request $request, EntityManagerInterface $entityManager, FlasherInterface $flasher): Response
     {
         $form = $this->createForm(MotorcycleType::class, $motorcycle);
         $form->handleRequest($request);
@@ -215,7 +220,7 @@ class AdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            $this->addFlash('success', 'La moto a été modifiée avec succès.');
+           $flasher->addSuccess( 'La moto a été modifiée avec succès.');
             return $this->redirectToRoute('admin_vehicles');
         }
 
@@ -227,9 +232,8 @@ class AdminController extends AbstractController
     }
 
 
-    // Suppression commune pour tous les types de véhicules
     #[Route('/vehicle/{id}/delete', name: 'vehicle_delete')]
-    public function deleteVehicle(int $id, VehicleRepository $vehicleRepository, EntityManagerInterface $entityManager): Response
+    public function deleteVehicle(int $id, VehicleRepository $vehicleRepository, EntityManagerInterface $entityManager, FlasherInterface $flasher): Response
     {
         $vehicle = $vehicleRepository->find($id);
         
@@ -240,16 +244,127 @@ class AdminController extends AbstractController
         $entityManager->remove($vehicle);
         $entityManager->flush();
 
-        $this->addFlash('success', 'Le véhicule a été supprimé avec succès.');
+       $flasher->addSuccess( 'Le véhicule a été supprimé avec succès.');
         return $this->redirectToRoute('admin_vehicles');
     }
 
-    // Gestion des utilisateurs
     #[Route('/users', name: 'users')]
-    public function users(UserRepository $userRepository): Response
+    public function users(): Response
     {
-        return $this->render('admin/users.html.twig', [
-            'users' => $userRepository->findAll(),
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        return $this->render('admin/users.html.twig');
+    }
+
+    #[Route('/reservations', name: 'reservations')]
+    public function reservations(ReservationRepository $reservationRepository): Response
+    {
+        $reservations = $reservationRepository->findAll();
+        
+        // Ajout d'un dump pour vérifier les statuts
+        foreach ($reservations as $reservation) {
+            dump($reservation->getStatus());
+        }
+        
+        return $this->render('admin/reservations.html.twig', [
+            'reservations' => $reservations,
         ]);
+    }
+
+    #[Route('/reservation/{id}', name: 'reservation_show')]
+    public function showReservation(Reservation $reservation): Response
+    {
+        return $this->render('admin/reservation/show.html.twig', [
+            'reservation' => $reservation,
+        ]);
+    }
+
+    #[Route('/reservation/{id}/edit', name: 'reservation_edit')]
+    public function editReservation(Reservation $reservation): Response
+    {
+        return $this->render('admin/reservation/edit.html.twig', [
+            'reservation' => $reservation,
+        ]);
+    }
+
+    #[Route('/reservation/{id}/invoice', name: 'reservation_invoice_download')]
+    public function downloadInvoice(Reservation $reservation): Response
+    {
+        // Configure Dompdf selon vos préférences
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isPhpEnabled', true);
+
+        // Instancier Dompdf
+        $dompdf = new Dompdf($options);
+
+        // Calculer les totaux
+        $totalPriceOptions = $reservation->getReservationVehicleOptions()->reduce(
+            function ($sum, $option) {
+                return $sum + ($option->getVehicleOptions() ? $option->getVehicleOptions()->getPrice() * $option->getCount() : 0);
+            }, 
+            0
+        );
+
+        $totalPriceVehicle = $reservation->getTotalPrice() - $totalPriceOptions;
+
+        // Calculer le nombre de jours
+        $interval = $reservation->getStartDate()->diff($reservation->getEndDate());
+        $days = $interval->days;
+
+        // Générer le HTML de la facture en utilisant le template existant
+        $html = $this->renderView('invoice/pdf.html.twig', [
+            'invoice' => $reservation->getInvoice(),
+            'client' => $reservation->getClient(),
+            'vehicle' => $reservation->getVehicle(),
+            'startDate' => $reservation->getStartDate(),
+            'endDate' => $reservation->getEndDate(),
+            'days' => $days,
+            'reservationOptions' => $reservation->getReservationVehicleOptions(),
+            'totalPriceVehicle' => $totalPriceVehicle,
+            'totalPriceOptions' => $totalPriceOptions
+        ]);
+
+        // Charger le HTML dans Dompdf
+        $dompdf->loadHtml($html);
+
+        // Configurer le format du papier
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Rendre le PDF
+        $dompdf->render();
+
+        // Générer un nom de fichier
+        $filename = sprintf('facture-%s.pdf', $reservation->getId());
+
+        // Retourner le PDF comme réponse
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
+            ]
+        );
+    }
+
+    #[Route('/reservation/{id}/cancel', name: 'reservation_cancel')]
+    public function cancelReservation(Reservation $reservation, EntityManagerInterface $entityManager): Response
+    {
+        // Mettre à jour le statut de la réservation à CANCELLED
+        $reservation->setStatus(\App\Enum\StatusReservationEnum::CANCELLED);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'La réservation a été annulée avec succès.');
+        return $this->redirectToRoute('admin_reservations');
+    }
+
+    #[Route('/reservation/{id}/delete', name: 'reservation_delete')]
+    public function deleteReservation(Reservation $reservation, EntityManagerInterface $entityManager): Response
+    {
+        $entityManager->remove($reservation);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'La réservation a été supprimée avec succès.');
+        return $this->redirectToRoute('admin_reservations');
     }
 } 
