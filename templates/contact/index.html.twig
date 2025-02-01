@@ -5,19 +5,46 @@
 {% block body %}
 <div class="min-h-screen bg-[#F5F5F0]">
     {# En-tête avec image de fond #}
-    <div class="relative h-[300px] bg-cover bg-center" style="background-image: url('{{ asset('template-html/assets/images/contact-banner.jpg') }}')">
-        <div class="absolute inset-0 bg-black bg-opacity-50"></div>
-        <div class="relative h-full flex items-center justify-center">
-            <div class="text-center text-white">
-                <h1 class="text-4xl md:text-5xl font-playfair font-bold mb-4">Contact</h1>
-                <nav class="text-sm md:text-base">
-                    <ol class="flex justify-center space-x-2">
-                        <li><a href="{{ path('app') }}" class="hover:text-[#8B4513]">Accueil</a></li>
-                        <li><span class="mx-2">></span></li>
-                        <li class="text-[#8B4513]">Contact</li>
-                    </ol>
-                </nav>
+    <div class="relative h-[400px] overflow-hidden">
+        {# Fond avec gradient #}
+        <div class="absolute inset-0 bg-gradient-to-tr from-gray-900/90 to-black/90">
+            <img src="{{ asset('template-html/assets/images/ban3.jpg') }}" 
+                 alt="Background" 
+                 class="w-full h-full object-cover opacity-50">
+        </div>
+
+        {# Contenu #}
+        <div class="relative h-full container mx-auto px-4">
+            <div class="h-full flex flex-col items-center justify-center">
+                {# Titre et fil d'Ariane #}
+                <div class="text-center space-y-6">
+                    <h1 class="text-4xl md:text-5xl font-playfair font-bold text-white">
+                        Contactez-nous
+                    </h1>
+                    <p class="text-gray-300 max-w-2xl mx-auto text-sm md:text-base">
+                        Notre équipe est à votre écoute pour répondre à toutes vos questions
+                    </p>
+                    
+                    {# Fil d'Ariane #}
+                    <nav class="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-xl">
+                        <a href="{{ path('app') }}" 
+                           class="text-gray-300 hover:text-white transition-colors duration-200">
+                            Accueil
+                        </a>
+                        <span class="text-gray-400">
+                            <i class="fas fa-chevron-right text-xs"></i>
+                        </span>
+                        <span class="text-[#8B4513]">Contact</span>
+                    </nav>
+                </div>
             </div>
+        </div>
+
+        {# Effet de vague en bas #}
+        <div class="absolute bottom-0 left-0 right-0">
+            <svg class="fill-current text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120">
+                <path d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+            </svg>
         </div>
     </div>
 

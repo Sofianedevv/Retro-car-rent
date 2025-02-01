@@ -107,7 +107,6 @@
                 errorDiv.textContent = 'Les mots de passe ne correspondent pas';
                 confirmPassword.parentNode.appendChild(errorDiv);
                 
-                // Supprimer le message d'erreur après 3 secondes
                 setTimeout(() => errorDiv.remove(), 3000);
             }
         });
