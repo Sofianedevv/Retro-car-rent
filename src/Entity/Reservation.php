@@ -75,7 +75,6 @@ class Reservation
     public function __construct()
     {
         $this->reservationVehicleOptions = new ArrayCollection();
-        // Commentez temporairement cette ligne
         // $this->reference = Uuid::uuid4();
         $this->createdAt = new \DateTimeImmutable();
     }

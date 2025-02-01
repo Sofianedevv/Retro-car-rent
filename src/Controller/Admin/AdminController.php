@@ -260,7 +260,6 @@ class AdminController extends AbstractController
     {
         $reservations = $reservationRepository->findAll();
         
-        // Ajout d'un dump pour vérifier les statuts
         foreach ($reservations as $reservation) {
             dump($reservation->getStatus());
         }
@@ -289,15 +288,12 @@ class AdminController extends AbstractController
     #[Route('/reservation/{id}/invoice', name: 'reservation_invoice_download')]
     public function downloadInvoice(Reservation $reservation): Response
     {
-        // Configure Dompdf selon vos préférences
         $options = new Options();
         $options->set('isHtml5ParserEnabled', true);
         $options->set('isPhpEnabled', true);
 
-        // Instancier Dompdf
         $dompdf = new Dompdf($options);
 
-        // Calculer les totaux
         $totalPriceOptions = $reservation->getReservationVehicleOptions()->reduce(
             function ($sum, $option) {
                 return $sum + ($option->getVehicleOptions() ? $option->getVehicleOptions()->getPrice() * $option->getCount() : 0);
@@ -307,11 +303,9 @@ class AdminController extends AbstractController
 
         $totalPriceVehicle = $reservation->getTotalPrice() - $totalPriceOptions;
 
-        // Calculer le nombre de jours
         $interval = $reservation->getStartDate()->diff($reservation->getEndDate());
         $days = $interval->days;
 
-        // Générer le HTML de la facture en utilisant le template existant
         $html = $this->renderView('invoice/pdf.html.twig', [
             'invoice' => $reservation->getInvoice(),
             'client' => $reservation->getClient(),
@@ -324,19 +318,14 @@ class AdminController extends AbstractController
             'totalPriceOptions' => $totalPriceOptions
         ]);
 
-        // Charger le HTML dans Dompdf
         $dompdf->loadHtml($html);
 
-        // Configurer le format du papier
         $dompdf->setPaper('A4', 'portrait');
 
-        // Rendre le PDF
         $dompdf->render();
 
-        // Générer un nom de fichier
         $filename = sprintf('facture-%s.pdf', $reservation->getId());
 
-        // Retourner le PDF comme réponse
         return new Response(
             $dompdf->output(),
             Response::HTTP_OK,
@@ -350,7 +339,6 @@ class AdminController extends AbstractController
     #[Route('/reservation/{id}/cancel', name: 'reservation_cancel')]
     public function cancelReservation(Reservation $reservation, EntityManagerInterface $entityManager): Response
     {
-        // Mettre à jour le statut de la réservation à CANCELLED
         $reservation->setStatus(\App\Enum\StatusReservationEnum::CANCELLED);
         $entityManager->flush();
 

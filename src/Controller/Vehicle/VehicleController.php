@@ -282,7 +282,6 @@ class VehicleController extends AbstractController
            $flasher->addError( 'Ce véhicule n\'existe pas.');
             return $this->redirectToRoute('app_collections');
         }
-        // Récupérer les véhicules similaires
         $similarVehicles = $vehicleRepository->findSimilar($vehicle);
         
 
