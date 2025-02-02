@@ -213,7 +213,10 @@ class ReservationController extends AbstractController
         public function getDatesReservations(int $vehicleId, ReservationRepository $reservationRepository): JsonResponse
         {
             
-            $reservations = $reservationRepository->findBy(['vehicle' => $vehicleId]);
+            $reservations = $reservationRepository->findBy([
+                'vehicle' => $vehicleId,
+                'status' => StatusReservationEnum::CONFIRMED   
+            ]);
         
             $data = array_map(function ($reservation) {
                 $startDate = $reservation->getStartDate();
@@ -234,7 +237,7 @@ class ReservationController extends AbstractController
             return new JsonResponse($data, Response::HTTP_OK);
         }
 
-        #
+        
 
 
     
