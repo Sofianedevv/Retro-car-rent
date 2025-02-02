@@ -41,7 +41,7 @@ class SearchType extends AbstractType
 
             ])
             ->add('start_time', ChoiceType::class, [
-                'label' => 'Heure de début',
+                'label' => 'Heure de départ',
                 'choices' => array_combine(
                     array_map(fn($hour) => $hour, [
                         "00:00", "00:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00", "04:30", "05:00", "05:30",
@@ -69,7 +69,7 @@ class SearchType extends AbstractType
 
             ])
             ->add('end_time', ChoiceType::class, [
-                'label' => 'Heure de Fin',
+                'label' => 'Heure de Retour',
                 'choices' => array_combine(
                     array_map(fn($hour) => $hour, [
                         "00:00", "00:30", "01:00" , "01:30", "02:00", "02:30", "03:00", "03:30", "04:00", "04:30", "05:00", "05:30",

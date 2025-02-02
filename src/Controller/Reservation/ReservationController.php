@@ -50,6 +50,7 @@ class ReservationController extends AbstractController
         VehicleOptionRepository $vehicleOptionRepository,
         EntityManagerInterface $entityManager,
         ReservationService $reservationService,
+        
     ): Response {
         $user = $this->getUser();
         if (!$user) {
@@ -134,7 +135,9 @@ class ReservationController extends AbstractController
 
                 $entityManager->flush();
 
+                $confirmReservationMailer->sendConfirmationEmail($reservation);
                 $this->addFlash('success', 'Votre réservation a été enregistrée avec succès.');
+                
                 return $this->redirectToRoute('app_all_reservation', ['clientId' => $user->getId()]);
             }
         }
