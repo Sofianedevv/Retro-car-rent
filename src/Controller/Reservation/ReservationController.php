@@ -142,7 +142,7 @@ class ReservationController extends AbstractController
             }
         }
 
-        return $this->render('reservation/_recap_reservation.html.twig', [
+        return $this->render('reservation/_add_reservation.html.twig', [
             'vehicle' => $vehicle,
             'options' => $options,
             'totalOptionPrice' => $totalOptionPrice,
