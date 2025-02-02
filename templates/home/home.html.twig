@@ -1,11 +1,10 @@
 {% extends 'base.html.twig' %}
 {% block title %}Accueil{% endblock %}
 
-{% block body %}
+{% block content %}
     <section id="banner" class="relative mb-6 flex bg-gradient-to-tr from-[#e0d8b0] to-[#8B4513]">
         <div class="w-full md:w-1/2 p-6 ml-16 flex flex-col justify-center items-start text-black">
-            <form action="#" method="GET" class="w-full max-w-md bg-white p-8 rounded-2xl shadow-2xl">
-                {{ form_start(form) }}
+                {{ form_start(form, {'attr': {'class': 'w-full max-w-md bg-white p-8 rounded-2xl shadow-2xl'}}) }}
                     <div class="space-y-6">
                         <div>
                             {{ form_row(form.vehicle_type) }}
@@ -38,7 +37,6 @@
                         </button>
                     </div>
                 {{ form_end(form) }}
-            </form>
         </div>
 
         <div class="w-1/2 p-6 mt-3">
