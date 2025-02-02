@@ -10,7 +10,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <!-- Partie gauche : Image + Infos véhicule -->
                 <div>
-                    <div class="bg-white p-6 rounded-lg shadow-lg max-w-4xl mx-auto">
+                    <div class="bg-white p-6 rounded-lg shadow-lg max-w-4xl mx-auto" >
                         <!-- Image du véhicule -->
                         <img src="{{ vehicle.DefaultImage }}" alt="Image du véhicule {{ vehicle.brand }}"
                              class="w-full h-64 object-contain rounded-lg mb-6">
@@ -113,7 +113,7 @@
 
                 <!-- Partie droite : Formulaire de réservation -->
                 <div>
-                    <div class="bg-white p-6 rounded-lg shadow-lg mb-6">
+                    <div class="bg-white p-6 rounded-lg shadow-lg mb-6"  data-vehicle-id="{{ vehicle.id }}">
                         {{ form_start(form, { 'attr': {'id': 'reservation-form'} }) }}
                         <h4 class="text-xl font-semibold text-gray-800 mb-4">Sélectionnez vos options</h4>
                         <div class="grid grid-cols-1 gap-4">
