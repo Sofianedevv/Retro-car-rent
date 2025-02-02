@@ -33,7 +33,6 @@
             <div class="p-6">
                 {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {# Colonne gauche - Informations de base #}
                         <div class="space-y-4">
                             <h2 class="text-lg font-medium text-gray-900">Informations générales</h2>
                             {{ form_row(form.brand) }}
@@ -43,7 +42,6 @@
                             {{ form_row(form.price) }}
                         </div>
 
-                        {# Colonne droite - Caractéristiques techniques #}
                         <div class="space-y-4">
                             <h2 class="text-lg font-medium text-gray-900">Caractéristiques techniques</h2>
                             {% if vehicle_type == 'car' %}
@@ -71,7 +69,6 @@
                         </div>
                     </div>
 
-                    {# Section image et catégories #}
                     <div class="mt-6 space-y-4">
                         <h2 class="text-lg font-medium text-gray-900">Image et disponibilité</h2>
                         {{ form_row(form.defaultImage) }}
@@ -93,7 +90,6 @@
                         {{ form_widget(form.categories) }}
                     </div>
 
-                    {# Boutons d'action #}
                     <div class="mt-6 flex justify-end space-x-4">
                         <button type="button" 
                                 onclick="window.location.href='{{ path('admin_vehicles') }}'"

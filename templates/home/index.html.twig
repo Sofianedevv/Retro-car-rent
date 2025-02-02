@@ -2,21 +2,17 @@
 
 {% block body %}
 <body>
-    <!-- Slider -->
     <section id="product-slider">
         <div class="main-slider swiper-container">
             <div class="swiper-wrapper">
-                <!-- Slides -->
                 {% for i in 1..3 %}
                     {% include 'parts/_product_slide.html.twig' %}
                 {% endfor %}
             </div>
         </div>
-        <!-- Slider Pagination -->
         <div class="swiper-button-prev"></div>
         <div class="swiper-button-next"></div>
     </section>
-    <!-- End of Slider -->
 
     <section id="product-banners">
         <div class="container mx-auto py-10">
@@ -27,12 +23,10 @@
             </div>
         </div>
     </section>
-<!-- Popular product section -->
   <section id="popular-products">
     <div class="container mx-auto px-4">
         <h2 class="text-2xl font-bold mb-8">Popular products</h2>
         <div class="flex flex-wrap -mx-4">
-            <!-- Product 1 -->
             {% for i in 1..4 %}
                 {% include 'parts/_product_card.html.twig' %}
             {% endfor %}
@@ -41,12 +35,10 @@
 </section>
 
 
-<!-- Latest product section -->
   <section id="latest-products" class="py-10">
     <div class="container mx-auto px-4">
         <h2 class="text-2xl font-bold mb-8">Latest products</h2>
         <div class="flex flex-wrap -mx-4">
-            <!-- Products -->
             {% for i in 1..4 %}
                 {% include 'parts/_product_card.html.twig' %}
             {% endfor %}
@@ -55,7 +47,6 @@
 </section>
 
 
-<!-- Brand section -->
     <section id="brands" class="bg-white py-16 px-4">
         <div class="container mx-auto max-w-screen-xl px-4 testimonials">
             <div class="text-center mb-12 lg:mb-20">
@@ -64,41 +55,33 @@
             </div>
             <div class="swiper brands-swiper-slider">
                 <div class="swiper-wrapper">
-                    <!-- Brand Logo 1 -->
                     <div class="swiper-slide flex-none bg-gray-200 flex items-center justify-center rounded-md">
                         <img src="{{ asset('template-html/assets/images/brands/html.svg') }}" alt="Client Logo" style="max-width: 150px; max-height: 80px; object-fit: contain;">
                     </div>
 
-                    <!-- Brand Logo 2 -->
                     <div class="swiper-slide flex-none bg-gray-200 flex items-center justify-center rounded-md">
                         <img src="{{ asset('template-html/assets/images/brands/html.svg') }}" alt="Client Logo" style="max-width: 150px; max-height: 80px; object-fit: contain;">
                     </div>
 
-                    <!-- Brand Logo 3 -->
                     <div class="swiper-slide flex-none bg-gray-200 flex items-center justify-center rounded-md">
                         <img src="{{ asset('template-html/assets/images/brands/html.svg') }}" alt="Client Logo" style="max-width: 150px; max-height: 80px; object-fit: contain;">
                     </div>
 
-                    <!-- Brand Logo 4 -->
                     <div class="swiper-slide flex-none bg-gray-200 flex items-center justify-center rounded-md">
                         <img src="{{ asset('template-html/assets/images/brands/html.svg') }}" alt="Client Logo" style="max-width: 150px; max-height: 80px; object-fit: contain;">
                     </div>
 
-                    <!-- Brand Logo 5 -->
                     <div class="swiper-slide flex-none bg-gray-200 flex items-center justify-center rounded-md">
                         <img src="{{ asset('template-html/assets/images/brands/html.svg') }}" alt="Client Logo" style="max-width: 150px; max-height: 80px; object-fit: contain;">
                     </div>
 
-                    <!-- Brand Logo 6 -->
                     <div class="swiper-slide flex-none bg-gray-200 flex items-center justify-center rounded-md">
                         <img src="{{ asset('template-html/assets/images/brands/html.svg') }}" alt="Client Logo" style="max-width: 150px; max-height: 80px; object-fit: contain;">
                     </div>
 
-                    <!-- Brand Logo 7 -->
                     <div class="swiper-slide flex-none bg-gray-200 flex items-center justify-center rounded-md">
                         <img src="{{ asset('template-html/assets/images/brands/html.svg') }}" alt="Client Logo" style="max-width: 150px; max-height: 80px; object-fit: contain;">                    </div>
                 </div>
-                <!-- Navigation Buttons -->
                 <div class="swiper-button-prev"></div>
                 <div class="swiper-button-next"></div>
             </div>
@@ -111,7 +94,6 @@
 
 
 
-    <!-- Banner section -->
 <section id="banner" class="relative my-16">
     <div class="container mx-auto px-4 py-20 rounded-lg relative bg-cover bg-center" style="background-image: url('{{ asset('template-html/assets/images/banner1.jpg') }}');">
         <div class="absolute inset-0 bg-black opacity-40 rounded-lg"></div>
@@ -128,7 +110,6 @@
 
 
 
-<!-- Blog section -->
  <section class="py-16">
     <div class="text-center mb-12 lg:mb-20">
         <h2 class="text-5xl font-bold mb-4">Discover <span class="text-primary">Our</span> Blog</h2>
@@ -144,7 +125,6 @@
 </section>
 
 
-  <!-- Subscribe section -->
 <section id="subscribe" class="py-6 lg:py-24 bg-white border-t border-gray-line">
   <div class="container mx-auto">
     <div class="flex flex-col items-center rounded-lg p-4 sm:p-0 ">

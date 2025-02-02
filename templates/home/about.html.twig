@@ -1,10 +1,8 @@
 {% extends 'base.html.twig' %}
 {% block title %}À propos de Nous{% endblock %}
 {% block body %}
-    <!-- About Section -->
     <section id="about" class="py-16 bg-gray-100">
         <div class="container mx-auto px-4">
-            <!-- Title -->
             <div class="mb-12">
                 <h2 class="text-5xl font-bold mb-4">À propos de Nous</h2>
                 <p class="text-lg max-w-2xl mx-auto">
@@ -12,7 +10,6 @@
                 </p>
             </div>
 
-            <!-- Our Story -->
             <div class="flex flex-col lg:flex-row items-center mb-12">
                 <div class="lg:w-1/2">
                     <img src="{{ asset('template-html/assets/images/ban1.jpeg') }}" alt="Notre Histoire" class="w-auto h-auto rounded-lg shadow-lg">
@@ -25,7 +22,6 @@
                 </div>
             </div>
 
-            <!-- Our Mission -->
             <div class="mb-12">
                 <h3 class="text-3xl font-bold mb-4 text-left">Notre Mission</h3>
                 <p class="text-lg max-w-3xl mx-auto text-left">
@@ -33,7 +29,6 @@
                 </p>
             </div>
 
-            <!-- Our Values -->
             <div class="mb-12">
                 <h3 class="text-3xl font-bold mb-4 text-left">Nos Valeurs</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"> <!-- Modifié de gap-12 à gap-8 pour réduire l'espacement horizontal -->
@@ -64,7 +59,6 @@
                 </div>
             </div>
 
-            <!-- Our Team -->
             <div class="mb-12">
                 <h3 class="text-3xl font-bold mb-4 text-left">Rencontrez notre Équipe</h3>
                 <div class="flex flex-wrap justify-between gap-6"> <!-- Ajout de gap-6 pour espacer les éléments -->

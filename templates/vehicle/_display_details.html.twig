@@ -562,7 +562,6 @@
 						const stars = ratingContainer.querySelectorAll('i');
 						const inputs = ratingContainer.querySelectorAll('input');
 
-						// Fonction pour remplir les étoiles
 						function fillStars(selectedIndex) {
 							stars.forEach((star, index) => {
 								if (index <= selectedIndex) {
@@ -607,7 +606,6 @@
 				</script>
 			{% endif %}
 
-			{# Liste des avis #}
 			<div class="grid grid-cols-1 lg:grid-cols-2 gap-6" id="reviews-container">
 				{% set lastTwoReviews = reviews|slice(0, 2) %}
 				{% for review in lastTwoReviews %}

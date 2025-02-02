@@ -4,19 +4,15 @@
 
 {% block body %}
 <div class="min-h-screen bg-[#F5F5F0]">
-    {# En-tête avec image de fond #}
     <div class="relative h-[400px] overflow-hidden">
-        {# Fond avec gradient #}
         <div class="absolute inset-0 bg-gradient-to-tr from-gray-900/90 to-black/90">
             <img src="{{ asset('template-html/assets/images/ban3.jpg') }}" 
                  alt="Background" 
                  class="w-full h-full object-cover opacity-50">
         </div>
 
-        {# Contenu #}
         <div class="relative h-full container mx-auto px-4">
             <div class="h-full flex flex-col items-center justify-center">
-                {# Titre et fil d'Ariane #}
                 <div class="text-center space-y-6">
                     <h1 class="text-4xl md:text-5xl font-playfair font-bold text-white">
                         Contactez-nous
@@ -25,7 +21,6 @@
                         Notre équipe est à votre écoute pour répondre à toutes vos questions
                     </p>
                     
-                    {# Fil d'Ariane #}
                     <nav class="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-xl">
                         <a href="{{ path('app') }}" 
                            class="text-gray-300 hover:text-white transition-colors duration-200">
@@ -40,7 +35,6 @@
             </div>
         </div>
 
-        {# Effet de vague en bas #}
         <div class="absolute bottom-0 left-0 right-0">
             <svg class="fill-current text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120">
                 <path d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
@@ -48,11 +42,8 @@
         </div>
     </div>
 
-    {# Section principale #}
     <div class="container mx-auto px-4 py-12">
-        {# Cards d'information #}
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            {# Téléphone #}
             <div class="bg-white rounded-xl shadow-lg p-6 text-center transform hover:scale-105 transition-transform duration-300">
                 <div class="w-16 h-16 bg-[#8B4513] rounded-full flex items-center justify-center mx-auto mb-4">
                     <i class="fas fa-phone text-white text-2xl"></i>
@@ -61,7 +52,6 @@
                 <p class="text-gray-600">+33 (0)1 23 45 67 89</p>
             </div>
 
-            {# Email #}
             <div class="bg-white rounded-xl shadow-lg p-6 text-center transform hover:scale-105 transition-transform duration-300">
                 <div class="w-16 h-16 bg-[#8B4513] rounded-full flex items-center justify-center mx-auto mb-4">
                     <i class="fas fa-envelope text-white text-2xl"></i>
@@ -70,7 +60,6 @@
                 <p class="text-gray-600">contact@retro-car-rent.com</p>
             </div>
 
-            {# Localisation #}
             <div class="bg-white rounded-xl shadow-lg p-6 text-center transform hover:scale-105 transition-transform duration-300">
                 <div class="w-16 h-16 bg-[#8B4513] rounded-full flex items-center justify-center mx-auto mb-4">
                     <i class="fas fa-map-marker-alt text-white text-2xl"></i>
@@ -80,10 +69,8 @@
             </div>
         </div>
 
-        {# Formulaire et Carte #}
         <div class="bg-white rounded-xl shadow-lg overflow-hidden">
             <div class="grid md:grid-cols-2">
-                {# Formulaire #}
                 <div class="p-8">
                     <h2 class="text-3xl font-playfair font-bold text-[#8B4513] mb-8">Envoyez-nous un message</h2>
                     
@@ -141,7 +128,6 @@
                     {{ form_end(form) }}
                 </div>
 
-                {# Carte Google Maps #}
                 <div class="relative h-full min-h-[500px]">
                     <iframe
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.9916256937586!2d2.292292615674431!3d48.85837007928757!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66e2964e34e2d%3A0x8ddca9ee380ef7e0!2sTour%20Eiffel!5e0!3m2!1sfr!2sfr!4v1647874587201!5m2!1sfr!2sfr"
@@ -154,7 +140,6 @@
             </div>
         </div>
 
-        {# Horaires d'ouverture #}
         <div class="mt-12 bg-white rounded-xl shadow-lg p-8">
             <h3 class="text-2xl font-playfair font-bold text-center text-[#8B4513] mb-6">Horaires d'ouverture</h3>
             <div class="max-w-2xl mx-auto grid grid-cols-2 gap-4">
