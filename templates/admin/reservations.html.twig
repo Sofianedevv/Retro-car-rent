@@ -12,7 +12,7 @@
                 <p class="text-gray-600">Gérez toutes vos réservations en un seul endroit</p>
             </div>
 
-           
+            
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
                 <div class="bg-white rounded-xl shadow-sm p-6">
@@ -35,7 +35,7 @@
                         <div class="ml-4">
                             <h3 class="text-sm font-medium text-gray-500">Confirmées</h3>
                             <p class="text-2xl font-semibold text-gray-900">
-                                {{ reservations|filter(r => r.status.value == constant('App\\Enum\\StatusReservationEnum::CONFIRMED'))|length }}
+                                {{ reservations|filter(r => r.status.value == 'confirmed')|length }}
                             </p>
                         </div>
                     </div>
@@ -49,7 +49,7 @@
                         <div class="ml-4">
                             <h3 class="text-sm font-medium text-gray-500">En attente</h3>
                             <p class="text-2xl font-semibold text-gray-900">
-                                {{ reservations|filter(r => r.status.value == constant('App\\Enum\\StatusReservationEnum::PENDING'))|length }}
+                                {{ reservations|filter(r => r.status.value == 'pending')|length }}
                             </p>
                         </div>
                     </div>
@@ -63,7 +63,7 @@
                         <div class="ml-4">
                             <h3 class="text-sm font-medium text-gray-500">Annulées</h3>
                             <p class="text-2xl font-semibold text-gray-900">
-                                {{ reservations|filter(r => r.status.value == constant('App\\Enum\\StatusReservationEnum::CANCELLED'))|length }}
+                                {{ reservations|filter(r => r.status.value == 'cancelled')|length }}
                             </p>
                         </div>
                     </div>
