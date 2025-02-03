@@ -76,7 +76,6 @@ class FavoriteController extends AbstractController
         $entityManager->flush();
         $flasher->addSuccess($message);
         
-        $this->addFlash('success', $message);
         return $referer ? $this->redirect($referer) : $this->redirectToRoute('app');
     }
     
