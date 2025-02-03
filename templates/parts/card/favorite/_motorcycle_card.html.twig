@@ -1,18 +1,18 @@
 <div class="group relative bg-gray-50 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-500">
-	<div class="relative overflow-hidden h-64">
+	<div class="relative overflow-hidden h-48">
 		<img src="{{motorcylce.defaultImage}}"
 			 alt="{{motorcylce.model}}"
 			 class="w-full h-full object-cover transform group-hover:scale-110 transition-all duration-700">
 		<div class="absolute inset-0 bg-gradient-to-t from-gray-900/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
 		{% if motorcylce.averageRating is defined %}
-			<div class="absolute top-4 left-4 flex items-center bg-gray-100 text-gray-900 px-3 py-1 rounded-full shadow-lg font-bold text-sm z-10">
+			<div class="absolute top-2 left-2 flex items-center bg-gray-100 text-gray-900 px-2 py-1 rounded-full shadow-lg font-bold text-sm z-10">
 				<i class="fas fa-star text-yellow-500 mr-1"></i>
 				{{ motorcylce.averageRating|number_format(1) }}
 			</div>
 		{% endif %}
 
-		<div class="absolute top-4 right-4 flex items-center bg-gray-50 text-gray-900 px-3 py-1 rounded-full shadow-lg font-bold text-sm z-10">
+		<div class="absolute top-2 right-2 flex items-center bg-gray-50 text-gray-900 px-2 py-1 rounded-full shadow-lg font-bold text-sm z-10">
 			{% if isFavorite[motorcylce.id] %}
 				<a href="{{ path('app_favorite_delete', {'vehicleId': motorcylce.id}) }}" class="group">
 					<i class="fas fa-heart text-red-500 group-hover:text-red-600 transform group-hover:scale-110 transition-all duration-300"></i>
@@ -29,17 +29,17 @@
 
 	</div>
 
-	<div class="p-6 space-y-4">
+	<div class="p-4 space-y-3">
 		<div class="flex justify-between items-center">
-			<h3 class="font-playfair text-xl font-bold text-gray-900">{{ motorcylce.brand }}<span class="text-gray-500 font-light text-sm">({{ motorcylce.year }})</span></h3>
+			<h3 class="font-playfair text-lg font-bold text-gray-900">{{ motorcylce.brand }}<span class="text-gray-500 font-light text-sm">({{ motorcylce.year }})</span></h3>
 			<p class="text-gray-600 text-sm">{{ motorcylce.model }}</p>
 		</div>
 
 		<hr class="border-t border-gray-300">
 
-		<div class="flex flex-col space-y-4">
-			<div class="flex items-center text-sm py-3 px-4 bg-primary/10 rounded-lg space-x-6">
-				<div class="flex items-center justify-between gap-4 text-gray-600">
+		<div class="flex flex-col space-y-2">
+			<div class="flex items-center text-sm py-2 px-3 bg-primary/10 rounded-lg space-x-4">
+				<div class="flex items-center gap-2 text-gray-600">
 					<i class="fas fa-gas-pump text-lg text-gray-900"></i>
 					<span class="text-sm">{{ motorcylce.fuelType|capitalize }}</span>
 				</div>
@@ -51,14 +51,14 @@
 
 			<hr class="border-t border-gray-300">
 
-			<div class="flex items-center text-sm py-3 px-4 bg-primary/10 rounded-lg space-x-6">
+			<div class="flex items-center text-sm py-2 px-3 bg-primary/10 rounded-lg space-x-4">
 				<div class="flex items-center gap-2 text-gray-600">
 					<i class="fas fa-road text-lg text-gray-900"></i>
 					<span class="text-sm">{{ motorcylce.mileage }}Km</span>
 				</div>
 
 				<div class="ml-auto text-right">
-					<span class="text-gray-900 font-bold text-xl">{{ motorcylce.price }}€</span>
+					<span class="text-gray-900 font-bold text-lg">{{ motorcylce.price }}€</span>
 					<span class="text-gray-500">/jour</span>
 				</div>
 			</div>
@@ -66,7 +66,7 @@
 
 
 		</div>
-		<div class="grid grid-cols-2 gap-3 mt-4">
+		<div class="grid grid-cols-2 gap-2 mt-3">
 			<a href="{{ path('app_vehicle_show_details', { vehicleId: motorcylce.id })}}"
 			   class="flex items-center justify-center bg-gray-50 text-gray-900 border border-gray-900 hover:bg-gray-900 hover:text-white rounded-lg font-semibold px-3 py-1.5 text-sm transition-all duration-300 gap-2">
 				<i class="fas fa-info-circle"></i>

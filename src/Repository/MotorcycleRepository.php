@@ -51,4 +51,14 @@ class MotorcycleRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findAllEngineTypes(): array
+    {
+        $results = $this->createQueryBuilder('m')
+            ->select('m.type')
+            ->distinct()
+            ->getQuery()
+            ->getResult();
+        return array_column($results, 'type');
+    }
 }

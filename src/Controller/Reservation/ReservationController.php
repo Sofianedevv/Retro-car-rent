@@ -50,6 +50,7 @@ class ReservationController extends AbstractController
         VehicleOptionRepository $vehicleOptionRepository,
         EntityManagerInterface $entityManager,
         ReservationService $reservationService,
+        
     ): Response {
         $user = $this->getUser();
         if (!$user) {
@@ -134,12 +135,14 @@ class ReservationController extends AbstractController
 
                 $entityManager->flush();
 
+                $confirmReservationMailer->sendConfirmationEmail($reservation);
                 $this->addFlash('success', 'Votre réservation a été enregistrée avec succès.');
+                
                 return $this->redirectToRoute('app_all_reservation', ['clientId' => $user->getId()]);
             }
         }
 
-        return $this->render('reservation/_recap_reservation.html.twig', [
+        return $this->render('reservation/_add_reservation.html.twig', [
             'vehicle' => $vehicle,
             'options' => $options,
             'totalOptionPrice' => $totalOptionPrice,
@@ -210,7 +213,10 @@ class ReservationController extends AbstractController
         public function getDatesReservations(int $vehicleId, ReservationRepository $reservationRepository): JsonResponse
         {
             
-            $reservations = $reservationRepository->findBy(['vehicle' => $vehicleId]);
+            $reservations = $reservationRepository->findBy([
+                'vehicle' => $vehicleId,
+                'status' => StatusReservationEnum::CONFIRMED   
+            ]);
         
             $data = array_map(function ($reservation) {
                 $startDate = $reservation->getStartDate();
@@ -231,7 +237,7 @@ class ReservationController extends AbstractController
             return new JsonResponse($data, Response::HTTP_OK);
         }
 
-        #
+        
 
 
     

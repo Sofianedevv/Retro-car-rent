@@ -6,20 +6,40 @@ use App\Entity\Vehicle;
 use App\Entity\Car;
 use App\Entity\Van;
 use App\Entity\Motorcycle;
+use App\Repository\VehicleRepository;
+use App\Repository\ReservationRepository;
 use DateTime;
-class VehicleService {
-    
-    public function getVehicleType(Vehicle $vehicle): string
-    {
-        if ($vehicle instanceof Car) {
-            return 'Car';
-        } elseif ($vehicle instanceof Van) {
-            return 'Van';
-        } elseif ($vehicle instanceof Motorcycle) {
-            return 'Motorcycle';
-        }
+use Symfony\Component\HttpFoundation\Request;
 
-        return 'Type de véhicule inconnu';
+class VehicleService {
+    private VehicleRepository $vehicleRepository;
+    private ReservationRepository $reservationRepository;
+
+    public function __construct(VehicleRepository $vehicleRepository, ReservationRepository $reservationRepository)
+    {
+        $this->vehicleRepository = $vehicleRepository;
+        $this->reservationRepository = $reservationRepository;
     }
 
+    public function getVehicleType(Vehicle $vehicle): string
+    {
+        return match (true) {
+            $vehicle instanceof Car => 'Car',
+            $vehicle instanceof Van => 'Van',
+            $vehicle instanceof Motorcycle => 'Motorcycle',
+            default => 'Type de véhicule inconnu',
+        };
+    }
+   
+    public function findAvailableVehiclesByType(array $vehicles, string $type): array
+    {
+        return array_filter($vehicles, fn($vehicle) => match ($type) {
+            'car' => $vehicle instanceof Car,
+            'motorcycle' => $vehicle instanceof Motorcycle,
+            'van' => $vehicle instanceof Van,
+            default => true,
+        });
+    }
+  
+    
 }

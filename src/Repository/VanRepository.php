@@ -51,4 +51,28 @@ class VanRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findNbSeats():array
+    {
+        $results = $this->createQueryBuilder('v')
+            ->select('v.nbSeats')
+            ->distinct()
+            ->orderBy('v.nbSeats')
+            ->getQuery()
+            ->getResult();
+        return array_column($results, 'nbSeats');
+    }
+
+    public function findNbDoors():array
+    {
+        $results = $this->createQueryBuilder('v')
+            ->select('v.nbDoors')
+            ->distinct()
+            ->orderBy('v.nbDoors')
+            ->getQuery()
+            ->getResult();
+
+        return array_column( $results,  'nbDoors');
+   
+    }
 }
