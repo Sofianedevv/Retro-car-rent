@@ -186,7 +186,7 @@ class ReservationController extends AbstractController
             $payment->setReservation($reservation);
             $payment->setAmount($reservation->getTotalPrice());
             $payment->setPaymentDate(new DateTimeImmutable());
-            $payment->setPaymentMethod('Stripe');
+            $payment->setPaymentMethod('CB');
             $payment->setPaymentStatus(PaymentStatusEnum::PAID);
 
             $entityManager->persist($payment);
