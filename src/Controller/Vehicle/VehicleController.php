@@ -55,9 +55,9 @@ class VehicleController extends AbstractController
         $specificFilter = $vehicleFiltersService->fetchFilterDataByVehicleType('car');
         
         if ($search) {
-            $cars = $vehicleRepository->findCarsBySearch($search);
+            $cars = $vehicleRepository->findCarsBySearch($search, []);
         } else {
-            $cars = $vehicleRepository->findCarsByFilters($filters);
+            $cars = $vehicleRepository->findCarsByFilters($filters, []);
         }
         $carsPerPage = $paginator->paginate(
             $cars,
@@ -111,9 +111,9 @@ class VehicleController extends AbstractController
         $specificFilter = $vehicleFiltersService->fetchFilterDataByVehicleType('motorcycle');
         
         if ($search) {
-            $motorcycles = $vehicleRepository->findMotorcyclesBySearch($search);
+            $motorcycles = $vehicleRepository->findMotorcyclesBySearch($search, []);
         } else {
-            $motorcycles = $vehicleRepository->findMotorcyclesByFilters($filters);
+            $motorcycles = $vehicleRepository->findMotorcyclesByFilters($filters, []);
         }
 
 
@@ -166,9 +166,9 @@ class VehicleController extends AbstractController
         $specificFilter = $vehicleFiltersService->fetchFilterDataByVehicleType('van');
 
         if ($search) {
-            $vans = $vehicleRepository->findVansBySearch($search);
+            $vans = $vehicleRepository->findVansBySearch($search, []);
         } else {
-            $vans = $vehicleRepository->findVansByFilters($filters);
+            $vans = $vehicleRepository->findVansByFilters($filters, []) ;
         }
 
         $vanPerPage = $paginator->paginate(
