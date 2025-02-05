@@ -1,136 +1,158 @@
 {% extends 'base.html.twig' %}
 {% block title %}Nos Motos{% endblock %}
 {% block content %}
-<section id="shop" class="bg-[#F5F5F0]">
+<section id="shop" class="bg-[#F5F5F0] pt-20">
     <div class="mx-auto">
-        <div class="bg-primary py-16 relative">
-            <div class="absolute top4 left-4">
-                <a href="{{ path('app_collections') }}"
-                   class="bg-[#8B4513] text-white hover:bg-white hover:text-black border-black rounded-full px-6 py-3 text-sm transition-all duration-300 flex items-center shadow-md hover:shadow-lg">
-                    <i class="fas fa-arrow-left mr-2"></i>
-                </a>
+        <div class="relative py-16">
+            <div class="absolute inset-0 bg-gradient-to-tr from-gray-900/90 to-black/90">
+                <img src="{{ asset('template-html/assets/images/ban14.png') }}" 
+                     alt="Background" 
+                     class="w-full h-full object-cover opacity-50">
             </div>
 
-            <div class="mb-12 text-center">
-            {% if app.request.attributes.get('_route') == 'app_available' %}
-
-                <h1 class="text-4xl font-playfair font-bold text-[#8B4513]">Nos Motos Disponibles</h1>
-
-                {% if startDateTime is not empty and endDateTime is not empty %}
-                    <p class="text-gray-600 mt-4 max-w-2xl mx-auto">
-                        Découvrez nos motos disponibles du
-                        {{ startDateTime|date('d/m/Y H:i') }}
-                        au
-                        {{ endDateTime|date('d/m/Y H:i') }}
-                        pour votre prochaine aventure. 🏍️✨
-                    </p>
-                {% endif %}
-            {% else %}
-                <h1 class="text-4xl font-playfair font-bold text-[#8B4513]">Nos Motos de Collection</h1>
-                <p class="text-gray-600 mt-4 max-w-2xl mx-auto">
-                Découvrez notre sélection de motos d'exception, mêlant puissance et élégance pour des sensations uniques.
-                </p>
-            {% endif %}
-        </div>
-
-
-        <div class="max-w-3xl mx-auto">
-            {% include ('parts/search/_motorcycle_search.html.twig') %}
-        </div>
-    </div>
-
- <div class="container">
-     {% if search %}
-         <div class="mb-8 mt-6 text-center bg-white py-6 px-4 rounded-lg shadow-md">
-             <p class="text-gray-600 flex items-center justify-center">
-                 {% if motorcycles|length > 0 %}
-                     <span class="font-semibold text-[#8B4513]">{{ motorcycles|length }}</span> &nbsp; résultat(s) trouvé(s) pour "<span class="font-semibold text-[#8B4513]">{{ search }}</span>"
-                 {% else %}
-                     <i class="fas fa-times-circle text-[#8B4513] mr-2"></i>
-                     Aucun résultat trouvé pour "<span class="font-semibold text-[#8B4513]">{{ search }}</span>"
-                 {% endif %}
-             </p>
-         </div>
-     {% endif %}
-
-     <div class="block md:hidden text-center py-4">
-         <button id="toggle-filters"
-                 class="bg-[#8B4513] text-white py-2 px-4 rounded-full focus:outline-none">
-             Voir les filtres
-         </button>
-         <script>
-             document.addEventListener("DOMContentLoaded", () => {
-                 const toggleButton = document.getElementById("toggle-filters");
-                 const filters = document.getElementById("filters");
-
-                 if (toggleButton && filters) {
-                     toggleButton.addEventListener("click", () => {
-                         filters.classList.toggle("hidden");
-                     });
-                 }
-             });
-         </script>
-     </div>
-        <div class="flex flex-col md:flex-row my-8">
-            <div id="filters" class="w-full md:w-1/4 p-6 hidden md:block bg-white shadow-lg rounded-lg">
-            {% include 'parts/filters/_motorcycle_filters.html.twig' %}
-
-            </div>
-
-            <!-- Products List -->
-            <div class="w-full md:w-3/4 p-6">
-                <!-- Products grid -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- All Car -->
-                {% for motorcylce in motorcycles %}
-                    {% include 'parts/card/favorite/_motorcycle_card.html.twig' %}
-                {% endfor %}
+            <div class="relative">
+                <div class="absolute top4 left-4">
+                    <a href="{{ path('app_collections') }}"
+                       class="bg-[#8B4513] text-white hover:bg-white hover:text-black border-black rounded-full px-6 py-3 text-sm transition-all duration-300 flex items-center shadow-md hover:shadow-lg">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                    </a>
                 </div>
-                <!-- Pagination -->
-                {{ knp_pagination_render(motorcycles) }}
 
+                <div class="mb-12 text-center">
+                    {% if app.request.attributes.get('_route') == 'app_available' %}
+                        <h1 class="text-4xl font-playfair font-bold text-white">Nos Motos Disponibles</h1>
+                        {% if startDateTime is not empty and endDateTime is not empty %}
+                            <p class="text-gray-300 mt-4 max-w-2xl mx-auto">
+                                Découvrez nos motos disponibles du
+                                {{ startDateTime|date('d/m/Y H:i') }}
+                                au
+                                {{ endDateTime|date('d/m/Y H:i') }}
+                                pour votre prochaine aventure. 🏍️✨
+                            </p>
+                        {% endif %}
+                    {% else %}
+                        <h1 class="text-4xl font-playfair font-bold text-white">Nos Motos de Collection</h1>
+                        <p class="text-gray-300 mt-4 max-w-2xl mx-auto">
+                            Découvrez notre sélection de motos d'exception, mêlant puissance et élégance pour des sensations uniques.
+                        </p>
+                    {% endif %}
+                </div>
+
+                <div class="max-w-3xl mx-auto">
+                    <form method="get" action="{{ path('app_motorcycle') }}" class="flex items-center gap-4">
+                        <div class="flex-1 relative">
+                            <input type="text"
+                                   name="search"
+                                   value="{{ search|default('') }}"
+                                   placeholder="Rechercher une moto par marque ou modèle..."
+                                   class="w-full px-6 py-3 border-2 border-[#8B4513] bg-white focus:outline-none focus:ring-2 focus:ring-[#8B4513]/50 placeholder-gray-400 rounded-lg">
+                            {% if search %}
+                                <a href="{{ path('app_motorcycle') }}"
+                                   class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                                    <i class="fas fa-times"></i>
+                                </a>
+                            {% endif %}
+                        </div>
+                        <button type="submit"
+                                class="bg-[#8B4513] text-[#F5F5F0] px-8 py-3 hover:bg-[#734010] transition-colors duration-300 flex items-center font-playfair rounded-lg">
+                            <i class="fas fa-search mr-2"></i>
+                            Rechercher
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
 
-</div>
-    <!-- Scroll to top button -->
-    <button id="scrollToTopBtn" class="fixed bottom-6 right-6 bg-primary text-white rounded-full p-4 shadow-lg border-2 border-gray-900 hover:bg-primary/10 transition-all duration-300 ease-in-out" style="display: none;">
-        <i class="fas fa-arrow-up text-xl text-gray-900"></i>
-    </button>
+        <div class="container">
+            {% if search %}
+                <div class="mb-8 mt-6 text-center bg-white py-6 px-4 rounded-lg shadow-md">
+                    <p class="text-gray-600 flex items-center justify-center">
+                        {% if motorcycles|length > 0 %}
+                            <span class="font-semibold text-[#8B4513]">{{ motorcycles|length }}</span> &nbsp; résultat(s) trouvé(s) pour "<span class="font-semibold text-[#8B4513]">{{ search }}</span>"
+                        {% else %}
+                            <i class="fas fa-times-circle text-[#8B4513] mr-2"></i>
+                            Aucun résultat trouvé pour "<span class="font-semibold text-[#8B4513]">{{ search }}</span>"
+                        {% endif %}
+                    </p>
+                </div>
+            {% endif %}
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const scrollToTopBtn = document.getElementById('scrollToTopBtn');
-            const footer = document.querySelector('footer'); // Sélectionne le footer
-            const footerHeight = footer ? footer.offsetHeight : 0; // Récupère la hauteur du footer
+            <div class="block md:hidden text-center py-4">
+                <button id="toggle-filters"
+                        class="bg-[#8B4513] text-white py-2 px-4 rounded-full focus:outline-none">
+                    Voir les filtres
+                </button>
+                <script>
+                    document.addEventListener("DOMContentLoaded", () => {
+                        const toggleButton = document.getElementById("toggle-filters");
+                        const filters = document.getElementById("filters");
 
-            // Masque le bouton au début
-            scrollToTopBtn.style.display = "none";
+                        if (toggleButton && filters) {
+                            toggleButton.addEventListener("click", () => {
+                                filters.classList.toggle("hidden");
+                            });
+                        }
+                    });
+                </script>
+            </div>
+            <div class="flex flex-col md:flex-row my-8">
+                <div id="filters" class="w-full md:w-1/4 p-6 hidden md:block bg-white shadow-lg rounded-lg">
+                    {% include 'parts/filters/_motorcycle_filters.html.twig' %}
+                </div>
 
-            // Affiche le bouton lorsque l'utilisateur défile de plus de 150px
-            window.onscroll = function() {
-                if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-                    scrollToTopBtn.style.display = "block";
-                } else {
-                    scrollToTopBtn.style.display = "none";
-                }
-            };
+                <!-- Products List -->
+                <div class="w-full md:w-3/4 p-6">
+                    <!-- Products grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- All Car -->
+                    {% for motorcylce in motorcycles %}
+                        {% include 'parts/card/favorite/_motorcycle_card.html.twig' %}
+                    {% endfor %}
+                    </div>
+                    <!-- Pagination -->
+                    {{ knp_pagination_render(motorcycles) }}
+                </div>
+            </div>
+        </div>
 
-            // Ajuste la position du bouton lors du redimensionnement de la fenêtre
-            window.addEventListener('resize', function() {
-                const footerHeight = footer ? footer.offsetHeight : 0;
-                scrollToTopBtn.style.bottom = `${footerHeight + 20}px`; // Ajoute 20px d'espace entre le bouton et le footer
-            });
+        <!-- Scroll to top button -->
+        <button id="scrollToTopBtn" class="fixed bottom-6 right-6 bg-primary text-white rounded-full p-4 shadow-lg border-2 border-gray-900 hover:bg-primary/10 transition-all duration-300 ease-in-out" style="display: none;">
+            <i class="fas fa-arrow-up text-xl text-gray-900"></i>
+        </button>
 
-            // Fonction pour faire défiler la page jusqu'en haut lorsqu'on clique sur le bouton
-            scrollToTopBtn.onclick = function() {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+                const footer = document.querySelector('footer'); // Sélectionne le footer
+                const footerHeight = footer ? footer.offsetHeight : 0; // Récupère la hauteur du footer
+
+                // Masque le bouton au début
+                scrollToTopBtn.style.display = "none";
+
+                // Affiche le bouton lorsque l'utilisateur défile de plus de 150px
+                window.onscroll = function() {
+                    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                        scrollToTopBtn.style.display = "block";
+                    } else {
+                        scrollToTopBtn.style.display = "none";
+                    }
+                };
+
+                // Ajuste la position du bouton lors du redimensionnement de la fenêtre
+                window.addEventListener('resize', function() {
+                    const footerHeight = footer ? footer.offsetHeight : 0;
+                    scrollToTopBtn.style.bottom = `${footerHeight + 20}px`; // Ajoute 20px d'espace entre le bouton et le footer
                 });
-            };
-        });
-    </script>
+
+                // Fonction pour faire défiler la page jusqu'en haut lorsqu'on clique sur le bouton
+                scrollToTopBtn.onclick = function() {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                };
+            });
+        </script>
+    </div>
 </section>
 {% endblock %}

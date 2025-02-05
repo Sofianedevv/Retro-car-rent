@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use Flasher\Prime\FlasherInterface;
+use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
 
 class SecurityController extends AbstractController
@@ -30,9 +31,18 @@ class SecurityController extends AbstractController
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
+        $errorMessage = null;
+        if ($error) {
+            if ($error instanceof BadCredentialsException) {
+                $errorMessage = 'Les identifiants fournis sont incorrects.';
+            } else {
+                $errorMessage = $error->getMessage();
+            }
+        }
+
         return $this->render('security/login.html.twig', [
-            'error' => $error,
             'last_username' => $lastUsername,
+            'error' => $errorMessage,
         ]);
     }
 

@@ -17,9 +17,8 @@ use Flasher\Prime\FlasherInterface;
 
 class InvoiceController extends AbstractController
 {
-    #[Route('/vos-factures/{clientId}', name: 'app_invoice')]
+    #[Route('/vos-factures', name: 'app_invoice')]
     public function getInvoices(
-        int $clientId,
         PdfService $pdf,
         ReservationRepository $reservationRepository,
         FlasherInterface $flasher
@@ -31,11 +30,8 @@ class InvoiceController extends AbstractController
            $flasher->addInfo( 'Vous devez être connecté pour visualiser vos factures.');
             return $this->redirectToRoute('app_login');
         }
-        if (!$user || $user->getId() !== $clientId) {
-           $flasher->addInfo( 'Vous devez être connecté pour visualiser vos factures ou vous ne pouvez voir que vos propres factures.');
-            return $this->redirectToRoute('app_login');
-        }
-        $reservations = $reservationRepository->findBy(['client' => $clientId]);
+        
+        $reservations = $reservationRepository->findBy(['client' => $user->getId()]);
         $invoices = [];
         foreach ($reservations as $reservation) {
             $invoice = $reservation->getInvoice();
@@ -57,23 +53,19 @@ class InvoiceController extends AbstractController
         ]);
     }
 
-    #[Route('/factures/{clientId}/{reservationId}', name: 'app_invoice_download')]
-    public function downloadInvoice(int $clientId, int $reservationId, InvoiceRepository $invoiceRepository, PdfService $pdfService): Response
+    #[Route('/factures/{reservationId}', name: 'app_invoice_download')]
+    public function downloadInvoice(int $reservationId, InvoiceRepository $invoiceRepository, PdfService $pdfService): Response
     {
         $user = $this->getUser();
         if (!$user) {
             return $this->redirectToRoute('app_login');
         }
 
-        if ($user->getId() !== $clientId) {
-            return $this->json(['error' => 'Vous n\'êtes pas autorisé à télécharger cette facture.'], Response::HTTP_FORBIDDEN);
-        }
-
         $invoice = $invoiceRepository->findOneBy([
             'reservation' => $reservationId,
         ]);
 
-        if (!$invoice || $invoice->getReservation()->getClient()->getId() !== $clientId) {
+        if (!$invoice || $invoice->getReservation()->getClient()->getId() !== $user->getId()) {
             return $this->json(['error' => 'Facture introuvable ou vous n\'êtes pas autorisé à accéder à cette facture.'], Response::HTTP_FORBIDDEN);
         }
 

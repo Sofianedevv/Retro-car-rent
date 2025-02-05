@@ -1,13 +1,10 @@
 <div class="group relative bg-gray-50 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-500" data-price="{{ vehicle.price }}">
-	<!-- Image Section -->
 <div class="relative overflow-hidden h-64">
 		<img src="{{vehicle.defaultImage}}"
 			 alt="{{vehicle.model}}"
 			 class="w-full h-full object-cover transform group-hover:scale-110 transition-all duration-700">
-		<!-- Overlay -->
 		<div class="absolute inset-0 bg-gradient-to-t from-gray-900/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
-	<!-- Rating Badge -->
 	{% if vehicle.averageRating is defined %}
 		<div class="absolute top-4 left-4 flex items-center bg-gray-100 text-gray-900 px-3 py-1 rounded-full shadow-lg font-bold text-sm z-10" title="le rating">
 			<i class="fas fa-star text-yellow-500 mr-1"></i>
@@ -15,7 +12,6 @@
 		</div>
 	{% endif %}
 
-	<!-- Favorite Badge -->
 	<div class="absolute top-4 right-4 flex items-center bg-gray-50 text-gray-900 px-3 py-1 rounded-full shadow-lg font-bold text-sm z-10">
 		<form action="{{ path('app_favorite_delete', {'vehicleId': vehicle.id}) }}" method="post">
 			<button type="submit" class="text-red-500 hover:text-gray-400 transition-all duration-200" title="supprimer des favoris">
@@ -26,32 +22,26 @@
 
 </div>
 
-	<!-- Content Section -->
 	<div class="p-6 space-y-4">
-		<!-- Title Section -->
 		<div class="flex justify-between items-center">
 			<h3 class="font-playfair text-xl font-bold text-gray-900">{{ vehicle.brand }}<span class="text-gray-500 font-light text-sm">({{ vehicle.year }})</span></h3>
 			<p class="text-gray-600 text-sm">{{ vehicle.model }}</p>
 		</div>
 
-		<!-- Divider -->
 		<hr class="border-t border-gray-300">
 
 		<div class="flex flex-col space-y-4">
 			<div class="flex items-center text-sm py-3 px-4 bg-primary/10 rounded-lg space-x-6">
-				<!-- Fuel Type -->
 				<div class="flex items-center gap-2 text-gray-600">
 					<i class="fas fa-gas-pump text-lg text-gray-900"></i>
 					<span class="text-sm">{{ vehicle.fuelType|capitalize }}</span>
 				</div>
 
-				<!-- Mileage -->
 				<div class="flex items-center gap-2 text-gray-600">
 					<i class="fas fa-road text-lg text-gray-900"></i>
 					<span class="text-sm">{{ vehicle.mileage }}Km</span>
 				</div>
 
-				<!-- Price -->
 				<div class="ml-auto text-right">
 					<span class="text-gray-900 font-bold text-xl">{{ vehicle.price }}€</span>
 					<span class="text-gray-500">/jour</span>
@@ -59,16 +49,13 @@
 			</div>
 
 		</div>
-		<!-- Buttons Section -->
 		<div class="grid grid-cols-2 gap-3 mt-4">
-			<!-- Détails -->
 			<a href="{{ path('app_vehicle_show_details', { vehicleId: vehicle.id })}}"
 			   class="flex items-center justify-center bg-gray-50 text-gray-900 border-2 border-gray-900 hover:bg-gray-900 hover:text-white rounded-lg font-bold px-4 py-2 transition-all duration-300 gap-2">
 				<i class="fas fa-info-circle"></i>
 				Détails
 			</a>
 
-			<!-- Réserver -->
 			<a href="{{ path('app_add_reservation', {'vehicleId': vehicle.id}) }}"
 			   class="flex items-center justify-center bg-gray-900 text-white hover:border-2 hover:border-gray-900 hover:text-gray-900 hover:bg-white rounded-lg font-bold px-4 py-2 transition-all duration-300 gap-2">
 				<i class="fas fa-calendar-alt"></i>

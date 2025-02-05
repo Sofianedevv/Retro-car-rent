@@ -135,7 +135,6 @@ class VehicleOption
     public function removeReservationVehicleOption(ReservationVehicleOption $reservationVehicleOption): static
     {
         if ($this->reservationVehicleOptions->removeElement($reservationVehicleOption)) {
-            // set the owning side to null (unless already changed)
             if ($reservationVehicleOption->getVehicleOptions() === $this) {
                 $reservationVehicleOption->setVehicleOptions(null);
             }

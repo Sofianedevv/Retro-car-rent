@@ -1,42 +1,65 @@
 {% extends 'base.html.twig' %}
-{% block title %}Nos Vans
-{% endblock %}
+{% block title %}Nos Vans{% endblock %}
 {% block content %}
-	<section id="shop" class="bg-[#F5F5F0]">
+	<section id="shop" class="bg-[#F5F5F0] pt-20">
 		<div class="mx-auto">
-			<div class="bg-primary py-16 relative">
-				<div class="absolute top4 left-4">
-					<a href="{{ path('app_collections') }}" class="bg-[#8B4513] text-white hover:bg-white hover:text-black border-black rounded-full px-6 py-3 text-sm transition-all duration-300 flex items-center shadow-md hover:shadow-lg">
-						<i class="fas fa-arrow-left mr-2"></i>
-					</a>
+			<div class="relative py-16">
+				<div class="absolute inset-0 bg-gradient-to-tr from-gray-900/90 to-black/90">
+					<img src="{{ asset('template-html/assets/images/ban15.png') }}" 
+						 alt="Background" 
+						 class="w-full h-full object-cover opacity-50">
 				</div>
 
-				<div class="mb-12 text-center">
+				<div class="relative">
+					<div class="absolute top4 left-4">
+						<a href="{{ path('app_collections') }}"
+						   class="bg-[#8B4513] text-white hover:bg-white hover:text-black border-black rounded-full px-6 py-3 text-sm transition-all duration-300 flex items-center shadow-md hover:shadow-lg">
+							<i class="fas fa-arrow-left mr-2"></i>
+						</a>
+					</div>
 
-					{% if app.request.attributes.get('_route') == 'app_available' %}
-						<h1 class="text-4xl font-playfair font-bold text-[#8B4513]">Nos Vans Disponibles</h1>
-
-						{% if startDateTime is not empty and endDateTime is not empty %}
-							<p class="text-gray-600 mt-4 max-w-2xl mx-auto">
-								Découvrez nos vans disponibles du
-								{{ startDateTime|date('d/m/Y H:i') }}
-								au
-								{{ endDateTime|date('d/m/Y H:i') }}
-								pour votre prochaine aventure. 🚐✨
+					<div class="mb-12 text-center">
+						{% if app.request.attributes.get('_route') == 'app_available' %}
+							<h1 class="text-4xl font-playfair font-bold text-white">Nos Vans Disponibles</h1>
+							{% if startDateTime is not empty and endDateTime is not empty %}
+								<p class="text-gray-300 mt-4 max-w-2xl mx-auto">
+									Découvrez nos vans disponibles du
+									{{ startDateTime|date('d/m/Y H:i') }}
+									au
+									{{ endDateTime|date('d/m/Y H:i') }}
+									pour votre prochaine aventure. 🚐✨
+								</p>
+							{% endif %}
+						{% else %}
+							<h1 class="text-4xl font-playfair font-bold text-white">Nos Vans de Collection</h1>
+							<p class="text-gray-300 mt-4 max-w-2xl mx-auto">
+								Partez à l'aventure avec nos vans d'époque, alliant style rétro et confort moderne pour des voyages inoubliables.
 							</p>
 						{% endif %}
-					{% else %}
-						<h1 class="text-4xl font-playfair font-bold text-[#8B4513]">Nos Vans de Collection</h1>
-						<p class="text-gray-600 mt-4 max-w-2xl mx-auto">
-                        Partez à l'aventure avec nos vans d'époque, alliant style rétro et confort moderne pour des voyages inoubliables.
-						</p>
-					{% endif %}
+					</div>
 
-				</div>
-
-				<div class="max-w-3xl mx-auto">
-                {% include ('parts/search/_van_search.html.twig') %}
-
+					<div class="max-w-3xl mx-auto">
+						<form method="get" action="{{ path('app_van') }}" class="flex items-center gap-4">
+							<div class="flex-1 relative">
+								<input type="text"
+									   name="search"
+									   value="{{ search|default('') }}"
+									   placeholder="Rechercher une van par marque ou modèle..."
+									   class="w-full px-6 py-3 border-2 border-[#8B4513] bg-white focus:outline-none focus:ring-2 focus:ring-[#8B4513]/50 placeholder-gray-400 rounded-lg">
+								{% if search %}
+									<a href="{{ path('app_van') }}"
+									   class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
+										<i class="fas fa-times"></i>
+									</a>
+								{% endif %}
+							</div>
+							<button type="submit"
+									class="bg-[#8B4513] text-[#F5F5F0] px-8 py-3 hover:bg-[#734010] transition-colors duration-300 flex items-center font-playfair rounded-lg">
+								<i class="fas fa-search mr-2"></i>
+								Rechercher
+							</button>
+						</form>
+					</div>
 				</div>
 			</div>
 

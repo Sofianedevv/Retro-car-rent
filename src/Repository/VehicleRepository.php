@@ -92,7 +92,7 @@ public function findCars(): array
             ->getResult();
     }
 
-    public function findCarsByFilters(array $filters): array
+    public function findCarsByFilters(array $filters, array $reservedVehiclesIds): array
     {
         $qb = $this->createQueryBuilder('v')
             ->select('c')
@@ -153,6 +153,12 @@ public function findCars(): array
                ->setParameter('maxMileage', $filters['maxMileage']);
         }
 
+        if(!empty($reservedVehiclesIds)) {
+            $qb->andWhere('c.id NOT IN (:reservedVehiclesIds)')
+               ->setParameter('reservedVehiclesIds', $reservedVehiclesIds);
+        
+            }
+
         return $qb->getQuery()->getResult();
     }
 
@@ -169,7 +175,7 @@ public function findCars(): array
         return array_column($results, 'brand');
     }
 
-    public function findMotorcyclesByFilters(array $filters): array
+    public function findMotorcyclesByFilters(array $filters, array $reservedVehiclesIds): array
     {
         $qb = $this->createQueryBuilder('v')
             ->select('m')
@@ -224,6 +230,11 @@ public function findCars(): array
             $qb->andWhere('m.mileage <= :maxMileage')
                ->setParameter('maxMileage', $filters['maxMileage']);
         }
+        if(!empty($reservedVehiclesIds)) {
+            $qb->andWhere('m.id NOT IN (:reservedVehiclesIds)')
+               ->setParameter('reservedVehiclesIds', $reservedVehiclesIds);
+        
+            }
 
         return $qb->getQuery()->getResult();
     }
@@ -241,7 +252,7 @@ public function findCars(): array
         return array_column($results, 'brand');
     }
 
-    public function findVansByFilters(array $filters): array
+    public function findVansByFilters(array $filters, array $reservedVehiclesIds): array
     {
         $qb = $this->createQueryBuilder('v')
             ->select('van')
@@ -302,6 +313,11 @@ public function findCars(): array
                ->setParameter('nbDoorsOptions', $filters['nbDoors']);
         }
 
+        if(!empty($reservedVehiclesIds)) {
+            $qb->andWhere('van.id NOT IN (:reservedVehiclesIds)')
+               ->setParameter('reservedVehiclesIds', $reservedVehiclesIds);
+        }
+
         return $qb->getQuery()->getResult();
     }
 
@@ -319,7 +335,7 @@ public function findCars(): array
 
         return array_column($results, 'brand');
     }
-    public function findAllVehicleByFilters(array $filters): array
+    public function findAllVehicleByFilters(array $filters, array $reservedVehiclesIds): array
     {
         $qb = $this->createQueryBuilder('v');
 
@@ -363,6 +379,11 @@ public function findCars(): array
                    ->setParameter('maxMileage', $filters['maxMileage']);
             }
 
+            if(!empty($reservedVehiclesIds)) {
+                $qb->andWhere('v.id NOT IN (:reservedVehiclesIds)')
+                   ->setParameter('reservedVehiclesIds', $reservedVehiclesIds);
+            }
+
 
             return $qb->getQuery()->getResult();
     }
@@ -377,52 +398,78 @@ public function findCars(): array
         return array_column($results, 'brand');
     }
 
-    public function findVehicleBySearch (string $search): array
+    public function findVehicleBySearch (string $search, array $reservedVehiclesIds): array
     {
-        return $this->createQueryBuilder('v')
+        $qb = $this->createQueryBuilder('v')
             ->select('v')
             ->where('v.brand LIKE :search')
             ->orWhere('v.model LIKE :search')
-            ->setParameter('search', '%'.$search.'%')
-            ->getQuery()
-            ->getResult();
+            ->setParameter('search', '%'.$search.'%');
+
+            if(!empty($reservedVehiclesIds)) {
+                $qb->andWhere('v.id NOT IN (:reservedVehiclesIds)')
+                   ->setParameter('reservedVehiclesIds', $reservedVehiclesIds);
+                }
+
+        return $qb->getQuery()
+                  ->getResult();
     }
 
 
-    public function findVansBySearch(string $search): array
+    public function findVansBySearch(string $search, array $reservedVehiclesIds): array
     {
-        return $this->createQueryBuilder('v')
+        $qb = $this->createQueryBuilder('v')
             ->select('van')
             ->from('App\Entity\Van', 'van')
             ->where('van.brand LIKE :search')
             ->orWhere('van.model LIKE :search')
-            ->setParameter('search', '%'.$search.'%')
-            ->getQuery()
-            ->getResult();
+            ->setParameter('search', '%'.$search.'%');
+
+            if(!empty($reservedVehiclesIds)) {
+                $qb->andWhere('van.id NOT IN (:reservedVehiclesIds)')
+                   ->setParameter('reservedVehiclesIds', $reservedVehiclesIds);
+                }
+
+        return $qb->getQuery()
+                  ->getResult();
     }
 
-    public function findCarsBySearch(string $search): array
+    public function findCarsBySearch(string $search, array $reservedVehiclesIds): array
     {
-        return $this->createQueryBuilder('v')
+        $qb = $this->createQueryBuilder('v')
             ->select('c')
             ->from('App\Entity\Car', 'c')
             ->where('c.brand LIKE :search')
             ->orWhere('c.model LIKE :search')
-            ->setParameter('search', '%'.$search.'%')
-            ->getQuery()
-            ->getResult();
+            ->setParameter('search', '%'.$search.'%');
+
+            if(!empty($reservedVehiclesIds)) {
+                $qb->andWhere('c.id NOT IN (:reservedVehiclesIds)')
+                   ->setParameter('reservedVehiclesIds', $reservedVehiclesIds);
+                }
+
+        return $qb->getQuery()
+                  ->getResult();
+    
     }
 
-    public function findMotorcyclesBySearch(string $search): array
+    public function findMotorcyclesBySearch(string $search, array $reservedVehiclesIds): array
     {
-        return $this->createQueryBuilder('v')
+        $qb = $this->createQueryBuilder('v')
             ->select('m')
             ->from('App\Entity\Motorcycle', 'm')
             ->where('m.brand LIKE :search')
             ->orWhere('m.model LIKE :search')
-            ->setParameter('search', '%'.$search.'%')
-            ->getQuery()
-            ->getResult();
+            ->setParameter('search', '%'.$search.'%');
+            
+            if(!empty($reservedVehiclesIds)) {
+                $qb->andWhere('m.id NOT IN (:reservedVehiclesIds)')
+                   ->setParameter('reservedVehiclesIds', $reservedVehiclesIds);
+                }
+
+        return $qb->getQuery()
+                  ->getResult();
+    
     }
 
     public function findBestRated(int $limit = 5): array
