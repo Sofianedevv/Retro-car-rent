@@ -117,6 +117,18 @@ class MotorcycleType extends AbstractType
                     'class' => 'text-sm font-medium text-gray-700'
                 ]
             ])
+            ->add('fuelType', ChoiceType::class, [
+                'label' => 'Type de carburant',
+                'choices' => [
+                    'Essence' => 'essence',
+                    'Diesel' => 'diesel',
+                    'Électrique' => 'electrique',
+                    'Hybride' => 'hybride'
+                ],
+                'attr' => [
+                    'class' => 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500'
+                ]
+            ])
             ->add('imageFiles', FileType::class, [
                 'label' => 'Photos du véhicule',
                 'multiple' => true,

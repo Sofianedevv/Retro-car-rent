@@ -13,7 +13,6 @@
                 Accès non autorisé - Rôle administrateur requis
             </div>
         {% endif %}
-        {# Header #}
         <div class="flex justify-between items-center">
             <div>
                 <h1 class="text-3xl font-semibold text-gray-800">Gestion des utilisateurs</h1>
@@ -21,7 +20,6 @@
             </div>
         </div>
 
-        {# Users Table #}
         <div class="bg-white rounded-lg shadow overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
@@ -46,7 +44,6 @@
         </div>
     </div>
 
-    {# Modal pour créer/éditer un utilisateur #}
     <div id="userModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
         <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
             <div class="mt-3">
@@ -54,7 +51,6 @@
                 <form id="userForm" class="mt-4">
                     <div class="space-y-4">
                         <div id="userInfo" class="mb-4 text-gray-600">
-                            <!-- Les informations de l'utilisateur seront insérées ici -->
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Rôles</label>
@@ -93,7 +89,6 @@ class UserManager {
     }
 
     init() {
-        // Attendre que le DOM soit complètement chargé
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => this.initializeApp());
         } else {
@@ -238,7 +233,6 @@ class UserManager {
 
         document.body.appendChild(notificationDiv);
 
-        // Supprimer la notification après 3 secondes
         setTimeout(() => {
             notificationDiv.remove();
         }, 3000);
@@ -254,23 +248,19 @@ class UserManager {
             const user = await response.json();
             console.log('User data:', user); // Debug
 
-            // Afficher le modal
             document.getElementById('modal-title').textContent = 'Modifier les rôles';
             const form = document.getElementById('userForm');
             
-            // Afficher les informations de l'utilisateur
             document.getElementById('userInfo').innerHTML = `
                 <p><strong>Email:</strong> ${user.email}</p>
                 <p><strong>Nom:</strong> ${user.firstName} ${user.lastName}</p>
             `;
             
-            // Sélectionner les rôles actuels
             const rolesSelect = form.elements.roles;
             Array.from(rolesSelect.options).forEach(option => {
                 option.selected = user.roles.includes(option.value);
             });
             
-            // Stocker l'ID de l'utilisateur dans le formulaire
             form.dataset.userId = userId;
             
             this.showCreateUserModal();
@@ -285,7 +275,6 @@ class UserManager {
         const form = e.target;
         const userId = form.dataset.userId;
         
-        // Préparer les données
         const data = {
             roles: Array.from(form.elements.roles.selectedOptions).map(option => option.value)
         };
@@ -326,7 +315,6 @@ class UserManager {
         const modal = document.getElementById('userModal');
         if (modal) {
             modal.classList.add('hidden');
-            // Réinitialiser le formulaire
             const form = document.getElementById('userForm');
             if (form) {
                 form.reset();
@@ -338,7 +326,6 @@ class UserManager {
     }
 }
 
-// Initialiser l'application
 const userManager = new UserManager();
 </script>
 {% endblock %} 
