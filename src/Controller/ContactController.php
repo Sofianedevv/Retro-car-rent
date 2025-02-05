@@ -35,7 +35,7 @@ class ContactController extends AbstractController
 
             $email = new Email();
             $email->from('test@retro-car-rent.com')
-                  ->to('ca441ed3192ec9@inbox.mailtrap.io')
+                  ->to('0575e765519fc7@inbox.mailtrap.io')
                   ->subject('Contact from ' . $contact->getName())
                   ->html($this->renderView('emails/contact.html.twig', [
                       'contact' => $contact
