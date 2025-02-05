@@ -31,15 +31,6 @@ class VehicleService {
         };
     }
    
-    public function findAvailableVehiclesByType(array $vehicles, string $type): array
-    {
-        return array_filter($vehicles, fn($vehicle) => match ($type) {
-            'car' => $vehicle instanceof Car,
-            'motorcycle' => $vehicle instanceof Motorcycle,
-            'van' => $vehicle instanceof Van,
-            default => true,
-        });
-    }
-  
+ 
     
 }

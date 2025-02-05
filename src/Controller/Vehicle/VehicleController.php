@@ -292,32 +292,25 @@ public function showAvailableVehicles(
     $overlappingReservations = $reservationRepository->findOverlappingReservations($startDate, $endDate);
     
     $reservedVehiclesIds = array_map(fn($reservation) => $reservation->getVehicle()->getId(), $overlappingReservations);
-    $availableVehicles = array_filter($allVehicles, fn($vehicle) => !in_array($vehicle->getId(), $reservedVehiclesIds));
-    
-    $filteredVehicles = $vehicleService->findAvailableVehiclesByType($availableVehicles, $type);
-    
-    if (empty($filteredVehicles)) {
-        $flasher->info('Aucun véhicule disponible pour les dates et heures sélectionnées.');
-        return $this->redirectToRoute('app_home');
-    }
-    dump(vars: $filteredVehicles);
-
 
 
     $vehiclesBySearch = match ($type) {
-     'car' => $search ? $vehicleRepository->findCarsBySearch($search) : $vehicleRepository->findCarsByFilters($filters),
-     'motorcycle' => $search ? $vehicleRepository->findMotorcyclesBySearch($search) : $vehicleRepository->findMotorcyclesByFilters($filters),
-     'van' => $search ? $vehicleRepository->findVansBySearch($search) : $vehicleRepository->findVansByFilters($filters),
-     'all' => $search ? $vehicleRepository->findVehicleBySearch($search) : $vehicleRepository->findAllVehicleByFilters($filters)
+     'car' => $search ? $vehicleRepository->findCarsBySearch($search, $reservedVehiclesIds) : $vehicleRepository->findCarsByFilters($filters, $reservedVehiclesIds),
+     'motorcycle' => $search ? $vehicleRepository->findMotorcyclesBySearch($search, $reservedVehiclesIds) : $vehicleRepository->findMotorcyclesByFilters($filters, $reservedVehiclesIds),
+     'van' => $search ? $vehicleRepository->findVansBySearch($search, $reservedVehiclesIds) : $vehicleRepository->findVansByFilters($filters),
+     'all' => $search ? $vehicleRepository->findVehicleBySearch($search, $reservedVehiclesIds) : $vehicleRepository->findAllVehicleByFilters($filters)
      };
      
     dump($vehiclesBySearch);
+
 
     $vehiclePerPage = $paginator->paginate(
         $vehiclesBySearch,
         $request->query->getInt('page', 1),
         10
     );
+
+    dump($vehiclePerPage);
 
     
 
@@ -336,9 +329,6 @@ public function showAvailableVehicles(
             }
         }
     }
-
-
-
 
     switch ($type) {
         case 'car':

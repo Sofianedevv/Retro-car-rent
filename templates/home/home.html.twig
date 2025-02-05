@@ -32,7 +32,7 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="w-full py-3 bg-[#8B4513] text-white font-semibold rounded-lg hover:bg-[#a66321] transition-all duration-300">
+                        <button type="submit" class="w-full py-3 bg-[#8B4513] text-white font-semibold rounded-lg hover:bg-[#a66321] transition-all duration-300" id="search_btn">
                             Rechercher
                         </button>
                     </div>
@@ -231,8 +231,7 @@
 {#    </section>#}
 
     {% block javascripts %}
-
-        <script src="{{ asset('js/checkDatesAvailables.js') }}"></script>
+        <script src="{{ asset('js/check_date.js') }}"></script>
     {% endblock %}
 {% endblock %}
 
