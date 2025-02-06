@@ -82,16 +82,12 @@
                     {% include 'parts/filters/_motorcycle_filters.html.twig' %}
                 </div>
 
-                <!-- Products List -->
                 <div class="w-full md:w-3/4 p-6">
-                    <!-- Products grid -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <!-- All Car -->
-                    {% for motorcylce in motorcycles %}
+                    {% for motorcycle in motorcycles %}
                         {% include 'parts/card/favorite/_motorcycle_card.html.twig' %}
                     {% endfor %}
                     </div>
-                    <!-- Pagination -->
                     {{ knp_pagination_render(motorcycles) }}
                 </div>
             </div>
