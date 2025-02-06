@@ -290,9 +290,9 @@ public function showAvailableVehicles(
 
     $allVehicles = $vehicleRepository->findAll();
     $overlappingReservations = $reservationRepository->findOverlappingReservations($startDate, $endDate);
-    dump($overlappingReservations);
+
     $reservedVehiclesIds = array_map(fn($reservation) => $reservation->getVehicle()->getId(), $overlappingReservations);
-    dump($reservedVehiclesIds);
+
 
     $vehiclesBySearch = match ($type) {
      'car' => $search ? $vehicleRepository->findCarsBySearch($search, $reservedVehiclesIds) : $vehicleRepository->findCarsByFilters($filters, $reservedVehiclesIds),
