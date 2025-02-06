@@ -1,122 +1,129 @@
 {% extends 'base.html.twig' %}
-{% block title %}Nos Véhicules dipsonibles
-{% endblock %}
+{% block title %}Nos Véhicules dipsonibles{% endblock %}
 {% block content %}
-	<section id="shop" class="bg-[#F5F5F0]">
-		<div class="mx-auto">
-			<div class="bg-primary py-16 relative">
-				<div class="absolute top4 left-4">
-					<a href="{{ path('app') }}" class="bg-[#8B4513] text-white hover:bg-white hover:text-black border-black rounded-full px-6 py-3 text-sm transition-all duration-300 flex items-center shadow-md hover:shadow-lg">
-						<i class="fas fa-arrow-left mr-2"></i>
-					</a>
-				</div>
+<section id="all-vehicle" class="bg-[#F5F5F0] pt-20">
+    <div class="mx-auto">
+        <div class="relative py-16">
+            <div class="absolute inset-0 bg-gradient-to-tr from-gray-900/90 to-black/90">
+                <img src="{{ asset('template-html/assets/images/ban11.jpg') }}" 
+                     alt="Background" 
+                     class="w-full h-full object-cover opacity-50">
+            </div>
 
-				<div class="mb-12 text-center">
-					<h1 class="text-4xl font-playfair font-bold text-[#8B4513]">Nos Véhicules disponibles</h1>
-					<p class="text-gray-600 mt-4 max-w-2xl mx-auto">Découvrez nos véhicules disponibles du
-						{{ startDateTime|date('d/m/Y H:i') }}
-						au
-						{{ endDateTime|date('d/m/Y H:i') }}
-						pour votre prochaine aventure. 🚗✨</p>
-				</div>
+            <div class="relative">
+                <div class="absolute top4 left-4">
+                    <a href="{{ path('app_collections') }}"
+                       class="bg-[#8B4513] text-white hover:bg-white hover:text-black border-black rounded-full px-6 py-3 text-sm transition-all duration-300 flex items-center shadow-md hover:shadow-lg">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                    </a>
+                </div>
 
-				<div class="max-w-3xl mx-auto">
+                <div class="mb-12 text-center">
+				<h1 class="text-4xl font-playfair font-bold text-[#8B4513]">Nos Véhicules disponibles</h1>
+				<p class="text-gray-600 mt-4 max-w-2xl mx-auto">Découvrez nos véhicules disponibles du
+				{{ startDateTime|date('d/m/Y H:i') }}
+				au
+				{{ endDateTime|date('d/m/Y H:i') }}
+				pour votre prochaine aventure. 🚗✨</p>
+                </div>
+
+                <div class="max-w-3xl mx-auto">
 				{% include ('parts/search/_vehicles_search.html.twig') %}
-				</div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+			{% if search %}
+			<div class="mb-8 mt-6 text-center bg-white py-6 px-4 rounded-lg shadow-md">
+				<p class="text-gray-600 flex items-center justify-center">
+					{% set totalResults = cars|length + motorcycles|length + vans|length %}
+					{% if totalResults > 0 %}
+						<span class="font-semibold text-[#8B4513]">{{ totalResults }}</span>
+						résultat(s) trouvé(s) pour "<span class="font-semibold text-[#8B4513]">{{ search }}</span>"
+					{% else %}
+						<i class="fas fa-times-circle text-[#8B4513] mr-2"></i>
+						Aucun résultat trouvé pour "<span class="font-semibold text-[#8B4513]">{{ search }}</span>"
+					{% endif %}
+				</p>
 			</div>
+			{% endif %}
+      	      <div class="block md:hidden text-center py-4">
+                <button id="toggle-filters" class="bg-[#8B4513] text-white py-2 px-4 rounded-full focus:outline-none">
+                    Voir les filtres
+                </button>
+                <script>
+                    document.addEventListener("DOMContentLoaded", () => {
+                        const toggleButton = document.getElementById("toggle-filters");
+                        const filters = document.getElementById("filters");
 
-			<div class="container">
-				{% if search %}
-					<div class="mb-8 mt-6 text-center bg-white py-6 px-4 rounded-lg shadow-md">
-						<p class="text-gray-600 flex items-center justify-center">
-							{% set totalResults = cars|length + motorcycles|length + vans|length %}
-							{% if totalResults > 0 %}
-								<span class="font-semibold text-[#8B4513]">{{ totalResults }}</span>
-								résultat(s) trouvé(s) pour "<span class="font-semibold text-[#8B4513]">{{ search }}</span>"
-							{% else %}
-								<i class="fas fa-times-circle text-[#8B4513] mr-2"></i>
-								Aucun résultat trouvé pour "<span class="font-semibold text-[#8B4513]">{{ search }}</span>"
-							{% endif %}
-						</p>
-					</div>
-				{% endif %}
+                        if (toggleButton && filters) {
+                            toggleButton.addEventListener("click", () => {
+                                filters.classList.toggle("hidden");
+                            });
+                        }
+                    });
+                </script>
+            </div>
+        </div>
+        <div class="block md:hidden text-center mb-4">
+            <button id="products-toggle-filters" class="bg-primary text-white py-2 px-4 rounded-full focus:outline-none">Show Filters</button>
+        </div>
+        <div
+            class="flex flex-col md:flex-row">
+            <div id="filters" class="w-full md:w-1/4 p-6 hidden md:block bg-white shadow-lg">
+			{% include 'parts/filters/_general_filters.html.twig' %}
+		</form>
+        </div>
+        <div class="w-full md:w-3/4 p-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+			{% for car in cars %}
+				{% include ('parts/card/favorite/_car_card.html.twig') %}
+			{% endfor %}
 
-				<div class="block md:hidden text-center py-4">
-					<button id="toggle-filters" class="bg-[#8B4513] text-white py-2 px-4 rounded-full focus:outline-none">
-						Voir les filtres
-					</button>
-					<script>
-						document.addEventListener("DOMContentLoaded", () => {
-const toggleButton = document.getElementById("toggle-filters");
-const filters = document.getElementById("filters");
+			{% for motorcycle in motorcycles %}
+				{% include 'parts/card/favorite/_motorcycle_card.html.twig' %}
+			{% endfor %}
 
-if (toggleButton && filters) {
-toggleButton.addEventListener("click", () => {
-filters.classList.toggle("hidden");
-});
-}
-});
-					</script>
-				</div>
-			</div>
-			<div class="block md:hidden text-center mb-4">
-				<button id="products-toggle-filters" class="bg-primary text-white py-2 px-4 rounded-full focus:outline-none">Show Filters</button>
-			</div>
-			<div
-				class="flex flex-col md:flex-row">
-				<div id="filters" class="w-full md:w-1/4 p-6 hidden md:block bg-white shadow-lg">
-					{% include 'parts/filters/_general_filters.html.twig' %}
-				</form>
-			</div>
-			<div class="w-full md:w-3/4 p-6">
-				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-					{% for car in cars %}
-						{% include 'parts/_car_card_shop.html.twig' %}
-					{% endfor %}
+			{% for van in vans %}
+				{% include 'parts/card/favorite/_van_card.html.twig' %}
+			{% endfor %}
 
-					{% for motorcycle in motorcycles %}
-						{% include 'parts/_motorcycle_card_shop.html.twig' %}
-					{% endfor %}
+            </div>
 
-					{% for van in vans %}
-						{% include 'parts/_van_card_shop.html.twig' %}
-					{% endfor %}
-				</div>
+            {{ knp_pagination_render(pagination) }}
 
-				<div class="flex justify-center mt-12">
-					{{ knp_pagination_render(pagination) }}
+        </div>
+    </div>
+</div>
+<button id="scrollToTopBtn" class="fixed bottom-6 right-6 bg-primary text-white rounded-full p-4 shadow-lg border-2 border-gray-900 hover:bg-primary/10 transition-all duration-300 ease-in-out" style="display: none;">
+    <i class="fas fa-arrow-up text-xl text-gray-900"></i>
+</button>
 
-				</div>
-			</div>
-		</div>
-	</div>
-	<button id="scrollToTopBtn" class="fixed bottom-6 right-6 bg-primary text-white rounded-full p-4 shadow-lg border-2 border-gray-900 hover:bg-primary/10 transition-all duration-300 ease-in-out" style="display: none;">
-		<i class="fas fa-arrow-up text-xl text-gray-900"></i>
-	</button>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+        const footer = document.querySelector('footer');
+        const footerHeight = footer ? footer.offsetHeight : 0;
+        scrollToTopBtn.style.display = "none";
+        window.onscroll = function () {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                scrollToTopBtn.style.display = "block";
+            } else {
+                scrollToTopBtn.style.display = "none";
+            }
+        };
+        window.addEventListener('resize', function () {
+            const footerHeight = footer ? footer.offsetHeight : 0;
+            scrollToTopBtn.style.bottom = `${
+                footerHeight + 20
+            }px`;
+        });
+        scrollToTopBtn.onclick = function () {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        };
+    });
+</script>
 
-	<script>
-		document.addEventListener('DOMContentLoaded', function () {
-const scrollToTopBtn = document.getElementById('scrollToTopBtn');
-const footer = document.querySelector('footer');
-const footerHeight = footer ? footer.offsetHeight : 0;
-scrollToTopBtn.style.display = "none";
-window.onscroll = function () {
-if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-scrollToTopBtn.style.display = "block";
-} else {
-scrollToTopBtn.style.display = "none";
-}
-};
-window.addEventListener('resize', function () {
-const footerHeight = footer ? footer.offsetHeight : 0;
-scrollToTopBtn.style.bottom = `${
-footerHeight + 20
-}px`;
-});
-scrollToTopBtn.onclick = function () {
-window.scrollTo({top: 0, behavior: 'smooth'});
-};
-});
-	</script>
-
-</section>{% endblock %}
+{% endblock %}
