@@ -45,7 +45,7 @@ class MotorcycleRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('m')
             ->leftJoin('m.reviews', 'r')
-            ->groupBy('m.id')
+            ->having('COUNT(r.id) > 0')
             ->orderBy('AVG(r.rating)', 'DESC')
             ->setMaxResults($limit)
             ->getQuery()

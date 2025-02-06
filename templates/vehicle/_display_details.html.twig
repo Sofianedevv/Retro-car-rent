@@ -581,7 +581,7 @@
 								fillStars(index);
 							});
 
-							label.addEventListener('mouseout', () => { // Retrouver l'étoile sélectionnée
+							label.addEventListener('mouseout', () => { 
 								const selectedInput = Array.from(inputs).find(input => input.checked);
 								const selectedIndex = selectedInput ? parseInt(selectedInput.value) - 1 : -1;
 								fillStars(selectedIndex);
@@ -937,8 +937,6 @@
 			return date.toLocaleDateString('fr-FR');
 		}
 	</script>
-	<script src={{ asset('js/disabled_range_date.js') }}></script>
-	<script src={{ asset('js/total_price.js') }}></script>
 	<script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}"></script>
 	<script>
 		function initMap() {

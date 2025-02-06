@@ -45,8 +45,8 @@ class CarRepository extends ServiceEntityRepository
     public function findBestRated(int $limit = 4): array
     {
         return $this->createQueryBuilder('c')
-            ->leftJoin('c.reviews', 'r')
-            ->groupBy('c.id')
+            ->leftJoin('c.reviews', 'r') 
+            ->having('COUNT(r.id) > 0')
             ->orderBy('AVG(r.rating)', 'DESC')
             ->setMaxResults($limit)
             ->getQuery()

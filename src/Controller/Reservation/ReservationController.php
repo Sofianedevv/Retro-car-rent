@@ -332,7 +332,7 @@ class ReservationController extends AbstractController
                 $reservation = $reservationRepository->find($reservationId);
                 if ($reservation) {
                     $reservation->setStatus(StatusReservationEnum::CONFIRMED);
-                    $resercation->persist($reservation);
+                    $reservation->persist($reservation);
                     $entityManager->flush();
                 }
             }
