@@ -39,7 +39,7 @@
                                 {% else %}
                                     <a href="{{ path('app_favorite_show') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-50">
                                         <i class="fas fa-heart w-5"></i>
-                                        Vos favoris
+                                        Mes favoris
                                     </a>
                                     
                                     <a href="{{ path('app_all_reservation', {'clientId': app.user.id}) }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-50">
@@ -141,7 +141,7 @@
                             <a href="{{ path('app_favorite_show') }}" 
                                class="block px-4 py-2.5 text-gray-800 hover:text-[#8B4513] transition-all duration-200 rounded-xl hover:bg-gray-100">
                                 <i class="fas fa-heart w-6"></i>
-                                Vos favoris
+                                Mes favoris
                             </a>
                             <a href="{{ path('app_all_reservation', {'clientId': app.user.id}) }}" 
                                class="block px-4 py-2.5 text-gray-800 hover:text-[#8B4513] transition-all duration-200 rounded-xl hover:bg-gray-100">
