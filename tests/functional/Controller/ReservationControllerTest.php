@@ -10,6 +10,7 @@ use App\Entity\User;
 use App\Entity\Reservation;
 use App\Enum\StatusReservationEnum; 
 use Doctrine\ORM\EntityManagerInterface;
+use DateTimeImmutable;
 
 class ReservationControllerTest extends WebTestCase
 {
@@ -26,8 +27,8 @@ class ReservationControllerTest extends WebTestCase
             $testUser->setRoles(['ROLE_USER']);
             $testUser->setFirstName('John');
             $testUser->setLastName('Doe');
-            $testUser->setPhoneNumber('1234567890');
-            $testUser->setCreatedAt(new \DateTimeImmutable());
+            $testUser->setPhoneNumber('0102030405');
+            $testUser->setCreatedAt(new DateTimeImmutable());
             $entityManager->persist($testUser);
             $entityManager->flush();
         }
@@ -49,7 +50,7 @@ class ReservationControllerTest extends WebTestCase
     public function testAuthenticatedUserCanAccessReservationForm()
     {
         $client = static::createClient();
-        $testUser = $this->createUser(); // Création de l'utilisateur
+        $testUser = $this->createUser(); 
         $vehicleRepository = static::getContainer()->get(VehicleRepository::class);
         
         $vehicle = $vehicleRepository->find(1);
