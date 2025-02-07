@@ -4,17 +4,18 @@ namespace App\Form;
 
 use App\Entity\Van;
 use App\Entity\Category;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\All;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\Image;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class VanType extends AbstractType
 {
@@ -109,6 +110,18 @@ class VanType extends AbstractType
                 ],
                 'label_attr' => [
                     'class' => 'text-sm font-medium text-gray-700'
+                ]
+            ])
+            ->add('fuelType', ChoiceType::class, [
+                'label' => 'Type de carburant',
+                'choices' => [
+                    'Essence' => 'essence',
+                    'Diesel' => 'diesel',
+                    'Électrique' => 'electrique',
+                    'Hybride' => 'hybride'
+                ],
+                'attr' => [
+                    'class' => 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500'
                 ]
             ])
             ->add('imageFiles', FileType::class, [

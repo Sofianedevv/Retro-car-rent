@@ -2,47 +2,66 @@
 
 {% block title %}Contact - Retro Car Rent{% endblock %}
 
-{% block body %}
-<div class="min-h-screen bg-gray-100">
-    {# En-tête avec image de fond #}
-    <div class="bg-primary py-8">
-        <div class="container mx-auto px-4">
-            <div class="text-center">
-                <h1 class="text-4xl font-bold text-gray-800 font-playfair">
-                    <i class="fas fa-envelope text-gray-900 mr-2"></i>Nous contacter
-                </h1>
-                <p class="text-gray-500 text-lg font-playfair">
-Retro Car Rent est à votre écoute pour répondre à toutes vos questions et vous accompagner dans votre projet de location de véhicules anciens.
-                </p>
+{% block content %}
+<div class="min-h-screen bg-[#F5F5F0] pt-20">
+    <div class="relative h-[400px] overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-tr from-gray-900/90 to-black/90">
+            <img src="{{ asset('template-html/assets/images/ban3.jpg') }}" 
+                 alt="Background" 
+                 class="w-full h-full object-cover opacity-50">
+        </div>
+
+        <div class="relative h-full container mx-auto px-4">
+            <div class="h-full flex flex-col items-center justify-center">
+                <div class="text-center space-y-6">
+                    <h1 class="text-4xl md:text-5xl font-playfair font-bold text-white">
+                        Contactez-nous
+                    </h1>
+                    <p class="text-gray-300 max-w-2xl mx-auto text-sm md:text-base">
+                        Notre équipe est à votre écoute pour répondre à toutes vos questions
+                    </p>
+                    
+                    <nav class="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-xl">
+                        <a href="{{ path('app') }}" 
+                           class="text-gray-300 hover:text-white transition-colors duration-200">
+                            Accueil
+                        </a>
+                        <span class="text-gray-400">
+                            <i class="fas fa-chevron-right text-xs"></i>
+                        </span>
+                        <span class="text-[#8B4513]">Contact</span>
+                    </nav>
+                </div>
             </div>
+        </div>
+
+        <div class="absolute bottom-0 left-0 right-0">
+            <svg class="fill-current text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120">
+                <path d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+            </svg>
         </div>
     </div>
 
-    {# Section principale #}
     <div class="container mx-auto px-4 py-12">
-        {# Cards d'information #}
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            {# Téléphone #}
             <div class="bg-white rounded-xl shadow-lg p-6 text-center transform hover:scale-105 transition-transform duration-300">
-                <div class="w-16 h-16 bg-gray-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div class="w-16 h-16 bg-[#8B4513] rounded-full flex items-center justify-center mx-auto mb-4">
                     <i class="fas fa-phone text-white text-2xl"></i>
                 </div>
                 <h3 class="text-xl font-semibold mb-2">Appelez-nous</h3>
                 <p class="text-gray-600">+33 (0)1 23 45 67 89</p>
             </div>
 
-            {# Email #}
             <div class="bg-white rounded-xl shadow-lg p-6 text-center transform hover:scale-105 transition-transform duration-300">
-                <div class="w-16 h-16 bg-gray-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div class="w-16 h-16 bg-[#8B4513] rounded-full flex items-center justify-center mx-auto mb-4">
                     <i class="fas fa-envelope text-white text-2xl"></i>
                 </div>
                 <h3 class="text-xl font-semibold mb-2">Écrivez-nous</h3>
                 <p class="text-gray-600">contact@retro-car-rent.com</p>
             </div>
 
-            {# Localisation #}
             <div class="bg-white rounded-xl shadow-lg p-6 text-center transform hover:scale-105 transition-transform duration-300">
-                <div class="w-16 h-16 bg-gray-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div class="w-16 h-16 bg-[#8B4513] rounded-full flex items-center justify-center mx-auto mb-4">
                     <i class="fas fa-map-marker-alt text-white text-2xl"></i>
                 </div>
                 <h3 class="text-xl font-semibold mb-2">Rendez-nous visite</h3>
@@ -50,13 +69,11 @@ Retro Car Rent est à votre écoute pour répondre à toutes vos questions et vo
             </div>
         </div>
 
-        {# Formulaire et Carte #}
         <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div class="grid md:grid-cols-2 gap-8 p-8">
-                {# Formulaire #}
-                <div>
+            <div class="grid md:grid-cols-2">
+                <div class="p-8">
                     <h2 class="text-3xl font-playfair font-bold text-[#8B4513] mb-8">Envoyez-nous un message</h2>
-
+                    
                     {% if sent %}
                         <div class="mb-6 p-4 rounded-lg bg-green-100 text-green-700 flex items-center">
                             <i class="fas fa-check-circle text-xl mr-3"></i>
@@ -65,119 +82,77 @@ Retro Car Rent est à votre écoute pour répondre à toutes vos questions et vo
                     {% endif %}
 
                     {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
-                    <div class="space-y-4">
-                        <div class="form-group">
-                            {{ form_widget(form.name, {
-                                'attr': {
-                                    'class': 'w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-[#8B4513] focus:ring-0 transition-colors',
-                                    'placeholder': 'Votre nom'
-                                }
-                            }) }}
-                        </div>
+                        <div class="space-y-4">
+                            <div class="form-group">
+                                {{ form_widget(form.name, {
+                                    'attr': {
+                                        'class': 'w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-[#8B4513] focus:ring-0 transition-colors',
+                                        'placeholder': 'Votre nom'
+                                    }
+                                }) }}
+                            </div>
 
-                        <div class="form-group">
-                            {{ form_widget(form.email, {
-                                'attr': {
-                                    'class': 'w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-[#8B4513] focus:ring-0 transition-colors',
-                                    'placeholder': 'Votre email'
-                                }
-                            }) }}
-                        </div>
+                            <div class="form-group">
+                                {{ form_widget(form.email, {
+                                    'attr': {
+                                        'class': 'w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-[#8B4513] focus:ring-0 transition-colors',
+                                        'placeholder': 'Votre email'
+                                    }
+                                }) }}
+                            </div>
 
-                        <div class="form-group">
-                            {{ form_widget(form.subject, {
-                                'attr': {
-                                    'class': 'w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-[#8B4513] focus:ring-0 transition-colors',
-                                    'placeholder': 'Sujet'
-                                }
-                            }) }}
-                        </div>
+                            <div class="form-group">
+                                {{ form_widget(form.subject, {
+                                    'attr': {
+                                        'class': 'w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-[#8B4513] focus:ring-0 transition-colors',
+                                        'placeholder': 'Sujet'
+                                    }
+                                }) }}
+                            </div>
 
-                        <div class="form-group">
-                            {{ form_widget(form.message, {
-                                'attr': {
-                                    'class': 'w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-[#8B4513] focus:ring-0 transition-colors',
-                                    'rows': '6',
-                                    'placeholder': 'Votre message'
-                                }
-                            }) }}
-                        </div>
+                            <div class="form-group">
+                                {{ form_widget(form.message, {
+                                    'attr': {
+                                        'class': 'w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-[#8B4513] focus:ring-0 transition-colors',
+                                        'rows': '6',
+                                        'placeholder': 'Votre message'
+                                    }
+                                }) }}
+                            </div>
 
-                        <button type="submit"
-                                class="w-full text-center bg-gray-900 text-white hover:text-black hover:bg-white border-2 border-black rounded-lg px-4 py-3 transition-all duration-300 font-bold flex items-center justify-center space-x-2"
-                        >
-                            <i class="fas fa-paper-plane"></i>
-                            <span>Envoyer</span>
-                        </button>
-                    </div>
+                            <button type="submit" class="w-full bg-[#8B4513] text-white py-3 rounded-lg hover:bg-[#734010] transform hover:-translate-y-1 transition-all duration-300 flex items-center justify-center space-x-2">
+                                <i class="fas fa-paper-plane"></i>
+                                <span>Envoyer</span>
+                            </button>
+                        </div>
                     {{ form_end(form) }}
                 </div>
 
-                {# Carte Google Maps #}
                 <div class="relative h-full min-h-[500px]">
                     <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.9916256937586!2d2.292292615674431!3d48.85837007928757!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66e2964e34e2d%3A0x8ddca9ee380ef7e0!2sTour%20Eiffel!5e0!3m2!1sfr!2sfr!4v1647874587201!5m2!1sfr!2sfr"
-                            class="absolute inset-0 w-full h-full"
-                            style="border:0;"
-                            allowfullscreen=""
-                            loading="lazy">
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.9916256937586!2d2.292292615674431!3d48.85837007928757!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66e2964e34e2d%3A0x8ddca9ee380ef7e0!2sTour%20Eiffel!5e0!3m2!1sfr!2sfr!4v1647874587201!5m2!1sfr!2sfr"
+                        class="absolute inset-0 w-full h-full"
+                        style="border:0;"
+                        allowfullscreen=""
+                        loading="lazy">
                     </iframe>
                 </div>
             </div>
         </div>
 
-        {# Horaires d'ouverture #}
         <div class="mt-12 bg-white rounded-xl shadow-lg p-8">
             <h3 class="text-2xl font-playfair font-bold text-center text-[#8B4513] mb-6">Horaires d'ouverture</h3>
             <div class="max-w-2xl mx-auto grid grid-cols-2 gap-4">
-                <div class="text-center p-4 rounded-lg bg-gray-100">
+                <div class="text-center p-4 rounded-lg bg-gray-50">
                     <h4 class="font-semibold mb-2">Lundi - Vendredi</h4>
                     <p class="text-gray-600">9h00 - 18h00</p>
                 </div>
-                <div class="text-center p-4 rounded-lg bg-gray-100">
+                <div class="text-center p-4 rounded-lg bg-gray-50">
                     <h4 class="font-semibold mb-2">Samedi</h4>
                     <p class="text-gray-600">10h00 - 17h00</p>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Scroll to top button -->
-    <button id="scrollToTopBtn" class="fixed bottom-6 right-6 bg-primary text-white rounded-full p-4 shadow-lg border-2 border-gray-900 hover:bg-primary/10 transition-all duration-300 ease-in-out" style="display: none;">
-        <i class="fas fa-arrow-up text-xl text-gray-900"></i>
-    </button>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const scrollToTopBtn = document.getElementById('scrollToTopBtn');
-            const footer = document.querySelector('footer'); // Sélectionne le footer
-            const footerHeight = footer ? footer.offsetHeight : 0; // Récupère la hauteur du footer
-
-            // Masque le bouton au début
-            scrollToTopBtn.style.display = "none";
-
-            // Affiche le bouton lorsque l'utilisateur défile de plus de 150px
-            window.onscroll = function() {
-                if (document.body.scrollTop > 150 || document.documentElement.scrollTop > 150) {
-                    scrollToTopBtn.style.display = "block";
-                } else {
-                    scrollToTopBtn.style.display = "none";
-                }
-            };
-
-            // Ajuste la position du bouton lors du redimensionnement de la fenêtre
-            window.addEventListener('resize', function() {
-                const footerHeight = footer ? footer.offsetHeight : 0;
-                scrollToTopBtn.style.bottom = `${footerHeight + 20}px`; // Ajoute 20px d'espace entre le bouton et le footer
-            });
-
-            // Fonction pour faire défiler la page jusqu'en haut lorsqu'on clique sur le bouton
-            scrollToTopBtn.onclick = function() {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            };
-        });
-    </script>
 </div>
 {% endblock %} 

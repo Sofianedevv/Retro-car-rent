@@ -1,0 +1,85 @@
+<form method="get" action="{{ path(app.request.attributes.get('_route') == 'app_available' ? 'app_available' : 'app_motorcycle', { 'type': app.request.attributes.get('_route') == 'app_available' ? type : null, 'startDateTime': app.request.attributes.get('_route') == 'app_available' ? startDateTime : null, 'endDateTime': app.request.attributes.get('_route') == 'app_available' ? endDateTime : null }) }}" class="space-y-6">
+	<div class="mb-4">
+		<label for="brand" class="block text-sm font-medium text-gray-700">Marque</label>
+		<div class="mt-1 max-h-48 overflow-y-auto border border-gray-300 rounded-md p-2">
+			{% for brand in brands %}
+				<div class="flex items-center mb-2">
+					<input type="checkbox" id="brand_{{ brand }}" name="brand[]" value="{{ brand }}" {% if brand in filters.brand|default([]) %} checked {% endif %} class="h-4 w-4 text-[#8B4513] border-gray-300 rounded focus:ring-[#8B4513]">
+					<label for="brand_{{ brand }}" class="ml-2 block text-sm text-gray-900">
+						{{ brand }}
+					</label>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+
+	<div class="mb-6 pb-8 border-b border-gray-line">
+		<h3 class="text-lg font-semibold mb-6">Prix</h3>
+		<div class="flex flex-col space-y-2">
+			<input type="number" name="minPrice" placeholder="Prix min" value="{{ filters.minPrice }}" class="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-[#8B4513] placeholder-gray-400">
+			<input type="number" name="maxPrice" placeholder="Prix max" value="{{ filters.maxPrice }}" class="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-[#8B4513] placeholder-gray-400">
+		</div>
+	</div>
+
+	<div class="mb-6 pb-8 border-b border-gray-line">
+		<h3 class="text-lg font-semibold mb-6">Cylindrée</h3>
+		<div class="flex flex-col space-y-2">
+			<input type="number" name="minEngineCapacity" placeholder="Cylindrée min" value="{{ filters.minEngineCapacity }}" class="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-[#8B4513]">
+			<input type="number" name="maxEngineCapacity" placeholder="Cylindrée max" value="{{ filters.maxEngineCapacity }}" class="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-[#8B4513]">
+		</div>
+	</div>
+
+
+	<div class="mb-6 pb-8 border-b border-gray-line">
+		<h3 class="text-lg font-semibold mb-6">Type</h3>
+		{% for type  in types %}
+			<div class="flex items-center space-x-2">
+				<input type="checkbox" name="type[]" value="{{ type }}" {% if  type in filters.type|default([]) %} checked {% endif %} class="rounded border-gray-300 text-[#8B4513] focus:ring-[#8B4513]">
+				<label for="type{{ type }}" class="ml-2 block text-sm text-gray-900">
+					{{ type }}
+				</label>
+			</div>
+		{% endfor %}
+	</div>
+
+
+	<div class="mb-6 pb-8 border-b border-gray-line">
+		<h3 class="text-lg font-semibold mb-6">Année</h3>
+		<div class="flex flex-col space-y-2">
+			<select name="minYear" class="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-[#8B4513]">
+				<option value="">Année min</option>
+				{% for yearItem in years %}
+					<option value="{{ yearItem.year }}" {% if filters.minYear is not empty and filters.minYear == yearItem.year %} selected {% endif %}>
+						{{ yearItem.year }}
+					</option>
+				{% endfor %}
+			</select>
+			<select name="maxYear" class="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-[#8B4513]">
+				<option value="">Année max</option>
+				{% for yearItem in years %}
+					<option value="{{ yearItem.year }}" {% if filters.maxYear is not empty and filters.maxYear == yearItem.year %} selected {% endif %}>
+						{{ yearItem.year }}
+					</option>
+				{% endfor %}
+			</select>
+		</div>
+	</div>
+
+	<div class="mb-6 pb-8 border-b border-gray-line">
+		<h3 class="text-lg font-semibold mb-6">Kilométrage</h3>
+		<div class="flex flex-col space-y-2">
+			<input type="number" name="minMileage" placeholder="Kilométrage min" value="{{ filters.minMileage }}" class="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-[#8B4513]">
+			<input type="number" name="maxMileage" placeholder="Kilométrage max" value="{{ filters.maxMileage }}" class="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-[#8B4513]">
+		</div>
+	</div>
+
+
+	<div class="flex space-x-4">
+		<a href="{{ path( app.request.attributes.get('_route') == 'app_available' ? 'app_available' : 'app_motorcycle', { 'type': (app.request.attributes.get('_route') == 'app_available') ? type : null, 'startDateTime': (app.request.attributes.get('_route') == 'app_available') ? startDateTime : null, 'endDateTime': (app.request.attributes.get('_route') == 'app_available') ? endDateTime : null }) }}" class="w-1/2 bg-[#F5F5F0] text-[#8B4513] py-3 px-6 border-2 border-[#8B4513] hover:bg-[#8B4513] hover:text-[#F5F5F0] transition-colors duration-300 text-center font-playfair">
+			Réinitialiser
+		</a>
+			<button type="submit" class="w-1/2 bg-[#8B4513] text-[#F5F5F0] py-3 px-6 hover:bg-[#734010] transition-colors duration-300 font-playfair">
+				Appliquer
+			</button>
+		
+	</div>

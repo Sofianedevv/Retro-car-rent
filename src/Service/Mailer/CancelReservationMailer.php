@@ -2,22 +2,21 @@
 
 namespace App\Service\Mailer;
 
-use App\Entity\Reservation;
-use App\Entity\User;
-use App\Entity\Vehicle;
+
 use App\Repository\ReservationRepository;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
+
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Twig\Environment;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
 
 class CancelReservationMailer {
     private MailerInterface $mailer;
     private ReservationRepository $reservationRepository;
     private EntityManagerInterface $entityManager;
+
+    private Environment $twig;
 
 
     public function __construct(MailerInterface $mailer,EntityManagerInterface $entityManager, Environment $twig, ReservationRepository $reservationRepository)

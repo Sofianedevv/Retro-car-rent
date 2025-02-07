@@ -2,7 +2,7 @@
 
 {% block title %}Modifier votre avis{% endblock %}
 
-{% block body %}
+{% block content %}
 <div class="max-w-2xl mx-auto p-6">
     <h1 class="text-3xl font-semibold text-gray-800 mb-6">Modifier votre avis</h1>
 
@@ -47,7 +47,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const stars = ratingContainer.querySelectorAll('i');
     const inputs = ratingContainer.querySelectorAll('input');
 
-    // Fonction pour remplir les étoiles
     function fillStars(selectedIndex) {
         stars.forEach((star, index) => {
             if (index <= selectedIndex) {
@@ -60,24 +59,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Gérer le survol
     stars.forEach((star, index) => {
         const label = star.parentElement;
         
-        // Au survol
         label.addEventListener('mouseover', () => {
             fillStars(index);
         });
 
-        // Quand on quitte le survol
         label.addEventListener('mouseout', () => {
-            // Retrouver l'étoile sélectionnée
             const selectedInput = Array.from(inputs).find(input => input.checked);
             const selectedIndex = selectedInput ? parseInt(selectedInput.value) - 1 : -1;
             fillStars(selectedIndex);
         });
 
-        // Au clic
         label.addEventListener('click', () => {
             inputs[index].checked = true;
             fillStars(index);

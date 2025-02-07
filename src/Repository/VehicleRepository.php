@@ -69,7 +69,7 @@ public function findCars(): array
             ->getQuery()
             ->getResult();
     }
-    // Find all vehicles
+
     public function findAllCars(): array
     {
         return $this->createQueryBuilder('v')
@@ -92,7 +92,7 @@ public function findCars(): array
             ->getResult();
     }
 
-    public function findCarsByFilters(array $filters): array
+    public function findCarsByFilters(array $filters, array $reservedVehiclesIds): array
     {
         $qb = $this->createQueryBuilder('v')
             ->select('c')
@@ -113,9 +113,9 @@ public function findCars(): array
                ->setParameter('maxPrice', $filters['maxPrice']);
         }
 
-        if (!empty($filters['transmission'])) {
-            $qb->andWhere('c.transmission = :transmission')
-               ->setParameter('transmission', $filters['transmission']);
+        if (!empty($filters['transmission']) && is_array($filters['transmission'])) {
+            $qb->andWhere('c.transmission IN (:transmissions)')
+               ->setParameter('transmissions', $filters['transmission']);
         }
 
         if (!empty($filters['fuelType']) && is_array($filters['fuelType'])) {
@@ -123,19 +123,14 @@ public function findCars(): array
                ->setParameter('fuelTypes', $filters['fuelType']);
         }
 
-        if (!empty($filters['availability'])) {
-            $qb->andWhere('c.availability = :availability')
-               ->setParameter('availability', true);
-        }
-
-        if (!empty($filters['nbSeats'])) {
-            $qb->andWhere('c.nbSeats = :nbSeats')
-               ->setParameter('nbSeats', $filters['nbSeats']);
+        if (!empty($filters['nbSeats']) && is_array($filters['nbSeats'])) {
+            $qb->andWhere('c.nbSeats IN (:nbSeatsOptions)')
+               ->setParameter('nbSeatsOptions', $filters['nbSeats']);
         }
 
         if (!empty($filters['nbDoors']) && is_array($filters['nbDoors'])) {
-            $qb->andWhere('c.nbDoors IN (:nbDoors)')
-               ->setParameter('nbDoors', $filters['nbDoors']);
+            $qb->andWhere('c.nbDoors IN (:nbDoorsOptions)')
+               ->setParameter('nbDoorsOptions', $filters['nbDoors']);
         }
 
         if (!empty($filters['minYear'])) {
@@ -158,6 +153,12 @@ public function findCars(): array
                ->setParameter('maxMileage', $filters['maxMileage']);
         }
 
+        if(!empty($reservedVehiclesIds)) {
+            $qb->andWhere('c.id NOT IN (:reservedVehiclesIds)')
+               ->setParameter('reservedVehiclesIds', $reservedVehiclesIds);
+        
+            }
+
         return $qb->getQuery()->getResult();
     }
 
@@ -174,7 +175,7 @@ public function findCars(): array
         return array_column($results, 'brand');
     }
 
-    public function findMotorcyclesByFilters(array $filters): array
+    public function findMotorcyclesByFilters(array $filters, array $reservedVehiclesIds): array
     {
         $qb = $this->createQueryBuilder('v')
             ->select('m')
@@ -229,11 +230,11 @@ public function findCars(): array
             $qb->andWhere('m.mileage <= :maxMileage')
                ->setParameter('maxMileage', $filters['maxMileage']);
         }
-
-        if (!empty($filters['availability'])) {
-            $qb->andWhere('m.availability = :availability')
-               ->setParameter('availability', true);
-        }
+        if(!empty($reservedVehiclesIds)) {
+            $qb->andWhere('m.id NOT IN (:reservedVehiclesIds)')
+               ->setParameter('reservedVehiclesIds', $reservedVehiclesIds);
+        
+            }
 
         return $qb->getQuery()->getResult();
     }
@@ -251,7 +252,7 @@ public function findCars(): array
         return array_column($results, 'brand');
     }
 
-    public function findVansByFilters(array $filters): array
+    public function findVansByFilters(array $filters, array $reservedVehiclesIds): array
     {
         $qb = $this->createQueryBuilder('v')
             ->select('van')
@@ -302,23 +303,25 @@ public function findCars(): array
                ->setParameter('maxMileage', $filters['maxMileage']);
         }
 
-        if (!empty($filters['availability'])) {
-            $qb->andWhere('van.availability = :availability')
-               ->setParameter('availability', true);
-        }
-
         if (!empty($filters['nbSeats']) && is_array($filters['nbSeats'])) {
-            $qb->andWhere('van.nbSeats IN (:nbSeats)')
-               ->setParameter('nbSeats', $filters['nbSeats']);
+            $qb->andWhere('van.nbSeats IN (:nbSeatsOptions)')
+               ->setParameter('nbSeatsOptions', $filters['nbSeats']);
         }
 
         if (!empty($filters['nbDoors']) && is_array($filters['nbDoors'])) {
-            $qb->andWhere('van.nbDoors IN (:nbDoors)')
-               ->setParameter('nbDoors', $filters['nbDoors']);
+            $qb->andWhere('van.nbDoors IN (:nbDoorsOptions)')
+               ->setParameter('nbDoorsOptions', $filters['nbDoors']);
+        }
+
+        if(!empty($reservedVehiclesIds)) {
+            $qb->andWhere('van.id NOT IN (:reservedVehiclesIds)')
+               ->setParameter('reservedVehiclesIds', $reservedVehiclesIds);
         }
 
         return $qb->getQuery()->getResult();
     }
+
+    
 
     public function findAllVanBrands(): array
     {
@@ -332,41 +335,141 @@ public function findCars(): array
 
         return array_column($results, 'brand');
     }
-
-    public function findVansBySearch(string $search): array
+    public function findAllVehicleByFilters(array $filters, array $reservedVehiclesIds): array
     {
-        return $this->createQueryBuilder('v')
+        $qb = $this->createQueryBuilder('v');
+
+            if(!empty($filters['brand']) && is_array($filters['brand'])) {
+                $qb->andWhere('v.brand IN (:brands)')
+                   ->setParameter('brands', $filters['brand']);
+            }
+
+            if (!empty($filters['minPrice'])) {
+                $qb->andWhere('v.price >= :minPrice')
+                   ->setParameter('minPrice', $filters['minPrice']);
+            }
+        
+            if (!empty($filters['maxPrice'])) {
+                $qb->andWhere('v.price <= :maxPrice')
+                   ->setParameter('maxPrice', $filters['maxPrice']);
+            }
+
+            if (!empty($filters['fuelType']) && is_array($filters['fuelType'])) {
+                $qb->andWhere('v.fuelType IN (:fuelTypes)')
+                   ->setParameter('fuelTypes', $filters['fuelType']);
+            }
+
+            if (!empty($filters['minYear'])) {
+                $qb->andWhere('v.year >= :minYear')
+                   ->setParameter('minYear', $filters['minYear']);
+            }
+        
+            if (!empty($filters['maxYear'])) {
+                $qb->andWhere('v.year <= :maxYear')
+                   ->setParameter('maxYear', $filters['maxYear']);
+            }
+
+            if (!empty($filters['minMileage'])) {
+                $qb->andWhere('v.mileage >= :minMileage')
+                   ->setParameter('minMileage', $filters['minMileage']);
+            }
+        
+            if (!empty($filters['maxMileage'])) {
+                $qb->andWhere('v.mileage <= :maxMileage')
+                   ->setParameter('maxMileage', $filters['maxMileage']);
+            }
+
+            if(!empty($reservedVehiclesIds)) {
+                $qb->andWhere('v.id NOT IN (:reservedVehiclesIds)')
+                   ->setParameter('reservedVehiclesIds', $reservedVehiclesIds);
+            }
+
+
+            return $qb->getQuery()->getResult();
+    }
+
+    public function findAllVehicleBrands(): array
+    {
+       $results = $this->createQueryBuilder('v')
+            ->select('v.brand')
+            ->distinct()
+            ->getQuery()
+            ->getScalarResult();
+        return array_column($results, 'brand');
+    }
+
+    public function findVehicleBySearch (string $search, array $reservedVehiclesIds): array
+    {
+        $qb = $this->createQueryBuilder('v')
+            ->select('v')
+            ->where('v.brand LIKE :search')
+            ->orWhere('v.model LIKE :search')
+            ->setParameter('search', '%'.$search.'%');
+
+            if(!empty($reservedVehiclesIds)) {
+                $qb->andWhere('v.id NOT IN (:reservedVehiclesIds)')
+                   ->setParameter('reservedVehiclesIds', $reservedVehiclesIds);
+                }
+
+        return $qb->getQuery()
+                  ->getResult();
+    }
+
+
+    public function findVansBySearch(string $search, array $reservedVehiclesIds): array
+    {
+        $qb = $this->createQueryBuilder('v')
             ->select('van')
             ->from('App\Entity\Van', 'van')
             ->where('van.brand LIKE :search')
             ->orWhere('van.model LIKE :search')
-            ->setParameter('search', '%'.$search.'%')
-            ->getQuery()
-            ->getResult();
+            ->setParameter('search', '%'.$search.'%');
+
+            if(!empty($reservedVehiclesIds)) {
+                $qb->andWhere('van.id NOT IN (:reservedVehiclesIds)')
+                   ->setParameter('reservedVehiclesIds', $reservedVehiclesIds);
+                }
+
+        return $qb->getQuery()
+                  ->getResult();
     }
 
-    public function findCarsBySearch(string $search): array
+    public function findCarsBySearch(string $search, array $reservedVehiclesIds): array
     {
-        return $this->createQueryBuilder('v')
+        $qb = $this->createQueryBuilder('v')
             ->select('c')
             ->from('App\Entity\Car', 'c')
             ->where('c.brand LIKE :search')
             ->orWhere('c.model LIKE :search')
-            ->setParameter('search', '%'.$search.'%')
-            ->getQuery()
-            ->getResult();
+            ->setParameter('search', '%'.$search.'%');
+
+            if(!empty($reservedVehiclesIds)) {
+                $qb->andWhere('c.id NOT IN (:reservedVehiclesIds)')
+                   ->setParameter('reservedVehiclesIds', $reservedVehiclesIds);
+                }
+
+        return $qb->getQuery()
+                  ->getResult();
+    
     }
 
-    public function findMotorcyclesBySearch(string $search): array
+    public function findMotorcyclesBySearch(string $search, array $reservedVehiclesIds): array
     {
-        return $this->createQueryBuilder('v')
+        $qb = $this->createQueryBuilder('v')
             ->select('m')
             ->from('App\Entity\Motorcycle', 'm')
             ->where('m.brand LIKE :search')
             ->orWhere('m.model LIKE :search')
-            ->setParameter('search', '%'.$search.'%')
-            ->getQuery()
-            ->getResult();
+            ->setParameter('search', '%'.$search.'%');
+            
+            if(!empty($reservedVehiclesIds)) {
+                $qb->andWhere('m.id NOT IN (:reservedVehiclesIds)')
+                   ->setParameter('reservedVehiclesIds', $reservedVehiclesIds);
+                }
+
+        return $qb->getQuery()
+                  ->getResult();
+    
     }
 
     public function findBestRated(int $limit = 5): array
@@ -382,13 +485,11 @@ public function findCars(): array
 
     public function findSimilar(Vehicle $vehicle, int $limit = 4): array
     {
-        // Récupérer les catégories du véhicule actuel
         $categories = $vehicle->getCategories();
         $categoryIds = array_map(function($category) {
             return $category->getId();
         }, $categories->toArray());
 
-        // Déterminer le type de véhicule
         $type = match (true) {
             $vehicle instanceof Car => 'car',
             $vehicle instanceof Motorcycle => 'motorcycle',
@@ -396,7 +497,6 @@ public function findCars(): array
             default => throw new \InvalidArgumentException('Type de véhicule inconnu')
         };
 
-        // Créer la requête de base
         $qb = $this->createQueryBuilder('v')
             ->leftJoin('v.categories', 'c')
             ->leftJoin('v.reviews', 'r')
@@ -405,13 +505,11 @@ public function findCars(): array
             ->setParameter('currentId', $vehicle->getId())
             ->setParameter('type', $type);
 
-        // Ajouter la condition sur les catégories si le véhicule en a
         if (!empty($categoryIds)) {
             $qb->andWhere('c.id IN (:categories)')
                ->setParameter('categories', $categoryIds);
         }
 
-        // Grouper par véhicule et ajouter des critères de tri
         $qb->groupBy('v.id')
            ->addSelect('AVG(r.rating) as HIDDEN avgRating')
            ->addSelect('COUNT(r.id) as HIDDEN reviewCount')
@@ -421,4 +519,30 @@ public function findCars(): array
 
         return $qb->getQuery()->getResult();
     }
+
+ 
+    public function findAllFuelTypes(): array 
+    {
+      $results = $this->createQueryBuilder('v')
+            ->select('v.fuelType')
+            ->distinct()
+            ->getQuery()
+            ->getResult();
+        return array_column($results, 'fuelType');
+    }
+
+    
+
+    public function findYears(): array 
+    {
+        return $this->createQueryBuilder('v')
+            ->select('v.year')
+            ->distinct()
+            ->orderBy('v.year', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+
+
 }

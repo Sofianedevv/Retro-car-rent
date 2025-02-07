@@ -2,7 +2,7 @@
 
 {% block title %}Détails de la réservation{% endblock %}
 
-{% block body %}
+{% block content %}
     {% include "admin/_sidebar.html.twig" %}
 
     <main class="p-4 sm:ml-64">
@@ -46,7 +46,6 @@
             </div>
 
             <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-                {# En-tête avec statut #}
                 <div class="p-6 border-b border-gray-200">
                     <div class="flex justify-between items-center">
                         <div class="flex items-center">
@@ -66,9 +65,7 @@
                     </div>
                 </div>
 
-                {# Informations principales #}
                 <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {# Client #}
                     <div class="space-y-4">
                         <h2 class="text-xl font-semibold text-gray-800 mb-4">Informations client</h2>
                         <div class="space-y-3">
@@ -87,7 +84,6 @@
                         </div>
                     </div>
 
-                    {# Véhicule #}
                     <div class="space-y-4">
                         <h2 class="text-xl font-semibold text-gray-800 mb-4">Informations véhicule</h2>
                         <div class="space-y-3">
@@ -107,7 +103,6 @@
                     </div>
                 </div>
 
-                {# Détails de la réservation #}
                 <div class="p-6 border-t border-gray-200">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-xl font-semibold text-gray-800">Détails de la réservation</h2>
@@ -135,7 +130,6 @@
                 </div>
 
                 {% if reservation.reservationVehicleOptions|length > 0 %}
-                    {# Options #}
                     <div class="p-6 border-t border-gray-200">
                         <h2 class="text-xl font-semibold text-gray-800 mb-4">Options sélectionnées</h2>
                         <div class="space-y-3">

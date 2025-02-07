@@ -1,138 +1,220 @@
-<header class="sticky top-0 z-50 bg-gray-900 shadow-md font-playfair">
-    <div class="container mx-auto flex justify-between items-center py-4">
-        <!-- Logo et Texte -->
-        <a href="{{ path('app') }}" class="flex items-center" aria-label="Retour à la page d'accueil">
-            <img src="{{ asset('template-html/assets/images/logo.svg') }}" alt="Logo" class="h-20 w-auto">
-        </a>
+<header class="fixed top-0 z-50 w-full bg-white/90 backdrop-blur-sm border-b border-gray-200 shadow-sm font-playfair h-20">
+    <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center py-2 md:py-3">
+            <a href="{{ path('app') }}" class="flex items-center space-x-3">
+                <img src="{{ asset('template-html/assets/images/logosvg.svg') }}" alt="Logo" class="h-14 md:h-12 w-auto">
+                <div class="flex flex-col">
+                    <span class="text-2xl font-bold text-[#8B4513]">Retro Car Rent</span>
+                    <span class="text-sm text-gray-600 italic hidden md:block">Location de véhicules de collection</span>
+                </div>
+            </a>
 
-        <!-- Hamburger menu -->
-        <div class="lg:hidden">
-            <button id="hamburger" class="text-white focus:outline-none focus:ring-2 focus:ring-white" aria-label="Menu mobile">
-                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-                </svg>
-            </button>
-        </div>
-
-        <!-- Navigation (Desktop) -->
-        <nav class="hidden lg:flex md:flex-grow justify-center">
-            <ul class="flex justify-center space-x-2 text-white">
-                <li><a href="{{ path('app') }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair mr-2" aria-label="Page d'accueil">
-                        <i class="fas fa-home mr-2"></i>Accueil
-                    </a></li>
-                <li><a href="{{ path('app_collections') }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair" aria-label="Collections de véhicules">
-                        <i class="fas fa-car mr-2"></i>Véhicules
-                    </a></li>
+            <nav class="hidden lg:flex items-center space-x-8">
+                <a href="{{ path('app') }}" 
+                   class="text-gray-700 hover:text-[#8B4513] transition-colors duration-200 font-medium">
+                    Accueil
+                </a>
+                <a href="{{ path('app_collections') }}" 
+                   class="text-gray-700 hover:text-[#8B4513] transition-colors duration-200 font-medium">
+                    Nos Véhicules
+                </a>
+                <a href="{{ path('app_contact') }}" 
+                   class="text-gray-700 hover:text-[#8B4513] transition-colors duration-200 font-medium">
+                    Contact
+                </a>
+                
                 {% if app.user %}
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <li><a href="{{ path('admin_dashboard') }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair" aria-label="Tableau de bord administrateur">
-                                <i class="fas fa-cogs mr-2"></i>Administrateur
-                            </a></li>
-                    {% endif %}
-
-                    <!-- Empêche les administrateurs de voir les sections suivantes -->
-                    {% if not is_granted('ROLE_ADMIN') %}
-                        <li><a href="{{ path('app_favorite_show') }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair" aria-label="Liste des favoris">
-                                <i class="fas fa-heart mr-2"></i>Favoris
-                            </a></li>
-                        <li><a href="{{ path('app_all_reservation', {'clientId': app.user.id}) }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair" aria-label="Réservations">
-                                <i class="fas fa-calendar-check mr-2"></i>Réservations
-                            </a></li>
-                        <li><a href="{{ path('app_invoice', {'clientId': app.user.id}) }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair" aria-label="Factures">
-                                <i class="fas fa-file-invoice mr-2"></i>Factures
-                            </a></li>
-                    {% endif %}
-
-                    <li class="relative">
-                        <a href="{{ path('app_notifications') }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair" aria-label="Notifications">
-                            <i class="fas fa-bell mr-2"></i>Notifications
-                            {% if unread_notifications_count > 0 %}
-                                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-sm font-bold rounded-full h-4 w-4 flex items-center justify-center notification-badge text-center leading-none">
-                    </span>
-                            {% endif %}
+                    <div class="relative group">
+                        <button class="flex items-center space-x-1 text-gray-700 group-hover:text-[#8B4513] transition-colors duration-200 font-medium">
+                            <span>Mon Compte</span>
+                            <i class="fas fa-chevron-down text-xs"></i>
+                        </button>
+                        <div class="absolute right-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                            <div class="w-48 bg-white rounded-lg shadow-lg py-2 border border-gray-100">
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <a href="{{ path('admin_dashboard') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-50">
+                                        <i class="fas fa-tachometer-alt w-5"></i>
+                                        Dashboard Admin
+                                    </a>
+                                {% else %}
+                                    <a href="{{ path('app_favorite_show') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-50">
+                                        <i class="fas fa-heart w-5"></i>
+                                        Vos favoris
+                                    </a>
+                                    
+                                    <a href="{{ path('app_all_reservation', {'clientId': app.user.id}) }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-50">
+                                        <i class="fas fa-calendar-alt w-5"></i>
+                                        Mes réservations
+                                    </a>
+                                    
+                                    <a href="{{ path('app_invoice', {'clientId': app.user.id}) }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-50">
+                                        <i class="fas fa-file-invoice w-5"></i>
+                                        Mes factures
+                                    </a>
+                                {% endif %}
+                                
+                                <a href="{{ path('app_notifications') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-50">
+                                    <i class="fas fa-bell w-5"></i>
+                                    Notifications
+                                    {% if unread_notifications_count > 0 %}
+                                        <span class="ml-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full notification-badge">
+                                            {{ unread_notifications_count }}
+                                        </span>
+                                    {% endif %}
+                                </a>
+                                
+                                <a href="{{ path('app_profile') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-50">
+                                    <i class="fas fa-user w-5"></i>
+                                    Profil
+                                </a>
+                                
+                                <div class="border-t border-gray-100 my-1"></div>
+                                
+                                <a href="{{ path('app_logout') }}" class="block px-4 py-2 text-red-600 hover:bg-red-50">
+                                    <i class="fas fa-sign-out-alt w-5"></i>
+                                    Déconnexion
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="flex items-center space-x-4">
+                        <a href="{{ path('app_register') }}" 
+                           class="px-4 py-2 text-[#8B4513] hover:bg-[#8B4513]/10 rounded-lg transition-colors duration-200">
+                            Inscription
                         </a>
-                    </li>
+                        <a href="{{ path('app_login') }}" 
+                           class="px-4 py-2 bg-[#8B4513] text-white rounded-lg hover:bg-[#8B4513]/90 transition-colors duration-200">
+                            Connexion
+                        </a>
+                    </div>
                 {% endif %}
-                <li><a href="{{ path('app_contact') }}"
-                       class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair"
-                       aria-label="Contact">
-                        <i class="fas fa-envelope mr-2"></i>Contact
-                    </a>
-                </li>
-            </ul>
-        </nav>
+            </nav>
 
-        <!-- Profil et Connexion (Desktop) -->
-        <div class="hidden lg:flex items-center space-x-2 relative">
-            {% if app.user %}
-                <a href="{{ path('app_profile') }}" class="hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition-all duration-300 font-playfair" aria-label="Profil utilisateur">
-                    <i class="fas fa-user mr-2"></i>{{ app.user.firstName }}
-                </a>
-                <a href="{{ path('app_logout') }}" class="hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition-all duration-300 font-playfair" aria-label="Se déconnecter">
-                    <i class="fas fa-sign-out-alt mr-2"></i>Déconnexion
-                </a>
-            {% else %}
-                <a href="{{ path('app_register') }}" class="hover:bg-gray-700 hover:rounded-lg text-white px-4 py-2 rounded-lg inline-block transition-all duration-300 font-playfair" aria-label="S'inscrire">
-                    <i class="fas fa-user-plus mr-2"></i>Inscription
-                </a>
-                <a href="{{ path('app_login') }}" class="hover:bg-gray-700 hover:rounded-lg text-white px-4 py-2 rounded-lg inline-block transition-all duration-300 font-playfair" aria-label="Se connecter">
-                    <i class="fas fa-sign-in-alt mr-2"></i>Connexion
-                </a>
-            {% endif %}
+            <button id="hamburger" class="lg:hidden text-gray-700 hover:text-[#8B4513] transition-colors duration-200">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
         </div>
     </div>
 
-    <!-- Menu Mobile -->
-    <nav id="mobile-menu" class="hidden bg-gray-800 text-white lg:hidden">
-        <ul class="flex flex-col space-y-4 p-4">
-            <li><a href="{{ path('app') }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair">
-                    <i class="fas fa-home mr-2"></i>Accueil
-                </a></li>
-            <li><a href="{{ path('app_collections') }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair">
-                    <i class="fas fa-car mr-2"></i>Véhicules
-                </a></li>
-            {% if app.user %}
-                {% if is_granted('ROLE_ADMIN') %}
-                    <li><a href="{{ path('admin_dashboard') }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair">
-                            <i class="fas fa-cogs mr-2"></i>Administrateur
-                        </a></li>
-                {% endif %}
-                <!-- Liens visibles uniquement pour les utilisateurs NON admin -->
-                {% if not is_granted('ROLE_ADMIN') %}
-                    <li><a href="{{ path('app_favorite_show') }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair">
-                            <i class="fas fa-heart mr-2"></i>Favoris
-                        </a></li>
-                    <li><a href="{{ path('app_all_reservation', {'clientId': app.user.id}) }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair">
-                            <i class="fas fa-calendar-check mr-2"></i>Réservations
-                        </a></li>
-                    <li><a href="{{ path('app_invoice', {'clientId': app.user.id}) }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair">
-                            <i class="fas fa-file-invoice mr-2"></i>Factures
-                        </a></li>
-                {% endif %}
-                <li><a href="{{ path('app_notifications') }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair">
-                        <i class="fas fa-bell mr-2"></i>Notifications
-                    </a></li>
-            {% else %}
-                <li><a href="{{ path('app_login') }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair">
-                        <i class="fas fa-sign-in-alt mr-2"></i>Connexion
-                    </a></li>
-                <li><a href="{{ path('app_register') }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair">
-                        <i class="fas fa-user-plus mr-2"></i>Inscription
-                    </a></li>
-            {% endif %}
-            <li><a href="{{ path('app_contact') }}" class="hover:bg-gray-700 hover:rounded-lg px-4 py-2 transition-all duration-300 font-playfair">
-                    <i class="fas fa-envelope mr-2"></i>Contact
-                </a></li>
-        </ul>
-    </nav>
+    <nav id="mobile-menu" class="fixed inset-0 bg-white z-50 lg:hidden hidden">
+        <div class="container mx-auto px-6 py-8 bg-white">
+            <div class="flex justify-end mb-8">
+                <button id="close-menu" class="text-gray-700 hover:text-[#8B4513] transition-all duration-200 rounded-full p-2 hover:bg-gray-100">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            
+            <div class="flex items-center justify-center mb-8">
+                <img src="{{ asset('template-html/assets/images/logosvg.svg') }}" alt="Logo" class="h-12 w-auto">
+            </div>
+            
+            <div class="flex flex-col space-y-5 bg-white rounded-xl p-4">
+                <div class="space-y-3">
+                    <a href="{{ path('app') }}" 
+                       class="block px-4 py-2.5 text-gray-800 hover:text-[#8B4513] transition-all duration-200 rounded-xl hover:bg-gray-100">
+                        <i class="fas fa-home w-6"></i>
+                        Accueil
+                    </a>
+                    <a href="{{ path('app_collections') }}" 
+                       class="block px-4 py-2.5 text-gray-800 hover:text-[#8B4513] transition-all duration-200 rounded-xl hover:bg-gray-100">
+                        <i class="fas fa-car w-6"></i>
+                        Nos Véhicules
+                    </a>
+                    <a href="{{ path('app_contact') }}" 
+                       class="block px-4 py-2.5 text-gray-800 hover:text-[#8B4513] transition-all duration-200 rounded-xl hover:bg-gray-100">
+                        <i class="fas fa-envelope w-6"></i>
+                        Contact
+                    </a>
+                </div>
 
+                {% if app.user %}
+                    <div class="border-t border-gray-200 my-2"></div>
+                    <div class="space-y-3 bg-white">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('admin_dashboard') }}" 
+                               class="block px-4 py-2.5 text-gray-800 hover:text-[#8B4513] transition-all duration-200 rounded-xl hover:bg-gray-100">
+                                <i class="fas fa-tachometer-alt w-6"></i>
+                                Dashboard Admin
+                            </a>
+                        {% else %}
+                            <a href="{{ path('app_favorite_show') }}" 
+                               class="block px-4 py-2.5 text-gray-800 hover:text-[#8B4513] transition-all duration-200 rounded-xl hover:bg-gray-100">
+                                <i class="fas fa-heart w-6"></i>
+                                Vos favoris
+                            </a>
+                            <a href="{{ path('app_all_reservation', {'clientId': app.user.id}) }}" 
+                               class="block px-4 py-2.5 text-gray-800 hover:text-[#8B4513] transition-all duration-200 rounded-xl hover:bg-gray-100">
+                                <i class="fas fa-calendar w-6"></i>
+                                Mes réservations
+                            </a>
+                            <a href="{{ path('app_invoice', {'clientId': app.user.id}) }}" 
+                               class="block px-4 py-2.5 text-gray-800 hover:text-[#8B4513] transition-all duration-200 rounded-xl hover:bg-gray-100">
+                                <i class="fas fa-file-invoice w-6"></i>
+                                Mes factures
+                            </a>
+                        {% endif %}
+
+                        <a href="{{ path('app_notifications') }}" 
+                           class="block px-4 py-2.5 text-gray-800 hover:text-[#8B4513] transition-all duration-200 rounded-xl hover:bg-gray-100">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <i class="fas fa-bell w-6"></i>
+                                    Notifications
+                                </div>
+                                {% if unread_notifications_count > 0 %}
+                                    <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+                                        {{ unread_notifications_count }}
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </a>
+
+                        <a href="{{ path('app_profile') }}" 
+                           class="block px-4 py-2.5 text-gray-800 hover:text-[#8B4513] transition-all duration-200 rounded-xl hover:bg-gray-100">
+                            <i class="fas fa-user w-6"></i>
+                            Profil
+                        </a>
+
+                        <div class="border-t border-gray-200 my-2"></div>
+
+                        <a href="{{ path('app_logout') }}" 
+                           class="block px-4 py-2.5 text-red-600 hover:text-red-700 transition-all duration-200 rounded-xl hover:bg-red-50">
+                            <i class="fas fa-sign-out-alt w-6"></i>
+                            Déconnexion
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="space-y-3 mt-4 bg-white">
+                        <a href="{{ path('app_register') }}" 
+                           class="block w-full py-3 text-center text-[#8B4513] bg-white border-2 border-[#8B4513] rounded-xl hover:bg-[#8B4513]/5 transition-all duration-200">
+                            Inscription
+                        </a>
+                        <a href="{{ path('app_login') }}" 
+                           class="block w-full py-3 text-center bg-[#8B4513] text-white rounded-xl hover:bg-[#8B4513]/90 transition-all duration-200">
+                            Connexion
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
 </header>
 
 <script>
+document.addEventListener('DOMContentLoaded', function() {
     const hamburger = document.getElementById('hamburger');
+    const closeMenu = document.getElementById('close-menu');
     const mobileMenu = document.getElementById('mobile-menu');
 
-    hamburger.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
+    hamburger.addEventListener('click', function() {
+        mobileMenu.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
     });
+
+    closeMenu.addEventListener('click', function() {
+        mobileMenu.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    });
+});
 </script>

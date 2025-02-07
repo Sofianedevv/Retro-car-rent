@@ -45,10 +45,20 @@ class MotorcycleRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('m')
             ->leftJoin('m.reviews', 'r')
-            ->groupBy('m.id')
+            ->having('COUNT(r.id) > 0')
             ->orderBy('AVG(r.rating)', 'DESC')
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
+    }
+
+    public function findAllEngineTypes(): array
+    {
+        $results = $this->createQueryBuilder('m')
+            ->select('m.type')
+            ->distinct()
+            ->getQuery()
+            ->getResult();
+        return array_column($results, 'type');
     }
 }

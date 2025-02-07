@@ -2,17 +2,17 @@
 
 {% block title %}Gestion des réservations{% endblock %}
 
-{% block body %}
+{% block content %}
     {% include "admin/_sidebar.html.twig" %}
 
-    <main class="p-4 sm:ml-64">
+    <main class="p-4 sm:ml-64 pt-24">
         <div class="p-6 bg-gray-100 min-h-screen">
             <div class="mb-8">
                 <h1 class="text-4xl font-bold text-gray-800 mb-2">Réservations</h1>
                 <p class="text-gray-600">Gérez toutes vos réservations en un seul endroit</p>
             </div>
 
-           
+            
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
                 <div class="bg-white rounded-xl shadow-sm p-6">
@@ -35,7 +35,7 @@
                         <div class="ml-4">
                             <h3 class="text-sm font-medium text-gray-500">Confirmées</h3>
                             <p class="text-2xl font-semibold text-gray-900">
-                                {{ reservations|filter(r => r.status.value == constant('App\\Enum\\StatusReservationEnum::CONFIRMED'))|length }}
+                                {{ reservations|filter(r => r.status.value == 'confirmed')|length }}
                             </p>
                         </div>
                     </div>
@@ -49,7 +49,7 @@
                         <div class="ml-4">
                             <h3 class="text-sm font-medium text-gray-500">En attente</h3>
                             <p class="text-2xl font-semibold text-gray-900">
-                                {{ reservations|filter(r => r.status.value == constant('App\\Enum\\StatusReservationEnum::PENDING'))|length }}
+                                {{ reservations|filter(r => r.status.value == 'pending')|length }}
                             </p>
                         </div>
                     </div>
@@ -63,14 +63,13 @@
                         <div class="ml-4">
                             <h3 class="text-sm font-medium text-gray-500">Annulées</h3>
                             <p class="text-2xl font-semibold text-gray-900">
-                                {{ reservations|filter(r => r.status.value == constant('App\\Enum\\StatusReservationEnum::CANCELLED'))|length }}
+                                {{ reservations|filter(r => r.status.value == 'cancelled')|length }}
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {# Liste des réservations #}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {% if reservations is empty %}
                     <div class="col-span-full flex flex-col items-center justify-center bg-white rounded-xl shadow-sm p-12">

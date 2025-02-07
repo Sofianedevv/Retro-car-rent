@@ -39,13 +39,10 @@ class UserBannedSubscriber implements EventSubscriberInterface
             return;
         }
 
-        // Vérifier si l'utilisateur est banni
         if ($user->isBanned()) {
             $currentRoute = $event->getRequest()->attributes->get('_route');
             
-            // Permettre l'accès uniquement aux pages autorisées
             if (!in_array($currentRoute, ['app_login', 'app_logout', 'app_banned'])) {
-                // Rediriger vers la page de bannissement
                 $loginUrl = $this->urlGenerator->generate('app_banned');
                 $event->setResponse(new RedirectResponse($loginUrl));
             }

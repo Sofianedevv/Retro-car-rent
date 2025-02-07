@@ -254,7 +254,6 @@ class Vehicle
     public function removeReservation(Reservation $reservation): static
     {
         if ($this->reservations->removeElement($reservation)) {
-            // set the owning side to null (unless already changed)
             if ($reservation->getVehicle() === $this) {
                 $reservation->setVehicle(null);
             }
@@ -284,7 +283,6 @@ class Vehicle
     public function removeReview(Review $review): static
     {
         if ($this->reviews->removeElement($review)) {
-            // set the owning side to null (unless already changed)
             if ($review->getVehicle() === $this) {
                 $review->setVehicle(null);
             }
