@@ -3,62 +3,104 @@
 {% block title %}Connexion{% endblock %}
 
 {% block content %}
-<div class="min-h-screen flex items-center justify-center bg-[#F5F5F0] py-12">
-    <div class="max-w-md w-full bg-white p-8 rounded-lg shadow-2xl border-2 border-[#8B4513]">
-        <div class="text-center mb-8">
-            <h1 class="text-4xl font-playfair font-bold text-[#8B4513]">Connexion</h1>
-            <div class="mt-2 h-1 w-16 bg-[#8B4513] mx-auto"></div>
-            <p class="text-gray-600 mt-4">Accédez à votre compte pour gérer vos réservations</p>
-        </div>
+<div class="min-h-screen bg-[#dbdbdb] pt-24">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-6xl mx-auto bg-white/80 backdrop-blur-lg rounded-3xl overflow-hidden shadow-2xl">
+            <div class="grid grid-cols-1 lg:grid-cols-2">
+                {# Section Image #}
+                <div class="relative hidden lg:block">
+                    <div class="absolute inset-0 bg-black/40 z-10 rounded-l-3xl"></div>
+                    <img src="{{ asset('template-html/assets/images/b2.jpg') }}" 
+                         alt="Vintage Car" 
+                         class="h-full w-full object-cover rounded-l-3xl"
+                         style="min-height: 800px;">
+                    <div class="absolute inset-0 z-20 flex flex-col items-center justify-center text-white p-8">
+                        <img src="{{ asset('template-html/assets/images/logo_black.svg') }}" 
+                             alt="Logo" 
+                             class="w-40 mb-8 brightness-0 invert"
+                             style="filter: brightness(0) invert(1);">
+                        <h2 class="text-4xl font-playfair font-bold text-center mb-4">
+                            Bienvenue chez Retro Car Rent
+                        </h2>
+                        <p class="text-xl text-center font-light max-w-md">
+                            Découvrez notre collection unique de véhicules d'exception
+                        </p>
+                    </div>
+                </div>
 
-        {% if error %}
-            <div class="mb-4 p-4 bg-red-100 border-l-4 border-red-500 text-red-700">
-                <p class="font-medium">{{ error }}</p>
+                {# Section Formulaire #}
+                <div class="p-8 lg:p-12">
+                    <div class="text-center mb-10">
+                        <h1 class="text-4xl font-playfair font-bold text-[#8B4513] mb-3">Connexion</h1>
+                        <div class="h-1 w-20 bg-[#8B4513] mx-auto rounded-full"></div>
+                    </div>
+
+                    {% if error %}
+                        <div class="mb-6 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded-lg">
+                            {{ error.messageKey|trans(error.messageData, 'security') }}
+                        </div>
+                    {% endif %}
+
+                    <form method="post" class="space-y-6">
+                        <div>
+                            <label for="inputEmail" class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
+                            <input type="email" 
+                                   value="{{ last_username }}" 
+                                   name="email" 
+                                   id="inputEmail" 
+                                   class="w-full px-4 py-3 rounded-xl border-2 border-[#8B4513]/20 focus:border-[#8B4513] focus:ring focus:ring-[#8B4513]/50 transition-all duration-300 bg-white/50"
+                                   placeholder="exemple@email.com" 
+                                   autocomplete="email" 
+                                   required 
+                                   autofocus>
+                        </div>
+
+                        <div>
+                            <label for="inputPassword" class="block text-sm font-semibold text-gray-700 mb-2">Mot de passe</label>
+                            <input type="password" 
+                                   name="password" 
+                                   id="inputPassword" 
+                                   class="w-full px-4 py-3 rounded-xl border-2 border-[#8B4513]/20 focus:border-[#8B4513] focus:ring focus:ring-[#8B4513]/50 transition-all duration-300 bg-white/50"
+                                   placeholder="••••••••" 
+                                   autocomplete="current-password" 
+                                   required>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <input type="checkbox" 
+                                       name="_remember_me" 
+                                       id="remember_me" 
+                                       class="w-4 h-4 rounded border-2 border-[#8B4513]/20 text-[#8B4513] focus:ring-[#8B4513] transition-all duration-300">
+                                <label for="remember_me" class="ml-2 text-sm text-gray-600">
+                                    Se souvenir de moi
+                                </label>
+                            </div>
+                            <a href="#" class="text-sm text-[#8B4513] hover:text-[#734010] transition-colors duration-300">
+                                Mot de passe oublié ?
+                            </a>
+                        </div>
+
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                        <button type="submit" 
+                                class="w-full bg-[#8B4513] text-white py-4 rounded-xl font-semibold hover:bg-[#734010] transform hover:scale-[1.02] transition-all duration-300 flex items-center justify-center space-x-2">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Se connecter</span>
+                        </button>
+                    </form>
+
+                    <div class="mt-8 text-center">
+                        <p class="text-gray-600">
+                            Pas encore de compte ?
+                            <a href="{{ path('app_register') }}" 
+                               class="text-[#8B4513] font-semibold hover:text-[#734010] underline transition-colors duration-300">
+                                S'inscrire
+                            </a>
+                        </p>
+                    </div>
+                </div>
             </div>
-        {% endif %}
-
-        {% for message in app.flashes('info') %}
-            <div class="mb-4 p-4 bg-blue-50 border-l-4 border-blue-500 text-blue-700">
-                {{ message }}
-            </div>
-        {% endfor %}
-
-        <form method="post" class="space-y-6">
-            <div>
-                <label for="inputEmail" class="block text-sm font-medium text-[#8B4513]">Email</label>
-                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" 
-                       class="mt-1 block w-full px-4 py-3 bg-[#F5F5F0] border-2 border-[#8B4513]/20 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B4513] focus:border-[#8B4513] transition-colors duration-300" 
-                       autocomplete="email" required autofocus>
-            </div>
-
-            <div>
-                <label for="inputPassword" class="block text-sm font-medium text-[#8B4513]">Mot de passe</label>
-                <input type="password" name="password" id="inputPassword"
-                       class="mt-1 block w-full px-4 py-3 bg-[#F5F5F0] border-2 border-[#8B4513]/20 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B4513] focus:border-[#8B4513] transition-colors duration-300"
-                       autocomplete="current-password" required>
-            </div>
-
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-            <div class="flex items-center">
-                <input type="checkbox" name="_remember_me" id="remember_me"
-                       class="h-4 w-4 text-[#8B4513] focus:ring-[#8B4513] border-[#8B4513]/20 rounded">
-                <label for="remember_me" class="ml-2 block text-sm text-gray-700">Se souvenir de moi</label>
-            </div>
-
-            <button type="submit"
-                    class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#8B4513] hover:bg-[#734010] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#8B4513]">
-                Se connecter
-            </button>
-        </form>
-
-        <div class="mt-6 text-center">
-            <p class="text-sm text-gray-600">
-                Pas encore de compte ?
-                <a href="{{ path('app_register') }}" class="font-medium text-[#8B4513] hover:text-[#734010]">
-                    S'inscrire
-                </a>
-            </p>
         </div>
     </div>
 </div>
