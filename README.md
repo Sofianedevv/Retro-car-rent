@@ -242,7 +242,7 @@ Le projet implémente **trois rôles différents** avec des permissions spécifi
 
 ## APIs
 
-- **Controller dédié pour une API** : Le projet inclut un controller spécifiquement conçu pour gérer une API, avec des fonctionnalités de normalisation et de dénormalisation des données en format JSON.
+- **Controller dédié pour une API** :Le projet inclut un contrôleur API spécifique `AdminUserApiController`. Il expose des endpoints pour la gestion des utilisateurs en JSON, en utilisant les **normalizers** et **denormalizers** de `Symfony Serializer`.
 - **Envoi de mail** : L'application utilise **Symfony Mailer** avec **Mailtrap** comme service de messagerie pour tester l'envoi d'e-mails en environnement de développement. Lorsqu'un utilisateur soumet le formulaire de contact, son message est sauvegardé en base de données, puis un e-mail est généré et envoyé à une adresse Mailtrap pour simulation et vérification.
 - **Accès à une API externe** : Ce projet intègre Stripe comme solution de paiement pour gérer les réservations de véhicules.
 
