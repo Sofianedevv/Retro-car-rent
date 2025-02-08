@@ -75,11 +75,12 @@
 
 
 	<div class="flex space-x-4">
-		<a href="{{ path( app.request.attributes.get('_route') == 'app_available' ? 'app_available' : 'app_motorcycle', { 'type': (app.request.attributes.get('_route') == 'app_available') ? type : null, 'startDateTime': (app.request.attributes.get('_route') == 'app_available') ? startDateTime : null, 'endDateTime': (app.request.attributes.get('_route') == 'app_available') ? endDateTime : null }) }}" class="w-1/2 bg-[#F5F5F0] text-[#8B4513] py-3 px-6 border-2 border-[#8B4513] hover:bg-[#8B4513] hover:text-[#F5F5F0] transition-colors duration-300 text-center font-playfair">
+		<a href="{{ path( app.request.attributes.get('_route') == 'app_available' ? 'app_available' : 'app_motorcycle', { 'type': (app.request.attributes.get('_route') == 'app_available') ? type : null, 'startDateTime': (app.request.attributes.get('_route') == 'app_available') ? startDateTime : null, 'endDateTime': (app.request.attributes.get('_route') == 'app_available') ? endDateTime : null }) }}" class="rounded-lg w-1/2 bg-[#F5F5F0] text-[#8B4513] py-3 px-6 border-2 border-[#8B4513] hover:bg-[#8B4513] hover:text-[#F5F5F0] transition-colors duration-300 text-center font-playfair">
 			Réinitialiser
 		</a>
-			<button type="submit" class="w-1/2 bg-[#8B4513] text-[#F5F5F0] py-3 px-6 hover:bg-[#734010] transition-colors duration-300 font-playfair">
+			<button type="submit" class="rounded-lg w-1/2 bg-[#8B4513] text-[#F5F5F0] py-3 px-6 hover:bg-[#734010] transition-colors duration-300 font-playfair">
 				Appliquer
 			</button>
 		
 	</div>
+</form>

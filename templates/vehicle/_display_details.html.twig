@@ -12,6 +12,7 @@
 			max-width: 1200px;
 			margin: 0 auto;
 			padding: 1rem;
+			background: #f0f0f0; /* Change to a darker color for better contrast */
 			@media (min-width: 640px) {
 				padding: 2rem;
 			}
@@ -295,11 +296,12 @@
 			object-fit: cover;
 		}
 	</style>
+<div class="bg-[#f0f0f0]">
 
 	<div class="detail-container">
-		<div class="breadcrumb">
-			<a href="{{ path('app_collections') }}">Accueil</a> >
-			<a href="#">{{ vehicle.brand }}</a> >
+		<div class="breadcrumb mt-16">
+			<a href="{{ path('app') }}">Accueil</a> >
+			<a href="{{ path('app_collections') }}">{{ vehicle.brand }}</a> >
 			<span>{{ vehicle.model }}</span>
 		</div>
 
@@ -347,7 +349,7 @@
 			</div>
 		</div>
 
-		<div class="mt-8 bg-white rounded-lg shadow-lg p-6">
+		<div class="mt-8 bg-white rounded-lg shadow-lg p-6 mb-6">
 			<div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
 				<div>
 					<p class="text-3xl font-bold text-[#8B4513]">{{ vehicle.price }}€ <span class="text-lg text-gray-600">/jour</span></p>
@@ -973,4 +975,5 @@
 
 		window.addEventListener('load', initMap);
 	</script>
+</div>
 {% endblock %}

@@ -25,10 +25,10 @@
                 
                 {% if app.user %}
                     <div class="relative group">
-                        <button class="flex items-center space-x-1 text-gray-700 group-hover:text-[#8B4513] transition-colors duration-200 font-medium">
+                        <a class="flex items-center space-x-1 text-gray-700 group-hover:text-[#8B4513] transition-colors duration-200 font-medium">
                             <span>Mon Compte</span>
                             <i class="fas fa-chevron-down text-xs"></i>
-                        </button>
+                        </a>
                         <div class="absolute right-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
                             <div class="w-48 bg-white rounded-lg shadow-lg py-2 border border-gray-100">
                                 {% if is_granted('ROLE_ADMIN') %}
@@ -55,7 +55,7 @@
                                 
                                 <a href="{{ path('app_notifications') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-50">
                                     <i class="fas fa-bell w-5"></i>
-                                    Notifications
+                                    Mes notifications
                                     {% if unread_notifications_count > 0 %}
                                         <span class="ml-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full notification-badge">
                                             {{ unread_notifications_count }}
@@ -65,7 +65,7 @@
                                 
                                 <a href="{{ path('app_profile') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-50">
                                     <i class="fas fa-user w-5"></i>
-                                    Profil
+                                    Mon profil
                                 </a>
                                 
                                 <div class="border-t border-gray-100 my-1"></div>
@@ -160,7 +160,7 @@
                             <div class="flex items-center justify-between">
                                 <div>
                                     <i class="fas fa-bell w-6"></i>
-                                    Notifications
+                                    Mes notifications
                                 </div>
                                 {% if unread_notifications_count > 0 %}
                                     <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full">
@@ -173,7 +173,7 @@
                         <a href="{{ path('app_profile') }}" 
                            class="block px-4 py-2.5 text-gray-800 hover:text-[#8B4513] transition-all duration-200 rounded-xl hover:bg-gray-100">
                             <i class="fas fa-user w-6"></i>
-                            Profil
+                            Mon profil
                         </a>
 
                         <div class="border-t border-gray-200 my-2"></div>
