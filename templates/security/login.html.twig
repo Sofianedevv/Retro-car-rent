@@ -7,27 +7,6 @@
     <div class="container mx-auto px-4 py-8">
         <div class="max-w-6xl mx-auto bg-white/80 backdrop-blur-lg rounded-3xl overflow-hidden shadow-2xl">
             <div class="grid grid-cols-1 lg:grid-cols-2">
-                {# Section Image #}
-                <div class="relative hidden lg:block">
-                    <div class="absolute inset-0 bg-black/40 z-10 rounded-l-3xl"></div>
-                    <img src="{{ asset('template-html/assets/images/b2.jpg') }}" 
-                         alt="Vintage Car" 
-                         class="h-full w-full object-cover rounded-l-3xl"
-                         style="min-height: 800px;">
-                    <div class="absolute inset-0 z-20 flex flex-col items-center justify-center text-white p-8">
-                        <img src="{{ asset('template-html/assets/images/logo_black.svg') }}" 
-                             alt="Logo" 
-                             class="w-40 mb-8 brightness-0 invert"
-                             style="filter: brightness(0) invert(1);">
-                        <h2 class="text-4xl font-playfair font-bold text-center mb-4">
-                            Bienvenue chez Retro Car Rent
-                        </h2>
-                        <p class="text-xl text-center font-light max-w-md">
-                            Découvrez notre collection unique de véhicules d'exception
-                        </p>
-                    </div>
-                </div>
-
                 {# Section Formulaire #}
                 <div class="p-8 lg:p-12">
                     <div class="text-center mb-10">
@@ -97,6 +76,27 @@
                                class="text-[#8B4513] font-semibold hover:text-[#734010] underline transition-colors duration-300">
                                 S'inscrire
                             </a>
+                        </p>
+                    </div>
+                </div>
+
+                {# Section Image #}
+                <div class="relative hidden lg:block">
+                    <div class="absolute inset-0 bg-black/40 z-10 rounded-r-3xl"></div>
+                    <img src="{{ asset('template-html/assets/images/b2.jpg') }}" 
+                         alt="Vintage Car" 
+                         class="h-full w-full object-cover rounded-r-3xl"
+                         style="min-height: 800px;">
+                    <div class="absolute inset-0 z-20 flex flex-col items-center justify-center text-white p-8">
+                        <img src="{{ asset('template-html/assets/images/logo_black.svg') }}" 
+                             alt="Logo" 
+                             class="w-40 mb-8 brightness-0 invert"
+                             style="filter: brightness(0) invert(1);">
+                        <h2 class="text-4xl font-playfair font-bold text-center mb-4">
+                            Bienvenue chez Retro Car Rent
+                        </h2>
+                        <p class="text-xl text-center font-light max-w-md">
+                            Découvrez notre collection unique de véhicules d'exception
                         </p>
                     </div>
                 </div>
