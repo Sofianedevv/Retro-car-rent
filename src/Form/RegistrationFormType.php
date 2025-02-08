@@ -14,6 +14,8 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\Email;
 
 class RegistrationFormType extends AbstractType
 {
@@ -21,8 +23,20 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class, [
-                'attr' => ['class' => 'mt-1 block w-full px-4 py-3 bg-[#F5F5F0] border-2 border-[#8B4513]/20 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B4513] focus:border-[#8B4513] transition-colors duration-300'],
                 'label' => 'Email',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez entrer une adresse email'
+                    ]),
+                    new Email([
+                        'message' => 'L\'adresse email "{{ value }}" n\'est pas valide.',
+                        'mode' => 'strict'
+                    ])
+                ],
+                'attr' => [
+                    'class' => 'mt-1 block w-full px-4 py-3 bg-[#F5F5F0] border-2 border-[#8B4513]/20 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B4513] focus:border-[#8B4513] transition-colors duration-300',
+                    'placeholder' => 'exemple@email.com'
+                ],
                 'label_attr' => ['class' => 'block text-sm font-medium text-[#8B4513]']
             ])
             ->add('firstName', TextType::class, [
@@ -51,13 +65,20 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('phoneNumber', TextType::class, [
                 'label' => 'Phone',
-                'required' => false, // Optional field
+                'required' => false,
                 'constraints' => [
                     new Length([
                         'max' => 20,
                         'maxMessage' => 'Phone number cannot be longer than {{ limit }} characters',
                     ]),
+                    new Regex([
+                        'pattern' => '/^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$/',
+                        'message' => 'Le numéro de téléphone doit être un numéro valide (ex: 06 12 34 56 78)'
+                    ])
                 ],
+                'attr' => [
+                    'placeholder' => '06 12 34 56 78'
+                ]
             ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,

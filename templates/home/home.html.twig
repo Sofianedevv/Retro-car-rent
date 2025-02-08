@@ -189,7 +189,7 @@
                                                                 <h3 class="text-xl font-bold mb-2 font-playfair text-gray-800 truncate">{{ vehicle.brand }} {{ vehicle.model }}</h3>
 
                                                                 <div class="flex items-center mb-2">
-                                    <i class="fas fa-star text-yellow-400 mr-1"></i>                                     {% set avgRating = vehicle.averageRating %}
+                                                                        {% set avgRating = vehicle.averageRating %}
                                     {% for i in 1..5 %}
                                         <i class="fas fa-star {% if i <= avgRating %}text-yellow-400{% else %}text-gray-300{% endif %} mr-1"></i>
                                     {% endfor %}
@@ -197,7 +197,8 @@
                                 </div>
 
                                                                 <div class="flex items-center mb-4">
-                                    <i class="fas fa-coins text-yellow-400 mr-2"></i>                                     <p class="text-green-700 font-bold">{{ vehicle.price }}€ <span class="text-sm text-gray-600 ml-2 font-normal font-playfair" >/ jour</span></p>
+                                    <i class="fas fa-coins text-yellow-400 mr-2"></i>                                     
+                                    <p class="text-green-700 font-bold">{{ vehicle.price }}€ <span class="text-sm text-gray-600 ml-2 font-normal font-playfair" >/ jour</span></p>
                                 </div>
 
                                                                 <a href="{{ path('app_vehicle_show_details', {'vehicleId': vehicle.id}) }}"

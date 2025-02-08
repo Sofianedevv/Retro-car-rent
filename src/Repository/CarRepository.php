@@ -42,16 +42,16 @@ class CarRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-    public function findBestRated(int $limit = 4): array
-    {
-        return $this->createQueryBuilder('c')
-            ->leftJoin('c.reviews', 'r')
-            ->groupBy('c.id')
-            ->orderBy('AVG(r.rating)', 'DESC')
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult();
-    }
+public function findBestRated(int $limit = 4): array
+{
+    return $this->createQueryBuilder('c')
+        ->leftJoin('c.reviews', 'r') 
+        ->having('COUNT(r.id) > 0')
+        ->orderBy('AVG(r.rating)', 'DESC')
+        ->setMaxResults($limit)
+        ->getQuery()
+        ->getResult();
+}
 //    public function findCarsByFiltersWithPagination(array $filters, int $page = 1, int $limit = 6): Paginator
 //    {
 //        $queryBuilder = $this->createQueryBuilder('v');
