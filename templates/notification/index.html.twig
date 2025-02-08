@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vos notifications{% endblock %}
+
+{% block content %}
+    <div class="bg-gray-50 min-h-screen pt-20">
+        <div class="max-w-4xl mx-auto p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-3xl font-semibold text-gray-900 font-playfair flex items-center space-x-2">
+                    <i class="fas fa-bell"></i>
+                    <span>Vos notifications</span>
+                </h1>
+                {% if notifications|length > 0 %}
+                    <a href="{{ path('app_notifications_mark_all_as_read') }}"
+                       class="bg-gray-900 text-white hover:text-black hover:bg-white border-2 border-black rounded-lg px-4 py-2 transition-all duration-300 font-bold flex items-center space-x-2">
+                        <i class="fas fa-check-circle"></i>
+                        <span class="hidden md:inline">Tout lu</span>
+                    </a>
+                {% endif %}
+            </div>
+
+            <div class="space-y-4">
+                {% for notification in notifications %}
+                    <div class="bg-white mb-4 p-4 rounded-lg shadow-lg transition-transform transform hover:shadow-xl hover:-translate-y-1
+        {% if not notification.readStatus %}
+            border-2
+            {% if notification.type == 'new_vehicle' %}border-green-500
+            {% elseif notification.type == 'new_favorite' %}border-yellow-500
+            {% elseif notification.type == 'new_reply' %}border-blue-500
+            {% else %}border-gray-500{% endif %}
+        {% else %}
+            opacity-75
+        {% endif %}">
+                        <div class="flex justify-between items-start">
+                            <div class="flex items-center space-x-3">
+                                {% if notification.type == 'new_vehicle' %}
+                                    <i class="fas fa-car text-green-500"></i>
+                                {% elseif notification.type == 'new_favorite' %}
+                                    <i class="fas fa-heart text-red-500"></i>
+                                {% elseif notification.type == 'new_reply' %}
+                                    <i class="fas fa-comment-dots text-blue-500"></i>
+                                {% else %}
+                                    <i class="fas fa-bell text-gray-500"></i>
+                                {% endif %}
+                                <div>
+                                    {% if notification.type == 'new_vehicle' %}
+                                        <a href="{{ path('app_collections') }}"
+                                           class="text-gray-700 hover:text-gray-900">
+                                            {{ notification.message }}
+                                        </a>
+                                    {% elseif notification.type == 'new_favorite' %}
+                                        <a href="{{ path('app_favorite_show') }}"
+                                           class="text-gray-700 hover:text-gray-900">
+                                            {{ notification.message }}
+                                        </a>
+                                    {% elseif notification.type == 'new_reply' %}
+                                        <p class="text-gray-700">{{ notification.message }}</p>
+                                    {% else %}
+                                        <p class="text-gray-700">{{ notification.message }}</p>
+                                    {% endif %}
+                                    <p class="text-sm text-gray-500">{{ notification.createdAt|date('d/m/Y H:i') }}</p>
+                                </div>
+                            </div>
+                            <div class="flex space-x-2">
+                                {% if not notification.readStatus %}
+                                    <a href="{{ path('app_notification_mark_as_read', {'id': notification.id}) }}"
+                                       class="text-sm text-blue-600 hover:text-blue-800">
+                                        Marquer comme lu
+                                    </a>
+                                {% endif %}
+                                <a href="{{ path('app_notification_delete', {'id': notification.id}) }}"
+                                   class="text-sm text-red-600 hover:text-red-800">
+                                    <i class="fas fa-times"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <p class="text-center text-gray-600">Aucune notification</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

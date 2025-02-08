@@ -1,0 +1,53 @@
+{% if pageCount > 1 %}
+    <div class="flex justify-center mt-12">
+        <nav aria-label="Page navigation">
+            <ul class="inline-flex space-x-4">
+                {% if first is defined and current != first %}
+                    <li>
+                        <a href="{{ path(route, knp_pagination_query(query, first)) }}"
+                           class="bg-[#8B4513] text-white w-12 h-12 flex items-center justify-center border-2 border-[#8B4513] font-playfair hover:bg-[#734010] transition-colors duration-300 rounded-lg">
+                            &laquo;
+                        </a>
+                    </li>
+                {% endif %}
+
+                {% if previous is defined %}
+                    <li>
+                        <a href="{{ path(route, knp_pagination_query(query, previous)) }}"
+                           class="bg-[#8B4513] text-white w-12 h-12 flex items-center justify-center border-2 border-[#8B4513] font-playfair hover:bg-[#734010] transition-colors duration-300 rounded-lg">
+                            &lsaquo;
+                        </a>
+                    </li>
+                {% endif %}
+
+                {% for page in pagesInRange %}
+                    <li>
+                        <a href="{{ path(route, knp_pagination_query(query, page)) }}"
+                           class="{% if page == current %}bg-[#734010] text-white{% else %}bg-[#8B4513] text-white{% endif %}
+                                  w-12 h-12 flex items-center justify-center border-2 border-[#8B4513] font-playfair hover:bg-[#734010] transition-colors duration-300 rounded-lg">
+                            {{ page }}
+                        </a>
+                    </li>
+                {% endfor %}
+
+                {% if next is defined %}
+                    <li>
+                        <a href="{{ path(route, knp_pagination_query(query, next)) }}"
+                           class="bg-[#8B4513] text-white w-12 h-12 flex items-center justify-center border-2 border-[#8B4513] font-playfair hover:bg-[#734010] transition-colors duration-300 rounded-lg">
+                            &rsaquo;
+                        </a>
+                    </li>
+                {% endif %}
+
+                {% if last is defined and current != last %}
+                    <li>
+                        <a href="{{ path(route, knp_pagination_query(query, last)) }}"
+                           class="bg-[#8B4513] text-white w-12 h-12 flex items-center justify-center border-2 border-[#8B4513] font-playfair hover:bg-[#734010] transition-colors duration-300 rounded-lg">
+                            &raquo;
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+{% endif %}

@@ -1,0 +1,131 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block page_title %}
+    {% if vehicle_type == 'car' %}
+        Modifier la voiture
+    {% elseif vehicle_type == 'van' %}
+        Modifier le van
+    {% else %}
+        Modifier la moto
+    {% endif %}
+{% endblock %}
+
+{% block admin_content %}
+    <div class="max-w-4xl mx-auto">
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-xl font-semibold text-gray-800">
+                        {% if vehicle_type == 'car' %}
+                            <i class="fas fa-car mr-2"></i> Modifier {{ vehicle.brand }} {{ vehicle.model }}
+                        {% elseif vehicle_type == 'van' %}
+                            <i class="fas fa-truck mr-2"></i> Modifier {{ vehicle.brand }} {{ vehicle.model }}
+                        {% else %}
+                            <i class="fas fa-motorcycle mr-2"></i> Modifier {{ vehicle.brand }} {{ vehicle.model }}
+                        {% endif %}
+                    </h1>
+                    <a href="{{ path('admin_vehicles') }}" class="inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700">
+                        <i class="fas fa-arrow-left mr-2"></i> Retour
+                    </a>
+                </div>
+            </div>
+
+            <div class="p-6">
+                {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <h2 class="text-lg font-medium text-gray-900">Informations générales</h2>
+                            {{ form_row(form.brand) }}
+                            {{ form_row(form.model) }}
+                            {{ form_row(form.year) }}
+                            {{ form_row(form.mileage) }}
+                            {{ form_row(form.price) }}
+                        </div>
+
+                        <div class="space-y-4">
+                            <h2 class="text-lg font-medium text-gray-900">Caractéristiques techniques</h2>
+                            {% if vehicle_type == 'car' %}
+                                {{ form_row(form.nbSeats) }}
+                                {{ form_row(form.nbDoors) }}
+                                {{ form_row(form.trunkSize) }}
+                                {{ form_row(form.fuelType) }}
+                                {{ form_row(form.transmission) }}
+                            {% endif %}
+                            
+                            {% if vehicle_type == 'van' %}
+                                {{ form_row(form.cargoVolume) }}
+                            {% endif %}
+                            
+                            {% if vehicle_type == 'motorcycle' %}
+                                {{ form_row(form.engineCapacity) }}
+                                {{ form_row(form.type) }}
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="mt-6 space-y-6">
+                        <h2 class="text-lg font-medium text-gray-900">Image et disponibilité</h2>
+                        {{ form_row(form.defaultImage) }}
+                        {{ form_row(form.availability) }}
+
+                        {% if vehicle.vehicleImages|length > 0 %}
+                            <div class="mb-6">
+                                <h3 class="text-lg font-medium text-gray-900 mb-4">Images actuelles</h3>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    <div class="relative group">
+                                        <img src="{{ vehicle.defaultImage }}" alt="Image par défaut" 
+                                             class="w-full h-32 object-cover rounded-lg shadow">
+                                        <div class="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                                            <span class="text-white text-sm">Image par défaut</span>
+                                        </div>
+                                    </div>
+                                    {% for image in vehicle.vehicleImages %}
+                                        <div class="relative group">
+                                            <img src="{{ asset('uploads/vehicles/' ~ image.url) }}" 
+                                                 alt="Image {{ loop.index }}" 
+                                                 class="w-full h-32 object-cover rounded-lg shadow">
+                                            <div class="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                                                <a href="{{ path('admin_vehicle_image_delete', {'id': image.id}) }}" 
+                                                   onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette image ?')"
+                                                   class="text-white hover:text-red-500">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {{ form_row(form.imageFiles, {
+                            'label': 'Ajouter des images',
+                            'attr': {
+                                'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500',
+                                'accept': 'image/*',
+                                'multiple': true
+                            }
+                        }) }}
+                    </div>
+
+                    <div class="mt-6">
+                        <h2 class="text-lg font-medium text-gray-900 mb-4">Catégories</h2>
+                        {{ form_widget(form.categories) }}
+                    </div>
+
+                    <div class="mt-6 flex justify-end space-x-4">
+                        <button type="button" 
+                                onclick="window.location.href='{{ path('admin_vehicles') }}'"
+                                class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Annuler
+                        </button>
+                        <button type="submit"
+                                class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-900 bg-green-600 hover:bg-green-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                            <i class="fas fa-save mr-2"></i>
+                            Enregistrer les modifications
+                        </button>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %} 

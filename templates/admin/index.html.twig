@@ -1,0 +1,109 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block admin_content %}
+    <div class="admin-welcome">
+        <div class="welcome-header">
+            <h1>Bienvenue dans l'administration</h1>
+            <p class="lead">Gérez votre site depuis cette interface</p>
+        </div>
+
+        <div class="quick-actions">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-car"></i> Véhicules
+                            </h5>
+                            <p class="card-text">Gérez votre flotte de véhicules</p>
+                            <a href="{{ path('admin_vehicles') }}" class="btn btn-primary">
+                                Accéder aux véhicules
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-users"></i> Utilisateurs
+                            </h5>
+                            <p class="card-text">Gérez les comptes utilisateurs</p>
+                            <a href="{{ path('admin_users') }}" class="btn btn-primary">
+                                Accéder aux utilisateurs
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-calendar-alt"></i> Réservations
+                            </h5>
+                            <p class="card-text">Consultez les réservations</p>
+                            <a href="#" class="btn btn-primary">
+                                Voir les réservations
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="system-info mt-5">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title mb-0">Informations système</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Version PHP :</strong> {{ constant('PHP_VERSION') }}</p>
+                            <p><strong>Environnement :</strong> {{ app.environment }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Date du serveur :</strong> {{ "now"|date("d/m/Y H:i") }}</p>
+                            <p><strong>Administrateur connecté :</strong> {{ app.user.email }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .admin-welcome {
+            padding: 2rem 0;
+        }
+        .welcome-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .quick-actions {
+            margin-bottom: 2rem;
+        }
+        .card {
+            height: 100%;
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card-title {
+            color: #2c3e50;
+        }
+        .card-title i {
+            margin-right: 0.5rem;
+        }
+        .system-info {
+            background-color: #f8f9fa;
+            border-radius: 0.5rem;
+        }
+    </style>
+{% endblock %} 

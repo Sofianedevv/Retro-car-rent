@@ -4,72 +4,74 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
-
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use App\Repository\CarRepository;
+use App\Repository\MotorcycleRepository;
+use App\Repository\VanRepository;
+use App\Repository\VehicleRepository;
+use App\Repository\ReservationRepository;
+use App\Form\SearchType;
+use DateTimeImmutable;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app')]
-    public function home(): Response
-    {
+    public function app(
+        Request $request,
+        CarRepository $carRepository,
+        MotorcycleRepository $motorcycleRepository,
+        VanRepository $vanRepository,
+        VehicleRepository $vehicleRepository,
+        ReservationRepository $reservationRepository,
+        SessionInterface $session
+    ): Response {
+        $form = $this->createForm(SearchType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+           $form->getData();
+
+
+            $typeSearch = $form->get('vehicle_type')->getData();
+            $startDate = $form->get('start_date')->getData();
+            $startTime = $form->get('start_time')->getData();
+            $endDate = $form->get('end_date')->getData();
+            $endTime = $form->get('end_time')->getData();
+
+            $startDateTime = new DateTimeImmutable($startDate->format('Y-m-d') . ' ' . $startTime);
+            $endDateTime = new DateTimeImmutable($endDate->format('Y-m-d') . ' ' . $endTime);
+          
+     
+            return $this->redirectToRoute('app_available', [
+            'type' => $typeSearch,
+            'startDateTime' => $startDateTime->format('Y-m-d H:i'),
+            'endDateTime' => $endDateTime->format('Y-m-d H:i'),
+
+            
+            ]);
+        }
+//        $bestRatedCars = $carRepository->findBestRated(2);
+//        $bestRatedMotorcycles = $motorcycleRepository->findBestRated(1);
+//        $bestRatedVans = $vanRepository->findBestRated(1);
+
+//        $bestRatedVehicles = array_merge($bestRatedCars, $bestRatedMotorcycles, $bestRatedVans);
+//        shuffle($bestRatedVehicles);
+
         return $this->render('home/home.html.twig', [
-            'controller_name' => 'HomeController',
+            'bestRatedVehicles' => '',
+            'form' => $form->createView(),
         ]);
     }
-    #[Route('/home', name: 'app_home')]
-    public function index(): Response
+    #[Route('/about', name: 'app_about')]
+    public function about(): Response
     {
-        return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
+        return $this->render('home/about.html.twig', [
         ]);
     }
-    // #[Route('/login', name: 'app_login')]
-    // public function login(): Response
-    // {
-    //     return $this->render('Auth/login.html.twig', [
-    //         'controller_name' => 'HomeController',
-    //     ]);
-    // }
-    // #[Route('/register', name: 'app_register')]
-    // public function register(): Response
-    // {
-    //     return $this->render('Auth/register.html.twig', [
-    //         'controller_name' => 'HomeController',
-    //     ]);
-    // }
-    #[Route('/shop', name: 'app_shop')]
-        public function shop(): Response
-    {
-        return $this->render('products/shop.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
-    }
-    #[Route('/product', name: 'app_product')]
-    public function product(): Response
-    {
-        return $this->render('products/single_product.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
-    }
-    #[Route('/not-found', name: 'app_not_found')]
-    public function notFound(): Response
-    {
-        return $this->render('other/not_found.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
-    }
-    #[Route('/cart', name: 'app_cart')]
-    public function cart(): Response
-    {
-        return $this->render('shop/cart.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
-    }
-    #[Route('/checkout', name: 'app_checkout')]
-    public function checkout(): Response
-    {
-        return $this->render('shop/checkout.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
-    }
+
+
+
+
 
 }

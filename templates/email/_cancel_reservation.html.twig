@@ -1,0 +1,27 @@
+{% extends 'base_email.html.twig' %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md mt-12">
+    <h1 class="text-3xl font-semibold text-center text-blue-600">Confirmation d'Annulation de Réservation</h1>
+
+    <p class="mt-4">Bonjour,</p>
+
+    <p class="mt-2">Nous vous confirmons que votre réservation a été annulée avec succès. Voici les détails de votre réservation :</p>
+
+    <p class="mt-4"><strong>Détails de la réservation :</strong></p>
+    <ul class="mt-2">
+        <li><strong>Modèle du véhicule :</strong> {{ reservationDetails.model }}</li>
+        <li><strong>Marque du véhicule :</strong> {{ reservationDetails.brand }}</li>
+        <li><strong>Date de la réservation :</strong> {{ reservationDetails.createdAt }}</li>
+        <li><strong>Date de début :</strong> {{ reservationDetails.startDate }}</li>
+        <li><strong>Date de fin :</strong> {{ reservationDetails.endDate }}</li>
+    </ul>
+
+    <p class="mt-4">Nous espérons vous accueillir à nouveau bientôt chez Retro Car !</p>
+
+    <footer class="mt-8 text-center text-sm text-gray-600">
+        <p>Cordialement,</p>
+        <p>L'équipe Retro Car</p>
+    </footer>
+</div>
+{% endblock %}

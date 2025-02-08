@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\VehicleOptionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: VehicleOptionRepository::class)]
@@ -27,9 +28,22 @@ class VehicleOption
     #[ORM\ManyToMany(targetEntity: Vehicle::class, mappedBy: 'vehicleOptions')]
     private Collection $vehicles;
 
+    #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
+    private ?string $price = null;
+
+    /**
+     * @var Collection<int, ReservationVehicleOption>
+     */
+    #[ORM\OneToMany(targetEntity: ReservationVehicleOption::class, mappedBy: 'vehicleOptions')]
+    private Collection $reservationVehicleOptions;
+
+    #[ORM\Column]
+    private ?bool $singleChoice = null;
+
     public function __construct()
     {
         $this->vehicles = new ArrayCollection();
+        $this->reservationVehicleOptions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -84,6 +98,59 @@ class VehicleOption
         if ($this->vehicles->removeElement($vehicle)) {
             $vehicle->removeVehicleOption($this);
         }
+
+        return $this;
+    }
+
+    public function getPrice(): ?string
+    {
+        return $this->price;
+    }
+
+    public function setPrice(string $price): static
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ReservationVehicleOption>
+     */
+    public function getReservationVehicleOptions(): Collection
+    {
+        return $this->reservationVehicleOptions;
+    }
+
+    public function addReservationVehicleOption(ReservationVehicleOption $reservationVehicleOption): static
+    {
+        if (!$this->reservationVehicleOptions->contains($reservationVehicleOption)) {
+            $this->reservationVehicleOptions->add($reservationVehicleOption);
+            $reservationVehicleOption->setVehicleOptions($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservationVehicleOption(ReservationVehicleOption $reservationVehicleOption): static
+    {
+        if ($this->reservationVehicleOptions->removeElement($reservationVehicleOption)) {
+            if ($reservationVehicleOption->getVehicleOptions() === $this) {
+                $reservationVehicleOption->setVehicleOptions(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function isSingleChoice(): ?bool
+    {
+        return $this->singleChoice;
+    }
+
+    public function setSingleChoice(bool $singleChoice): static
+    {
+        $this->singleChoice = $singleChoice;
 
         return $this;
     }

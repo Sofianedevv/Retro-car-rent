@@ -1,96 +1,220 @@
-<header class="sticky top-0 z-50" style="background-color: #805e33">
-    <div class="container mx-auto flex justify-between items-center py-4">
-        <a href="index.html" class="flex items-center">
-            <div>
-                <img src="{{ asset('template-html/assets/images/template-white-logo.png') }}" alt="Logo" class="h-14 w-auto mr-4">
-            </div>
-        </a>
-        <div class="flex lg:hidden">
-            <button id="hamburger" class="text-white focus:outline-none">
-                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-                </svg>
-            </button>
-        </div>
-        <nav class="hidden lg:flex md:flex-grow justify-center">
-            <ul class="flex justify-center space-x-4 text-white">
-                        <li><a href="index.html" class="hover:text-secondary font-bold block py-2">Home</a></li>
+<header class="fixed top-0 z-50 w-full bg-white/90 backdrop-blur-sm border-b border-gray-200 shadow-sm font-playfair h-20">
+    <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center py-2 md:py-3">
+            <a href="{{ path('app') }}" class="flex items-center space-x-3">
+                <img src="{{ asset('template-html/assets/images/logosvg.svg') }}" alt="Logo" class="h-14 md:h-12 w-auto">
+                <div class="flex flex-col">
+                    <span class="text-2xl font-bold text-[#8B4513]">Retro Car Rent</span>
+                    <span class="text-sm text-gray-600 italic hidden md:block">Location de véhicules de collection</span>
+                </div>
+            </a>
 
-        <li><a href="{{path ('app_collections')}}" class="hover:text-secondary font-bold block py-2">Nos Véhicules</a></li>
-        {% if app.user %}
-        <li><a href="{{path ('app_favorite_show')}}" class="hover:text-primary font-bold block py-2">Vos favoris</a></li>
-        {% endif %}
-
-    </ul>
-            </ul>
-        </nav>
-        <div class="hidden lg:flex items-center space-x-4 relative">
-            <a href="register.html" class="bg-primary border border-primary hover:bg-transparent text-white hover:text-primary font-semibold px-4 py-2 rounded-full inline-block">Register</a>
-            <a href="register.html" class="bg-primary border border-primary hover:bg-transparent text-white hover:text-primary font-semibold px-4 py-2 rounded-full inline-block">Login</a>
-            <div class="relative group cart-wrapper">
-                <a href="/cart.html">
-                    <img src="{{ asset('template-html/assets/images/cart-shopping.svg') }}" alt="Cart" class="h-6 w-6 group-hover:scale-120">
+            <nav class="hidden lg:flex items-center space-x-8">
+                <a href="{{ path('app') }}" 
+                   class="text-gray-700 hover:text-[#8B4513] transition-colors duration-200 font-medium">
+                    Accueil
                 </a>
-                <div class="absolute right-0 mt-1 w-80 bg-white shadow-lg p-4 rounded hidden group-hover:block">
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between pb-4 border-b border-gray-line">
-                            <div class="flex items-center">
-                                <img src="{{ asset('template-html/assets/images/single-product/1.jpg') }}" alt="Product" class="h-12 w-12 object-cover rounded mr-2">
-                                <div>
-                                    <p class="font-semibold">Summer black dress</p>
-                                    <p class="text-sm">Quantity: 1</p>
-                                </div>
+                <a href="{{ path('app_collections') }}" 
+                   class="text-gray-700 hover:text-[#8B4513] transition-colors duration-200 font-medium">
+                    Nos Véhicules
+                </a>
+                <a href="{{ path('app_contact') }}" 
+                   class="text-gray-700 hover:text-[#8B4513] transition-colors duration-200 font-medium">
+                    Contact
+                </a>
+                
+                {% if app.user %}
+                    <div class="relative group">
+                        <a class="flex items-center space-x-1 text-gray-700 group-hover:text-[#8B4513] transition-colors duration-200 font-medium">
+                            <span>Mon Compte</span>
+                            <i class="fas fa-chevron-down text-xs"></i>
+                        </a>
+                        <div class="absolute right-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                            <div class="w-48 bg-white rounded-lg shadow-lg py-2 border border-gray-100">
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <a href="{{ path('admin_dashboard') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-50">
+                                        <i class="fas fa-tachometer-alt w-5"></i>
+                                        Dashboard Admin
+                                    </a>
+                                {% else %}
+                                    <a href="{{ path('app_favorite_show') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-50">
+                                        <i class="fas fa-heart w-5"></i>
+                                        Mes favoris
+                                    </a>
+                                    
+                                    <a href="{{ path('app_all_reservation', {'clientId': app.user.id}) }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-50">
+                                        <i class="fas fa-calendar-alt w-5"></i>
+                                        Mes réservations
+                                    </a>
+                                    
+                                    <a href="{{ path('app_invoice', {'clientId': app.user.id}) }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-50">
+                                        <i class="fas fa-file-invoice w-5"></i>
+                                        Mes factures
+                                    </a>
+                                {% endif %}
+                                
+                                <a href="{{ path('app_notifications') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-50">
+                                    <i class="fas fa-bell w-5"></i>
+                                    Mes notifications
+                                    {% if unread_notifications_count > 0 %}
+                                        <span class="ml-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full notification-badge">
+                                            {{ unread_notifications_count }}
+                                        </span>
+                                    {% endif %}
+                                </a>
+                                
+                                <a href="{{ path('app_profile') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-50">
+                                    <i class="fas fa-user w-5"></i>
+                                    Mon profil
+                                </a>
+                                
+                                <div class="border-t border-gray-100 my-1"></div>
+                                
+                                <a href="{{ path('app_logout') }}" class="block px-4 py-2 text-red-600 hover:bg-red-50">
+                                    <i class="fas fa-sign-out-alt w-5"></i>
+                                    Déconnexion
+                                </a>
                             </div>
-                            <p class="font-semibold">$25.00</p>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center">
-                                <img src="{{ asset('template-html/assets/images/single-product/2.jpg') }}" alt="Product" class="h-12 w-12 object-cover rounded mr-2">
-                                <div>
-                                    <p class="font-semibold">Black suit</p>
-                                    <p class="text-sm">Quantity: 1</p>
-                                </div>
-                            </div>
-                            <p class="font-semibold">$125.00</p>
                         </div>
                     </div>
-                    <a href="/cart.html" class="block text-center mt-4 border border-primary bg-primary hover:bg-transparent text-white hover:text-primary py-2 rounded-full font-semibold">Go to Cart</a>
-                </div>
-            </div>
-            <a id="search-icon" href="javascript:void(0);" class="text-white hover:text-secondary group">
-                <img src="{{ asset('template-html/assets/images/search-icon.svg') }}" alt="Search" class="h-6 w-6 transition-transform transform group-hover:scale-120">
-            </a>
-            <div id="search-field" class="hidden absolute top-0 right-0 mt-16 w-96 bg-white border border-gray-line rounded p-4 z-50">
-                <form action="javascript:void(0);">
-                    <input type="text" placeholder="Search..." class="w-full p-2 border border-gray-line rounded" />
-                </form>
-            </div>
+                {% else %}
+                    <div class="flex items-center space-x-4">
+                        <a href="{{ path('app_register') }}" 
+                           class="px-4 py-2 text-[#8B4513] hover:bg-[#8B4513]/10 rounded-lg transition-colors duration-200">
+                            Inscription
+                        </a>
+                        <a href="{{ path('app_login') }}" 
+                           class="px-4 py-2 bg-[#8B4513] text-white rounded-lg hover:bg-[#8B4513]/90 transition-colors duration-200">
+                            Connexion
+                        </a>
+                    </div>
+                {% endif %}
+            </nav>
+
+            <button id="hamburger" class="lg:hidden text-gray-700 hover:text-[#8B4513] transition-colors duration-200">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
         </div>
     </div>
+
+    <nav id="mobile-menu" class="fixed inset-0 bg-white z-50 lg:hidden hidden">
+        <div class="container mx-auto px-6 py-8 bg-white">
+            <div class="flex justify-end mb-8">
+                <button id="close-menu" class="text-gray-700 hover:text-[#8B4513] transition-all duration-200 rounded-full p-2 hover:bg-gray-100">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            
+            <div class="flex items-center justify-center mb-8">
+                <img src="{{ asset('template-html/assets/images/logosvg.svg') }}" alt="Logo" class="h-12 w-auto">
+            </div>
+            
+            <div class="flex flex-col space-y-5 bg-white rounded-xl p-4">
+                <div class="space-y-3">
+                    <a href="{{ path('app') }}" 
+                       class="block px-4 py-2.5 text-gray-800 hover:text-[#8B4513] transition-all duration-200 rounded-xl hover:bg-gray-100">
+                        <i class="fas fa-home w-6"></i>
+                        Accueil
+                    </a>
+                    <a href="{{ path('app_collections') }}" 
+                       class="block px-4 py-2.5 text-gray-800 hover:text-[#8B4513] transition-all duration-200 rounded-xl hover:bg-gray-100">
+                        <i class="fas fa-car w-6"></i>
+                        Nos Véhicules
+                    </a>
+                    <a href="{{ path('app_contact') }}" 
+                       class="block px-4 py-2.5 text-gray-800 hover:text-[#8B4513] transition-all duration-200 rounded-xl hover:bg-gray-100">
+                        <i class="fas fa-envelope w-6"></i>
+                        Contact
+                    </a>
+                </div>
+
+                {% if app.user %}
+                    <div class="border-t border-gray-200 my-2"></div>
+                    <div class="space-y-3 bg-white">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('admin_dashboard') }}" 
+                               class="block px-4 py-2.5 text-gray-800 hover:text-[#8B4513] transition-all duration-200 rounded-xl hover:bg-gray-100">
+                                <i class="fas fa-tachometer-alt w-6"></i>
+                                Dashboard Admin
+                            </a>
+                        {% else %}
+                            <a href="{{ path('app_favorite_show') }}" 
+                               class="block px-4 py-2.5 text-gray-800 hover:text-[#8B4513] transition-all duration-200 rounded-xl hover:bg-gray-100">
+                                <i class="fas fa-heart w-6"></i>
+                                Mes favoris
+                            </a>
+                            <a href="{{ path('app_all_reservation', {'clientId': app.user.id}) }}" 
+                               class="block px-4 py-2.5 text-gray-800 hover:text-[#8B4513] transition-all duration-200 rounded-xl hover:bg-gray-100">
+                                <i class="fas fa-calendar w-6"></i>
+                                Mes réservations
+                            </a>
+                            <a href="{{ path('app_invoice', {'clientId': app.user.id}) }}" 
+                               class="block px-4 py-2.5 text-gray-800 hover:text-[#8B4513] transition-all duration-200 rounded-xl hover:bg-gray-100">
+                                <i class="fas fa-file-invoice w-6"></i>
+                                Mes factures
+                            </a>
+                        {% endif %}
+
+                        <a href="{{ path('app_notifications') }}" 
+                           class="block px-4 py-2.5 text-gray-800 hover:text-[#8B4513] transition-all duration-200 rounded-xl hover:bg-gray-100">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <i class="fas fa-bell w-6"></i>
+                                    Mes notifications
+                                </div>
+                                {% if unread_notifications_count > 0 %}
+                                    <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+                                        {{ unread_notifications_count }}
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </a>
+
+                        <a href="{{ path('app_profile') }}" 
+                           class="block px-4 py-2.5 text-gray-800 hover:text-[#8B4513] transition-all duration-200 rounded-xl hover:bg-gray-100">
+                            <i class="fas fa-user w-6"></i>
+                            Mon profil
+                        </a>
+
+                        <div class="border-t border-gray-200 my-2"></div>
+
+                        <a href="{{ path('app_logout') }}" 
+                           class="block px-4 py-2.5 text-red-600 hover:text-red-700 transition-all duration-200 rounded-xl hover:bg-red-50">
+                            <i class="fas fa-sign-out-alt w-6"></i>
+                            Déconnexion
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="space-y-3 mt-4 bg-white">
+                        <a href="{{ path('app_register') }}" 
+                           class="block w-full py-3 text-center text-[#8B4513] bg-white border-2 border-[#8B4513] rounded-xl hover:bg-[#8B4513]/5 transition-all duration-200">
+                            Inscription
+                        </a>
+                        <a href="{{ path('app_login') }}" 
+                           class="block w-full py-3 text-center bg-[#8B4513] text-white rounded-xl hover:bg-[#8B4513]/90 transition-all duration-200">
+                            Connexion
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
 </header>
-<!-- Mobile menu -->
-<nav id="mobile-menu-placeholder" class="mobile-menu hidden flex flex-col items-center space-y-8 lg:hidden">
-    <ul class="w-full">
-        <li><a href="index.html" class="hover:text-secondary font-bold block py-2">Home</a></li>
 
-        <li><a href="shop.html" class="hover:text-secondary font-bold block py-2">Nos Véhicules</a></li>
-        {% if app.user %}
-        <li><a href="{{path ('app_favorite_show')}}" class="hover:text-primary font-bold block py-2">Vos favoris</a></li>
-        {% endif %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const hamburger = document.getElementById('hamburger');
+    const closeMenu = document.getElementById('close-menu');
+    const mobileMenu = document.getElementById('mobile-menu');
 
-    </ul>
-    <div class="flex flex-col mt-6 space-y-2 items-center">
-        <a href="register.html"
-           class="bg-primary hover:bg-transparent text-white hover:text-primary border border-primary font-semibold px-4 py-2 rounded-full inline-block flex items-center justify-center min-w-[110px]">Inscritpion</a>
-        <a href="register.html"
-           class="bg-primary hover:bg-transparent text-white hover:text-primary border border-primary font-semibold px-4 py-2 rounded-full inline-block flex items-center justify-center min-w-[110px]">Connexion</a>
-        <a href="register.html"
-           class="bg-primary hover:bg-transparent text-white hover:text-primary border border-primary font-semibold px-4 py-2 rounded-full inline-block flex items-center justify-center min-w-[110px]">Cart -&nbsp;<span>5</span>&nbsp;items</a>
-    </div>
-    <!-- Search field -->
-    <div
-            class="  top-full right-0 mt-2 w-full bg-white shadow-lg p-2 rounded">
-        <input type="text" class="w-full p-2 border border-gray-300 rounded"
-               placeholder="Search for products...">
-    </div>
-</nav>
+    hamburger.addEventListener('click', function() {
+        mobileMenu.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    });
+
+    closeMenu.addEventListener('click', function() {
+        mobileMenu.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    });
+});
+</script>

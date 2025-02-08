@@ -1,0 +1,29 @@
+{% extends 'base_email.html.twig' %}
+
+{% block content %}
+
+
+<div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md mt-12">
+    <h1 class="text-3xl font-semibold text-center text-blue-600">Confirmation de Réservation</h1>
+
+    <p class="mt-4">Bonjour <strong>{{ client.firstName }} {{ client.lastName }}</strong>,</p>
+
+    <p class="mt-2">Nous vous confirmons la réservation de votre véhicule <strong>{{ vehicle.model }}</strong> du <strong>{{ startDate }}</strong> au <strong>{{ endDate }}</strong>.</p>
+
+    <p class="mt-4">Le prix total pour cette réservation est de <strong>{{ totalPrice }} €</strong>.</p>
+
+    <p class="mt-4">Nous vous rappelons que l'annulation de votre réservation doit se faire avant les 48 heures suivant la création de la réservation. Si vous annulez après ce délai, des frais pourraient être appliqués ou l'annulation pourrait ne pas être possible.</p>
+
+    <p class="mt-4">Merci de votre confiance et à bientôt chez Retro Car !</p>
+
+    <p class="mt-8 text-center">
+        <a href="{{ path('app_collections') }}" class="bg-blue-500 text-white py-2 px-6 rounded-full">Visitez notre site</a>
+    </p>
+
+    <footer class="mt-8 text-center text-sm text-gray-600">
+        <p>Cordialement,</p>
+        <p>L'équipe Retro Car</p>
+    </footer>
+</div>
+
+{% endblock %}

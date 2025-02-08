@@ -8,6 +8,10 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: NotificationRepository::class)]
 class Notification
 {
+    public const TYPE_NEW_VEHICLE = 'new_vehicle';
+    public const TYPE_NEW_REPLY = 'new_reply';
+    public const TYPE_NEW_FAVORITE = 'new_favorite';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -25,6 +29,9 @@ class Notification
     #[ORM\ManyToOne(inversedBy: 'notifications')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $client = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $type = null;
 
     public function getId(): ?int
     {
@@ -75,6 +82,18 @@ class Notification
     public function setClient(?User $client): static
     {
         $this->client = $client;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): static
+    {
+        $this->type = $type;
 
         return $this;
     }

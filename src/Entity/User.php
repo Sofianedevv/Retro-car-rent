@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -16,57 +17,64 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    #[Groups(['user:read'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['user:read'])]
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
+    #[Groups(['user:read'])]
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
     private ?string $plainPassword = null;
 
-
+    #[Groups(['user:read'])]
     #[ORM\Column(length: 255)]
     private ?string $firstName = null;
 
+    #[Groups(['user:read'])]
     #[ORM\Column(length: 255)]
     private ?string $lastName = null;
 
+    #[Groups(['user:read'])]
     #[ORM\Column(length: 15)]
     private ?string $phoneNumber = null;
 
+    #[Groups(['user:read'])]
     #[ORM\Column]
     private array $roles = [];
 
+    #[Groups(['user:read'])]
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
     /**
      * @var Collection<int, Reservation>
      */
-    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'client')]
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Reservation::class, cascade: ['remove'])]
     private Collection $reservations;
 
     /**
      * @var Collection<int, Review>
      */
-    #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'publisher')]
+    #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'publisher', cascade: ['remove'])]
     private Collection $reviews;
 
     /**
      * @var Collection<int, Favorite>
      */
-    #[ORM\OneToMany(targetEntity: Favorite::class, mappedBy: 'client')]
+    #[ORM\OneToMany(targetEntity: Favorite::class, mappedBy: 'client', cascade: ['remove'])]
     private Collection $favorites;
 
     /**
      * @var Collection<int, Notification>
      */
-    #[ORM\OneToMany(targetEntity: Notification::class, mappedBy: 'client')]
+    #[ORM\OneToMany(targetEntity: Notification::class, mappedBy: 'client', cascade: ['remove'])]
     private Collection $notifications;
 
     public function __construct()
@@ -75,6 +83,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->reviews = new ArrayCollection();
         $this->favorites = new ArrayCollection();
         $this->notifications = new ArrayCollection();
+        $this->roles = ['ROLE_USER'];
     }
 
     public function getId(): ?int
@@ -154,7 +163,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
@@ -187,25 +195,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->reservations;
     }
 
-    public function addReservation(Reservation $reservation): static
+    public function addReservation(Reservation $reservation): self
     {
         if (!$this->reservations->contains($reservation)) {
             $this->reservations->add($reservation);
             $reservation->setClient($this);
         }
-
         return $this;
     }
 
-    public function removeReservation(Reservation $reservation): static
+    public function removeReservation(Reservation $reservation): self
     {
         if ($this->reservations->removeElement($reservation)) {
-            // set the owning side to null (unless already changed)
             if ($reservation->getClient() === $this) {
                 $reservation->setClient(null);
             }
         }
-
         return $this;
     }
 
@@ -304,17 +309,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
 
        /**
-     * A visual identifier that represents this user.
      *
      * @see UserInterface
      */
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
+    }
+
+    public function isBanned(): bool
+    {
+        return in_array('ROLE_BANNED', $this->getRoles());
     }
 }

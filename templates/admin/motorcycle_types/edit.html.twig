@@ -1,0 +1,41 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Modifier le type de moto{% endblock %}
+
+{% block admin_content %}
+<div class="max-w-2xl mx-auto space-y-6">
+    <div>
+        <h1 class="text-3xl font-semibold text-gray-800">Modifier le type de moto</h1>
+        <p class="mt-1 text-gray-600">Modifiez les informations du type de moto</p>
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg p-6">
+        {{ form_start(form) }}
+        <div class="space-y-6">
+            <div>
+                {{ form_label(form.name) }}
+                {{ form_widget(form.name) }}
+                {{ form_errors(form.name) }}
+            </div>
+
+            <div>
+                {{ form_label(form.description) }}
+                {{ form_widget(form.description) }}
+                {{ form_errors(form.description) }}
+            </div>
+
+            <div class="flex justify-end space-x-3">
+                <a href="{{ path('admin_motorcycle_types') }}" 
+                   class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors">
+                    Annuler
+                </a>
+                <button type="submit" 
+                        class="px-4 py-2 bg-[#8B4513] text-white rounded-md hover:bg-[#734010] transition-colors">
+                    Enregistrer
+                </button>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %} 

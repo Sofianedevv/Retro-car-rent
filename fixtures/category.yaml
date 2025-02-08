@@ -1,15 +1,19 @@
+# @group category
 App\Entity\Category:
-  category_sport:
+  category_1:
     name: "Sport"
 
-  category_classic:
-    name: "Classique"
+  category_2:
+    name: "Classic"
 
-  category_coupe:
+  category_3:
     name: "Coupé"
 
-  category_convertible:
+  category_4:
     name: "Cabriolet"
 
-  category_vintage:
+  category_5:
     name: "Vintage"
+
+  category_6:
+    name: "Modern Classic"

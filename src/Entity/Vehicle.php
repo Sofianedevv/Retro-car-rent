@@ -63,14 +63,17 @@ class Vehicle
     /**
      * @var Collection<int, Review>
      */
-    #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'vehicle')]
+    #[ORM\OneToMany(mappedBy: 'vehicle', targetEntity: Review::class, orphanRemoval: true)]
     private Collection $reviews;
 
     /**
      * @var Collection<int, VehicleImage>
      */
-    #[ORM\OneToMany(targetEntity: VehicleImage::class, mappedBy: 'vehicle')]
+    #[ORM\OneToMany(mappedBy: 'vehicle', targetEntity: VehicleImage::class, cascade: ['persist', 'remove'])]
     private Collection $vehicleImages;
+
+    #[ORM\Column(length: 255)]
+    private ?string $defaultImage = null;
 
     /**
      * @var Collection<int, Category>
@@ -78,8 +81,7 @@ class Vehicle
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'vehicles')]
     private Collection $categories;
 
-    #[ORM\Column(length: 255)]
-    private ?string $defaultImage = null;
+    private $imageFiles;
 
     public function __construct()
     {
@@ -252,7 +254,6 @@ class Vehicle
     public function removeReservation(Reservation $reservation): static
     {
         if ($this->reservations->removeElement($reservation)) {
-            // set the owning side to null (unless already changed)
             if ($reservation->getVehicle() === $this) {
                 $reservation->setVehicle(null);
             }
@@ -282,7 +283,6 @@ class Vehicle
     public function removeReview(Review $review): static
     {
         if ($this->reviews->removeElement($review)) {
-            // set the owning side to null (unless already changed)
             if ($review->getVehicle() === $this) {
                 $review->setVehicle(null);
             }
@@ -299,26 +299,52 @@ class Vehicle
         return $this->vehicleImages;
     }
 
-    public function addVehicleImage(VehicleImage $vehicleImage): static
+    public function addVehicleImage(VehicleImage $vehicleImage): self
     {
         if (!$this->vehicleImages->contains($vehicleImage)) {
-            $this->vehicleImages->add($vehicleImage);
+            $this->vehicleImages[] = $vehicleImage;
             $vehicleImage->setVehicle($this);
         }
 
         return $this;
     }
 
-    public function removeVehicleImage(VehicleImage $vehicleImage): static
+    public function removeVehicleImage(VehicleImage $vehicleImage): self
     {
         if ($this->vehicleImages->removeElement($vehicleImage)) {
-            // set the owning side to null (unless already changed)
             if ($vehicleImage->getVehicle() === $this) {
                 $vehicleImage->setVehicle(null);
             }
         }
 
         return $this;
+    }
+
+    public function getDefaultImage(): ?string
+    {
+        return $this->defaultImage;
+    }
+
+    public function setDefaultImage(string $defaultImage): static
+    {
+        $this->defaultImage = $defaultImage;
+
+        return $this;
+    }
+
+    public function getAverageRating(): float
+    {
+        $reviews = $this->getReviews();
+        if ($reviews->isEmpty()) {
+            return 0;
+        }
+
+        $total = 0;
+        foreach ($reviews as $review) {
+            $total += $review->getRating();
+        }
+
+        return round($total / $reviews->count(), 1);
     }
 
     /**
@@ -341,18 +367,6 @@ class Vehicle
     public function removeCategory(Category $category): static
     {
         $this->categories->removeElement($category);
-
-        return $this;
-    }
-
-    public function getDefaultImage(): ?string
-    {
-        return $this->defaultImage;
-    }
-
-    public function setDefaultImage(string $defaultImage): static
-    {
-        $this->defaultImage = $defaultImage;
 
         return $this;
     }

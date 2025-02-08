@@ -40,4 +40,25 @@ class MotorcycleRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function findBestRated(int $limit = 4): array
+    {
+        return $this->createQueryBuilder('m')
+            ->leftJoin('m.reviews', 'r')
+            ->having('COUNT(r.id) > 0')
+            ->orderBy('AVG(r.rating)', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllEngineTypes(): array
+    {
+        $results = $this->createQueryBuilder('m')
+            ->select('m.type')
+            ->distinct()
+            ->getQuery()
+            ->getResult();
+        return array_column($results, 'type');
+    }
 }

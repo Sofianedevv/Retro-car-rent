@@ -1,0 +1,91 @@
+{% extends 'base_pdf.html.twig' %}
+
+{% block title %}Facture N°{{ invoice.invoiceNumber }}{% endblock %}
+
+{% block content %}
+    <div class="w-full text-sm p-4">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-4">
+            <h1 class="font-bold">Facture N°{{ invoice.invoiceNumber }}</h1>
+{#            <img src="{{ asset('/template-html/assets/images/logo.svg') }}" alt="Logo" class="h-20 w-auto">#}
+        </div>
+
+        <!-- Informations principales -->
+        <div class="grid grid-cols-2 gap-4 mb-6">
+            <div>
+                <h3 class="font-bold text-lg">Client :</h3>
+                <p>{{ client.firstName }} {{ client.lastName }}</p>
+                <p>{{ client.email }}</p>
+                <p>{{ client.phoneNumber }}</p>
+            </div>
+            <div>
+                <h3 class="font-bold text-lg">Entreprise :</h3>
+                <p>Retro Car Rent</p>
+                <p>123 Rue de Rétro, 75001 Paris, France</p>
+                <p>Tél: +33 1 23 45 67 89</p>
+                <p>SIRET: 123 456 789 00010</p>
+            </div>
+        </div>
+
+        <!-- Détails réservation -->
+        <div class="mb-4">
+            <h3 class="font-bold text-lg">Détails de la Réservation :</h3>
+            <div class="grid grid-cols-3 gap-4">
+                <p><strong>Date début :</strong> {{ startDate|date('d/m/Y') }}</p>
+                <p><strong>Date fin :</strong> {{ endDate|date('d/m/Y') }}</p>
+                <p><strong>Durée :</strong> {{ days }} jours</p>
+            </div>
+        </div>
+
+        <!-- Détails facture -->
+        <div class="mb-4">
+            <h3 class="font-bold text-lg">Détails de la Facture :</h3>
+            <table class="w-full border border-gray-300 rounded mt-2">
+                <thead>
+                <tr class="bg-gray-100">
+                    <th class="p-2 text-left font-bold">Quantité</th>
+                    <th class="p-2 text-left font-bold">Description</th>
+                    <th class="p-2 text-right font-bold">Prix</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="border-t">
+                    <td class="p-2">1</td>
+                    <td class="p-2">{{ vehicle.brand }} - {{ vehicle.model }}</td>
+                    <td class="p-2 text-right">{{ vehicle.price }} €</td>
+                </tr>
+                {% if reservationOptions is not empty %}
+                    {% for option in reservationOptions %}
+                        <tr class="border-t">
+                            <td class="p-2">{{ option.count }}</td>
+                            <td class="p-2">{{ option.vehicleOptions.name }}</td>
+                            <td class="p-2 text-right">{{ option.vehicleOptions.price }} €</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Totaux -->
+        <div class="mb-4">
+            <div class="flex justify-between">
+                <p><strong>Total HT :</strong> {{ totalPriceVehicle }} €</p>
+            </div>
+            <div class="flex justify-between">
+                <p><strong>Options :</strong> {{ totalPriceOptions }} €</p>
+            </div>
+            <div class="flex justify-between font-bold">
+                <p><strong>Total TTC :</strong> {{ totalPriceVehicle + totalPriceOptions }} €</p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-xs text-gray-600">
+            <h3 class="font-bold text-lg">Conditions Générales :</h3>
+            <p>
+                La présente facture est régie par les conditions générales de vente de l'entreprise Retro Car Rent. Le paiement est dû à réception de la facture.
+            </p>
+            <p class="text-center mt-4 absolute bottom-0 w-full">&copy; {{ "now"|date("Y") }} Retro Car Rent. Tous droits réservés.</p>        </div>
+    </div>
+{% endblock %}
