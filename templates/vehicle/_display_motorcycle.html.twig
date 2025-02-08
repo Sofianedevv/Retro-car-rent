@@ -22,7 +22,7 @@
                     {% if app.request.attributes.get('_route') == 'app_available' %}
                         <h1 class="text-4xl font-playfair font-bold text-white">Nos Motos Disponibles</h1>
                         {% if startDateTime is not empty and endDateTime is not empty %}
-                            <p class="text-gray-300 mt-4 max-w-2xl mx-auto">
+                            <p class="text-gray-50 mt-4 max-w-2xl mx-auto">
                                 Découvrez nos motos disponibles du
                                 {{ startDateTime|date('d/m/Y H:i') }}
                                 au
@@ -32,7 +32,7 @@
                         {% endif %}
                     {% else %}
                         <h1 class="text-4xl font-playfair font-bold text-white">Nos Motos de Collection</h1>
-                        <p class="text-gray-300 mt-4 max-w-2xl mx-auto">
+                        <p class="text-gray-50 mt-4 max-w-2xl mx-auto">
                             Découvrez notre sélection de motos d'exception, mêlant puissance et élégance pour des sensations uniques.
                         </p>
                     {% endif %}

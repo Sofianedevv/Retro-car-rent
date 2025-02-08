@@ -51,15 +51,15 @@ class HomeController extends AbstractController
             
             ]);
         }
-        $bestRatedCars = $carRepository->findBestRated(2);
-        $bestRatedMotorcycles = $motorcycleRepository->findBestRated(1);
-        $bestRatedVans = $vanRepository->findBestRated(1);
+//        $bestRatedCars = $carRepository->findBestRated(2);
+//        $bestRatedMotorcycles = $motorcycleRepository->findBestRated(1);
+//        $bestRatedVans = $vanRepository->findBestRated(1);
 
-        $bestRatedVehicles = array_merge($bestRatedCars, $bestRatedMotorcycles, $bestRatedVans);
-        shuffle($bestRatedVehicles);
+//        $bestRatedVehicles = array_merge($bestRatedCars, $bestRatedMotorcycles, $bestRatedVans);
+//        shuffle($bestRatedVehicles);
 
         return $this->render('home/home.html.twig', [
-            'bestRatedVehicles' => $bestRatedVehicles,
+            'bestRatedVehicles' => '',
             'form' => $form->createView(),
         ]);
     }

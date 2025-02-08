@@ -70,7 +70,7 @@ Cela installera TailwindCSS et Swiper. Vous pouvez ensuite lancer les commandes 
 | Rôle       | Email                | Mot de passe           |
 |------------|----------------------|------------------------|
 | Admin      | admin@example.com    | jesuisunadministrateur |
-| Utilisateur| user@example.com     | password               |
+| Utilisateur| joesph.quitzon@yahoo.com    | bonjour                |
 
 ## Fonctionnalités principales
 ### 1. Fonctionnalités pour l'Utilisateur (Client) :
@@ -117,13 +117,8 @@ Décrivez comment valider des données ou des processus si applicable (exemple :
 **Services testés** :
    - `VehicleFiltersService` (Gestion des filtres de véhicules).
    - `ReservationService` (Gestion des réservations).
-
- **Types de tests** :
-   - Vérification des filtres appliqués aux véhicules.
-   - Vérification des données disponibles pour filtrer les véhicules.
-   - Vérification du calcul des jours dans les réservations.
   
-2. **Lancer les tests**
+**Lancer les tests**
 Assurez-vous que PHPUnit est installé :
    ```bash
    composer require --dev phpunit/phpunit
@@ -132,12 +127,14 @@ Assurez-vous que PHPUnit est installé :
 **Exécuter les tests unitaires**
 - **VehicleFiltersServiceTest** :
   ```bash
-  php bin/phpunit tests/Service/VehicleFiltersServiceTest.php
+  php bin/phpunit tests/unit/service/VehicleFiltersServiceTest.php
   ```
 - **ReservationServiceTest** :
   ```bash
-  php bin/phpunit tests/Service/ReservationServiceTest.php
+  php bin/phpunit tests/unit/service/ReservationServiceTest.php
   ```
+2. **Tests fonctionnels :**
+
 ## Sécurité
 ### 3.1 Authentification sécurisée
 - Le projet met en place une **authentification sécurisée** pour les utilisateurs grâce à un système de connexion avec **email** et **mot de passe crypté**.

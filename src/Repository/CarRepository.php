@@ -52,6 +52,7 @@ class CarRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
 //    public function findCarsByFiltersWithPagination(array $filters, int $page = 1, int $limit = 6): Paginator
 //    {
 //        $queryBuilder = $this->createQueryBuilder('v');
