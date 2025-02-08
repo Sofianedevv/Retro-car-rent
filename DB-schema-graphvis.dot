@@ -1,0 +1,55 @@
+digraph "rcr2@localhost" {
+
+splines  = ortho;
+fontname = "Inconsolata";
+
+node [colorscheme = ylgnbu4];
+edge [colorscheme = dark28, dir = both];
+
+car                         [shape = record, pos = "15.835,13.466!"   , label = "{ car |  nb_seats : int\l  nb_doors : int\l  trunk_size : int\l  transmission : varchar(20)\l| id : int\l }"];
+category                    [shape = record, pos = "23.757,14.002!"   , label = "{ category |  name : varchar(255)\l| id : int\l }"];
+contact                     [shape = record, pos = "25.765,5.354!"    , label = "{ contact |  name : varchar(255)\l  email : varchar(255)\l  subject : varchar(255)\l  message : longtext\l  created_at  /* (DC2Type:datetime_immutable) */ : datetime\l| id : int\l }"];
+doctrine_migration_versions [shape = record, pos = "12.163,7.683!"    , label = "{ doctrine_migration_versions |  executed_at : datetime\l  execution_time : int\l| version : varchar(191)\l }"];
+favorite                    [shape = record, pos = "1.932,8.261!"     , label = "{ favorite |  client_id : int\l| id : int\l }"];
+favorite_vehicle            [shape = record, pos = "8.863,5.955!"     , label = "{ favorite_vehicle |  favorite_id : int\l  vehicle_id : int\l }"];
+invoice                     [shape = record, pos = "5.369,8.821!"     , label = "{ invoice |  reservation_id : int\l  invoice_number : varchar(255)\l  created_at  /* (DC2Type:datetime_immutable) */ : datetime\l| id : int\l }"];
+messenger_messages          [shape = record, pos = "26.989,14.312!"   , label = "{ messenger_messages |  body : longtext\l  headers : longtext\l  queue_name : varchar(190)\l  created_at  /* (DC2Type:datetime_immutable) */ : datetime\l  available_at  /* (DC2Type:datetime_immutable) */ : datetime\l  delivered_at  /* (DC2Type:datetime_immutable) */ : datetime\l| id : bigint\l }"];
+motorcycle                  [shape = record, pos = "23.891,10.220!"   , label = "{ motorcycle |  engine_capacity : int\l  type : varchar(100)\l  motorcycle_type_id : int\l| id : int\l }"];
+motorcycle_type             [shape = record, pos = "23.508,16.851!"   , label = "{ motorcycle_type |  name : varchar(255)\l  description : varchar(255)\l| id : int\l }"];
+notification                [shape = record, pos = "-2.864,11.881!"   , label = "{ notification |  client_id : int\l  message : varchar(255)\l  created_at  /* (DC2Type:datetime_immutable) */ : datetime\l  read_status : tinyint(1)\l  type : varchar(50)\l| id : int\l }"];
+payment                     [shape = record, pos = "0.872,5.196!"     , label = "{ payment |  reservation_id : int\l  amount : decimal(10,2)\l  payment_date  /* (DC2Type:datetime_immutable) */ : datetime\l  payment_method : varchar(255)\l  payment_status : varchar(255)\l| id : int\l }"];
+reservation                 [shape = record, pos = "3.368,13.622!"    , label = "{ reservation |  client_id : int\l  vehicle_id : int\l  start_date  /* (DC2Type:datetime_immutable) */ : datetime\l  end_date  /* (DC2Type:datetime_immutable) */ : datetime\l  total_price : decimal(10,2)\l  status : varchar(255)\l  created_at  /* (DC2Type:datetime_immutable) */ : datetime\l  reference  /* (DC2Type:uuid) */ : char(36)\l| id : int\l }"];
+reservation_vehicle_option  [shape = record, pos = "17.020,7.129!"    , label = "{ reservation_vehicle_option |  reservation_id : int\l  vehicle_options_id : int\l  price_by_option : decimal(5,2)\l  count : int\l| id : int\l }"];
+review                      [shape = record, pos = "9.611,16.246!"    , label = "{ review |  publisher_id : int\l  vehicle_id : int\l  rating : double\l  comment : longtext\l  created_at  /* (DC2Type:datetime_immutable) */ : datetime\l  parent_id : int\l| id : int\l }"];
+user                        [shape = record, pos = "3.155,18.541!"    , label = "{ user |  email : varchar(255)\l  password : varchar(255)\l  first_name : varchar(255)\l  last_name : varchar(255)\l  phone_number : varchar(15)\l  roles : json\l  created_at  /* (DC2Type:datetime_immutable) */ : datetime\l| id : int\l }"];
+van                         [shape = record, pos = "18.733,10.206!"   , label = "{ van |  cargo_volume : double\l  nb_seats : int\l  nb_doors : int\l| id : int\l }"];
+vehicle                     [shape = record, pos = "15.988,19.496!"   , label = "{ vehicle |  model : varchar(255)\l  brand : varchar(255)\l  year : int\l  price : decimal(10,2)\l  fuel_type : varchar(255)\l  mileage : int\l  availability : tinyint(1)\l  discr : varchar(255)\l  default_image : varchar(255)\l| id : int\l }"];
+vehicle_category            [shape = record, pos = "15.241,9.740!"    , label = "{ vehicle_category |  vehicle_id : int\l  category_id : int\l }"];
+vehicle_image               [shape = record, pos = "11.627,10.131!"   , label = "{ vehicle_image |  vehicle_id : int\l  url : varchar(255)\l| id : int\l }"];
+vehicle_option              [shape = record, pos = "19.774,13.437!"   , label = "{ vehicle_option |  name : varchar(255)\l  description : varchar(255)\l  price : decimal(5,2)\l  single_choice : tinyint(1)\l| id : int\l }"];
+vehicle_vehicle_option      [shape = record, pos = "21.688,7.352!"    , label = "{ vehicle_vehicle_option |  vehicle_id : int\l  vehicle_option_id : int\l }"];
+
+car                         -> vehicle                     [color = "#595959", style = solid , arrowtail = none    , arrowhead = normal  , taillabel = "", label = "id", headlabel = ""];
+favorite                    -> user                        [color = "#595959", style = solid , arrowtail = none    , arrowhead = normal  , taillabel = "", label = "client_id:id", headlabel = ""];
+favorite_vehicle            -> favorite                    [color = "#595959", style = solid , arrowtail = none    , arrowhead = normal  , taillabel = "", label = "favorite_id:id", headlabel = ""];
+favorite_vehicle            -> vehicle                     [color = "#595959", style = solid , arrowtail = none    , arrowhead = normal  , taillabel = "", label = "vehicle_id:id", headlabel = ""];
+invoice                     -> reservation                 [color = "#595959", style = solid , arrowtail = none    , arrowhead = normal  , taillabel = "", label = "reservation_id:id", headlabel = ""];
+motorcycle                  -> motorcycle_type             [color = "#595959", style = solid , arrowtail = none    , arrowhead = normal  , taillabel = "", label = "motorcycle_type_id:id", headlabel = ""];
+motorcycle                  -> vehicle                     [color = "#595959", style = solid , arrowtail = none    , arrowhead = normal  , taillabel = "", label = "id", headlabel = ""];
+notification                -> user                        [color = "#595959", style = solid , arrowtail = none    , arrowhead = normal  , taillabel = "", label = "client_id:id", headlabel = ""];
+payment                     -> reservation                 [color = "#595959", style = solid , arrowtail = none    , arrowhead = normal  , taillabel = "", label = "reservation_id:id", headlabel = ""];
+reservation                 -> user                        [color = "#595959", style = solid , arrowtail = none    , arrowhead = normal  , taillabel = "", label = "client_id:id", headlabel = ""];
+reservation                 -> vehicle                     [color = "#595959", style = solid , arrowtail = none    , arrowhead = normal  , taillabel = "", label = "vehicle_id:id", headlabel = ""];
+reservation_vehicle_option  -> reservation                 [color = "#595959", style = solid , arrowtail = none    , arrowhead = normal  , taillabel = "", label = "reservation_id:id", headlabel = ""];
+reservation_vehicle_option  -> vehicle_option              [color = "#595959", style = solid , arrowtail = none    , arrowhead = normal  , taillabel = "", label = "vehicle_options_id:id", headlabel = ""];
+review                      -> review                      [color = "#595959", style = solid , arrowtail = none    , arrowhead = normal  , taillabel = "", label = "parent_id:id", headlabel = ""];
+review                      -> user                        [color = "#595959", style = solid , arrowtail = none    , arrowhead = normal  , taillabel = "", label = "publisher_id:id", headlabel = ""];
+review                      -> vehicle                     [color = "#595959", style = solid , arrowtail = none    , arrowhead = normal  , taillabel = "", label = "vehicle_id:id", headlabel = ""];
+van                         -> vehicle                     [color = "#595959", style = solid , arrowtail = none    , arrowhead = normal  , taillabel = "", label = "id", headlabel = ""];
+vehicle_category            -> category                    [color = "#595959", style = solid , arrowtail = none    , arrowhead = normal  , taillabel = "", label = "category_id:id", headlabel = ""];
+vehicle_category            -> vehicle                     [color = "#595959", style = solid , arrowtail = none    , arrowhead = normal  , taillabel = "", label = "vehicle_id:id", headlabel = ""];
+vehicle_image               -> vehicle                     [color = "#595959", style = solid , arrowtail = none    , arrowhead = normal  , taillabel = "", label = "vehicle_id:id", headlabel = ""];
+vehicle_vehicle_option      -> vehicle                     [color = "#595959", style = solid , arrowtail = none    , arrowhead = normal  , taillabel = "", label = "vehicle_id:id", headlabel = ""];
+vehicle_vehicle_option      -> vehicle_option              [color = "#595959", style = solid , arrowtail = none    , arrowhead = normal  , taillabel = "", label = "vehicle_option_id:id", headlabel = ""];
+
+}
