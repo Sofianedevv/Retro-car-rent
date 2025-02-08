@@ -42,11 +42,38 @@ Cela installera TailwindCSS et Swiper. Vous pouvez ensuite lancer les commandes 
     ```bash
     npm run build
    ```
-4. **Configurer l'environnement :**  
-   Dupliquer le fichier `.env` en `.env.local` et renseigner les informations suivantes :
+4. **Configurer l'environnement :**
+- Dupliquez le fichier `.env` en `.env.local`.
+- Renseignez les informations suivantes dans le fichier `.env.local` :
+
+   ```dotenv
+   # Configuration de l'environnement
+   APP_ENV=dev
+   APP_SECRET=your_app_secret
+
+   # Configuration de la base de données
+   DATABASE_URL="mysql://[username]:[password]@[host]:[port]/[database_name]?serverVersion=8.0.40&charset=utf8mb4"
+
+   # Configuration du Mailer
+   MAILER_DSN="smtp://%MAILER_USERNAME%:%MAILER_PASSWORD%@sandbox.smtp.mailtrap.io:2525"
+
+   # Configuration de Stripe
+   STRIPE_SECRET_KEY="your_stripe_secret_key"
+   STRIPE_PUBLIC_KEY="your_stripe_public_key"
+   STRIPE_ENDPOINT_SECRET="your_stripe_endpoint_secret"
+
+   # Configuration Google Maps API Key
+   GOOGLE_MAPS_API_KEY="your_google_maps_api_key"
+
+   # Configuration de la file de messages
+   MESSENGER_TRANSPORT_DSN="doctrine://default?auto_setup=0"
    ```
-   DATABASE_URL="mysql://[username]:[password]@[host]:[port]/[database_name]"
-   MAILER_DSN="[mailer_configuration]"
+
+4. **Vérification** :
+   Après avoir mis à jour le fichier `.env.local`, vous pouvez vérifier que la configuration fonctionne correctement en exécutant :
+
+   ```bash
+   symfony console doctrine:database:create
    ```
 
 5. **Créer la base de données :**
@@ -98,11 +125,72 @@ Cela installera TailwindCSS et Swiper. Vous pouvez ensuite lancer les commandes 
 ### 4. Fonctionnalités futures envisagées implémentées :
 - **Paiement sécurisé via Stripe** avec carte bancaire et portefeuilles électroniques.
 
-Vous pouvez vous référer au cahier des charges[ \`CDC.pdf\`](./CDC.pdf) dans ce dépôt pour plus de détails.
+Vous pouvez vous référer au cahier des charges[ \`CDC_Retro-Car-Rent.pdf\`](./CDC_Retro-Car-Rent.pdf) dans ce dépôt pour plus de détails.
 
 ## Structure de la base de données
-![Schéma UML](chemin/vers/schema.png)  
-Ou une description textuelle des principales entités et relations.
+Vous trouverez ci-dessous le schéma de la base de données utilisée pour ce projet :
+![Schéma UML](./DB_Schema.png)  
+Ou consultez le fichier [DB-schema-graphviz.dot](./DB-schema-graphvis.dot) pour le code source du schéma.
+
+## Entités
+Voici les entités principales utilisées dans ce projet :
+
+1. **Car**
+2. **Category**
+3. **Contact**
+4. **Doctrine Migration Versions**
+5. **Favorite**
+6. **Favorite Vehicle**
+7. **Invoice**
+8. **Messenger Messages**
+9. **Motorcycle**
+10. **Motorcycle Type**
+11. **Notification**
+12. **Payment**
+13. **Reservation**
+14. **Reservation Vehicle Option**
+15. **Review**
+16. **User**
+17. **Van**
+18. **Vehicle**
+19. **Vehicle Category**
+20. **Vehicle Image**
+21. **Vehicle Option**
+22. **Vehicle Vehicle Option**
+
+### Les relations entre les entités :
+
+#### 1. **One-to-One Relationships**:
+- **Car** → **Vehicle**
+- **Motorcycle** → **Motorcycle Type**
+- **Motorcycle** → **Vehicle**
+- **Van** → **Vehicle**
+- **Invoice** → **Reservation**
+- **Payment** → **Reservation**
+
+#### 2. **Many-to-One Relationships**:
+- **Favorite** → **User**
+- **Favorite Vehicle** → **Favorite**
+- **Favorite Vehicle** → **Vehicle**
+- **Notification** → **User**
+- **Reservation** → **User**
+- **Reservation** → **Vehicle**
+- **Reservation Vehicle Option** → **Reservation**
+- **Reservation Vehicle Option** → **Vehicle Option**
+- **Review** → **User**
+- **Review** → **Vehicle**
+- **Vehicle Category** → **Category**
+- **Vehicle Category** → **Vehicle**
+- **Vehicle Image** → **Vehicle**
+- **Vehicle Vehicle Option** → **Vehicle**
+- **Vehicle Vehicle Option** → **Vehicle Option**
+
+#### 3. **Many-to-Many Relationships**:
+- **Vehicle Vehicle Option** → **Vehicle Option** (Many-to-Many, via the `Vehicle Vehicle Option` table)
+- **Favorite Vehicle** → **Vehicle** (Many-to-Many, via the `Favorite Vehicle` table)
+
+#### 4. **Self-Referencing Relationships**:
+- **Review** → **Review** (Self-Referencing Parent-Child Relationship)
 
 ## Processus de validation
 Décrivez comment valider des données ou des processus si applicable (exemple : workflow d'une commande, réservation, etc.).
