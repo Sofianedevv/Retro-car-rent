@@ -222,6 +222,9 @@ Assurez-vous que PHPUnit est installé :
   php bin/phpunit tests/unit/service/ReservationServiceTest.php
   ```
 2. **Tests fonctionnels :**
+  ```bash
+  php bin/phpunit tests/functional/controller/REservationControllerTest.php
+  ```
 
 ## Sécurité
 ### 3.1 Authentification sécurisée
