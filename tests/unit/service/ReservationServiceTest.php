@@ -3,7 +3,7 @@ namespace App\test\unit\service;
 
 use App\Service\Reservation\ReservationService;
 use PHPUnit\Framework\TestCase;
-use \DateTime;
+use DateTime;
 
 class ReservationServiceTest extends TestCase
 {
@@ -16,8 +16,8 @@ class ReservationServiceTest extends TestCase
 
     public function testCalculateDaysWithValidDates()
     {
-        $startDate = new \DateTime('2025-02-01');
-        $endDate = new \DateTime('2025-02-03');
+        $startDate = new DateTime('2025-02-01');
+        $endDate = new DateTime('2025-02-03');
 
         $days = $this->reservationService->calculateDays($startDate, $endDate);
 
@@ -26,8 +26,8 @@ class ReservationServiceTest extends TestCase
 
     public function testCalculateDaysWithSameDates()
     {
-        $startDate = new \DateTime('2025-02-01');
-        $endDate = new \DateTime('2025-02-01');
+        $startDate = new DateTime('2025-02-01');
+        $endDate = new DateTime('2025-02-01');
 
         $days = $this->reservationService->calculateDays($startDate, $endDate);
 
