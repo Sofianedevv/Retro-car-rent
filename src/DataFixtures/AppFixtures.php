@@ -12,7 +12,6 @@ class AppFixtures extends Fixture
     {
         $loader = new NativeLoader();
         
-        // Chargement des fixtures dans l'ordre
         $objectSet = $loader->loadFiles([
             __DIR__ . '/../../fixtures/category.yaml',
             __DIR__ . '/../../fixtures/vehicleOption.yaml',

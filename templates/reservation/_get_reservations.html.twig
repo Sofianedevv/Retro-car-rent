@@ -11,7 +11,8 @@
                         <i class="fas fa-calendar-check text-gray-900 mr-2"></i>Mes Réservations
                     </h1>
                     <p class="text-gray-500 text-lg font-playfair">
-                        Retrouvez toutes vos réservations de véhicules et ne manquez jamais une occasion de les conduire.
+                        Retrouvez toutes vos réservations de véhicules et ne manquez jamais une occasion de les
+                        conduire.
                     </p>
                 </div>
             </div>
@@ -19,12 +20,12 @@
 
         <div class="container mx-auto px-4">
             {% if app.flashes('error') %}
-                    {% for message in app.flashes('error') %}
-                        <div class="bg-red-50 border-l-4 border-red-400 text-red-700 p-4 mb-6 rounded-md">
+                {% for message in app.flashes('error') %}
+                    <div class="bg-red-50 border-l-4 border-red-400 text-red-700 p-4 mb-6 rounded-md">
 
                         <p>{{ message }}</p>
-                        </div>
-                    {% endfor %}
+                    </div>
+                {% endfor %}
 
             {% endif %}
 
@@ -43,7 +44,8 @@
                                 </p>
                                 <p class="text-sm text-gray-500">
                                     <i class="fas fa-clock text-gray-400 mr-2"></i>
-                                    Du {{ reservation.startDate|date('d/m/Y') }} au {{ reservation.endDate|date('d/m/Y') }}
+                                    Du {{ reservation.startDate|date('d/m/Y') }}
+                                    au {{ reservation.endDate|date('d/m/Y') }}
                                 </p>
                             </div>
 

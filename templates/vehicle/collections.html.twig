@@ -3,175 +3,180 @@
 {% block title %}Nos Collections{% endblock %}
 
 {% block content %}
-	<section id="collections" class="pt-20">
-		<div class="relative py-20 overflow-hidden">
-			<div class="absolute inset-0 bg-gradient-to-tr from-gray-900/90 to-black/90">
-				<img src="{{ asset('template-html/assets/images/ban2.jpg') }}" 
-					 alt="Background" 
-					 class="w-full h-full object-cover opacity-50">
-			</div>
+    <section id="collections" class="pt-20">
+        <div class="relative py-20 overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-tr from-gray-900/90 to-black/90">
+                <img src="{{ asset('template-html/assets/images/ban2.jpg') }}"
+                     alt="Background"
+                     class="w-full h-full object-cover opacity-50">
+            </div>
 
-			<div class="relative container mx-auto px-4">
-				
-				<h1 class="text-3xl md:text-4xl font-playfair font-bold text-center text-white mb-4">
-					Notre Collection de Véhicules d'Exception
-				</h1>
-				<p class="text-gray-300 text-center max-w-2xl mx-auto mb-12 text-sm md:text-base">
-					Découvrez notre sélection unique de véhicules vintage et classiques
-				</p>
+            <div class="relative container mx-auto px-4">
 
-				<div class="flex flex-wrap justify-center items-center gap-6 md:gap-12">
-					<a href="#cars-section" 
-					   class="group relative bg-white/10 backdrop-blur-sm p-6 rounded-2xl transform transition-all hover:scale-105 hover:bg-white/20">
-						<div class="text-white text-4xl md:text-5xl mb-3 group-hover:text-[#8B4513] transition-colors">
-							<i class="fas fa-car"></i>
-						</div>
-						<span class="block text-white text-sm font-medium opacity-80 group-hover:opacity-100">Voitures</span>
-					</a>
+                <h1 class="text-3xl md:text-4xl font-playfair font-bold text-center text-white mb-4">
+                    Notre Collection de Véhicules d'Exception
+                </h1>
+                <p class="text-gray-300 text-center max-w-2xl mx-auto mb-12 text-sm md:text-base">
+                    Découvrez notre sélection unique de véhicules vintage et classiques
+                </p>
 
-					<a href="#motorcycles-section" 
-					   class="group relative bg-white/10 backdrop-blur-sm p-6 rounded-2xl transform transition-all hover:scale-105 hover:bg-white/20">
-						<div class="text-white text-4xl md:text-5xl mb-3 group-hover:text-[#8B4513] transition-colors">
-							<i class="fas fa-motorcycle"></i>
-						</div>
-						<span class="block text-white text-sm font-medium opacity-80 group-hover:opacity-100">Motos</span>
-					</a>
+                <div class="flex flex-wrap justify-center items-center gap-6 md:gap-12">
+                    <a href="#cars-section"
+                       class="group relative bg-white/10 backdrop-blur-sm p-6 rounded-2xl transform transition-all hover:scale-105 hover:bg-white/20">
+                        <div class="text-white text-4xl md:text-5xl mb-3 group-hover:text-[#8B4513] transition-colors">
+                            <i class="fas fa-car"></i>
+                        </div>
+                        <span class="block text-white text-sm font-medium opacity-80 group-hover:opacity-100">Voitures</span>
+                    </a>
 
-					<a href="#vans-section" 
-					   class="group relative bg-white/10 backdrop-blur-sm p-6 rounded-2xl transform transition-all hover:scale-105 hover:bg-white/20">
-						<div class="text-white text-4xl md:text-5xl mb-3 group-hover:text-[#8B4513] transition-colors">
-							<i class="fas fa-shuttle-van"></i>
-						</div>
-						<span class="block text-white text-sm font-medium opacity-80 group-hover:opacity-100">Vans</span>
-					</a>
-				</div>
-			</div>
-		</div>
-				<div id="cars-section" class="w-full p-8 mb-16 bg-gray-50">
-			<h3 class="text-3xl font-bold mb-2 mr-12 font-playfair text-gray-900">Nos Voitures Classiques</h3>
-			<div class="mb-8">
-				<p class="text-md text-gray-800">
-					Plongez dans l'univers des voitures classiques, où chaque modèle est une pièce unique qui
-					témoigne de l'art de l'automobile d'antan. De la voiture de collection parfaite à celle qui
-					évoque les plus beaux souvenirs, notre sélection répondra à vos attentes les plus raffinées.
-				</p>
-			</div>
-			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4">
-				{% for car in cars %}
-					{% include 'parts/_car_card_shop.html.twig' %}
-				{% endfor %}
-			</div>
-			<div class="flex justify-center mt-12">
-				<a href="{{ path('app_car') }}"
-				   class="bg-gray-900 text-white hover:text-black hover:bg-white border-2 border-black rounded-lg px-8 py-3  transition-all duration-300 font-bold">
-					Voir toutes les voitures
-				</a>
-			</div>
-		</div>
+                    <a href="#motorcycles-section"
+                       class="group relative bg-white/10 backdrop-blur-sm p-6 rounded-2xl transform transition-all hover:scale-105 hover:bg-white/20">
+                        <div class="text-white text-4xl md:text-5xl mb-3 group-hover:text-[#8B4513] transition-colors">
+                            <i class="fas fa-motorcycle"></i>
+                        </div>
+                        <span class="block text-white text-sm font-medium opacity-80 group-hover:opacity-100">Motos</span>
+                    </a>
 
-				<div id="motorcycles-section" class="w-full p-8 mb-16 bg-gray-50">
-			<h3 class="text-3xl font-bold mb-2 mr-12 font-playfair text-gray-900">Nos Motos Vintage</h3>
-			<div class="mb-8">
-				<p class="text-md text-gray-800">
-					Laissez-vous séduire par nos motos vintage, symboles d'une époque où la liberté de rouler
-					prenait une toute nouvelle dimension. Chaque moto de notre collection a été sélectionnée avec
-					soin pour vous offrir une expérience authentique et intemporelle.
-				</p>
-			</div>
-			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4">
-				{% for motorcycle in motorcycles %}
-					{% include 'parts/_motorcycle_card_shop.html.twig' with { 'motorcycle': motorcycle } %}
-				{% endfor %}
-			</div>
-			<div class="flex justify-center mt-12">
-				<a href="{{ path('app_motorcycle') }}"
-				   class="bg-gray-900 text-white hover:text-black hover:bg-white border-2 border-black rounded-lg px-8 py-3  transition-all duration-300 font-bold">
-					Voir toutes les motos
-				</a>
-			</div>
-		</div>
+                    <a href="#vans-section"
+                       class="group relative bg-white/10 backdrop-blur-sm p-6 rounded-2xl transform transition-all hover:scale-105 hover:bg-white/20">
+                        <div class="text-white text-4xl md:text-5xl mb-3 group-hover:text-[#8B4513] transition-colors">
+                            <i class="fas fa-shuttle-van"></i>
+                        </div>
+                        <span class="block text-white text-sm font-medium opacity-80 group-hover:opacity-100">Vans</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div id="cars-section" class="w-full p-8 mb-16 bg-gray-50">
+            <h3 class="text-3xl font-bold mb-2 mr-12 font-playfair text-gray-900">Nos Voitures Classiques</h3>
+            <div class="mb-8">
+                <p class="text-md text-gray-800">
+                    Plongez dans l'univers des voitures classiques, où chaque modèle est une pièce unique qui
+                    témoigne de l'art de l'automobile d'antan. De la voiture de collection parfaite à celle qui
+                    évoque les plus beaux souvenirs, notre sélection répondra à vos attentes les plus raffinées.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4">
+                {% for car in cars %}
+                    {% include 'parts/_car_card_shop.html.twig' %}
+                {% endfor %}
+            </div>
+            <div class="flex justify-center mt-12">
+                <a href="{{ path('app_car') }}"
+                   class="bg-gray-900 text-white hover:text-black hover:bg-white border-2 border-black rounded-lg px-8 py-3  transition-all duration-300 font-bold">
+                    Voir toutes les voitures
+                </a>
+            </div>
+        </div>
 
-				<div id="vans-section" class="w-full p-8 mb-8 bg-gray-50">
-			<h3 class="text-3xl font-bold mb-2 mr-12 font-playfair text-gray-900">Nos Vans Rétro</h3>
-			<div class="mb-8">
-				<p class="text-md text-gray-800">
-					Revivez l'âge d'or des voyages en famille ou entre amis avec nos vans rétro. Offrant un mélange
-					parfait de nostalgie et de praticité, nos vans sont idéaux pour ceux qui recherchent des
-					aventures inoubliables sur la route.
-				</p>
-			</div>
-			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4">
-				{% for van in vans %}
-					{% include 'parts/_van_card_shop.html.twig' %}
-				{% endfor %}
-			</div>
-			<div class="flex justify-center mt-12">
-				<a href="{{ path('app_van') }}"
-				   class="bg-gray-900 text-white hover:text-black hover:bg-white border-2 border-black rounded-lg px-8 py-3  transition-all duration-300 font-bold">
-					Voir tous les vans
-				</a>
-			</div>
-		</div>
-	</section>
-		<section id="why-choose-us" class="py-16 bg-gray-50">
-		<div class="container mx-auto">
-			<h2 class="text-4xl font-playfair font-bold text-center text-[#8B4513] mb-12">Pourquoi Nous Choisir ?</h2>
-			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-								<div class="flex flex-col items-center text-center p-8 bg-[#faf5e4] rounded-lg shadow-lg shadow-[#b3a97d] transition-transform duration-300 hover:scale-105">
-					<h3 class="text-2xl font-playfair font-semibold text-gray-900 mb-4">Qualité Exceptionnelle</h3>
-					<p class="text-gray-800">
-						Nos véhicules sont restaurés avec soin et maintenus dans un état impeccable pour garantir une expérience premium.
-					</p>
-				</div>
-								<div class="flex flex-col items-center text-center p-8 bg-[#faf5e4] rounded-lg shadow-lg shadow-[#b3a97d] transition-transform duration-300 hover:scale-105">
-					<h3 class="text-2xl font-playfair font-semibold text-gray-900 mb-4">Service Personnalisé</h3>
-					<p class="text-gray-800">
-						Nous offrons un accompagnement personnalisé pour répondre à vos besoins spécifiques et faire de votre expérience un moment inoubliable.
-					</p>
-				</div>
-								<div class="flex flex-col items-center text-center p-8 bg-[#faf5e4] rounded-lg shadow-lg shadow-[#b3a97d] transition-transform duration-300 hover:scale-105">
-					<h3 class="text-2xl font-playfair font-semibold text-gray-900 mb-4">Authenticité Garantie</h3>
-					<p class="text-gray-800">
-						Chaque véhicule de notre collection est une pièce unique, soigneusement sélectionnée pour son caractère authentique et son histoire.
-					</p>
-				</div>
-			</div>
-						<div class="flex justify-center mt-12">
-				<a href="{{ path('app_about') }}"
-				   class="bg-gray-900 text-white hover:text-black hover:bg-white border-2 border-black rounded-lg px-8 py-3  transition-all duration-300 font-bold">
-					En savoir plus
-				</a>
-			</div>
-		</div>
-				<button id="scrollToTopBtn" class="fixed bottom-6 right-6 bg-primary text-white rounded-full p-4 shadow-lg border-2 border-gray-900 hover:bg-primary/10 transition-all duration-300 ease-in-out" style="display: none;">
-			<i class="fas fa-arrow-up text-xl text-gray-900"></i>
-		</button>
+        <div id="motorcycles-section" class="w-full p-8 mb-16 bg-gray-50">
+            <h3 class="text-3xl font-bold mb-2 mr-12 font-playfair text-gray-900">Nos Motos Vintage</h3>
+            <div class="mb-8">
+                <p class="text-md text-gray-800">
+                    Laissez-vous séduire par nos motos vintage, symboles d'une époque où la liberté de rouler
+                    prenait une toute nouvelle dimension. Chaque moto de notre collection a été sélectionnée avec
+                    soin pour vous offrir une expérience authentique et intemporelle.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4">
+                {% for motorcycle in motorcycles %}
+                    {% include 'parts/_motorcycle_card_shop.html.twig' with { 'motorcycle': motorcycle } %}
+                {% endfor %}
+            </div>
+            <div class="flex justify-center mt-12">
+                <a href="{{ path('app_motorcycle') }}"
+                   class="bg-gray-900 text-white hover:text-black hover:bg-white border-2 border-black rounded-lg px-8 py-3  transition-all duration-300 font-bold">
+                    Voir toutes les motos
+                </a>
+            </div>
+        </div>
 
-		<script>
-			document.addEventListener('DOMContentLoaded', function() {
-				const scrollToTopBtn = document.getElementById('scrollToTopBtn');
-				const footer = document.querySelector('footer'); 
-				const footerHeight = footer ? footer.offsetHeight : 0; 
-				scrollToTopBtn.style.display = "none";
-				window.onscroll = function() {
-					if (document.body.scrollTop > 150 || document.documentElement.scrollTop > 150) {
-						scrollToTopBtn.style.display = "block";
-					} else {
-						scrollToTopBtn.style.display = "none";
-					}
-				};
-				window.addEventListener('resize', function() {
-					const footerHeight = footer ? footer.offsetHeight : 0;
-					scrollToTopBtn.style.bottom = `${footerHeight + 20}px`; 
-				});
-				scrollToTopBtn.onclick = function() {
-					window.scrollTo({
-						top: 0,
-						behavior: 'smooth'
-					});
-				};
-			});
-		</script>
-	</section>
+        <div id="vans-section" class="w-full p-8 mb-8 bg-gray-50">
+            <h3 class="text-3xl font-bold mb-2 mr-12 font-playfair text-gray-900">Nos Vans Rétro</h3>
+            <div class="mb-8">
+                <p class="text-md text-gray-800">
+                    Revivez l'âge d'or des voyages en famille ou entre amis avec nos vans rétro. Offrant un mélange
+                    parfait de nostalgie et de praticité, nos vans sont idéaux pour ceux qui recherchent des
+                    aventures inoubliables sur la route.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4">
+                {% for van in vans %}
+                    {% include 'parts/_van_card_shop.html.twig' %}
+                {% endfor %}
+            </div>
+            <div class="flex justify-center mt-12">
+                <a href="{{ path('app_van') }}"
+                   class="bg-gray-900 text-white hover:text-black hover:bg-white border-2 border-black rounded-lg px-8 py-3  transition-all duration-300 font-bold">
+                    Voir tous les vans
+                </a>
+            </div>
+        </div>
+    </section>
+    <section id="why-choose-us" class="py-16 bg-gray-50">
+        <div class="container mx-auto">
+            <h2 class="text-4xl font-playfair font-bold text-center text-[#8B4513] mb-12">Pourquoi Nous Choisir ?</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="flex flex-col items-center text-center p-8 bg-[#faf5e4] rounded-lg shadow-lg shadow-[#b3a97d] transition-transform duration-300 hover:scale-105">
+                    <h3 class="text-2xl font-playfair font-semibold text-gray-900 mb-4">Qualité Exceptionnelle</h3>
+                    <p class="text-gray-800">
+                        Nos véhicules sont restaurés avec soin et maintenus dans un état impeccable pour garantir une
+                        expérience premium.
+                    </p>
+                </div>
+                <div class="flex flex-col items-center text-center p-8 bg-[#faf5e4] rounded-lg shadow-lg shadow-[#b3a97d] transition-transform duration-300 hover:scale-105">
+                    <h3 class="text-2xl font-playfair font-semibold text-gray-900 mb-4">Service Personnalisé</h3>
+                    <p class="text-gray-800">
+                        Nous offrons un accompagnement personnalisé pour répondre à vos besoins spécifiques et faire de
+                        votre expérience un moment inoubliable.
+                    </p>
+                </div>
+                <div class="flex flex-col items-center text-center p-8 bg-[#faf5e4] rounded-lg shadow-lg shadow-[#b3a97d] transition-transform duration-300 hover:scale-105">
+                    <h3 class="text-2xl font-playfair font-semibold text-gray-900 mb-4">Authenticité Garantie</h3>
+                    <p class="text-gray-800">
+                        Chaque véhicule de notre collection est une pièce unique, soigneusement sélectionnée pour son
+                        caractère authentique et son histoire.
+                    </p>
+                </div>
+            </div>
+            <div class="flex justify-center mt-12">
+                <a href="{{ path('app_about') }}"
+                   class="bg-gray-900 text-white hover:text-black hover:bg-white border-2 border-black rounded-lg px-8 py-3  transition-all duration-300 font-bold">
+                    En savoir plus
+                </a>
+            </div>
+        </div>
+        <button id="scrollToTopBtn"
+                class="fixed bottom-6 right-6 bg-primary text-white rounded-full p-4 shadow-lg border-2 border-gray-900 hover:bg-primary/10 transition-all duration-300 ease-in-out"
+                style="display: none;">
+            <i class="fas fa-arrow-up text-xl text-gray-900"></i>
+        </button>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+                const footer = document.querySelector('footer');
+                const footerHeight = footer ? footer.offsetHeight : 0;
+                scrollToTopBtn.style.display = "none";
+                window.onscroll = function () {
+                    if (document.body.scrollTop > 150 || document.documentElement.scrollTop > 150) {
+                        scrollToTopBtn.style.display = "block";
+                    } else {
+                        scrollToTopBtn.style.display = "none";
+                    }
+                };
+                window.addEventListener('resize', function () {
+                    const footerHeight = footer ? footer.offsetHeight : 0;
+                    scrollToTopBtn.style.bottom = `${footerHeight + 20}px`;
+                });
+                scrollToTopBtn.onclick = function () {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                };
+            });
+        </script>
+    </section>
 
 {% endblock %}

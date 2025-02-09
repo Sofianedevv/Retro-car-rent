@@ -4,13 +4,10 @@
 
 {% block content %}
     <div class="w-full text-sm p-4">
-        <!-- Header -->
         <div class="flex justify-between items-center mb-4">
             <h1 class="font-bold">Facture N°{{ invoice.invoiceNumber }}</h1>
-{#            <img src="{{ asset('/template-html/assets/images/logo.svg') }}" alt="Logo" class="h-20 w-auto">#}
         </div>
 
-        <!-- Informations principales -->
         <div class="grid grid-cols-2 gap-4 mb-6">
             <div>
                 <h3 class="font-bold text-lg">Client :</h3>
@@ -27,7 +24,6 @@
             </div>
         </div>
 
-        <!-- Détails réservation -->
         <div class="mb-4">
             <h3 class="font-bold text-lg">Détails de la Réservation :</h3>
             <div class="grid grid-cols-3 gap-4">
@@ -37,7 +33,6 @@
             </div>
         </div>
 
-        <!-- Détails facture -->
         <div class="mb-4">
             <h3 class="font-bold text-lg">Détails de la Facture :</h3>
             <table class="w-full border border-gray-300 rounded mt-2">
@@ -67,7 +62,6 @@
             </table>
         </div>
 
-        <!-- Totaux -->
         <div class="mb-4">
             <div class="flex justify-between">
                 <p><strong>Total HT :</strong> {{ totalPriceVehicle }} €</p>
@@ -80,7 +74,6 @@
             </div>
         </div>
 
-        <!-- Footer -->
         <div class="text-xs text-gray-600">
             <h3 class="font-bold text-lg">Conditions Générales :</h3>
             <p>

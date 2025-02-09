@@ -16,31 +16,6 @@ class MotorcycleRepository extends ServiceEntityRepository
         parent::__construct($registry, Motorcycle::class);
     }
 
-//    /**
-//     * @return Motorcycle[] Returns an array of Motorcycle objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('m.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Motorcycle
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
-
     public function findBestRated(int $limit = 4): array
     {
         return $this->createQueryBuilder('m')

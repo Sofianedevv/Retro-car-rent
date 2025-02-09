@@ -15,29 +15,4 @@ class ReservationVehicleOptionRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, ReservationVehicleOption::class);
     }
-
-//    /**
-//     * @return ReservationVehicleOption[] Returns an array of ReservationVehicleOption objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('r.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?ReservationVehicleOption
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

@@ -8,19 +8,21 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Twig\Environment;
 
-class ConfirmReservationMailer {
+class ConfirmReservationMailer
+{
     private MailerInterface $mailer;
     private EntityManagerInterface $entityManager;
     private Environment $twig;
 
-    public function __construct(MailerInterface $mailer,EntityManagerInterface $entityManager, Environment $twig)
+    public function __construct(MailerInterface $mailer, EntityManagerInterface $entityManager, Environment $twig)
     {
         $this->mailer = $mailer;
         $this->entityManager = $entityManager;
         $this->twig = $twig;
     }
 
-    public function sendConfirmationEmail(Reservation $reservation): void {
+    public function sendConfirmationEmail(Reservation $reservation): void
+    {
 
         $startDate = $reservation->getStartDate()->format('d/m/Y');
         $endDate = $reservation->getEndDate()->format('d/m/Y');
@@ -40,10 +42,7 @@ class ConfirmReservationMailer {
                 'totalPrice' => $totalPrice
             ]));
 
-            $this->mailer->send($email);
-
-     
-     
+        $this->mailer->send($email);
 
 
     }

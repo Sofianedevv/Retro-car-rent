@@ -17,30 +17,6 @@ class VehicleOptionRepository extends ServiceEntityRepository
         parent::__construct($registry, VehicleOption::class);
     }
 
-//    /**
-//     * @return VehicleOption[] Returns an array of VehicleOption objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('v')
-//            ->andWhere('v.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('v.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?VehicleOption
-//    {
-//        return $this->createQueryBuilder('v')
-//            ->andWhere('v.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 public function findOptionsByVehicle(Vehicle $vehicle): array
 {
     return $this->createQueryBuilder('v')

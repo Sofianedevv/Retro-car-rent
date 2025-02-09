@@ -3,78 +3,81 @@
 {% endblock %}
 
 {% block content %}
-<section id="banner" class="relative h-[600px] flex bg-gradient-to-tr from-gray-900/90 to-black/90 pt-20">
-	<div class="absolute inset-0 opacity-80">
-		<img src="{{ asset('template-html/assets/images/ban19.png') }}" alt="Background" class="w-full h-full object-cover">
-	</div>
+    <section id="banner" class="relative h-[600px] flex bg-gradient-to-tr from-gray-900/90 to-black/90 pt-20">
+        <div class="absolute inset-0 opacity-80">
+            <img src="{{ asset('template-html/assets/images/ban19.png') }}" alt="Background"
+                 class="w-full h-full object-cover">
+        </div>
 
-	<div class="container mx-auto flex items-center relative">
-		<div class="w-full max-w-sm mx-auto md:mx-0 md:ml-24">
-			{{ form_start(form, {'attr': {'class': 'w-full bg-white p-5 rounded-xl shadow-2xl'}}) }}
-			<div class="space-y-4">
-				<div>
-					{{ form_row(form.vehicle_type) }}
-				</div>
+        <div class="container mx-auto flex items-center relative">
+            <div class="w-full max-w-sm mx-auto md:mx-0 md:ml-24">
+                {{ form_start(form, {'attr': {'class': 'w-full bg-white p-5 rounded-xl shadow-2xl'}}) }}
+                <div class="space-y-4">
+                    <div>
+                        {{ form_row(form.vehicle_type) }}
+                    </div>
 
-				<div class="border-2 border-[#8B4513] rounded-lg p-4 space-y-4">
-					<div class="flex items-center space-x-4">
-						<div class="w-1/2">
-							{{ form_row(form.start_date) }}
-						</div>
-						<div class="w-1/2">
-							{{ form_row(form.start_time) }}
-						</div>
-					</div>
+                    <div class="border-2 border-[#8B4513] rounded-lg p-4 space-y-4">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-1/2">
+                                {{ form_row(form.start_date) }}
+                            </div>
+                            <div class="w-1/2">
+                                {{ form_row(form.start_time) }}
+                            </div>
+                        </div>
 
-					<div class="border-t border-[#8B4513] my-3"></div>
+                        <div class="border-t border-[#8B4513] my-3"></div>
 
-					<div class="flex items-center space-x-4">
-						<div class="w-1/2">
-							{{ form_row(form.end_date) }}
-						</div>
-						<div class="w-1/2">
-							{{ form_row(form.end_time) }}
-						</div>
-					</div>
-				</div>
+                        <div class="flex items-center space-x-4">
+                            <div class="w-1/2">
+                                {{ form_row(form.end_date) }}
+                            </div>
+                            <div class="w-1/2">
+                                {{ form_row(form.end_time) }}
+                            </div>
+                        </div>
+                    </div>
 
-				<button type="submit" class="w-full py-2.5 bg-[#8B4513] text-white font-semibold rounded-lg hover:bg-[#a66321] transition-all duration-300" id="search_btn">
-					Rechercher
-				</button>
-			</div>
-			{{ form_end(form) }}
-		</div>
-	</div>
-</section>
+                    <button type="submit"
+                            class="w-full py-2.5 bg-[#8B4513] text-white font-semibold rounded-lg hover:bg-[#a66321] transition-all duration-300"
+                            id="search_btn">
+                        Rechercher
+                    </button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </section>
 
-<section class="py-6 pt-24">
-	<div class="mb-3 lg:mb-12 mx-6 lg:mx-12">
-		<h2 class="text-4xl font-bold text-center font-playfair">
-			Découvrez comment
-			<span class="text-[#b3a97d]">Louer</span>
-			votre voiture
-			<span class="text-[#b3a97d]">Rétro</span>
-			en quelques étapes simples
-		</h2>
-	</div>
+    <section class="py-6 pt-24">
+        <div class="mb-3 lg:mb-12 mx-6 lg:mx-12">
+            <h2 class="text-4xl font-bold text-center font-playfair">
+                Découvrez comment
+                <span class="text-[#b3a97d]">Louer</span>
+                votre voiture
+                <span class="text-[#b3a97d]">Rétro</span>
+                en quelques étapes simples
+            </h2>
+        </div>
 
-	<div class="relative items-center w-full px-3 py-3 mx-auto md:px-12 lg:px-24 max-w-7xl">
-		<div class="grid w-full grid-cols-1 gap-6 mx-auto lg:grid-cols-3">
-			{% include 'parts/_blog_card.html.twig' with {
+        <div class="relative items-center w-full px-3 py-3 mx-auto md:px-12 lg:px-24 max-w-7xl">
+            <div class="grid w-full grid-cols-1 gap-6 mx-auto lg:grid-cols-3">
+                {% include 'parts/_blog_card.html.twig' with {
                     image_url : asset('template-html/assets/images/b5.jpg'),
                     title: 'Réservez facilement votre véhicule vintage pour toute occasion spéciale.',
                     desc: 'Notre processus de location est conçu pour être simple et agréable.',
                     button_text: 'Réserver >'
                 } %}
 
-			{% include 'parts/_blog_card.html.twig' with {
+                {% include 'parts/_blog_card.html.twig' with {
                     image_url : asset('template-html/assets/images/b7.jpg'),
                     title: 'Choisissez parmi notre sélection de véhicules classiques et rétro.',
                     desc: 'Chaque véhicule est soigneusement sélectionné pour garantir une expérience inoubliable.',
                     button_text: 'Explorer >'
                 } %}
 
-			{% include 'parts/_blog_card.html.twig' with {
+                {% include 'parts/_blog_card.html.twig' with {
                     image_url : asset('template-html/assets/images/b4.jpg'),
                     title: 'Profitez d\'une expérience de conduite unique avec nos véhicules vintage.',
                     desc: 'Vivez la nostalgie et le style en louant un véhicule rétro.',
@@ -87,12 +90,13 @@
     <section id="services" class="py-12 bg-gray-900 mb-12">
         <div class="container mx-auto px-4">
             <div class="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-16">
-                                <div class="w-full lg:w-1/2">
+                <div class="w-full lg:w-1/2">
                     <h2 class="text-3xl lg:text-4xl font-bold mb-4 text-gray-100 font-playfair">
                         Découvrez les avantages de nos services
                     </h2>
                     <p class="text-lg mb-6 text-gray-200">
-                        Nos services vous offrent une expérience inégalée avec des voitures classiques soigneusement sélectionnées. Profitez de la nostalgie et du style pour toutes vos occasions spéciales.
+                        Nos services vous offrent une expérience inégalée avec des voitures classiques soigneusement
+                        sélectionnées. Profitez de la nostalgie et du style pour toutes vos occasions spéciales.
                     </p>
                     <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                         <a href="{{ path('app_about') }}"
@@ -106,7 +110,7 @@
                     </div>
                 </div>
 
-                                <div class="w-full lg:w-1/2">
+                <div class="w-full lg:w-1/2">
 
                     <img src="{{ asset('template-html/assets/images/b1.jpg') }}" alt="Vintage Car"
                          class="w-full h-auto rounded-lg shadow-lg transition-transform duration-300 hover:scale-105">
@@ -117,23 +121,30 @@
 
     <section id="category-section" class="py-12 bg-gray-100 mb-12">
         <div class="container mx-auto px-4">
-                        <div class="flex mb-4">
-                <h3 class="text-4xl font-bold mb-2 mr-12 font-playfair text-gray-900">Explorez Nos <span class="text-[#b3a97d]">Catégories</span></h3>
+            <div class="flex mb-4">
+                <h3 class="text-4xl font-bold mb-2 mr-12 font-playfair text-gray-900">Explorez Nos <span
+                            class="text-[#b3a97d]">Catégories</span></h3>
             </div>
 
-                        <div class="mb-8">
+            <div class="mb-8">
                 <p class="text-lg text-gray-800">
-                    Découvrez une large gamme de véhicules vintage, chacun sélectionné pour sa beauté et son histoire. Choisissez la catégorie qui vous convient pour rendre vos occasions spéciales encore plus mémorables.
+                    Découvrez une large gamme de véhicules vintage, chacun sélectionné pour sa beauté et son histoire.
+                    Choisissez la catégorie qui vous convient pour rendre vos occasions spéciales encore plus
+                    mémorables.
                 </p>
             </div>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-                                <div class="relative shadow-lg">
-                    <div class="bg-cover bg-center p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-2xl" style="background-image: url('{{ asset('template-html/assets/images/b6.jpg') }}');">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+                <div class="relative shadow-lg">
+                    <div class="bg-cover bg-center p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
+                         style="background-image: url('{{ asset('template-html/assets/images/b6.jpg') }}');">
                         <div class="absolute inset-0 bg-black rounded-lg" style="opacity: 70%"></div>
                         <div class="relative z-10">
-                            <h3 class="text-2xl font-bold text-white mb-4"><i class="fas fa-car mr-2"></i>Voitures Vintage</h3>
-                            <p class="text-lg text-gray-200 mb-6">Louez des voitures vintage classiques pour vos événements spéciaux. Des modèles iconiques qui allient luxe et nostalgie, parfaits pour les mariages, photoshoots ou balades.</p>
+                            <h3 class="text-2xl font-bold text-white mb-4"><i class="fas fa-car mr-2"></i>Voitures
+                                Vintage</h3>
+                            <p class="text-lg text-gray-200 mb-6">Louez des voitures vintage classiques pour vos
+                                événements spéciaux. Des modèles iconiques qui allient luxe et nostalgie, parfaits pour
+                                les mariages, photoshoots ou balades.</p>
                             <a href="{{ path('app_car') }}"
                                class="bg-primary text-gray-900 hover:bg-gray-700 hover:text-white font-playfair font-semibold px-8 py-3 rounded-lg transition-all duration-300 hover:shadow-lg block text-center">
                                 Explorer les voitures <i class="fas fa-arrow-right ml-2"></i>
@@ -142,12 +153,16 @@
                     </div>
                 </div>
 
-                                <div class="relative shadow-lg">
-                    <div class="bg-cover bg-center p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-2xl" style="background-image: url('{{ asset('template-html/assets/images/moto1.jpg') }}');">
+                <div class="relative shadow-lg">
+                    <div class="bg-cover bg-center p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
+                         style="background-image: url('{{ asset('template-html/assets/images/moto1.jpg') }}');">
                         <div class="absolute inset-0 bg-black rounded-lg" style="opacity: 70%"></div>
                         <div class="relative z-10">
-                            <h3 class="text-2xl font-bold text-white mb-4"><i class="fas fa-motorcycle mr-2"></i>Motos Vintage</h3>
-                            <p class="text-lg text-white mb-6">Pour les passionnés de motos classiques, nous proposons une sélection de modèles rétro qui vous offrent une expérience de conduite inégalée. Parfait pour les amateurs de sensations fortes.</p>
+                            <h3 class="text-2xl font-bold text-white mb-4"><i class="fas fa-motorcycle mr-2"></i>Motos
+                                Vintage</h3>
+                            <p class="text-lg text-white mb-6">Pour les passionnés de motos classiques, nous proposons
+                                une sélection de modèles rétro qui vous offrent une expérience de conduite inégalée.
+                                Parfait pour les amateurs de sensations fortes.</p>
                             <a href="{{ path('app_motorcycle') }}"
                                class="bg-primary text-gray-900 hover:bg-gray-700 hover:text-white font-playfair font-semibold px-8 py-3 rounded-lg transition-all duration-300 hover:shadow-lg block text-center">
                                 Explorer les motos <i class="fas fa-arrow-right ml-2"></i>
@@ -156,12 +171,16 @@
                     </div>
                 </div>
 
-                                <div class="relative shadow-lg">
-                    <div class="bg-cover bg-center p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-2xl" style="background-image: url('{{ asset('template-html/assets/images/van1.jpg') }}');">
+                <div class="relative shadow-lg">
+                    <div class="bg-cover bg-center p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
+                         style="background-image: url('{{ asset('template-html/assets/images/van1.jpg') }}');">
                         <div class="absolute inset-0 bg-black rounded-lg" style="opacity: 70%"></div>
                         <div class="relative z-10">
-                            <h3 class="text-2xl font-bold text-white mb-4"><i class="fas fa-shuttle-van mr-2"></i>Vans Vintage</h3>
-                            <p class="text-lg text-white mb-6">Louez des vans rétro pour une aventure sur la route. Idéaux pour des escapades, des voyages entre amis ou des événements, ces vans offrent confort et style vintage.</p>
+                            <h3 class="text-2xl font-bold text-white mb-4"><i class="fas fa-shuttle-van mr-2"></i>Vans
+                                Vintage</h3>
+                            <p class="text-lg text-white mb-6">Louez des vans rétro pour une aventure sur la route.
+                                Idéaux pour des escapades, des voyages entre amis ou des événements, ces vans offrent
+                                confort et style vintage.</p>
                             <a href="{{ path('app_van') }}"
                                class="bg-primary text-gray-900 hover:bg-gray-700 hover:text-white font-playfair font-semibold px-8 py-3 rounded-lg transition-all duration-300 hover:shadow-lg block text-center">
                                 Explorer les vans <i class="fas fa-arrow-right ml-2"></i>
@@ -173,39 +192,44 @@
         </div>
     </section>
 
-        <section id="popular-products" class="py-6 bg-white">
+    <section id="popular-products" class="py-6 bg-white">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl lg:text-4xl font-bold mb-4 text-gray-900 font-playfair">Nos <span class="text-[#b3a97d]">Véhicules</span> Les Mieux <span class="text-[#b3a97d]">Notés</span></h2>
+            <h2 class="text-3xl lg:text-4xl font-bold mb-4 text-gray-900 font-playfair">Nos <span
+                        class="text-[#b3a97d]">Véhicules</span> Les Mieux <span class="text-[#b3a97d]">Notés</span></h2>
             <p class="text-lg mb-6 text-gray-800">
-                Découvrez notre sélection de véhicules les plus appréciés par nos clients. Des classiques intemporels qui ont fait leurs preuves.
+                Découvrez notre sélection de véhicules les plus appréciés par nos clients. Des classiques intemporels
+                qui ont fait leurs preuves.
             </p>
             <div class="flex flex-wrap -mx-4">
                 {% for vehicle in bestRatedVehicles %}
                     <div class="w-full sm:w-1/2 lg:w-1/4 px-4 mb-8">
                         <div class="bg-[#faf5e4] rounded-lg shadow-lg shadow-[#b3a97d] overflow-hidden transition-transform duration-300 hover:scale-105">
-                                                        <div class="relative">
-                                <img src="{{ vehicle.defaultImage }}" alt="{{ vehicle.brand }} {{ vehicle.model }}" class="w-full h-48 object-cover">
-                                                                <div class="absolute inset-0 bg-black opacity-25"></div>
+                            <div class="relative">
+                                <img src="{{ vehicle.defaultImage }}" alt="{{ vehicle.brand }} {{ vehicle.model }}"
+                                     class="w-full h-48 object-cover">
+                                <div class="absolute inset-0 bg-black opacity-25"></div>
                             </div>
 
-                                                        <div class="p-4">
-                                                                <h3 class="text-xl font-bold mb-2 font-playfair text-gray-800 truncate">{{ vehicle.brand }} {{ vehicle.model }}</h3>
+                            <div class="p-4">
+                                <h3 class="text-xl font-bold mb-2 font-playfair text-gray-800 truncate">{{ vehicle.brand }} {{ vehicle.model }}</h3>
 
-                                                                <div class="flex items-center mb-2">
-                                                                        {% set avgRating = vehicle.averageRating %}
+                                <div class="flex items-center mb-2">
+                                    {% set avgRating = vehicle.averageRating %}
                                     {% for i in 1..5 %}
                                         <i class="fas fa-star {% if i <= avgRating %}text-yellow-400{% else %}text-gray-300{% endif %} mr-1"></i>
                                     {% endfor %}
                                     <span class="text-sm text-gray-600 ml-2">({{ vehicle.reviews|length }} avis)</span>
                                 </div>
 
-                                                                <div class="flex items-center mb-4">
-                                                                        <p class="text-green-700 font-bold">{{ vehicle.price }}€ <span class="text-sm text-gray-600 ml-2 font-normal font-playfair" >/ jour</span></p>
+                                <div class="flex items-center mb-4">
+                                    <p class="text-green-700 font-bold">{{ vehicle.price }}€ <span
+                                                class="text-sm text-gray-600 ml-2 font-normal font-playfair">/ jour</span>
+                                    </p>
                                 </div>
 
-                                                                <a href="{{ path('app_vehicle_show_details', {'vehicleId': vehicle.id}) }}"
+                                <a href="{{ path('app_vehicle_show_details', {'vehicleId': vehicle.id}) }}"
                                    class="bg-gray-900 text-gray-100 hover:bg-gray-400 hover:text-gray-900 font-playfair font-semibold px-8 py-3 rounded-lg transition-all duration-300 hover:shadow-lg block text-center">
-                                    Voir le détail <i class="fas fa-arrow-right ml-2"></i>                                 </a>
+                                    Voir le détail <i class="fas fa-arrow-right ml-2"></i> </a>
                             </div>
                         </div>
                     </div>
