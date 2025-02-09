@@ -39,7 +39,8 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no root@147.93.55.129 << 'EOF'
             cd /var/www/retro-car-rent/Retro-car-rent
-            git pull origin main 
-            composer install --no-dev --optimize-autoloader
-            php bin/console cache:clear            
+            git pull origin main
+            export APP_ENV=prod  
+            composer install --no-dev --optimize-autoloader --no-interaction
+            php bin/console cache:clear --env=prod
           EOF
