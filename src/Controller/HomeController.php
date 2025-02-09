@@ -58,8 +58,6 @@ class HomeController extends AbstractController
        $bestRatedVans = $vanRepository->findBestRated(1);
 
        $bestRatedVehicles = array_merge($bestRatedCars, $bestRatedMotorcycles, $bestRatedVans);
-       shuffle($bestRatedVehicles);
-
         return $this->render('home/home.html.twig', [
             'bestRatedVehicles' => $bestRatedVehicles,
             'form' => $form->createView(),
