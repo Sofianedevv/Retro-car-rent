@@ -15,7 +15,7 @@ jobs:
 
       - name: Définition des variables d'environnement
         run: |
-          echo "APP_ENV=prod" >> $APP_ENV
+          echo "APP_ENV=prod" >> $GITHUB_ENV
 
 
       - name: Configuration de PHP
