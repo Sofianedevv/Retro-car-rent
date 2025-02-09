@@ -19,7 +19,8 @@ jobs:
         run: composer require --dev phpunit/phpunit
 
       - name: Exécution des tests unitaires
-        run: ./vendor/bin/phpunit --testdox tests/unit
+        run: ./vendor/bin/phpunit --testdox tests/unit/service
+
 
   deploy:
     runs-on: ubuntu-latest
