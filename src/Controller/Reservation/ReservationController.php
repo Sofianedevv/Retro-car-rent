@@ -205,7 +205,7 @@ class ReservationController extends AbstractController
         }
         $this->addFlash('success', 'Paiement réussi ! Votre réservation a été confirmée.');
             
-        return $this->redirectToRoute('app_all_reservation', ['clientId' => $user->getId()]);
+        return $this->redirectToRoute('app_all_reservation');
     }
 
     #[Route('/payment/cancel/{reservationId}', name: 'app_payment_cancel')]
@@ -220,11 +220,12 @@ class ReservationController extends AbstractController
         return $this->redirectToRoute('app_add_reservation', ['vehicleId' => $reservation->getVehicle()->getId()]);
     }
 
-    #[Route('/vos-reservations/{clientId}', name: 'app_all_reservation', methods: ['GET'])]
-    public function getReservation(int $clientId, ReservationRepository $reservationRepository): Response
+    #[Route('/vos-reservations', name: 'app_all_reservation', methods: ['GET'])]
+    public function getReservation( ReservationRepository $reservationRepository): Response
     {
+        $user = $this->getUser();
         $reservations = $reservationRepository->findBy([
-            'client' => $clientId,
+            'client' => $user->getId(),
             'status' => StatusReservationEnum::CONFIRMED  
         ]);
         
@@ -257,7 +258,7 @@ class ReservationController extends AbstractController
 
         if(!$reservation){
             $this->addFlash('error', 'Réservation non trouvée.');
-            return $this->redirectToRoute('app_all_reservation', ['clientId' => $user->getId()]);
+            return $this->redirectToRoute('app_all_reservation');
         }
 
 
@@ -274,7 +275,7 @@ class ReservationController extends AbstractController
 
 
         $cancelReservationMailer->sendCancelReservationEmail($user->getEmail(), $reservationId);
-        dd($user->getEmail());
+
         $this->addFlash('success', 'Votre réservation a bien été annulée.');
         return $this->redirectToRoute('app_all_reservation', ['clientId' => $user->getId()]);
     
