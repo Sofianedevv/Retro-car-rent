@@ -202,7 +202,23 @@ Voici les entités principales utilisées dans ce projet :
 Décrivez comment valider des données ou des processus si applicable (exemple : workflow d'une commande, réservation, etc.).
 
 ## Tests
-1. **Tests unitaires :**
+1. **Configurer l'environnement :**
+
+   # Configuration de la base de données
+   DATABASE_URL="mysql://[username]:[password]@[host]:[port]/[database_name]?serverVersion=8.0.40&charset=utf8mb4"
+
+   # Configuration du Mailer
+   MAILER_DSN="smtp://%MAILER_USERNAME%:%MAILER_PASSWORD%@sandbox.smtp.mailtrap.io:2525"
+
+   # Configuration de Stripe
+   STRIPE_SECRET_KEY="your_stripe_secret_key"
+   STRIPE_PUBLIC_KEY="your_stripe_public_key"
+   STRIPE_ENDPOINT_SECRET="your_stripe_endpoint_secret"
+
+   # Configuration de la file de messages
+   MESSENGER_TRANSPORT_DSN="doctrine://default?auto_setup=0"
+   ```
+2. **Tests unitaires :**
 
 **Fonctionnalités testées** :
    - Filtres avancés pour véhicules selon plusieurs critères.
