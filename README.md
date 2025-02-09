@@ -203,7 +203,7 @@ Décrivez comment valider des données ou des processus si applicable (exemple :
 
 ## Tests
 1. **Configurer l'environnement :**
-
+    ```dotenv
    # Configuration de la base de données
    DATABASE_URL="mysql://[username]:[password]@[host]:[port]/[database_name]?serverVersion=8.0.40&charset=utf8mb4"
 
