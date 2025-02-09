@@ -17,7 +17,6 @@ jobs:
         run: |
           echo "APP_ENV=prod" >> $GITHUB_ENV
 
-
       - name: Configuration de PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -25,7 +24,8 @@ jobs:
           tools: composer
           extensions: mbstring, intl, pdo, pdo_mysql
 
-
+      - name: Installation des dépendances nécessaires pour les tests
+        run: composer install --dev --no-interaction
 
       - name: Exécution des tests unitaires
         run: ./vendor/bin/phpunit --testdox tests/unit
@@ -44,7 +44,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no root@147.93.55.129 << 'EOF'
             cd /var/www/retro-car-rent/Retro-car-rent
             git pull origin main
-            export APP_ENV=prod  
+            export APP_ENV=prod
             composer install --no-dev --optimize-autoloader --no-interaction
             php bin/console cache:clear --env=prod
           EOF
