@@ -241,10 +241,31 @@ class AdminController extends AbstractController
             throw $this->createNotFoundException('Véhicule non trouvé');
         }
 
-        $entityManager->remove($vehicle);
-        $entityManager->flush();
+        if (!$vehicle->getReservations()->isEmpty()) {
+            $flasher->addError('Ce véhicule ne peut pas être supprimé car il a des réservations associées.');
+            return $this->redirectToRoute('admin_vehicles');
+        }
 
-       $flasher->addSuccess( 'Le véhicule a été supprimé avec succès.');
+        try {
+            foreach ($vehicle->getVehicleImages() as $image) {
+                $entityManager->remove($image);
+            }
+            
+            foreach ($vehicle->getFavorites() as $favorite) {
+                $entityManager->remove($favorite);
+            }
+            
+            foreach ($vehicle->getReviews() as $review) {
+                $entityManager->remove($review);
+            }
+            $entityManager->remove($vehicle);
+            $entityManager->flush();
+
+            $flasher->addSuccess('Le véhicule a été supprimé avec succès.');
+        } catch (\Exception $e) {
+            $flasher->addError('Une erreur est survenue lors de la suppression du véhicule.');
+        }
+
         return $this->redirectToRoute('admin_vehicles');
     }
 
