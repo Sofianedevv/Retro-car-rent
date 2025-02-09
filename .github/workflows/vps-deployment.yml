@@ -17,15 +17,9 @@ jobs:
         run: |
           echo "APP_ENV=prod" >> $GITHUB_ENV
 
-      - name: Configuration de PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.2'
-          tools: composer
-          extensions: mbstring, intl, pdo, pdo_mysql
-
+     
       - name: Installation des dépendances nécessaires pour les tests
-        run: composer install --dev --no-interaction
+        run: composer require --dev phpunit/phpunit
 
       - name: Exécution des tests unitaires
         run: ./vendor/bin/phpunit --testdox tests/unit
