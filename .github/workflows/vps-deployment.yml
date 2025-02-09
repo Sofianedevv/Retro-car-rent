@@ -16,7 +16,7 @@ jobs:
 
      
       - name: Installation des dépendances nécessaires pour les tests
-        run: composer require --dev phpunit/phpunit
+        run: composer install
 
       - name: Exécution des tests unitaires
         run: ./vendor/bin/phpunit tests/unit
