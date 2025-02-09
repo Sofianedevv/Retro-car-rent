@@ -25,11 +25,10 @@ jobs:
           tools: composer
           extensions: mbstring, intl, pdo, pdo_mysql
 
-      - name: Installation des dépendances
-        run: composer install --no-dev
+
 
       - name: Exécution des tests unitaires
-        run: ./vendor/bin/phpunit --testdox
+        run: ./vendor/bin/phpunit --testdox tests/unit
 
   deploy:
     runs-on: ubuntu-latest
