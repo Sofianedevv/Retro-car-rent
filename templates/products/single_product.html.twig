@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block title %}Single Product{% endblock %}
 {% block content %}
-<!-- Breadcrumbs -->
 <section id="breadcrumbs" class="pt-6 bg-gray-50">
     <div class="container mx-auto px-4">
         <ol class="list-reset flex">
@@ -16,22 +15,18 @@
     </div>
 </section>
 
-<!-- Product info -->
 <section id="product-info">
     <div class="container mx-auto">
         <div class="py-6">
             <div class="flex flex-col lg:flex-row gap-6">
-                <!-- Image Section -->
                 <div class="w-full lg:w-1/2">
                     <div class="grid gap-4">
-                        <!-- Big Image -->
                         <div id="main-image-container">
                             <img id="main-image"
                                  class="h-auto w-full max-w-full rounded-lg object-cover object-center md:h-[480px]"
                                  src="{{ asset('template-html/assets/images/single-product/1.jpg') }}"
                                  alt="Main Product Image" />
                         </div>
-                        <!-- Small Images -->
                         <div class="grid grid-cols-5 gap-4">
                             <div>
                                 <img onclick="changeImage(this)"
@@ -71,7 +66,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Product Details Section -->
                 <div class="w-full lg:w-1/2 flex flex-col justify-between">
                     <div class="pb-8 border-b border-gray-line">
                         <h1 class="text-3xl font-bold mb-4">Preppy T-shirt</h1>
@@ -100,7 +94,6 @@
                                 class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full">Add
                             to Cart</button>
                     </div>
-                    <!-- Social sharing -->
                     <div class="flex space-x-4 my-6">
                         <a href="#" class="w-4 h-4 flex items-center justify-center">
                             <img src="{{ asset('template-html/assets/images/social_icons/facebook.svg') }}" alt="Facebook"
@@ -123,7 +116,6 @@
                                  class="w-4 h-4 transition-transform transform hover:scale-110">
                         </a>
                     </div>
-                    <!-- Additional Information -->
                     <div>
                         <h3 class="text-lg font-semibold mb-2">Product Description</h3>
                         <p>This is a premium quality t-shirt perfect for casual wear. Made with high-quality fabric
@@ -135,7 +127,6 @@
     </div>
 </section>
 
-<!-- Product tabs description -->
 <section>
     <div class="container mx-auto">
         <div class="py-12">
@@ -322,11 +313,9 @@
                     </div>
                     <div id="reviews-content" role="tabpanel" aria-labelledby="reviews-tab"
                          class="tab-content hidden">
-                        <!-- Reviews List -->
                         <div class="space-y-6">
                             <h3 class="text-lg font-semibold mb-4">Customer Reviews</h3>
                             <div id="reviews-list">
-                                <!-- Review 1 -->
                                 <div class="py-4">
                                     <div class="flex items-center mb-2">
                                         <span class="text-lg font-semibold text-gray-700">John Doe</span>
@@ -335,7 +324,6 @@
                                     <p>Great quality! Fits perfectly and the material feels premium. Highly
                                         recommend this t-shirt.</p>
                                 </div>
-                                <!-- Review 2 -->
                                 <div class="border-t border-gray-line py-4">
                                     <div class="flex items-center mb-2">
                                         <span class="text-lg font-semibold text-gray-700">Jane Smith</span>
@@ -344,7 +332,6 @@
                                     <p>I love the design and the fabric is very comfortable. However, I wish it came
                                         in more colors.</p>
                                 </div>
-                                <!-- Review 3 -->
                                 <div class="border-t border-gray-line py-4">
                                     <div class="flex items-center mb-2">
                                         <span class="text-lg font-semibold text-gray-700">Alice Johnson</span>
@@ -356,7 +343,6 @@
                             </div>
                         </div>
 
-                        <!-- Submit Review Form -->
                         <div class="mt-8">
                             <h3 class="text-lg font-semibold mb-4">Write a Review</h3>
                             <form id="review-form" class="space-y-4">
@@ -408,7 +394,6 @@
     </div>
 </section>
 
-<!-- Latest-products -->
 <section id="latest-products" class="py-10">
     <div class="container mx-auto px-4">
         <h2 class="text-2xl font-bold mb-8">Latest products</h2>

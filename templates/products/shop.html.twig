@@ -3,7 +3,6 @@
 {% block content %}
 <section id="shop">
     <div class="container mx-auto">
-        <!-- Top Filter -->
         <div class="flex flex-col md:flex-row justify-between items-center py-4">
             <div class="flex items-center space-x-4">
                 <button
@@ -35,15 +34,12 @@
                 </div>
             </div>
         </div>
-        <!-- Filter Toggle Button for Mobile -->
         <div class="block md:hidden text-center mb-4">
             <button id="products-toggle-filters"
                     class="bg-primary text-white py-2 px-4 rounded-full focus:outline-none">Show Filters</button>
         </div>
         <div class="flex flex-col md:flex-row">
-            <!-- Filters -->
             <div id="filters" class="w-full md:w-1/4 p-4 hidden md:block">
-                <!-- Category Filter -->
                 <div class="mb-6 pb-8 border-b border-gray-line">
                     <h3 class="text-lg font-semibold mb-6">Category</h3>
                     <div class="space-y-2">
@@ -61,7 +57,6 @@
                         </label>
                     </div>
                 </div>
-                <!-- Size Filter -->
                 <div class="mb-6 pb-8 border-b border-gray-line">
                     <h3 class="text-lg font-semibold mb-6">Size</h3>
                     <div class="space-y-2">
@@ -79,7 +74,6 @@
                         </label>
                     </div>
                 </div>
-                <!-- Color Filter -->
                 <div class="mb-6 pb-8 border-b border-gray-line">
                     <h3 class="text-lg font-semibold mb-6">Color</h3>
                     <div class="space-y-2">
@@ -97,7 +91,6 @@
                         </label>
                     </div>
                 </div>
-                <!-- Brand Filter -->
                 <div class="mb-6 pb-8 border-b border-gray-line">
                     <h3 class="text-lg font-semibold mb-6">Brand</h3>
                     <div class="space-y-2">
@@ -134,16 +127,12 @@
                     </div>
                 </div>
             </div>
-            <!-- Products List -->
             <div class="w-full md:w-3/4 p-4">
-                <!-- Products grid -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <!-- Product 1 -->
                     {% for i in 1..6 %}
                     {% include 'parts/_product_card_shop.html.twig' %}
                     {% endfor %}
                 </div>
-                <!-- Pagination -->
                 <div class="flex justify-center mt-8">
                     <nav aria-label="Page navigation">
                         <ul class="inline-flex space-x-2">
@@ -170,7 +159,6 @@
     </div>
 </section>
 
-<!-- Shop category description -->
 <section id="shop-category-description" class="py-8">
     <div class="container mx-auto">
         <div class="bg-white p-6 rounded-lg shadow-lg">

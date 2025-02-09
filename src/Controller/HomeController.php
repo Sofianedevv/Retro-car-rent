@@ -14,23 +14,25 @@ use App\Repository\VehicleRepository;
 use App\Repository\ReservationRepository;
 use App\Form\SearchType;
 use DateTimeImmutable;
+
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app')]
     public function app(
-        Request $request,
-        CarRepository $carRepository,
-        MotorcycleRepository $motorcycleRepository,
-        VanRepository $vanRepository,
-        VehicleRepository $vehicleRepository,
+        Request               $request,
+        CarRepository         $carRepository,
+        MotorcycleRepository  $motorcycleRepository,
+        VanRepository         $vanRepository,
+        VehicleRepository     $vehicleRepository,
         ReservationRepository $reservationRepository,
-        SessionInterface $session
-    ): Response {
+        SessionInterface      $session
+    ): Response
+    {
         $form = $this->createForm(SearchType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-           $form->getData();
+            $form->getData();
 
 
             $typeSearch = $form->get('vehicle_type')->getData();
@@ -41,14 +43,14 @@ class HomeController extends AbstractController
 
             $startDateTime = new DateTimeImmutable($startDate->format('Y-m-d') . ' ' . $startTime);
             $endDateTime = new DateTimeImmutable($endDate->format('Y-m-d') . ' ' . $endTime);
-          
-     
-            return $this->redirectToRoute('app_available', [
-            'type' => $typeSearch,
-            'startDateTime' => $startDateTime->format('Y-m-d H:i'),
-            'endDateTime' => $endDateTime->format('Y-m-d H:i'),
 
-            
+
+            return $this->redirectToRoute('app_available', [
+                'type' => $typeSearch,
+                'startDateTime' => $startDateTime->format('Y-m-d H:i'),
+                'endDateTime' => $endDateTime->format('Y-m-d H:i'),
+
+
             ]);
         }
        $bestRatedCars = $carRepository->findBestRated(2);
@@ -63,15 +65,13 @@ class HomeController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
     #[Route('/about', name: 'app_about')]
     public function about(): Response
     {
         return $this->render('home/about.html.twig', [
         ]);
     }
-
-
-
 
 
 }

@@ -92,12 +92,18 @@ Cela installera TailwindCSS et Swiper. Vous pouvez ensuite lancer les commandes 
    symfony server:start
    ```
 
-## Comptes de tests
+## Comptes de tests en local
 
 | Rôle       | Email                | Mot de passe           |
 |------------|----------------------|------------------------|
 | Admin      | admin@example.com    | jesuisunadministrateur |
 | Utilisateur| joesph.quitzon@yahoo.com    | bonjour                |
+
+## Mise en production
+Le site est accessible à l'adresse : [http://147.93.55.129](http://147.93.55.129)
+## Déploiement CI/CD  
+Le projet est déployé automatiquement sur le serveur lorsqu'une modification est poussée sur la branche `main`.  
+GitHub Actions utilise SSH pour se connecter au VPS (`147.93.55.129`), récupérer les dernières modifications et les appliquer dans le répertoire `/var/www/retro-car-rent/Retro-car-rent`.  
 
 ## Fonctionnalités principales
 ### 1. Fonctionnalités pour l'Utilisateur (Client) :
@@ -221,7 +227,21 @@ Assurez-vous que PHPUnit est installé :
   ```bash
   php bin/phpunit tests/unit/service/ReservationServiceTest.php
   ```
-2. **Tests fonctionnels :**
+**Tests fonctionnels :**
+
+Les tests fonctionnels valident l’expérience utilisateur sur les principales fonctionnalités du site, notamment la gestion des réservations.
+
+**Scénarios testés**
+
+*    Accès à la page de réservation sans connexion 
+*    Accès à la page de réservation en tant qu’utilisateur authentifié 
+*    Soumission d’une réservation
+
+**Lancer les tests**
+
+  ```bash
+     php bin/phpunit tests/functional/controller/ReservationControllerTest.php
+  ```
 
 ## Sécurité
 ### 3.1 Authentification sécurisée
@@ -265,6 +285,15 @@ Des requêtes personnalisées ont été implémentées dans les repositories en 
 ## Fonctionnalités bonus
 Voici les fonctionnalités bonus ajoutées au projet :
 
-- **Génération de PDF de factures** : Utilisation du service `PdfService` pour générer des factures au format PDF.
-- **Commandes personnalisées** : Des commandes Symfony personnalisées ont été ajoutées pour automatiser des processus spécifiques ...
+* **Génération de PDF de factures** :
+Utilisation du service `PdfService` pour générer des factures au format PDF.
+
+* **Commandes personnalisées** :
+* **Commandes personnalisées** :
+Des commandes Symfony personnalisées ont été ajoutées pour automatiser des processus spécifiques qui sont :
+
+*   `make start` : démarrer le serveur.
+*   `make create-db` : configurer la base de données.
+*   `make test-unit` : exécuter les tests unitaires.
+*   `make test-functional` : exécuter les tests fonctionnels.
 

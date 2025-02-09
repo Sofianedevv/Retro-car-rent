@@ -11,7 +11,8 @@ use Symfony\Component\Mime\Email;
 use Twig\Environment;
 
 
-class CancelReservationMailer {
+class CancelReservationMailer
+{
     private MailerInterface $mailer;
     private ReservationRepository $reservationRepository;
     private EntityManagerInterface $entityManager;
@@ -19,7 +20,7 @@ class CancelReservationMailer {
     private Environment $twig;
 
 
-    public function __construct(MailerInterface $mailer,EntityManagerInterface $entityManager, Environment $twig, ReservationRepository $reservationRepository)
+    public function __construct(MailerInterface $mailer, EntityManagerInterface $entityManager, Environment $twig, ReservationRepository $reservationRepository)
     {
         $this->mailer = $mailer;
         $this->entityManager = $entityManager;
@@ -27,7 +28,8 @@ class CancelReservationMailer {
         $this->reservationRepository = $reservationRepository;
     }
 
-    public function sendCancelReservationEmail(string $userEmail, int $reservationId): void {
+    public function sendCancelReservationEmail(string $userEmail, int $reservationId): void
+    {
 
         $reservation = $this->reservationRepository->find($reservationId);
         $vehicle = $reservation->getVehicle();
@@ -47,10 +49,7 @@ class CancelReservationMailer {
                 'reservationDetails' => $reservationDetails
             ]));
 
-            $this->mailer->send($email);
-
-     
-     
+        $this->mailer->send($email);
 
 
     }
