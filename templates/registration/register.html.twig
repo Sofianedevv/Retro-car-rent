@@ -3,91 +3,123 @@
 {% block title %}Inscription{% endblock %}
 
 {% block content %}
-    <div class="min-h-screen flex items-center justify-center bg-gray-100 pt-24 py-12">
-        <div class="max-w-md w-full bg-gray-900 p-8 rounded-lg shadow-2xl shadow-current">
-            <div class="text-center mb-8">
-                <h1 class="text-4xl font-playfair font-bold text-[#b3a97d]">Inscription</h1>
-                <div class="mt-2 h-1 w-16 bg-primary mx-auto"></div>
-                <p class="text-gray-100 mt-4">Créez votre compte pour commencer l'aventure</p>
-            </div>
-
-            {% for flash_error in app.flashes('verify_email_error') %}
-                <div class="mb-4 p-4 bg-gray-100 border-l-4 border-primary text-gray-900 font-playfair">
-                    {{ flash_error }}
-                </div>
-            {% endfor %}
-
-            {{ form_start(registrationForm, {'attr': {'class': 'space-y-6'}}) }}
-            <div>
-                {{ form_label(registrationForm.firstName, 'Prénom', {'label_attr': {'class': 'block text-lg font-medium text-primary'}}) }}
-                {{ form_widget(registrationForm.firstName, {'attr': {
-                    'class': 'mt-1 block w-full px-4 py-3 bg-gray-100 border-2 border-primary/20 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors duration-300 transform hover:border-primary hover:shadow-lg'
-                }}) }}
-            </div>
-
-            <div>
-                {{ form_label(registrationForm.lastName, 'Nom', {'label_attr': {'class': 'block text-lg font-medium text-primary'}}) }}
-                {{ form_widget(registrationForm.lastName, {'attr': {
-                    'class': 'mt-1 block w-full px-4 py-3 bg-gray-100 border-2 border-primary/20 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors duration-300 transform hover:border-primary hover:shadow-lg'
-                }}) }}
-            </div>
-
-            <div>
-                {{ form_label(registrationForm.phoneNumber, 'Téléphone', {'label_attr': {'class': 'block text-lg font-medium text-primary'}}) }}
-                {{ form_widget(registrationForm.phoneNumber, {'attr': {
-                    'class': 'mt-1 block w-full px-4 py-3 bg-gray-100 border-2 border-primary/20 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors duration-300 transform hover:border-primary hover:shadow-lg'
-                }}) }}
-            </div>
-
-            <div>
-                {{ form_label(registrationForm.email, 'Email', {'label_attr': {'class': 'block text-lg font-medium text-primary'}}) }}
-                {{ form_widget(registrationForm.email, {'attr': {
-                    'class': 'mt-1 block w-full px-4 py-3 bg-gray-100 border-2 border-primary/20 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors duration-300 transform hover:border-primary hover:shadow-lg'
-                }}) }}
-            </div>
-
-            <div>
-                <div class="space-y-4">
-                    <div>
-                        {{ form_label(registrationForm.plainPassword.first) }}
-                        {{ form_widget(registrationForm.plainPassword.first) }}
-                        <div class="text-red-500 text-sm mt-1">
-                            {{ form_errors(registrationForm.plainPassword.first) }}
-                        </div>
+<div class="min-h-screen bg-[#dbdbdb] pt-24">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-6xl mx-auto bg-white/80 backdrop-blur-lg rounded-3xl overflow-hidden shadow-2xl">
+            <div class="grid grid-cols-1 lg:grid-cols-2">
+                <div class="relative hidden lg:block">
+                    <div class="absolute inset-0 bg-black/40 z-10 rounded-l-3xl"></div>
+                    <img src="{{ asset('template-html/assets/images/b10.jpg') }}" 
+                         alt="Vintage Car" 
+                         class="h-full w-full object-cover rounded-l-3xl"
+                         style="min-height: 800px;">
+                    <div class="absolute inset-0 z-20 flex flex-col items-center justify-center text-white p-8">
+                        <img src="{{ asset('template-html/assets/images/logo_black.svg') }}" 
+                             alt="Logo" 
+                             class="w-40 mb-8 brightness-0 invert"
+                             style="filter: brightness(0) invert(1);">
+                        <h2 class="text-4xl font-playfair font-bold text-center mb-4">
+                            Bienvenue chez Retro Car Rent
+                        </h2>
+                        <p class="text-xl text-center font-light max-w-md">
+                            Découvrez notre collection unique de véhicules d'exception
+                        </p>
                     </div>
+                </div>
+
+                <div class="p-8 lg:p-12">
+                    <div class="text-center mb-10">
+                        <h1 class="text-4xl font-playfair font-bold text-[#8B4513] mb-3">Créer un compte</h1>
+                        <div class="h-1 w-20 bg-[#8B4513] mx-auto rounded-full"></div>
+                    </div>
+
+                    {{ form_start(registrationForm, {'attr': {'class': 'space-y-6'}}) }}
                     
-                    <div>
-                        {{ form_label(registrationForm.plainPassword.second) }}
-                        {{ form_widget(registrationForm.plainPassword.second) }}
-                        <div class="text-red-500 text-sm mt-1">
-                            {{ form_errors(registrationForm.plainPassword.second) }}
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="col-span-2 sm:col-span-1">
+                            {{ form_label(registrationForm.firstName, 'Prénom', {'label_attr': {'class': 'block text-sm font-semibold text-gray-700 mb-2'}}) }}
+                            {{ form_widget(registrationForm.firstName, {'attr': {
+                                'class': 'w-full px-4 py-3 rounded-xl border-2 border-[#8B4513]/20 focus:border-[#8B4513] focus:ring focus:ring-[#8B4513]/50 transition-all duration-300 bg-white/50',
+                                'placeholder': 'Votre prénom'
+                            }}) }}
                         </div>
+
+                        <div class="col-span-2 sm:col-span-1">
+                            {{ form_label(registrationForm.lastName, 'Nom', {'label_attr': {'class': 'block text-sm font-semibold text-gray-700 mb-2'}}) }}
+                            {{ form_widget(registrationForm.lastName, {'attr': {
+                                'class': 'w-full px-4 py-3 rounded-xl border-2 border-[#8B4513]/20 focus:border-[#8B4513] focus:ring focus:ring-[#8B4513]/50 transition-all duration-300 bg-white/50',
+                                'placeholder': 'Votre nom'
+                            }}) }}
+                        </div>
+
+                        <div class="col-span-2">
+                            {{ form_label(registrationForm.email, 'Email', {'label_attr': {'class': 'block text-sm font-semibold text-gray-700 mb-2'}}) }}
+                            {{ form_widget(registrationForm.email, {'attr': {
+                                'class': 'w-full px-4 py-3 rounded-xl border-2 border-[#8B4513]/20 focus:border-[#8B4513] focus:ring focus:ring-[#8B4513]/50 transition-all duration-300 bg-white/50',
+                                'placeholder': 'exemple@email.com'
+                            }}) }}
+                            {% if form_errors(registrationForm.email) %}
+                                <div class="text-red-500 text-sm mt-1">{{ form_errors(registrationForm.email) }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-span-2">
+                            {{ form_label(registrationForm.phoneNumber, 'Téléphone', {'label_attr': {'class': 'block text-sm font-semibold text-gray-700 mb-2'}}) }}
+                            {{ form_widget(registrationForm.phoneNumber, {'attr': {
+                                'class': 'w-full px-4 py-3 rounded-xl border-2 border-[#8B4513]/20 focus:border-[#8B4513] focus:ring focus:ring-[#8B4513]/50 transition-all duration-300 bg-white/50',
+                                'placeholder': '06 12 34 56 78'
+                            }}) }}
+                            {% if form_errors(registrationForm.phoneNumber) %}
+                                <div class="text-red-500 text-sm mt-1">{{ form_errors(registrationForm.phoneNumber) }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-span-2">
+                            {{ form_label(registrationForm.plainPassword.first, 'Mot de passe', {'label_attr': {'class': 'block text-sm font-semibold text-gray-700 mb-2'}}) }}
+                            {{ form_widget(registrationForm.plainPassword.first, {'attr': {
+                                'class': 'w-full px-4 py-3 rounded-xl border-2 border-[#8B4513]/20 focus:border-[#8B4513] focus:ring focus:ring-[#8B4513]/50 transition-all duration-300 bg-white/50'
+                            }}) }}
+                        </div>
+
+                        <div class="col-span-2">
+                            {{ form_label(registrationForm.plainPassword.second, 'Confirmer le mot de passe', {'label_attr': {'class': 'block text-sm font-semibold text-gray-700 mb-2'}}) }}
+                            {{ form_widget(registrationForm.plainPassword.second, {'attr': {
+                                'class': 'w-full px-4 py-3 rounded-xl border-2 border-[#8B4513]/20 focus:border-[#8B4513] focus:ring focus:ring-[#8B4513]/50 transition-all duration-300 bg-white/50'
+                            }}) }}
+                        </div>
+
+                        <div class="col-span-2">
+                            <label class="flex items-center space-x-3 cursor-pointer group">
+                                {{ form_widget(registrationForm.agreeTerms, {'attr': {
+                                    'class': 'w-5 h-5 rounded border-2 border-[#8B4513]/20 text-[#8B4513] focus:ring-[#8B4513] transition-all duration-300'
+                                }}) }}
+                                <span class="text-sm text-gray-600 group-hover:text-[#8B4513] transition-colors duration-300">
+                                    J'accepte les conditions d'utilisation
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="col-span-2 pt-4">
+                            <button type="submit"
+                                    class="w-full bg-[#8B4513] text-white py-4 rounded-xl font-semibold hover:bg-[#734010] transform hover:scale-[1.02] transition-all duration-300 flex items-center justify-center space-x-2">
+                                <i class="fas fa-user-plus"></i>
+                                <span>Créer mon compte</span>
+                            </button>
+                        </div>
+                    </div>
+                    {{ form_end(registrationForm) }}
+
+                    <div class="mt-8 text-center">
+                        <p class="text-gray-600">
+                            Déjà membre ?
+                            <a href="{{ path('app_login') }}" 
+                               class="text-[#8B4513] font-semibold hover:text-[#734010] underline transition-colors duration-300">
+                                Se connecter
+                            </a>
+                        </p>
                     </div>
                 </div>
             </div>
-
-            <div class="flex items-center">
-                {{ form_widget(registrationForm.agreeTerms, {'attr': {
-                    'class': 'h-4 w-4 text-primary focus:ring-primary border-primary/20 rounded transition-colors duration-300'
-                }}) }}
-                {{ form_label(registrationForm.agreeTerms, 'J\'accepte les conditions d\'utilisation', {'label_attr': {
-                    'class': 'ml-2 block text-lg text-primary'
-                }}) }}
-            </div>
-
-            <button type="submit"
-                    class="w-full flex justify-center border-primary shadow-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary bg-[#b3a97d] hover:bg-transparent  hover:text-primary border border-transparent hover:border-primary font-semibold rounded-lg px-8 py-3 transition-all duration-300 font-playfair text-lg">
-                S'inscrire
-            </button>
-            {{ form_end(registrationForm) }}
-
-        <div class="mt-6 text-center">
-            <p class="text-sm text-[#8B4513]">
-                Déjà inscrit ? 
-                <a href="{{ path('app_login') }}" class="font-medium text-[#8B4513] hover:text-[#734010] underline transition-colors duration-300">
-                    Se connecter
-                </a>
-            </p>
         </div>
     </div>
 </div>
