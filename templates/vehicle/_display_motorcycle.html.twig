@@ -105,8 +105,8 @@
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
                     const scrollToTopBtn = document.getElementById('scrollToTopBtn');
-                    const footer = document.querySelector('footer'); // Sélectionne le footer
-                    const footerHeight = footer ? footer.offsetHeight : 0; // Récupère la hauteur du footer
+                    const footer = document.querySelector('footer'); 
+                    const footerHeight = footer ? footer.offsetHeight : 0; 
 
                     scrollToTopBtn.style.display = "none";
 
@@ -120,7 +120,7 @@
 
                     window.addEventListener('resize', function () {
                         const footerHeight = footer ? footer.offsetHeight : 0;
-                        scrollToTopBtn.style.bottom = `${footerHeight + 20}px`; // Ajoute 20px d'espace entre le bouton et le footer
+                        scrollToTopBtn.style.bottom = `${footerHeight + 20}px`;
                     });
 
                     scrollToTopBtn.onclick = function () {

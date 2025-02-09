@@ -869,7 +869,7 @@
 						</div>
 						<p class="mt-3 text-gray-700">${review.comment}</p>
 
-						<!-- Réponses -->
+						
 						<div class="mt-4 ml-8 space-y-4">
 							${review.replies ? review.replies.map(reply => `
 								<div class="bg-gray-50 p-4 rounded-lg border-l-4 border-[#8B4513]">
@@ -897,7 +897,7 @@
 							`).join('') : ''}
 						</div>
 
-						<!-- Bouton et formulaire de réponse -->
+						
 						${userId ? `
 							<button onclick="window.toggleReplyForm('reply-form-${review.id}')" 
 								class="mt-4 text-[#8B4513] hover:text-[#6d3610] text-sm font-medium flex items-center gap-1">
