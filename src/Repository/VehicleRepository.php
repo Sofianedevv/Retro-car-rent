@@ -451,16 +451,7 @@ class VehicleRepository extends ServiceEntityRepository
 
     }
 
-    public function findBestRated(int $limit = 5): array
-    {
-        return $this->createQueryBuilder('v')
-            ->leftJoin('v.reviews', 'r')
-            ->groupBy('v.id')
-            ->orderBy('AVG(r.rating)', 'DESC')
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult();
-    }
+
 
     public function findSimilar(Vehicle $vehicle, int $limit = 4): array
     {
