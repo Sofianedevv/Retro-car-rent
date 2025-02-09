@@ -274,7 +274,6 @@ class ReservationController extends AbstractController
 
 
         $cancelReservationMailer->sendCancelReservationEmail($user->getEmail(), $reservationId);
-        dd($user->getEmail());
         $this->addFlash('success', 'Votre réservation a bien été annulée.');
         return $this->redirectToRoute('app_all_reservation', ['clientId' => $user->getId()]);
     

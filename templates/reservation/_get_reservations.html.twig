@@ -90,7 +90,19 @@
                                     {% endif %}
                                 </ul>
                             </div>
-                            <!-- Rest of the content -->
+                            <div class="p-6 border-t border-gray-200 flex items-center justify-between">
+                                <a href="{{ path('app_invoice_download', { 'clientId': app.user.id, 'reservationId': reservation.id }) }}"
+                                   class="text-sm font-semibold text-blue-700 hover:underline">
+                                    <i class="fas fa-download text-blue-700 mr-1"></i>Télécharger la Facture
+                                </a>
+                                <form action="{{ path('app_reservation_cancel', { 'reservationId': reservation.id }) }}"
+                                      method="POST">
+                                    <button type="submit"
+                                            class="bg-red-600 text-white px-4 py-2 text-sm rounded-lg hover:bg-red-500 transition">
+                                        <i class="fas fa-times-circle text-white mr-1"></i>Annuler
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     {% endfor %}
                 {% else %}
