@@ -20,7 +20,7 @@ class SearchType extends AbstractType
         $builder
         ->add('vehicle_type', ChoiceType::class, [
             'choices' => [
-                'Tous les véhicule' => 'all',
+                'Tous les véhicules' => 'all',
                 'Voiture' => 'car',
                 'Van' => 'van',
                 'Moto' => 'motorcycle',

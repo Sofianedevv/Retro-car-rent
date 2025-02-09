@@ -85,6 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 countElement.textContent = count;
 
                 totalOptionPrice += optionPrice;
+                totalOptionPrice = Math.max(0, totalOptionPrice);
                 updateTotalPrice();
 
                 const hiddenInput = document.getElementById(`option_${optionId}_count_hidden`);
@@ -105,6 +106,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 countElement.textContent = count;
 
                 totalOptionPrice -= optionPrice;
+                totalOptionPrice = Math.max(0, totalOptionPrice);
+
                 updateTotalPrice();
 
                 const hiddenInput = document.getElementById(`option_${optionId}_count_hidden`);

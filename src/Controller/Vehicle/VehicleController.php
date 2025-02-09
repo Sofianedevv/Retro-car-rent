@@ -290,18 +290,19 @@ public function showAvailableVehicles(
 
     $allVehicles = $vehicleRepository->findAll();
     $overlappingReservations = $reservationRepository->findOverlappingReservations($startDate, $endDate);
-    
+
     $reservedVehiclesIds = array_map(fn($reservation) => $reservation->getVehicle()->getId(), $overlappingReservations);
 
 
     $vehiclesBySearch = match ($type) {
      'car' => $search ? $vehicleRepository->findCarsBySearch($search, $reservedVehiclesIds) : $vehicleRepository->findCarsByFilters($filters, $reservedVehiclesIds),
      'motorcycle' => $search ? $vehicleRepository->findMotorcyclesBySearch($search, $reservedVehiclesIds) : $vehicleRepository->findMotorcyclesByFilters($filters, $reservedVehiclesIds),
-     'van' => $search ? $vehicleRepository->findVansBySearch($search, $reservedVehiclesIds) : $vehicleRepository->findVansByFilters($filters),
-     'all' => $search ? $vehicleRepository->findVehicleBySearch($search, $reservedVehiclesIds) : $vehicleRepository->findAllVehicleByFilters($filters)
+     'van' => $search ? $vehicleRepository->findVansBySearch($search, $reservedVehiclesIds) : $vehicleRepository->findVansByFilters($filters, $reservedVehiclesIds),
+     'all' => $search ? $vehicleRepository->findVehicleBySearch($search, $reservedVehiclesIds) : $vehicleRepository->findAllVehicleByFilters($filters, $reservedVehiclesIds)
      };
      
-    dump($vehiclesBySearch);
+
+    
 
 
     $vehiclePerPage = $paginator->paginate(
@@ -310,7 +311,7 @@ public function showAvailableVehicles(
         10
     );
 
-    dump($vehiclePerPage);
+  
 
     
 
@@ -395,6 +396,7 @@ public function showAvailableVehicles(
                 'startDateTime' => $startDateTime,
                 'endDateTime' => $endDateTime,
                 'type' => $type,
+                'isFavorite' => $isFavorite,
                 'search' => $search,
                 'filters' => $filters,
                 'brands' => $specificFilter['brands'],
@@ -406,6 +408,4 @@ public function showAvailableVehicles(
             return $this->redirectToRoute('app');
     }
 }
-
-    
 }

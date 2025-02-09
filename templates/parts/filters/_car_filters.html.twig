@@ -25,7 +25,7 @@
 		<h3 class="text-lg font-semibold mb-6">Transmission</h3>
 		{% for transmission  in transmissions %}
 			<div class="flex items-center space-x-2">
-				<input type="checkbox" name="transmission[]" value="{{ transmission }}" {% if transmission is defined and transmission in filters.transmission|default([]) %} checked {% endif %} class="rounded border-gray-300 text-[#8B4513] focus:ring-[#8B4513]">
+				<input type="checkbox" name="transmission[]" value="{{ transmission }}" {% if transmission in filters.transmission|default([]) %} checked {% endif %} class="rounded border-gray-300 text-[#8B4513] focus:ring-[#8B4513]">
 				<label for="transmission{{ transmission }}" class="ml-2 block text-sm text-gray-900">
 					{{ transmission }}
 				</label>
@@ -37,7 +37,7 @@
 		<h3 class="text-lg font-semibold mb-6">Type de carburant</h3>
 		{% for fuelType in fuelTypes %}
 			<div class="flex items-center space-x-2">
-				<input type="checkbox" id="fuelType_{{ fuelType }}" name="fuelType[]" value="{{ fuelType }}" {% if fuelType is defined and fuelType in filters.fuelType|default([]) %} checked {% endif %} class="h-4 w-4 text-[#8B4513] border-gray-300 rounded focus:ring-[#8B4513]">
+				<input type="checkbox" id="fuelType_{{ fuelType }}" name="fuelType[]" value="{{ fuelType }}" {% if fuelType in filters.fuelType|default([]) %} checked {% endif %} class="h-4 w-4 text-[#8B4513] border-gray-300 rounded focus:ring-[#8B4513]">
 				<label for="fuelType_{{ fuelType }}" class="ml-2 text-sm text-gray-900 hover:text-[#8B4513] transition-colors cursor-pointer">
 					{{ fuelType }}
 				</label>
@@ -50,7 +50,7 @@
 		<h3 class="text-lg font-semibold mb-6">Nombre de places</h3>
 		{% for nbSeats  in nbSeatsOptions %}
 			<div class="flex items-center space-x-2">
-				<input type="checkbox" name="nbSeats[]" value="{{ nbSeats }}" {% if nbSeats is defined and nbSeats in filters.nbSeats|default([]) %} checked {% endif %} class="rounded border-gray-300 text-[#8B4513] focus:ring-[#8B4513]">
+				<input type="checkbox" name="nbSeats[]" value="{{ nbSeats }}" {% if nbSeats in filters.nbSeats|default([]) %} checked {% endif %} class="rounded border-gray-300 text-[#8B4513] focus:ring-[#8B4513]">
 				<label for="nbSeats_{{ nbSeats }}" class="ml-2 block text-sm text-gray-900">
 					{{ nbSeats }}
 					places
@@ -64,7 +64,7 @@
 		<h3 class="text-lg font-semibold mb-6">Nombre de portes</h3>
 		{% for nbDoors in nbDoorsOptions %}
 			<div class="flex items-center space-x-2">
-				<input type="checkbox" id="nbDoors_{{ nbDoors }}" name="nbDoors[]" value="{{ nbDoors }}" {% if nbDoors is defined and nbDoors in filters.nbDoors|default([]) %} checked {% endif %} class="rounded border-gray-300 text-[#8B4513] focus:ring-[#8B4513]">
+				<input type="checkbox" id="nbDoors_{{ nbDoors }}" name="nbDoors[]" value="{{ nbDoors }}" {% if  nbDoors in filters.nbDoors|default([]) %} checked {% endif %} class="rounded border-gray-300 text-[#8B4513] focus:ring-[#8B4513]">
 				<label for="nbDoors_{{ nbDoors  }}" class="ml-2 block text-sm text-gray-900">
 					{{ nbDoors  }}
 					portes
@@ -105,13 +105,14 @@
 
 
 	<div class="flex space-x-4">
-		<a href="{{ path( app.request.attributes.get('_route') == 'app_available' ? 'app_available' : 'app_car', { 'type': (app.request.attributes.get('_route') == 'app_available') ? type : null, 'startDateTime': (app.request.attributes.get('_route') == 'app_available') ? startDateTime : null, 'endDateTime': (app.request.attributes.get('_route') == 'app_available') ? endDateTime : null }) }}" class="w-1/2 bg-[#F5F5F0] text-[#8B4513] py-3 px-6 border-2 border-[#8B4513] hover:bg-[#8B4513] hover:text-[#F5F5F0] transition-colors duration-300 text-center font-playfair">
+		<a href="{{ path( app.request.attributes.get('_route') == 'app_available' ? 'app_available' : 'app_car', { 'type': (app.request.attributes.get('_route') == 'app_available') ? type : null, 'startDateTime': (app.request.attributes.get('_route') == 'app_available') ? startDateTime : null, 'endDateTime': (app.request.attributes.get('_route') == 'app_available') ? endDateTime : null }) }}" class="w-1/2 bg-[#F5F5F0] text-[#8B4513] py-3 px-6 border-2 border-[#8B4513] hover:bg-[#8B4513] hover:text-[#F5F5F0] transition-colors duration-300 text-center font-playfair rounded-lg">
 			Réinitialiser
 		</a>
 
 
-			<button type="submit" class="w-1/2 bg-[#8B4513] text-[#F5F5F0] py-3 px-6 hover:bg-[#734010] transition-colors duration-300 font-playfair">
+			<button type="submit" class="w-1/2 bg-[#8B4513] text-[#F5F5F0] py-3 px-6 hover:bg-[#734010] transition-colors duration-300 font-playfair rounded-lg">
 				Appliquer
 			</button>
 
 	</div>
+</form>

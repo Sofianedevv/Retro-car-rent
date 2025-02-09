@@ -70,7 +70,7 @@ class ReservationController extends AbstractController
         $vehicle = $vehicleRepository->find($vehicleId);
         if (!$vehicle) {
             $this->addFlash('error', 'Véhicule non trouvé.');
-            return $this->redirectToRoute('app_vehicle_list');
+            return $this->redirectToRoute('app_vehicle_show_details', ['vehicleId' => $vehicleId]);
         }
 
         $options = [];
@@ -186,7 +186,7 @@ class ReservationController extends AbstractController
             $payment->setReservation($reservation);
             $payment->setAmount($reservation->getTotalPrice());
             $payment->setPaymentDate(new DateTimeImmutable());
-            $payment->setPaymentMethod('Stripe');
+            $payment->setPaymentMethod('CB');
             $payment->setPaymentStatus(PaymentStatusEnum::PAID);
 
             $entityManager->persist($payment);
@@ -217,7 +217,7 @@ class ReservationController extends AbstractController
             $entityManager->flush();
         }
         $this->addFlash('error', 'Le paiement a été annulé. Veuillez réessayer.');
-        return $this->redirectToRoute('app_vehicle_list');
+        return $this->redirectToRoute('app_add_reservation', ['vehicleId' => $reservation->getVehicle()->getId()]);
     }
 
     #[Route('/vos-reservations/{clientId}', name: 'app_all_reservation', methods: ['GET'])]
@@ -273,8 +273,8 @@ class ReservationController extends AbstractController
         $entityManagerInterface->flush();
 
 
-        $cancelReservationMailer->sendCancelReservationEmail($this->getUser()->getEmail(), $reservationId);
-
+        $cancelReservationMailer->sendCancelReservationEmail($user->getEmail(), $reservationId);
+        dd($user->getEmail());
         $this->addFlash('success', 'Votre réservation a bien été annulée.');
         return $this->redirectToRoute('app_all_reservation', ['clientId' => $user->getId()]);
     
@@ -332,7 +332,7 @@ class ReservationController extends AbstractController
                 $reservation = $reservationRepository->find($reservationId);
                 if ($reservation) {
                     $reservation->setStatus(StatusReservationEnum::CONFIRMED);
-                    $resercation->persist($reservation);
+                    $reservation->persist($reservation);
                     $entityManager->flush();
                 }
             }

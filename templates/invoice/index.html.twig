@@ -3,7 +3,7 @@
 {% block title %}Factures{% endblock %}
 
 {% block content %}
-    <div class="bg-primary py-8">
+    <div class="bg-primary py-8 pt-32">
         <div class="container mx-auto px-4">
             <div class="text-center">
                 <h1 class="text-4xl font-bold text-gray-800 font-playfair">
@@ -15,7 +15,7 @@
             </div>
         </div>
     </div>
-    <div class="container mx-auto px-4 py-6">
+    <div class="min-h-screen container mx-auto px-4 py-6">
         {% if invoices is not empty %}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {% for invoiceData in invoices %}
@@ -51,7 +51,7 @@
                 {% endfor %}
             </div>
         {% else %}
-            <div class="text-center">
+            <div class="text-center mt-8">
                 <p class="text-gray-500 text-lg">Aucune facture disponible.</p>
             </div>
         {% endif %}

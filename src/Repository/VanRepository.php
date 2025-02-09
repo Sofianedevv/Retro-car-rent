@@ -46,6 +46,7 @@ class VanRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('v')
             ->leftJoin('v.reviews', 'r')
             ->groupBy('v.id')
+            ->having('COUNT(r.id) > 0')
             ->orderBy('AVG(r.rating)', 'DESC')
             ->setMaxResults($limit)
             ->getQuery()
