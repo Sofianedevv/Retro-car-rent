@@ -1,4 +1,4 @@
-name: Deploy to VPS
+name: Déploiement sur VPS
 
 on:
   push:
@@ -6,20 +6,40 @@ on:
       - main
 
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set up SSH
+      - name: Récupération du code
+        uses: actions/checkout@v4
+
+      - name: Configuration de PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer
+          extensions: mbstring, intl, pdo, pdo_mysql
+
+      - name: Installation des dépendances
+        run: composer install --no-dev
+
+      - name: Exécution des tests unitaires
+        run: ./vendor/bin/phpunit --testdox
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Configuration de la connexion SSH
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}  
 
-      - name: Pull latest changes on VPS
+      - name: Mise à jour du code sur le VPS
         run: |
           ssh -o StrictHostKeyChecking=no root@147.93.55.129 << 'EOF'
             cd /var/www/retro-car-rent/Retro-car-rent
-            git pull origin main  
+            git pull origin main 
+            composer install --no-dev --optimize-autoloader
+            php bin/console cache:clear            
           EOF
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}  
