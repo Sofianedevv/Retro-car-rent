@@ -246,7 +246,7 @@ class UserManager {
                 throw new Error(errorData.error || 'Erreur lors du chargement de l\'utilisateur');
             }
             const user = await response.json();
-            console.log('User data:', user); // Debug
+            console.log('User data:', user); 
 
             document.getElementById('modal-title').textContent = 'Modifier les rôles';
             const form = document.getElementById('userForm');

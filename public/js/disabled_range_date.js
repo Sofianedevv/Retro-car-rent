@@ -3,9 +3,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const vehicleId = vehicleElement ? vehicleElement.getAttribute('data-vehicle-id') : null;
     const startDateInput = document.getElementById('reservation_startDate');
     const endDateInput = document.getElementById('reservation_endDate');
+    const startTimeInput = document.getElementById('reservation_startTime');
+    const endTimeInput = document.getElementById('reservation_endTime');
     const submitButton = document.querySelector('button[type="submit"]'); 
 
-    if (!vehicleId || !startDateInput || !endDateInput || !submitButton) {
+    if (!vehicleId || !startDateInput || !endDateInput || !startTimeInput || !endTimeInput || !submitButton) {
         console.error("Certains éléments requis ne sont pas trouvés dans le DOM.");
         return;
     }
@@ -24,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const isRangeOverlapping = (start, end) => {
                 return disabledRanges.some(range => {
+                    console.log(start, end)
                     return (
                         (start >= range.start && start < range.end) || 
                         (end > range.start && end <= range.end) ||    
@@ -53,10 +56,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 input.style.borderColor = '';
             };
 
-           
+            const getDateTimeFromInputs = (dateInput, timeInput) => {
+                const date = dateInput.value;
+                const time = timeInput.value || '00:00'; 
+                return new Date(`${date}T${time}:00`);
+            };
+
             const validateRange = () => {
-                const startDate = new Date(startDateInput.value);
-                const endDate = new Date(endDateInput.value);
+                const startDate = getDateTimeFromInputs(startDateInput, startTimeInput);
+                const endDate = getDateTimeFromInputs(endDateInput, endTimeInput);
 
                 if (isNaN(startDate) || isNaN(endDate)) {
                     console.error("Veuillez saisir des dates valides.");
@@ -81,22 +89,38 @@ document.addEventListener('DOMContentLoaded', function () {
                     console.error(
                         `Erreur : La plage sélectionnée (${startDate.toISOString()} à ${endDate.toISOString()}) chevauche une plage de réservation existante.`
                     );
-                    showError(startDateInput, "Cette plage chevauche une réservation existante.");
-                    showError(endDateInput, "Cette plage chevauche une réservation existante.");
+                    showError(startDateInput, `Cette plage chevauche une réservation existante (de ${startDate} à ${endDate}).`);
+                    showError(endDateInput, `Cette plage chevauche une réservation existante (de ${startDate} à ${endDate}).`);
                     submitButton.disabled = true; 
                 } else {
-                    console.log(
-                        `Plage valide : ${startDate.toISOString()} à ${endDate.toISOString()}.`
-                    );
+                    const lastReservationBeforeStart = disabledRanges
+                        .filter(reservation => reservation.end <= startDate)
+                        .sort((a, b) => b.end - a.end)[0]; 
+
+                    if (lastReservationBeforeStart) {
+                        const lastReservationEndTime = lastReservationBeforeStart.end;
+                        const minimumAvailableTime = new Date(lastReservationEndTime.getTime() + 30 * 60 * 1000); 
+
+                        if (startDate < minimumAvailableTime) {
+                            const formattedTime = minimumAvailableTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                            console.error(`Erreur : Le véhicule sera disponible à partir de ${formattedTime}.`);
+                            showError(startDateInput, `Le véhicule sera disponible à partir de ${formattedTime}.`);
+                            submitButton.disabled = true;
+                            return;
+                        }
+                    }
+
+                    console.log(`Plage valide : ${startDate.toISOString()} à ${endDate.toISOString()}.`);
                     clearError(startDateInput);
                     clearError(endDateInput);
-                    submitButton.disabled = false; 
+                    submitButton.disabled = false;
                 }
             };
 
-            
             startDateInput.addEventListener('input', validateRange);
             endDateInput.addEventListener('input', validateRange);
+            startTimeInput.addEventListener('input', validateRange);
+            endTimeInput.addEventListener('input', validateRange);
         })
         .catch(error => {
             console.error("Erreur lors de la récupération des données de réservation :", error);
